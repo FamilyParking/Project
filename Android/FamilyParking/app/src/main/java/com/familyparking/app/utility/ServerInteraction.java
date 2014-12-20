@@ -1,12 +1,6 @@
 package com.familyparking.app.utility;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.familyparking.app.MapsActivity;
-
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
