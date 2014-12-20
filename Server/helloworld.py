@@ -1,5 +1,6 @@
 import cgi
 import webapp2
+import json
 from google.appengine.api import mail
 
 MAIN_PAGE_HTML = """\
@@ -22,21 +23,21 @@ class Guestbook(webapp2.RequestHandler):
         message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
                             subject="Your account has been approved")
 
-        receiver = cgi.escape(self.request.get('emailAddress'))
+        #receiver = cgi.escape(self.request.get('emailAddress'))
 
-        message.to = "Albert Johnson <%s>" % receiver
-        message.body = """
-Dear Obaida:
+        message.to = "Albert Johnson <nazzareno.marziale@gmail.com>"
 
-Your car is parked!!!!!
-"""
+        openJson = open(self.request.body)
+        decoded = json.loads(json.dumps(self.request.body))
+
+        message.body = decoded['latitude']
 
         message.send()
 
 
         self.response.write("we are begginers +3")
-        self.response.write(receiver)
-        
+        self.response.write(self.request.body)
+
 application = webapp2.WSGIApplication([
                                        ('/', MainPage),
                                        ('/sign', Guestbook),
