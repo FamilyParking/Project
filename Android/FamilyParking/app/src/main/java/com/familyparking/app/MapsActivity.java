@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
 import com.familyparking.app.utility.AsyncTaskPosition;
 import com.familyparking.app.utility.Tools;
@@ -11,6 +12,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -74,6 +77,13 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void sendPosition(View v) {
-        new AsyncTaskPosition().execute(MapsActivity.this);
+        String[] email = {"f.nobilia@gmail.com"};
+        Car car = new Car(this.position,email);
+
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(this);
+        params.add(car);
+
+        new AsyncTaskPosition().execute(params);
     }
 }

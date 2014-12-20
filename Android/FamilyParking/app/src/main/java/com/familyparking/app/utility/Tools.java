@@ -32,9 +32,9 @@ public class Tools {
         if (gpsLocation != null) {
             position[0] = gpsLocation.getLatitude();
             position[1] = gpsLocation.getLongitude();
-            Toast.makeText(context,"Mobile Location (GPS): \nLatitude: " + position[0]+ "\nLongitude: " + position[1],Toast.LENGTH_LONG).show();
-        } else {
-            showSettingsAlert("GPS",context);
+        }
+        else {
+            showSettingsAlert(context);
         }
 
         return position;
@@ -48,20 +48,21 @@ public class Tools {
         if (nwLocation != null) {
             position[0] = nwLocation.getLatitude();
             position[1] = nwLocation.getLongitude();
-            Toast.makeText(context,"Mobile Location (GPS): \nLatitude: " + position[0]+ "\nLongitude: " + position[1],Toast.LENGTH_LONG).show();
-        } else {
-            showSettingsAlert("Network",context);
+
+        }
+        else {
+            showSettingsAlert(context);
         }
 
         return position;
     }
 
-    public static void showSettingsAlert(String provider, final Context context) {
+    public static void showSettingsAlert(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
-        alertDialog.setTitle(provider + " SETTINGS");
+        alertDialog.setTitle("Location services disabled");
 
-        alertDialog.setMessage(provider + " is not enabled! Want to go to settings menu?");
+        alertDialog.setMessage("FamiliyParking needs to know your position. Active it!");
 
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
