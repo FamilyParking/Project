@@ -3,33 +3,31 @@ package com.familyparking.app;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.familyparking.app.service.LocationService;
 import com.familyparking.app.utility.AsyncTaskPosition;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
+import com.familyparking.app.utility.Tools;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class MapsActivity extends FragmentActivity {
 
     private GoogleMap googleMap; // Might be null if Google Play services APK is not available.
-    GoogleApiClient googleApiClient;
-    LocationServices lastLocation;
+    private LocationService locationService;
+    private double[] position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        setUpMapIfNeeded();
+        locationService = new LocationService(this);
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        position = Tools.getLocationNetwork(locationService,this);
+
+        setUpMapIfNeeded();
     }
 
     @Override
@@ -57,8 +55,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         // Do a null check to confirm that we have not already instantiated the map.
         if (googleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
+            googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
                 setUpMap();
@@ -73,29 +70,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
      * This should only be called once and when we are sure that {@link #googleMap} is not null.
      */
     private void setUpMap() {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(this.position[0],this.position[1])).title("My car"));
     }
 
     public void sendPosition(View v) {
         new AsyncTaskPosition().execute(MapsActivity.this);
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if (lastLocation != null) {
-            mLatitudeText.setText(String.valueOf(lastLocation.getLatitude()));
-            mLongitudeText.setText(String.valueOf(lastLocation.getLongitude()));
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 }
