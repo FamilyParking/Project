@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Created by francesco on 20/12/14.
@@ -35,6 +36,8 @@ public class ServerCall {
             httpPost.setHeader("Content-type", "application/json");
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            Log.e("ServerCall", EntityUtils.toString(httpResponse.getEntity()));
 
             return Integer.toString(httpResponse.getStatusLine().getStatusCode());
 

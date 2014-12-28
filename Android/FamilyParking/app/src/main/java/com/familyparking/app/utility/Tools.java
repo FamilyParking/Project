@@ -1,5 +1,6 @@
 package com.familyparking.app.utility;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +10,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+import android.widget.Toast;
 
+import com.familyparking.app.R;
 import com.familyparking.app.service.LocationService;
 
 /**
@@ -52,7 +55,7 @@ public class Tools {
 
         alertDialog.setTitle("Location services disabled");
 
-        alertDialog.setMessage("FamiliyParking needs to know your position. Active it!");
+        alertDialog.setMessage(getAppName(context)+" needs to know your position. Active it!");
 
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
@@ -66,6 +69,7 @@ public class Tools {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        Tools.closeApp(context);
                     }
                 });
 
@@ -97,5 +101,14 @@ public class Tools {
         }
 
         return position;
+    }
+
+    public static String getAppName(Context context){
+        return context.getResources().getString(R.string.app_name);
+    }
+
+    public static void closeApp(Context context){
+        Toast.makeText(context, Tools.getAppName(context)+" cannot work without location services!", Toast.LENGTH_LONG).show();
+        ((Activity) context).finish();
     }
 }

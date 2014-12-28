@@ -3,5 +3,7 @@
 
     <string name="app_name">FamilyParcking</string>
     <string name="title_activity_maps">Map</string>
+    <string name="parking">P</string>
+    <string name="add">+</string>
 
 </resources>

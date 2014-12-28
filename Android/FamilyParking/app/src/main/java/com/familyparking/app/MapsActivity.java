@@ -25,6 +25,8 @@ public class MapsActivity extends FragmentActivity {
     private LocationService locationService;
     private double[] position;
     private int position_attempt = 10;
+    //This flag is helpful to check if it's the first time that we pass inside onResume or we come back from onPause
+    private boolean retrieve_position = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +49,29 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
 
-        for(int i=0; i<position_attempt; i++) {
-            if (position == null) {
+        //Only if come back from onPause we need to check position
+        if(retrieve_position = false) {
+            boolean forcedClosure = true;
 
-                position = Tools.getLocation(locationService, this);
+            for (int i = 0; i < position_attempt; i++) {
+                if (position == null) {
 
-                if (position != null) {
-                    setUpMap();
-                    break;
+                    position = Tools.getLocation(locationService, this);
+
+                    if (position != null) {
+                        setUpMap();
+                        forcedClosure = false;
+                        break;
+                    }
                 }
             }
+
+            /*if(forcedClosure){
+                Tools.closeApp(this);
+            }*/
+        }
+        else{
+            retrieve_position = true;
         }
     }
 
@@ -101,5 +116,8 @@ public class MapsActivity extends FragmentActivity {
         params.add(car);
 
         new AsyncTaskPosition().execute(params);
+    }
+
+    public void manageGroup(View v) {
     }
 }
