@@ -1,8 +1,8 @@
 package com.familyparking.app;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.familyparking.app.serverClass.Car;
@@ -17,7 +17,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -119,5 +118,7 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void manageGroup(View v) {
+        Intent toManageGroup = new Intent(this,ManageGroupActivity.class);
+        startActivity(toManageGroup);
     }
 }

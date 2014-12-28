@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:background="@color/trasparent"
+    tools:context=".ManageGroupDialog">
+
+    <RelativeLayout
+        android:id="@+id/finder_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="15dp"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+
+        <ImageView
+            android:id="@+id/find_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/abc_ic_search_api_mtrl_alpha"
+            android:backgroundTint="@color/background_material_dark" />
+
+        <EditText
+            android:id="@+id/find_contact_edt"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:hint="@string/find_contact"
+            android:textColorHint="@color/gray"
+            android:background="@color/trasparent"
+            android:singleLine="true"
+            android:layout_toLeftOf="@+id/find_iv"
+            android:layout_toStartOf="@+id/find_iv" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/contact_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/finder_rl"
+        android:visibility="gone"/>
+
+</RelativeLayout>
+

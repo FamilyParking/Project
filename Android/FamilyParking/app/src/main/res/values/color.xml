@@ -4,5 +4,8 @@
     <color name="dark_blue">#1976D2</color>
     <color name="sapienza">#7F2632</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">@android:color/darker_gray</color>
+    <color name="soft_gray">#EEEEEE</color>
     <color name="trasparent">@android:color/transparent</color>
 </resources>

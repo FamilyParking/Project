@@ -3,7 +3,9 @@
 
     <string name="app_name">FamilyParcking</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_group">Group</string>
     <string name="parking">P</string>
     <string name="add">+</string>
+    <string name="find_contact">Write name or email</string>
 
 </resources>
