@@ -2,41 +2,62 @@ package com.familyparking.app;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
 import com.familyparking.app.utility.AsyncTaskPosition;
 import com.familyparking.app.utility.Tools;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MapsActivity extends FragmentActivity {
 
-    private GoogleMap googleMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap googleMap;
     private LocationService locationService;
     private double[] position;
+    private int position_attempt = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        setUpFragmentMap();
+
         locationService = new LocationService(this);
 
-        position = Tools.getLocationNetwork(locationService,this);
+        position = Tools.getLocationAlert(locationService, this);
 
-        setUpMapIfNeeded();
+        if(position != null){
+            setUpMap();
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
+
+        for(int i=0; i<position_attempt; i++) {
+            if (position == null) {
+
+                position = Tools.getLocation(locationService, this);
+
+                if (position != null) {
+                    setUpMap();
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -54,30 +75,25 @@ public class MapsActivity extends FragmentActivity {
      * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
      * method in {@link #onResume()} to guarantee that it will be called.
      */
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
+    private void setUpFragmentMap() {
         if (googleMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
             googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-            // Check if we were successful in obtaining the map.
-            if (googleMap != null) {
-                setUpMap();
-            }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #googleMap} is not null.
-     */
     private void setUpMap() {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(this.position[0],this.position[1])).title("My car"));
+        LatLng position = new LatLng(this.position[0],this.position[1]);
+        googleMap.addMarker(new MarkerOptions().position(position).title("My car"));
+
+        CameraUpdate center = CameraUpdateFactory.newLatLng(position);
+
+        googleMap.moveCamera(center);
+        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 5000, null);
     }
 
     public void sendPosition(View v) {
-        String[] email = {"f.nobilia@gmail.com"};
+        String[] email = {"f.nobilia@gmail.com","nazzareno.marziale@gmail.com"};
         Car car = new Car(this.position,email);
 
         ArrayList<Object> params = new ArrayList<>();

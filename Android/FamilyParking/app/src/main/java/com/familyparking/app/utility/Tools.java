@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import com.familyparking.app.service.LocationService;
 
@@ -24,40 +23,31 @@ public class Tools {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static double[] getLocationGPS(LocationService locationService,Context context){
+    private static double[] getLocationGPS(LocationService locationService,Context context){
         Location gpsLocation = locationService.getLocation(LocationManager.GPS_PROVIDER);
 
-        double[] position = {-1.0,-1.0};
-
         if (gpsLocation != null) {
-            position[0] = gpsLocation.getLatitude();
-            position[1] = gpsLocation.getLongitude();
-        }
-        else {
-            showSettingsAlert(context);
+            double[] position = {gpsLocation.getLatitude(),gpsLocation.getLongitude()};
+
+            return position;
         }
 
-        return position;
+        return null;
     }
 
-    public static double[] getLocationNetwork(LocationService locationService,Context context){
+    private static double[] getLocationNetwork(LocationService locationService,Context context){
         Location nwLocation = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
 
-        double[] position = {-1.0,-1.0};
-
         if (nwLocation != null) {
-            position[0] = nwLocation.getLatitude();
-            position[1] = nwLocation.getLongitude();
+            double[] position = {nwLocation.getLatitude(),nwLocation.getLongitude()};
 
-        }
-        else {
-            showSettingsAlert(context);
+            return position;
         }
 
-        return position;
+        return null;
     }
 
-    public static void showSettingsAlert(final Context context) {
+    private static void showSettingsAlert(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setTitle("Location services disabled");
@@ -80,5 +70,32 @@ public class Tools {
                 });
 
         alertDialog.show();
+    }
+
+    public static double[] getLocationAlert(LocationService locationService,Context context){
+        double[] position;
+
+        position = getLocationGPS(locationService, context);
+
+        if(position == null) {
+            position = getLocationNetwork(locationService, context);
+            if (position == null) {
+                showSettingsAlert(context);
+            }
+        }
+
+        return position;
+    }
+
+    public static double[] getLocation(LocationService locationService,Context context){
+        double[] position;
+
+        position = getLocationGPS(locationService, context);
+
+        if(position == null) {
+            position = getLocationNetwork(locationService, context);
+        }
+
+        return position;
     }
 }

@@ -24,7 +24,6 @@ public class AsyncTaskPosition extends AsyncTask<ArrayList<Object>,Void, String>
         this.car = (Car)params.get(1);
 
         if(Tools.isOnline(this.context))
-            //return ServerInteraction.postPosition();
             return ServerCall.sendPosition(this.car);
         else
             return "No connection!";
