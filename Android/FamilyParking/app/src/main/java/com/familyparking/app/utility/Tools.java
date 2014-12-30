@@ -2,15 +2,22 @@ package com.familyparking.app.utility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.familyparking.app.R;
@@ -115,5 +122,39 @@ public class Tools {
 
     public static boolean isCursorEmpty(Cursor cursor){
         return !(cursor.moveToNext());
+    }
+
+    public static void addThumbnail(Context context,ImageView photo_iv,Integer photo_id) {
+
+        if (photo_id != null) {
+            final Bitmap thumbnail = fetchThumbnail(context,photo_id);
+            if (thumbnail != null) {
+                photo_iv.setImageBitmap(thumbnail);
+            }
+        }
+
+    }
+
+    private static Bitmap fetchThumbnail(Context context,Integer photo_id) {
+
+        Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
+        Log.e("Uri", uri.toString());
+
+        Cursor cursor = context.getContentResolver().query(uri, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
+
+        try {
+            Bitmap thumbnail = null;
+            if (cursor.moveToFirst()) {
+                byte[] thumbnailBytes = cursor.getBlob(0);
+                if (thumbnailBytes != null) {
+                    thumbnail = BitmapFactory.decodeByteArray(thumbnailBytes, 0, thumbnailBytes.length);
+                }
+            }
+            return thumbnail;
+        }
+        finally {
+            cursor.close();
+        }
+
     }
 }
