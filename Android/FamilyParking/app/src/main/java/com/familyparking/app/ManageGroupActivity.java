@@ -1,5 +1,6 @@
 package com.familyparking.app;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
@@ -100,5 +101,9 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     public void afterTextChanged(Editable s) {
         searchString = s.toString();
         loaderManager.restartLoader(0,null,this);
+    }
+
+    public void closeActivity(View v) {
+        this.finish();
     }
 }

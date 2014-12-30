@@ -144,7 +144,6 @@ public class Tools {
     private static Bitmap fetchThumbnail(Context context,Integer photo_id) {
 
         Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
-        Log.e("Uri", uri.toString());
 
         Cursor cursor = context.getContentResolver().query(uri, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
 
@@ -156,8 +155,11 @@ public class Tools {
                     thumbnail = BitmapFactory.decodeByteArray(thumbnailBytes, 0, thumbnailBytes.length);
                 }
             }
-            //return thumbnail;
-            return getCroppedBitmap(thumbnail,100);
+
+            if(thumbnail != null)
+                return getCroppedBitmap(thumbnail,100);
+            else
+                return thumbnail;
         }
         finally {
             cursor.close();
