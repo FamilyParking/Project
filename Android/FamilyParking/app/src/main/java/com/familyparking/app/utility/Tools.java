@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -110,5 +111,9 @@ public class Tools {
     public static void closeApp(Context context){
         Toast.makeText(context, Tools.getAppName(context)+" cannot work without location services!", Toast.LENGTH_LONG).show();
         ((Activity) context).finish();
+    }
+
+    public static boolean isCursorEmpty(Cursor cursor){
+        return !(cursor.moveToNext());
     }
 }

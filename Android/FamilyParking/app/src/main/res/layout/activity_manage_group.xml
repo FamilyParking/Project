@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:padding="15dp"
         android:background="@drawable/abc_popup_background_mtrl_mult">
 
@@ -30,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="15dp"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:hint="@string/find_contact"
             android:textColorHint="@color/gray"
@@ -41,12 +42,21 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/contact_lv"
+    <RelativeLayout
+        android:id="@+id/contact_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:visibility="gone"
         android:layout_below="@id/finder_rl"
-        android:visibility="gone"/>
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+        <ListView
+            android:id="@+id/contact_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"/>
+    </RelativeLayout>
 
 </RelativeLayout>
 
