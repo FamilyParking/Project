@@ -9,6 +9,8 @@ import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
 import com.familyparking.app.utility.AsyncTaskPosition;
 import com.familyparking.app.utility.Tools;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,6 +32,12 @@ public class MapsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics ga = GoogleAnalytics.getInstance(this);
+        Tracker tr = ga.newTracker("UA-58079755-1");
+        tr.enableAutoActivityTracking(true);
+
+
         setContentView(R.layout.activity_maps);
 
         setUpFragmentMap();
@@ -107,7 +115,7 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void sendPosition(View v) {
-        String[] email = {"f.nobilia@gmail.com","nazzareno.marziale@gmail.com"};
+        String[] email = {"familyparkingapp@gmail.com"};
         Car car = new Car(this.position,email);
 
         ArrayList<Object> params = new ArrayList<>();
