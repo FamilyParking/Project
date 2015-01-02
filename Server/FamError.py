@@ -11,3 +11,5 @@ class FamError:
 			return "Can't send the position"
 		if self.number == 3:
 			return "Can't send the " + self.index + "email"
+		if self.number == 4:
+			return "Can't find the email to send"
