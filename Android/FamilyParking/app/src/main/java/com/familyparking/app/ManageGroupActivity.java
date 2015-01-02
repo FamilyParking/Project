@@ -1,7 +1,5 @@
 package com.familyparking.app;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -11,30 +9,30 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.familyparking.app.utility.Code;
-import com.familyparking.app.utility.CustomCursorAdapter;
+import com.familyparking.app.adapter.CustomHorizontalAdapter;
+import com.familyparking.app.serverClass.Contact;
+import com.familyparking.app.task.RetrieveGroup;
+import com.familyparking.app.adapter.CustomCursorAdapter;
 import com.familyparking.app.utility.Tools;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.lucasr.twowayview.TwoWayView;
+
+import java.util.ArrayList;
 
 
 /**
  * Created by francesco on 17/03/14.
  */
 
-public class ManageGroupActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher,AdapterView.OnItemClickListener {
+public class ManageGroupActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private String[] selectionArgs = new String[5];
     private String searchString;
@@ -45,6 +43,11 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     private ListView listContact;
     private CustomCursorAdapter customCursorAdapter;
 
+    private ArrayList<Contact> group;
+    private CustomHorizontalAdapter customHorizontalAdapter;
+    private TwoWayView listGroup;
+    private RelativeLayout relativeTwoWayView;
+
     public ManageGroupActivity(){}
 
     @Override
@@ -52,18 +55,25 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_group);
 
+        group = new ArrayList<>();
+        customHorizontalAdapter = new CustomHorizontalAdapter(this,group);
+        listGroup = ((TwoWayView)findViewById(R.id.group_list));
+        listGroup.setAdapter(customHorizontalAdapter);
+        listGroup.setOnItemLongClickListener(this);
+        relativeTwoWayView = ((RelativeLayout)findViewById(R.id.group_rl));
+
+        (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
+
         ((EditText)findViewById(R.id.find_contact_edt)).addTextChangedListener(this);
         relativeContact = ((RelativeLayout)findViewById(R.id.contact_rl));
         listContact = ((ListView)findViewById(R.id.contact_lv));
 
         customCursorAdapter = new CustomCursorAdapter(this,null,0);
         listContact.setAdapter(customCursorAdapter);
-
         listContact.setOnItemClickListener(this);
 
         loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(0, null, this);
-
     }
 
     @Override
@@ -119,44 +129,41 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        SharedPreferences settings = getSharedPreferences(Code.PREFS_NAME, 0);
-        Set<String> email_list = settings.getStringSet("email_list", null);
-
-        int size = 0;
-
         Cursor cursor = customCursorAdapter.getCursor();
         cursor.moveToPosition(position);
+
+        int contact_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
         int photo_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID));
-
         String email = ((TextView) view.findViewById(R.id.contact_email_tv)).getText().toString();
+        boolean photo_flag = false;
 
-        if(email_list == null) {
-            email_list = new HashSet<>();
-        }
-        else {
-            size = email_list.size();
-            email_list.add(photo_id + "-" + email);
-        }
+        if(photo_id != 0)
+            photo_flag = true;
 
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putStringSet("email_list", email_list);
-        editor.commit();
+        customHorizontalAdapter.add(new Contact(contact_id,photo_id,email,photo_flag),true);
+        customHorizontalAdapter.notifyDataSetChanged();
 
-        if(email_list.size() > size) {
-            ImageView photo = new ImageView(this);
+        if(relativeTwoWayView.getVisibility() == View.GONE)
+            relativeTwoWayView.setVisibility(View.VISIBLE);
+    }
 
-            int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50, getResources().getDisplayMetrics());
-            RelativeLayout.LayoutParams paramsImage = new RelativeLayout.LayoutParams(dimension,dimension);
-            photo.setLayoutParams(paramsImage);
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        final ImageView photo = ((ImageView) view.findViewById(R.id.group_contact_image_iv));
+        photo.setImageResource(android.R.drawable.ic_menu_delete);
 
-            if(photo_id == 0)
-                photo.setImageResource(R.drawable.user);
-            else
-                Tools.addThumbnail(this, photo, photo_id);
+        photo.setClickable(true);
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customHorizontalAdapter.remove(customHorizontalAdapter.getItem(position));
+                customHorizontalAdapter.notifyDataSetChanged();
+                photo.setClickable(false);
 
-            ((LinearLayout) findViewById(R.id.group_ll)).addView(photo);
-
-            (findViewById(R.id.group_rl)).setVisibility(View.VISIBLE);
-        }
+                if((customHorizontalAdapter.isEmpty())&&(relativeTwoWayView.getVisibility() == View.VISIBLE))
+                    relativeTwoWayView.setVisibility(View.GONE);
+            }
+        });
+        return false;
     }
 }

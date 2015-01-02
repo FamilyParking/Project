@@ -1,10 +1,13 @@
 package com.familyparking.app;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.familyparking.app.dao.DataBaseHelper;
+import com.familyparking.app.dao.GroupTable;
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
 import com.familyparking.app.task.AsyncTaskPosition;
@@ -116,7 +119,11 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void sendPosition(View v) {
-        String[] email = {"familyparkingapp@gmail.com"};
+        DataBaseHelper databaseHelper = new DataBaseHelper(this);
+        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String[] email = GroupTable.getEmailGroup(db);
+        db.close();
+
         Car car = new Car(this.position,email);
 
         ArrayList<Object> params = new ArrayList<>();

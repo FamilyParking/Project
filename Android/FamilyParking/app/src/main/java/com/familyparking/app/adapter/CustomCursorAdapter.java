@@ -1,4 +1,4 @@
-package com.familyparking.app.utility;
+package com.familyparking.app.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.familyparking.app.R;
+import com.familyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 30/12/14.
@@ -39,7 +40,7 @@ public class CustomCursorAdapter extends CursorAdapter {
         ((TextView) v.findViewById(R.id.contact_name_tv)).setText(c.getString(index_name).trim());
         ((TextView) v.findViewById(R.id.contact_email_tv)).setText(c.getString(index_email).trim());
 
-        Tools.addThumbnail(context,((ImageView) v.findViewById(R.id.contact_image_iv)), new Integer(c.getInt(c.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID))));
+        Tools.addThumbnail(context, ((ImageView) v.findViewById(R.id.contact_image_iv)), new Integer(c.getInt(c.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID))));
     }
 
 
