@@ -37,9 +37,9 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            Log.e("ServerCall", EntityUtils.toString(httpResponse.getEntity()));
+            String entity = EntityUtils.toString(httpResponse.getEntity());
 
-            return Integer.toString(httpResponse.getStatusLine().getStatusCode());
+            return entity;
 
         } catch(Exception e){
             Log.e("Car", e.toString() + " - " + e.getLocalizedMessage());
