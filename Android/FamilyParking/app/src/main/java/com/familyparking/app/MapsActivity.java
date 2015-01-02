@@ -7,7 +7,8 @@ import android.view.View;
 
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
-import com.familyparking.app.utility.AsyncTaskPosition;
+import com.familyparking.app.task.AsyncTaskPosition;
+import com.familyparking.app.utility.Code;
 import com.familyparking.app.utility.Tools;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -34,7 +35,7 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics ga = GoogleAnalytics.getInstance(this);
-        Tracker tr = ga.newTracker("UA-58079755-1");
+        Tracker tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
         tr.enableAutoActivityTracking(true);
 
 

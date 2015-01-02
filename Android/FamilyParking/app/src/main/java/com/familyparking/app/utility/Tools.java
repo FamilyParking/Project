@@ -22,7 +22,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 

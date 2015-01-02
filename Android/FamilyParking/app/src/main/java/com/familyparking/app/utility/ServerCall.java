@@ -17,7 +17,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class ServerCall {
 
-    private static String service_add = "http://first-vision-798.appspot.com/";
+    private static String service_add = Code.SERVER_PATH;
 
     public static String sendPosition(Car car){
 

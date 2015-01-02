@@ -10,12 +10,31 @@
     tools:context=".ManageGroupDialog">
 
     <RelativeLayout
-        android:id="@+id/finder_rl"
+        android:id="@+id/group_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
+        android:visibility="gone"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+
+        <LinearLayout
+            android:id="@+id/group_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:orientation="horizontal"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/finder_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:padding="15dp"
+        android:layout_below="@id/group_rl"
         android:background="@drawable/abc_popup_background_mtrl_mult">
 
         <ImageView
