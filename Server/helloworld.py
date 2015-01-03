@@ -15,7 +15,7 @@ class MainPage(webapp2.RequestHandler):
 		in_file.close()
 
 
-class Guestbook(webapp2.RequestHandler):
+class SendEmail(webapp2.RequestHandler):
     def post(self):
 		try:
 			data = json.loads(self.request.body)
@@ -51,5 +51,5 @@ class Guestbook(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication([
 										  ('/', MainPage),
-										  ('/sign', Guestbook),
+										  ('/sign', SendEmail),
 									  ], debug=True)
