@@ -11,8 +11,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TABLE_GROUP =
             "CREATE TABLE IF NOT EXISTS "+ GroupTable.TABLE+" ( " +
-                    GroupTable.ID+" INTEGER PRIMARY KEY, "+
-                    GroupTable.EMAIL+" TEXT NOT NULL, "+
+                    GroupTable.ID+" INTEGER NOT NULL, "+
+                    GroupTable.NAME+" TEXT NOT NULL, "+
+                    GroupTable.EMAIL+" TEXT PRIMARY KEY, "+
                     GroupTable.HAS_PHOTO+" INTEGER DEFAULT 0, "+
                     GroupTable.PHOTO_ID+" TEXT NOT NULL "+" ) ; ";
 

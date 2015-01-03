@@ -193,4 +193,9 @@ public class Tools {
 
         return output;
     }
+
+    public static void createToast(Context context, CharSequence text, int duration){
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
 }

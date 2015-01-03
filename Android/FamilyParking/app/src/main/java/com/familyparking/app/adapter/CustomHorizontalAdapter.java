@@ -2,11 +2,13 @@ package com.familyparking.app.adapter;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.familyparking.app.R;
 import com.familyparking.app.dao.DataBaseHelper;
@@ -56,12 +58,17 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
             set.add(contact.getEmail());
             super.add(contact);
 
+            Tools.createToast(getContext(),"Contact added to group!", Toast.LENGTH_LONG);
+
             if(flag_db) {
                 DataBaseHelper databaseHelper = new DataBaseHelper(getContext());
                 final SQLiteDatabase db = databaseHelper.getWritableDatabase();
                 GroupTable.insertContact(db,contact);
                 db.close();
             }
+        }
+        else{
+            Tools.createToast(getContext(),"Contact already in the group!", Toast.LENGTH_LONG);
         }
     }
 
@@ -71,7 +78,7 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
         set.remove(contact.getEmail());
         DataBaseHelper databaseHelper = new DataBaseHelper(getContext());
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        GroupTable.deleteContact(db,Integer.toString(contact.getId()));
+        GroupTable.deleteContact(db,contact.getEmail());
         db.close();
     }
 }

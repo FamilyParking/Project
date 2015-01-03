@@ -3,6 +3,7 @@ package com.familyparking.app.task;
 import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Looper;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -30,6 +31,8 @@ public class RetrieveGroup implements Runnable {
 
     @Override
     public void run() {
+        Looper.prepare();
+
         DataBaseHelper databaseHelper = new DataBaseHelper(context);
         final SQLiteDatabase db = databaseHelper.getReadableDatabase();
         ArrayList<Contact> list = GroupTable.getGroup(db);

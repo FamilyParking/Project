@@ -1,6 +1,10 @@
 package com.familyparking.app;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
@@ -9,8 +13,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.familyparking.app.adapter.CustomHorizontalAdapter;
+import com.familyparking.app.dialog.ContactDetailDialog;
 import com.familyparking.app.serverClass.Contact;
 import com.familyparking.app.task.RetrieveGroup;
 import com.familyparking.app.adapter.CustomCursorAdapter;
@@ -32,7 +39,10 @@ import java.util.ArrayList;
  * Created by francesco on 17/03/14.
  */
 
-public class ManageGroupActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class ManageGroupActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
+
+    final private String[] PROJECTION ={ContactsContract.Contacts._ID,ContactsContract.Contacts.LOOKUP_KEY,ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
+            ContactsContract.CommonDataKinds.Email.DATA,ContactsContract.Contacts.PHOTO_ID};
 
     private String[] selectionArgs = new String[5];
     private String searchString;
@@ -48,6 +58,11 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     private TwoWayView listGroup;
     private RelativeLayout relativeTwoWayView;
 
+    private EditText editText;
+
+    private boolean addButton;
+    private boolean resetText;
+
     public ManageGroupActivity(){}
 
     @Override
@@ -59,18 +74,29 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
         customHorizontalAdapter = new CustomHorizontalAdapter(this,group);
         listGroup = ((TwoWayView)findViewById(R.id.group_list));
         listGroup.setAdapter(customHorizontalAdapter);
-        listGroup.setOnItemLongClickListener(this);
+
+        listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showContactDetail(position);
+            }
+        });
+
         relativeTwoWayView = ((RelativeLayout)findViewById(R.id.group_rl));
 
         (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
 
-        ((EditText)findViewById(R.id.find_contact_edt)).addTextChangedListener(this);
+        editText = ((EditText)findViewById(R.id.find_contact_edt));
+        editText.addTextChangedListener(this);
         relativeContact = ((RelativeLayout)findViewById(R.id.contact_rl));
         listContact = ((ListView)findViewById(R.id.contact_lv));
 
         customCursorAdapter = new CustomCursorAdapter(this,null,0);
         listContact.setAdapter(customCursorAdapter);
         listContact.setOnItemClickListener(this);
+
+        addButton = false;
+        resetText = false;
 
         loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(0, null, this);
@@ -84,8 +110,6 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
         selectionArgs[3] = "%@%";
         selectionArgs[4] = "%whatsapp%";
 
-        final String[] PROJECTION ={ContactsContract.Contacts._ID,ContactsContract.Contacts.LOOKUP_KEY,ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
-                ContactsContract.CommonDataKinds.Email.DATA,ContactsContract.Contacts.PHOTO_ID};
         final String SELECTION = "( "+ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ? OR " +
                                  ContactsContract.CommonDataKinds.Email.DATA + " LIKE ? ) AND " +
                                  ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " NOT LIKE ? AND " +
@@ -98,6 +122,14 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if(addButton){
+            MatrixCursor extras = new MatrixCursor(PROJECTION);
+            extras.addRow(new String[] {"-1","-1","-1","-1","-1"});
+            Cursor[] cursors = { data,extras };
+            Cursor extendedCursor = new MergeCursor(cursors);
+            data = extendedCursor;
+        }
+
         if(!relativeContact.isShown() && !Tools.isCursorEmpty(data))
             relativeContact.setVisibility(View.VISIBLE);
         else if(Tools.isCursorEmpty(data))
@@ -119,8 +151,24 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
 
     @Override
     public void afterTextChanged(Editable s) {
-        searchString = s.toString();
-        loaderManager.restartLoader(0, null, this);
+        if(resetText){
+            resetText = false;
+        }
+        else {
+            searchString = s.toString();
+
+            if(searchString.equals("")) {
+                relativeContact.setVisibility(View.GONE);
+            }
+            else {
+                loaderManager.restartLoader(0, null, this);
+
+                if (searchString.contains("@"))
+                    addButton = true;
+                else
+                    addButton = false;
+            }
+        }
     }
 
     public void closeActivity(View v) {
@@ -129,41 +177,52 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Cursor cursor = customCursorAdapter.getCursor();
-        cursor.moveToPosition(position);
 
-        int contact_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-        int photo_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID));
-        String email = ((TextView) view.findViewById(R.id.contact_email_tv)).getText().toString();
-        boolean photo_flag = false;
+        if(!view.findViewById(R.id.add_contact_button_item).isShown()) {
+            Cursor cursor = customCursorAdapter.getCursor();
+            cursor.moveToPosition(position);
 
-        if(photo_id != 0)
-            photo_flag = true;
+            int contact_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+            int photo_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
+            boolean photo_flag = false;
 
-        customHorizontalAdapter.add(new Contact(contact_id,photo_id,email,photo_flag),true);
-        customHorizontalAdapter.notifyDataSetChanged();
+            if (photo_id != 0)
+                photo_flag = true;
 
-        if(relativeTwoWayView.getVisibility() == View.GONE)
-            relativeTwoWayView.setVisibility(View.VISIBLE);
+            customHorizontalAdapter.add(new Contact(contact_id, name, email, photo_flag, photo_id), true);
+            customHorizontalAdapter.notifyDataSetChanged();
+
+            if (relativeTwoWayView.getVisibility() == View.GONE)
+                relativeTwoWayView.setVisibility(View.VISIBLE);
+        }
+
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-        final ImageView photo = ((ImageView) view.findViewById(R.id.group_contact_image_iv));
-        photo.setImageResource(android.R.drawable.ic_menu_delete);
+    public void addNewContact(View v) {
+        String email = editText.getText().toString();
 
-        photo.setClickable(true);
-        photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customHorizontalAdapter.remove(customHorizontalAdapter.getItem(position));
-                customHorizontalAdapter.notifyDataSetChanged();
-                photo.setClickable(false);
+        customHorizontalAdapter.add(new Contact(-1, email, email, false, -1), true);
+        customHorizontalAdapter.notifyDataSetChanged();
 
-                if((customHorizontalAdapter.isEmpty())&&(relativeTwoWayView.getVisibility() == View.VISIBLE))
-                    relativeTwoWayView.setVisibility(View.GONE);
-            }
-        });
-        return false;
+        if (relativeTwoWayView.getVisibility() == View.GONE)
+            relativeTwoWayView.setVisibility(View.VISIBLE);
+
+        resetEditText();
+
+        relativeContact.setVisibility(View.GONE);
+    }
+
+    private void showContactDetail(int position){
+        ContactDetailDialog dialog = new ContactDetailDialog(customHorizontalAdapter,position,relativeTwoWayView);
+        dialog.show(getFragmentManager(), "");
+        relativeContact.setVisibility(View.GONE);
+        resetEditText();
+    }
+
+    private void resetEditText(){
+        resetText = true;
+        editText.setText("");
     }
 }

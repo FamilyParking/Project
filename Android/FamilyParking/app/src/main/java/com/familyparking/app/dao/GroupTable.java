@@ -15,10 +15,11 @@ import java.util.Arrays;
 public class GroupTable {
 	
 	public static final String ID = "ID";
+    public static final String NAME = "NAME";
     public static final String EMAIL = "EMAIL";
     public static final String HAS_PHOTO = "HAS_PHOTO";
     public static final String PHOTO_ID = "PHOTO_ID";
-	public static final String[] COLUMNS = new String[]{ID,EMAIL,HAS_PHOTO,PHOTO_ID};
+	public static final String[] COLUMNS = new String[]{ID,NAME,EMAIL,HAS_PHOTO,PHOTO_ID};
 
     public static final String TABLE = "group_table";
 
@@ -42,10 +43,8 @@ public class GroupTable {
 
         if((c != null) && (c.getCount() > 0)){
 
-            //Log.e("GroupTable[getGroup]",DatabaseUtils.dumpCursorToString(c));
-
             while(c.moveToNext()){
-                Contact contact = new Contact(c.getInt(0),c.getInt(3),c.getString(1),c.getInt(2));
+                Contact contact = new Contact(c.getInt(0),c.getString(1),c.getString(2),c.getInt(3),c.getInt(4));
                 list.add(contact);
             }
         }
@@ -62,8 +61,6 @@ public class GroupTable {
 
         if((c != null) && (c.getCount() > 0)){
 
-            //Log.e("GroupTable[getEmailGroup]", DatabaseUtils.dumpCursorToString(c));
-
             list = new String[c.getCount()];
             int i = 0;
 
@@ -78,8 +75,8 @@ public class GroupTable {
         return list;
     }
 
-    public static boolean deleteContact(SQLiteDatabase db,String id){
-        return db.delete(TABLE, ID + " = ?", new String[] { id }) > 0;
+    public static boolean deleteContact(SQLiteDatabase db,String email){
+        return db.delete(TABLE, EMAIL + " = ?", new String[] { email }) > 0;
     }
 
     public static boolean deleteGroupTable(SQLiteDatabase db){

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.familyparking.app.dao.DataBaseHelper;
 import com.familyparking.app.dao.GroupTable;
@@ -122,15 +123,21 @@ public class MapsActivity extends FragmentActivity {
         DataBaseHelper databaseHelper = new DataBaseHelper(this);
         final SQLiteDatabase db = databaseHelper.getReadableDatabase();
         String[] email = GroupTable.getEmailGroup(db);
+
         db.close();
 
-        Car car = new Car(this.position,email);
+        if(email == null){
+            Tools.createToast(this,"Email not sent, group is empty!", Toast.LENGTH_LONG);
+        }
+        else {
+            Car car = new Car(this.position, email);
 
-        ArrayList<Object> params = new ArrayList<>();
-        params.add(this);
-        params.add(car);
+            ArrayList<Object> params = new ArrayList<>();
+            params.add(this);
+            params.add(car);
 
-        new AsyncTaskPosition().execute(params);
+            new AsyncTaskPosition().execute(params);
+        }
     }
 
     public void manageGroup(View v) {
