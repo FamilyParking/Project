@@ -3,6 +3,7 @@ package com.familyparking.app.utility;
 import android.util.Log;
 
 import com.familyparking.app.serverClass.Car;
+import com.familyparking.app.serverClass.Result;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
@@ -11,6 +12,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 /**
  * Created by francesco on 20/12/14.
@@ -19,7 +24,7 @@ public class ServerCall {
 
     private static String service_add = Code.SERVER_PATH;
 
-    public static String sendPosition(Car car){
+    public static Result sendPosition(Car car){
 
         try {
             HttpClient httpclient = new DefaultHttpClient();
@@ -37,12 +42,14 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            String entity = EntityUtils.toString(httpResponse.getEntity());
+            Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
-            return entity;
+            Result result = gson.fromJson(reader,Result.class);
+
+            return result;
 
         } catch(Exception e){
-            Log.e("Car", e.toString() + " - " + e.getLocalizedMessage());
+            Log.e("sendPosition", e.toString() + " - " + e.getLocalizedMessage());
         }
 
         return null;

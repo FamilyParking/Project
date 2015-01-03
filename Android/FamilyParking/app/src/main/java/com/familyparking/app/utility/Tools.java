@@ -20,8 +20,11 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -133,8 +136,12 @@ public class Tools {
 
         if (photo_id != null) {
             final Bitmap thumbnail = fetchThumbnail(context,photo_id);
+
             if (thumbnail != null) {
                 photo_iv.setImageBitmap(thumbnail);
+            }
+            else{
+                photo_iv.setImageResource(R.drawable.user);
             }
         }
 
@@ -197,5 +204,20 @@ public class Tools {
     public static void createToast(Context context, CharSequence text, int duration){
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public static String getUniqueDeviceId(Activity activity) {
+        String id;
+
+        TelephonyManager telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        id =  telephonyManager.getDeviceId();
+
+        if(id == null){
+            WifiManager wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wInfo = wifiManager.getConnectionInfo();
+            id = wInfo.getMacAddress();
+        }
+
+        return id;
     }
 }

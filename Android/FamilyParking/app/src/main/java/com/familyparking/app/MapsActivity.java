@@ -120,23 +120,47 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void sendPosition(View v) {
-        DataBaseHelper databaseHelper = new DataBaseHelper(this);
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] email = GroupTable.getEmailGroup(db);
 
-        db.close();
+        if(Tools.isOnline(this)) {
+            DataBaseHelper databaseHelper = new DataBaseHelper(this);
+            final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+            String[] email = GroupTable.getEmailGroup(db);
 
-        if(email == null){
-            Tools.createToast(this,"Email not sent, group is empty!", Toast.LENGTH_LONG);
+            db.close();
+
+            if (email == null) {
+                Tools.createToast(this, "Email not sent, group is empty!", Toast.LENGTH_LONG);
+            } else {
+
+                if(this.position == null){
+
+                    Tools.createToast(this, "Looking for your position ...", Toast.LENGTH_LONG);
+
+                    for (int i = 0; i < position_attempt; i++) {
+                        if (position == null) {
+                            position = Tools.getLocation(locationService, this);
+
+                            if (position != null)  break;
+                        }
+                    }
+                }
+
+                if(this.position == null){
+                    Tools.createToast(this, "Your position is not available, try later!", Toast.LENGTH_LONG);
+                }
+                else {
+                    Car car = new Car(this.position, email,Tools.getUniqueDeviceId(this));
+
+                    ArrayList<Object> params = new ArrayList<>();
+                    params.add(this);
+                    params.add(car);
+
+                    new AsyncTaskPosition().execute(params);
+                }
+            }
         }
-        else {
-            Car car = new Car(this.position, email);
-
-            ArrayList<Object> params = new ArrayList<>();
-            params.add(this);
-            params.add(car);
-
-            new AsyncTaskPosition().execute(params);
+        else{
+            Tools.createToast(this, "No available connection!", Toast.LENGTH_LONG);
         }
     }
 

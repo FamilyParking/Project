@@ -24,8 +24,6 @@ public class GroupTable {
     public static final String TABLE = "group_table";
 
     public static void insertContact(SQLiteDatabase db,Contact contact){
-        Log.e("GroupTable[insertContact]",contact.toString());
-
         String[] data = contact.getArray();
 
         ContentValues v = new ContentValues();
