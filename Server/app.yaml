@@ -17,5 +17,8 @@ handlers:
 - url: /images
   static_dir: website/images
 
+- url: /short
+  script: short.application
+  
 - url: /.*
   script: helloworld.application
