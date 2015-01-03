@@ -1,6 +1,6 @@
 import webapp2
 import json
-import FamError
+import statusReturn
 import urllib
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
@@ -21,7 +21,7 @@ class Guestbook(webapp2.RequestHandler):
 			data = json.loads(self.request.body)
 		except:
 			self.error(500)
-			error = FamError(1, 0);
+			error = statusReturn(1, 0);
 			self.response.write(error.toString())
 		message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>", subject="Position of car")
 
@@ -31,7 +31,7 @@ class Guestbook(webapp2.RequestHandler):
 			receiver_mail = data["email"]
 		except:
 			self.error(500)
-			error = FamError(2, 0);
+			error = statusReturn(2, 0);
 			self.response.write(error.toString())
 
 		i = 0
@@ -43,7 +43,7 @@ class Guestbook(webapp2.RequestHandler):
 				message.send()
 				i = i + 1;
 			except:
-				error = FamError(3, i);
+				error = statusReturn(3, i);
 				self.response.write(error.toString())
 				self.error(500)
 		self.response.write("Position sent")
