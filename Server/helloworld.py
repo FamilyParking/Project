@@ -1,3 +1,4 @@
+import logging
 import webapp2
 import json
 import statusReturn
@@ -6,7 +7,6 @@ import urllib
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
 from google.appengine.ext import ndb
-
 
 
 class MainPage(webapp2.RequestHandler):
@@ -21,15 +21,24 @@ class SendEmail(webapp2.RequestHandler):
     def post(self):
 		try:
 			data = json.loads(self.request.body)
-			contact_key = ndb.key(statistic.Statistic,data["ID"])
+
+			logging.debug("Before")
+
+			try:
+				contact_key = statistic.Statistic.query(statistic.Statistic.id_android == data["ID"])
+				
+			except:
+				logging.debug("Sta senz penzieri")
 			new_contact = statistic.Statistic(id_android=data["ID"], counter=1)
 			add_db_contact = new_contact.put()
+			logging.debug(add_db_contact)
 
 			try:
 				message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
 											subject="Position of car")
 				message.body = "Your car is parked here: http://www.google.com/maps/place/" + data["latitude"] + "," + \
-							   data["longitude"] + " number of contact: "
+							   data["longitude"]
+
 				receiver_mail = data["email"]
 				i = 0
 				for value in receiver_mail:
@@ -38,9 +47,9 @@ class SendEmail(webapp2.RequestHandler):
 						message.send()
 						i = i + 1;
 					except:
+						self.error(500)
 						error = statusReturn.StatusReturn(3, i);
 						self.response.write(error.toJSON())
-						self.error(500)
 				right = statusReturn.StatusReturn(4, 0);
 				self.response.write(right.toJSON())
 			except:
@@ -52,6 +61,7 @@ class SendEmail(webapp2.RequestHandler):
 			self.error(500)
 			error = statusReturn.StatusReturn(1, 0);
 			self.response.write(error.toJSON())
+
 
 application = webapp2.WSGIApplication([
 										  ('/', MainPage),
