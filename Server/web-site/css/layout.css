@@ -1,0 +1,375 @@
+/*!
+ * Bootstrap v3.0.3
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ *
+ * Theme Name: Be Back
+ * Theme URI: http://www.themeforest.net
+ * Description: A Responsive Underconstruction Theme For You
+ * Author: Jogres
+ * Author URI: http://www.jogres.com
+ */
+
+body {
+	color: #fff;
+	font-family: 'Roboto';
+	height:100%;
+	margin: 0;
+	width:100%;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Roboto';
+}	
+.bg {
+	height: 100%;
+	left:0;
+	overflow:hidden;
+	position:fixed;
+	top:0;
+    width: 100%;
+    z-index: -1;
+}
+.header {
+    background: rgba(0,0,0,0.7);
+	color: #fff;
+	display: block;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 100%;
+}
+.header-content {
+	display: none;
+}
+span.phone {
+	background: url(../images/phone.png) no-repeat left;
+	display: inline-block;
+	margin-bottom: 10px;
+	padding: 10px 15px;
+}
+span.email {
+	background: url(../images/mail.png) no-repeat left;
+	display: inline-block;
+	margin-bottom: 10px;
+	padding: 10px 15px 10px 18px;
+}
+span.email a{
+	color: #fff;
+	-o-transition:all .3s;
+	-moz-transition:all .3s;
+	-webkit-transition:all .3s;
+	-ms-transition:all .3s;
+}
+span.email a:hover{
+	color: #aaa;
+	text-decoration: none;
+}
+span.address {
+	background: url(../images/address.png) no-repeat left;
+	display: inline-block;
+	margin-bottom: 10px;
+	padding: 10px 0 10px 20px;
+}
+.contact_form {
+	margin: 10px 0;
+}
+.contact_form label {
+	float: left;
+	font-weight: normal;
+	height: 25px;
+	margin: 5px 0;
+	padding: 5px 0 0;
+	width: 100px;
+}
+.contact_form input {
+	float: left;
+	font-weight: normal;
+	height: 25px;
+	margin: 5px 0;
+	padding: 3px 5px 0;
+	width: 80%;
+}
+.contact_form textarea {
+	border: 0;
+	margin: 5px 0;
+	padding: 5px;
+	width: 80%;
+}
+.contact_form input[type="submit"] {
+	border: 0;
+	cursor: pointer;
+	height: 30px;
+	margin: 5px 0;
+	padding: 5px;
+	width: 100px;
+}
+.contact-details {
+	font-size: 12px;
+	text-transform: uppercase;
+}
+.close-header {
+	cursor: pointer;
+	display: none;
+	position:relative;
+	margin: 0 0 0 auto;
+	padding: 0;
+	width: 50px;
+}
+.open-header {
+	cursor: pointer;
+	display: block;
+	margin: 0 0 0 auto;
+	padding: 0;
+	position:absolute;
+	width: 50px;
+	position: relative;
+}
+.logo p {
+	display: inherit;
+	font-size: 140px;
+	line-height: 140px;	
+	margin: 40px 0;
+	position: relative;
+	font-family: 'Exo';
+	color: #000;
+}
+.logo h1 {
+	color: #fff;
+}
+.description, .countdown, .socmed {
+	margin-bottom: 20px;
+}
+.description, .countdown {
+	display: block;
+	font-size: 14px;
+	line-height: 18px;
+	position: relative;
+}
+.countdown {
+	color: #000;
+}
+.time span {
+	font-size: 36px;
+	line-height: 55px;
+}
+ul.time {
+    list-style: none outside none;
+    margin: 0;
+}
+ul.time li {
+    display: inline-block;
+    margin: 0 30px 0 0;
+    position: relative;
+}
+ul.socmed {
+	display: block;
+	overflow: hidden;
+	position: relative;
+}
+ul.socmed li {
+	display: inline-block;
+	margin: 0;
+	position: relative;	
+}
+.twitter a,.facebook a,.tumblr a,.dribbble a,.linkedin a,.rss a,.delicious a,.devianart a,.digg a,.digg2 a,.flickr a,.lastfm a,.myspace a,.picasa a,.sharethis a,.skype a,.twitter2 a,.vimeo a,.youtube a,.yahoo a,.yahoo2 a,.wikipedia a {
+	background:url(../images/socmed.png) no-repeat left bottom;
+	float:left;
+	height:32px;
+	margin-right:10px;
+	text-indent:8000px;
+	width:32px;
+	-o-transition:all .3s;
+	-moz-transition:all .3s;
+	-webkit-transition:all .3s;
+	-ms-transition:all .3s;
+}
+.twitter a:hover,.facebook a:hover,.tumblr a:hover,.dribbble a:hover,.linkedin a:hover,.rss a:hover,.delicious a:hover,.devianart a:hover,.digg a:hover,.digg2 a:hover,.flickr a:hover,.lastfm a:hover,.myspace a:hover,.picasa a:hover,.sharethis a:hover,.skype a:hover,.twitter2 a:hover,.vimeo a:hover,.youtube a:hover,.yahoo a:hover,.yahoo2 a:hover,.wikipedia a:hover {
+	background:url(../images/socmed.png) no-repeat left top;
+}
+.twitter,.twitter a{background-position:-0px bottom}
+.twitter a:hover{background-position:-0px top}
+.twitter2,.twitter2 a{background-position:-528px bottom}
+.twitter2 a:hover{background-position:-528px top}
+.facebook,.facebook a{background-position:-33px bottom}
+.facebook a:hover{background-position:-33px top}
+.tumblr,.tumblr a{background-position:-66px bottom}
+.tumblr a:hover{background-position:-66px top}
+.dribbble,.dribbble a{background-position:-99px bottom}
+.dribbble a:hover{background-position:-99px top}
+.linkedin,.linkedin a{background-position:-133px bottom}
+.linkedin a:hover{background-position:-133px top}
+.rss,.rss a{background-position:-166px bottom}
+.rss a:hover{background-position:-166px top}
+.delicious,.delicious a{background-position:-199px bottom}
+.delicious a:hover{background-position:-199px top}
+.devianart,.devianart a{background-position:-233px bottom}
+.devianart a:hover{background-position:-233px top}
+.digg,.digg a{background-position:-266px bottom}
+.digg a:hover{background-position:-266px top}
+.digg2,.digg2 a{background-position:-299px bottom}
+.digg2 a:hover{background-position:-299px top}
+.flickr,.flickr a{background-position:-331px bottom}
+.flickr a:hover{background-position:-331px top}
+.lastfm,.lastfm a{background-position:-364px bottom}
+.lastfm a:hover{background-position:-364px top}
+.myspace,.myspace a{background-position:-397px bottom}
+.myspace a:hover{background-position:-397px top}
+.picasa,.picasa a{background-position:-431px bottom}
+.picasa a:hover{background-position:-431px top}
+.sharethis,.sharethis a{background-position:-464px bottom}
+.sharethis a:hover{background-position:-464px top}
+.skype,.skype a{background-position:-497px bottom}
+.skype a:hover{background-position:-497px top}
+.vimeo,.vimeo a{background-position:-562px bottom}
+.vimeo a:hover{background-position:-562px top}
+.youtube,.youtube a{background-position:-594px bottom}
+.youtube a:hover{background-position:-594px top}
+.yahoo,.yahoo a{background-position:-628px bottom}
+.yahoo a:hover{background-position:-628px top}
+.yahoo2,.yahoo2 a{background-position:-662px bottom}
+.yahoo2 a:hover{background-position:-662px top}
+.wikipedia,.wikipedia a{background-position:-694px bottom}
+.wikipedia a:hover{background-position:-694px top}
+
+.copy {
+	color: #000;
+	display: block;
+	margin-bottom: 30px;
+	position: relative;
+	width: 100%;
+}
+
+/* #Media Queries
+================================================== */
+	
+	/* Smaller than standard 960 (devices and browsers) */
+	@media only screen and (min-width: 1200px) {
+	}
+
+	@media only screen and (min-width: 976px) and (max-width: 1199px) {
+span.phone {
+	margin-bottom: 0px;
+	padding: 10px 15px;
+}
+span.email {
+	margin-bottom: 0px;
+	padding: 10px 15px 10px 18px;
+}
+span.address {
+	margin-bottom: 10px;
+	padding: 10px 15px 10px 20px;
+}
+.contact_form input {
+	width: 75%;
+	}
+.contact_form textarea {
+	width: 75%;
+	}
+	}
+	/* Tablet Portrait size to standard 960 (devices and browsers) */
+	@media only screen and (min-width: 768px) and (max-width: 976px) {
+span.phone {
+	margin-bottom: 0px;
+	padding: 10px 15px;
+}
+span.email {
+	margin-bottom: 0px;
+	padding: 10px 15px 10px 18px;
+}
+span.address {
+	margin-bottom: 10px;
+	padding: 10px 15px 10px 20px;
+}
+.contact_form input {
+	width: 70%;
+	}
+.contact_form textarea {
+	width: 70%;
+	}
+	}
+
+	/* All Mobile Sizes (devices and browser) */
+	@media only screen and (max-width: 767px) {
+	}
+
+	/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+	@media only screen and (min-width: 480px) and (max-width: 767px) {
+span.phone {
+	margin-bottom: 0px;
+	padding: 10px 15px;
+}
+span.email {
+	margin-bottom: 0px;
+	padding: 10px 15px 10px 18px;
+}
+span.address {
+	margin-bottom: 10px;
+	padding: 10px 15px 10px 20px;
+}
+.contact_form input {
+	width: 75%;
+	}
+.contact_form textarea {
+	width: 75%;
+	}
+.logo {
+	line-height: 110px;
+}
+.logo p {
+	font-size: 100px;
+	line-height: 80px;
+	margin: 20px 0 40px;
+	}
+	}
+
+	/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+	@media only screen and (max-width: 480px) {
+span.phone {
+	margin-bottom: 0px;
+	padding: 10px 15px;
+}
+span.email {
+	margin-bottom: 0px;
+	padding: 10px 15px 10px 18px;
+}
+span.address {
+	margin-bottom: 10px;
+	padding: 10px 15px 10px 20px;
+}
+.contact_form input {
+	width: 67%;
+	}
+.contact_form textarea {
+	width: 67%;
+	}
+.logo {
+	line-height: 110px;
+}
+.logo p {
+	font-size: 70px;
+	line-height: 40px;
+	margin: 20px 0 40px;
+	}
+	}
+
+/* #Font-Face
+================================================== */
+/* 	This is the proper syntax for an @font-face file 
+		Just create a "fonts" folder at the root, 
+		copy your FontName into code below and remove
+		comment brackets */
+		
+/*	@font-face {
+	    font-family: 'FontName';
+	    src: url('../fonts/FontName.eot');
+	    src: url('../fonts/FontName.eot?iefix') format('eot'),
+	         url('../fonts/FontName.woff') format('woff'),
+	         url('../fonts/FontName.ttf') format('truetype'),
+	         url('../fonts/FontName.svg#webfontZam02nTh') format('svg');
+	    font-weight: normal;
+	    font-style: normal; }
+*/

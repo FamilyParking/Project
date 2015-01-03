@@ -5,21 +5,15 @@ import urllib
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
 
-MAIN_PAGE_HTML = """\
-    <html>
-    <body>
-    <form action="/sign" method="post">
-    <div><textarea name="emailAddress" rows="3" cols="60"></textarea></div>
-    <div><input type="submit" value="Sign Guestbook"></div>
-    </form>
-    </body>
-    </html>
-    """
+
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write(MAIN_PAGE_HTML)
-		
+		in_file = open("website/index.html", "r")
+		MAIN_PAGE_HTML = in_file.read()
+		self.response.write(MAIN_PAGE_HTML)
+		in_file.close()
+
 
 class Guestbook(webapp2.RequestHandler):
     def post(self):
@@ -27,36 +21,35 @@ class Guestbook(webapp2.RequestHandler):
 			data = json.loads(self.request.body)
 		except:
 			self.error(500)
-			error = FamError(1,0);
+			error = FamError(1, 0);
 			self.response.write(error.toString())
-		message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",subject="Position of car")
+		message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>", subject="Position of car")
 
-		try: 
-			message.body = "Your car is parked here: http://www.google.com/maps/place/"+data["latitude"]+","+ data["longitude"]
+		try:
+			message.body = "Your car is parked here: http://www.google.com/maps/place/" + data["latitude"] + "," + data[
+				"longitude"]
 			receiver_mail = data["email"]
 		except:
 			self.error(500)
-			error = FamError(2,0);
+			error = FamError(2, 0);
 			self.response.write(error.toString())
-		
-		
+
 		i = 0
 		for value in receiver_mail:
 			try:
-				
-				
-				message.to = "<"+value+">"
+
+
+				message.to = "<" + value + ">"
 				message.send()
-				i = i+1;
+				i = i + 1;
 			except:
-				error = FamError(3,i);
+				error = FamError(3, i);
 				self.response.write(error.toString())
 				self.error(500)
 		self.response.write("Position sent")
 
 
-
 application = webapp2.WSGIApplication([
-                                       ('/', MainPage),
-                                       ('/sign', Guestbook),
-                                       ], debug=True)
+										  ('/', MainPage),
+										  ('/sign', Guestbook),
+									  ], debug=True)

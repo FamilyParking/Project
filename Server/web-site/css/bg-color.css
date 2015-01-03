@@ -1,0 +1,70 @@
+/*!
+ * Bootstrap v3.0.3
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ *
+ * Theme Name: Be Back
+ * Theme URI: http://www.themeforest.net
+ * Description: A Responsive Underconstruction Theme For You
+ * Author: Jogres
+ * Author URI: http://www.jogres.com
+ */
+
+.bg-blue {
+	background: #0099FF;
+}
+.bg-back {
+	background: #00A6F2;
+}
+.bg-yellow {
+	background: #F7B500;
+}
+.bg-red {
+	background: #FF4444;
+}
+.bg-green {
+	background: #88CC00;
+}
+.bg-brown {
+	background: #BB8000;
+}
+.bg-turky {
+	background: #008888;
+}
+.bg-pink {
+	background: #EE44EE;
+}
+.bg-cyan {
+	background: #0FBBBB;
+}
+.bg-opacity-1 {
+	opacity: 0.10;
+}
+.bg-opacity-2 {
+	opacity: 0.20;
+}
+.bg-opacity-3 {
+	opacity: 0.30;
+}
+.bg-opacity-4 {
+	opacity: 0.40;
+}
+.bg-opacity-5 {
+	opacity: 0.50;
+}
+.bg-opacity-6 {
+	opacity: 0.60;
+}
+.bg-opacity-7 {
+	opacity: 0.70;
+}
+.bg-opacity-8 {
+	opacity: 0.80;
+}
+.bg-opacity-9 {
+	opacity: 0.90;
+}

@@ -5,5 +5,17 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /css/font
+  static_dir: website/css/font
+
+- url: /css
+  static_dir: website/css
+
+- url: /js
+  static_dir: website/js
+
+- url: /images
+  static_dir: website/images
+
 - url: /.*
   script: helloworld.application
