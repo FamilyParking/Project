@@ -5,14 +5,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.familyparking.app.adapter.CustomHorizontalAdapter;
 import com.familyparking.app.dao.DataBaseHelper;
 import com.familyparking.app.dao.GroupTable;
+import com.familyparking.app.dialog.ContactDetailDialog;
 import com.familyparking.app.dialog.ProgressCircleDialog;
 import com.familyparking.app.serverClass.Car;
+import com.familyparking.app.serverClass.Contact;
 import com.familyparking.app.service.LocationService;
 import com.familyparking.app.task.AsyncTaskPosition;
+import com.familyparking.app.task.RetrieveGroup;
 import com.familyparking.app.utility.Code;
 import com.familyparking.app.utility.Tools;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -24,6 +30,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.lucasr.twowayview.TwoWayView;
+
 import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity {
@@ -31,8 +39,17 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap googleMap;
     private LocationService locationService;
     private double[] position;
-    private int position_attempt = 10;
+    private int position_attempt = 20;
     private Tracker tr;
+
+    private CustomHorizontalAdapter customHorizontalAdapter;
+    private RelativeLayout relativeTwoWay;
+    private TwoWayView listGroup;
+    private RelativeLayout relativeTwoWayView;
+
+    private ArrayList<Contact> group;
+
+
     //This flag is helpful to check if it's the first time that we pass inside onResume or we come back from onPause
     private boolean retrieve_position = false;
 
@@ -57,14 +74,32 @@ public class MapsActivity extends FragmentActivity {
             setUpMap();
         }
 
+        relativeTwoWayView = ((RelativeLayout)findViewById(R.id.group_rl_main_activity));
+        listGroup = ((TwoWayView)findViewById(R.id.group_list_main_activity));
+        group = new ArrayList<>();
+        customHorizontalAdapter = new CustomHorizontalAdapter(this,group);
+        listGroup.setAdapter(customHorizontalAdapter);
+        listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ContactDetailDialog dialog = new ContactDetailDialog(customHorizontalAdapter,position,relativeTwoWayView);
+                dialog.show(getFragmentManager(), "");
+            }
+        });
+        (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        relativeTwoWayView.setVisibility(View.GONE);
+        (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
+
         //Only if come back from onPause we need to check position
-        if(retrieve_position = false) {
+        if(retrieve_position) {
+
             boolean forcedClosure = true;
 
             for (int i = 0; i < position_attempt; i++) {
@@ -80,9 +115,9 @@ public class MapsActivity extends FragmentActivity {
                 }
             }
 
-            /*if(forcedClosure){
-                Tools.closeApp(this);
-            }*/
+            if(forcedClosure){
+                Tools.showInfoAlert(this);
+            }
         }
         else{
             retrieve_position = true;
@@ -114,7 +149,7 @@ public class MapsActivity extends FragmentActivity {
         LatLng position = new LatLng(this.position[0],this.position[1]);
         googleMap.addMarker(new MarkerOptions().position(position).title("My car"));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 14.0f));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 18.0f));
     }
 
     public void sendPosition(View v) {
@@ -179,5 +214,6 @@ public class MapsActivity extends FragmentActivity {
     public void manageGroup(View v) {
         Intent toManageGroup = new Intent(this,ManageGroupActivity.class);
         startActivity(toManageGroup);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

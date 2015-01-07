@@ -10,5 +10,7 @@
     <string name="add_contact">Add contact to group ...</string>
     <string name="back">BACK</string>
     <string name="delete">DELETE</string>
+    <string name="ok">OK</string>
+    <string name="infoBeforeClose">Family Parking can not access your location. The application will be closed!</string>
 
 </resources>

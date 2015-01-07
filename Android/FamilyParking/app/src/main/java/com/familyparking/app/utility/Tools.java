@@ -2,6 +2,7 @@ package com.familyparking.app.utility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -69,9 +70,11 @@ public class Tools {
     private static void showSettingsAlert(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
+        alertDialog.setCancelable(false);
+
         alertDialog.setTitle("Location services disabled");
 
-        alertDialog.setMessage(getAppName(context)+" needs to know your position. Active it!");
+        alertDialog.setMessage(getAppName(context)+" needs access to your location. Please turn on location access.");
 
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
@@ -82,6 +85,26 @@ public class Tools {
                 });
 
         alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Tools.closeApp(context);
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+    public static void showInfoAlert(final Context context) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.setTitle("Location services disabled");
+
+        alertDialog.setMessage(getAppName(context)+" can not access to your location. The application will be closed!");
+
+        alertDialog.setNegativeButton("Ok",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -124,7 +147,6 @@ public class Tools {
     }
 
     public static void closeApp(Context context){
-        Toast.makeText(context, Tools.getAppName(context)+" cannot work without location services!", Toast.LENGTH_LONG).show();
         ((Activity) context).finish();
     }
 
