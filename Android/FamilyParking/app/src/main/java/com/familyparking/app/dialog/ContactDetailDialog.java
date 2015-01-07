@@ -28,11 +28,18 @@ public class ContactDetailDialog extends DialogFragment{
     private CustomHorizontalAdapter adapter;
     private RelativeLayout relativeTwoWayView;
 
+    public ContactDetailDialog(){}
+
     public ContactDetailDialog(CustomHorizontalAdapter adapter, int position, RelativeLayout relativeTwoWayView){
         this.position = position;
         this.adapter = adapter;
         this.contact = adapter.getItem(position);
         this.relativeTwoWayView = relativeTwoWayView;
+    }
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
     }
 
     @Override

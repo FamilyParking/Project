@@ -20,8 +20,12 @@ public class ProgressCircleDialog extends DialogFragment{
     private String text;
     private TextView textView;
 
-    public ProgressCircleDialog(String message){
-        this.text = message;
+    public ProgressCircleDialog(){}
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        this.text = args.getString("message");
     }
 
     @Override

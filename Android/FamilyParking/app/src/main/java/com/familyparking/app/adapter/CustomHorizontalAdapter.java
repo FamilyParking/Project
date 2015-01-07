@@ -57,7 +57,7 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
             set.add(contact.getEmail());
             super.add(contact);
 
-            Tools.createToast(getContext(),"Contact added to group!", Toast.LENGTH_LONG);
+            Tools.createToast(getContext(),"Contact added to group!", Toast.LENGTH_SHORT);
 
             if(flag_db) {
                 DataBaseHelper databaseHelper = new DataBaseHelper(getContext());

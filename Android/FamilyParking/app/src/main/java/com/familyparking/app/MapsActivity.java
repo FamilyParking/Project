@@ -49,7 +49,6 @@ public class MapsActivity extends FragmentActivity {
 
     private ArrayList<Contact> group;
 
-
     //This flag is helpful to check if it's the first time that we pass inside onResume or we come back from onPause
     private int retrieve_position_count = 0;
     private boolean retrieve_position_flag = false;
@@ -90,6 +89,7 @@ public class MapsActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ContactDetailDialog dialog = new ContactDetailDialog(customHorizontalAdapter,position,relativeTwoWayView);
                 dialog.show(getFragmentManager(), "");
+
             }
         });
         (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
@@ -171,7 +171,10 @@ public class MapsActivity extends FragmentActivity {
 
 
         if(Tools.isOnline(this)) {
-            ProgressCircleDialog dialog = new ProgressCircleDialog("Wait ...");
+            Bundle bundle = new Bundle();
+            bundle.putString("message","Wait ...");
+            ProgressCircleDialog dialog = new ProgressCircleDialog();
+            dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), "");
 
 
