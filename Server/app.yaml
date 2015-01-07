@@ -7,7 +7,6 @@ threadsafe: true
 handlers:
 
 - url: /app
-  upload: folderpath/index.html
   static_files: familyParking.apk
 
 
