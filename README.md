@@ -8,4 +8,4 @@ Visit us at:
 www.FamilyParking.it
 
 You can dowload the apk from:
-www.FamilyParking.it/app
+www.FamilyParking.it/app/familyParking.apk
