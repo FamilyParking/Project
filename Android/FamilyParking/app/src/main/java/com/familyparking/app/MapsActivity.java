@@ -2,14 +2,13 @@ package com.familyparking.app;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.familyparking.app.dao.DataBaseHelper;
 import com.familyparking.app.dao.GroupTable;
-import com.familyparking.app.dialog.ContactDetailDialog;
 import com.familyparking.app.dialog.ProgressCircleDialog;
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
@@ -19,7 +18,6 @@ import com.familyparking.app.utility.Tools;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -117,11 +115,6 @@ public class MapsActivity extends FragmentActivity {
         googleMap.addMarker(new MarkerOptions().position(position).title("My car"));
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 14.0f));
-
-        /*CameraUpdate center = CameraUpdateFactory.newLatLng(position);
-        googleMap.moveCamera(center);
-        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1, null);*/
     }
 
     public void sendPosition(View v) {
@@ -152,7 +145,6 @@ public class MapsActivity extends FragmentActivity {
                 if(this.position == null){
 
                     //Tools.createToast(this, "Looking for your position ...", Toast.LENGTH_LONG);
-                    dialog.updateMessage("Looking for your position ...");
 
                     for (int i = 0; i < position_attempt; i++) {
                         if (position == null) {
@@ -168,9 +160,6 @@ public class MapsActivity extends FragmentActivity {
                     Tools.createToast(this, "Your position is not available, try later!", Toast.LENGTH_LONG);
                 }
                 else {
-
-                    //dialog.updateMessage("Sending email ...");
-
                     Car car = new Car(this.position, email,Tools.getUniqueDeviceId(this));
 
                     ArrayList<Object> params = new ArrayList<>();

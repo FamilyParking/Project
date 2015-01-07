@@ -2,15 +2,12 @@ package com.familyparking.app.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.familyparking.app.serverClass.Contact;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GroupTable {
 	

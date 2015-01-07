@@ -1,8 +1,6 @@
 package com.familyparking.app;
 
-import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
@@ -13,21 +11,17 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import com.familyparking.app.adapter.CustomCursorAdapter;
 import com.familyparking.app.adapter.CustomHorizontalAdapter;
 import com.familyparking.app.dialog.ContactDetailDialog;
 import com.familyparking.app.serverClass.Contact;
 import com.familyparking.app.task.RetrieveGroup;
-import com.familyparking.app.adapter.CustomCursorAdapter;
 import com.familyparking.app.utility.Tools;
 
 import org.lucasr.twowayview.TwoWayView;

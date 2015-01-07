@@ -8,10 +8,8 @@ import com.familyparking.app.dialog.ProgressCircleDialog;
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.serverClass.Result;
 import com.familyparking.app.utility.ServerCall;
-import com.familyparking.app.utility.Tools;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by francesco on 18/12/14.

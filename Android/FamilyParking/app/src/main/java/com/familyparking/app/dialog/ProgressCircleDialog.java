@@ -5,17 +5,11 @@ import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.familyparking.app.R;
-import com.familyparking.app.adapter.CustomHorizontalAdapter;
-import com.familyparking.app.serverClass.Contact;
-import com.familyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 17/03/14.
@@ -34,7 +28,7 @@ public class ProgressCircleDialog extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState){
         this.setCancelable(false);
 
-        final Dialog dialog = new Dialog(getActivity());
+        Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         dialog.setContentView(R.layout.progress_circle_dialog);
@@ -46,10 +40,6 @@ public class ProgressCircleDialog extends DialogFragment{
         dialog.show();
 
         return dialog;
-    }
-
-    public void updateMessage(String message){
-        textView.setText(message);
     }
 
 

@@ -18,12 +18,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/parking"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:gravity="center_vertical|center_horizontal"
-        android:background="@drawable/circle_button"
+        android:background="@drawable/park"
         android:onClick="sendPosition"/>
 
     <Button
@@ -34,12 +29,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/add"
-        android:textStyle="bold"
-        android:textSize="40sp"
-        android:textColor="@color/white"
-        android:gravity="center_vertical|center_horizontal"
-        android:background="@drawable/circle_button"
+        android:background="@drawable/plus"
         android:onClick="manageGroup"/>
 </RelativeLayout>
 
