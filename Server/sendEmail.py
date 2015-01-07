@@ -1,9 +1,10 @@
 import logging
 import webapp2
 import json
+import sys
 import statusReturn
 import statistic
-import urllib
+import datetime
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
 from google.appengine.ext import ndb
@@ -21,30 +22,35 @@ class SendEmail(webapp2.RequestHandler):
     def post(self):
 		try:
 			data = json.loads(self.request.body)
-
-			logging.debug("Before")
+			new_contact = statistic.Statistic(id_android=data["ID"], counter=1,latitude = data["latitude"],longitude = data["longitude"],last_time = str(datetime.datetime.now()))
 
 			try:
-				contact_key = statistic.Statistic.query(statistic.Statistic.id_android == data["ID"])
-				
+				contact_key = new_contact.querySearch()
+				#logging.debug(contact_key.get())
 			except:
-				logging.debug("Sta senz penzieri")
-			new_contact = statistic.Statistic(id_android=data["ID"], counter=1)
-			add_db_contact = new_contact.put()
-			logging.debug(add_db_contact)
+				logging.debug(sys.exc_info())
+
+			try:
+				if contact_key.count() == 0:
+					add_db_contact = new_contact.put()
+				else:
+					temp_contact = contact_key.get()
+					temp_contact.update_contact(data["latitude"],data["longitude"])
+
+			except:
+				logging.debug(sys.exc_info())
 
 			try:
 				message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
 											subject="Position of car")
 				message.body = "Your car is parked here: http://www.google.com/maps/place/" + data["latitude"] + "," + \
 							   data["longitude"]
-
 				receiver_mail = data["email"]
 				i = 0
 				for value in receiver_mail:
 					try:
 						message.to = "<" + value + ">"
-						message.send()
+						#message.send()
 						i = i + 1;
 					except:
 						self.error(500)

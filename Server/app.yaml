@@ -26,4 +26,4 @@ handlers:
   script: short.application
   
 - url: /.*
-  script: helloworld.application
+  script: sendEmail.application
