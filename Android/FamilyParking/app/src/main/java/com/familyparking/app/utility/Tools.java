@@ -160,7 +160,7 @@ public class Tools {
                 photo_iv.setImageBitmap(thumbnail);
             }
             else{
-                photo_iv.setImageResource(R.drawable.user);
+                photo_iv.setImageResource(R.drawable.userw);
             }
         }
 

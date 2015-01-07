@@ -39,7 +39,7 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap googleMap;
     private LocationService locationService;
     private double[] position;
-    private int position_attempt = 20;
+    private int position_attempt = 30;
     private Tracker tr;
 
     private CustomHorizontalAdapter customHorizontalAdapter;

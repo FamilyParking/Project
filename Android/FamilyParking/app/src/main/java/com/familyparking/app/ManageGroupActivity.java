@@ -185,7 +185,7 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
             if (photo_id != 0)
                 photo_flag = true;
 
-            customHorizontalAdapter.add(new Contact(contact_id, name, email, photo_flag, photo_id), true);
+            customHorizontalAdapter.add(new Contact(contact_id, name, email, photo_flag, photo_id), true, true);
             customHorizontalAdapter.notifyDataSetChanged();
 
             if (relativeTwoWayView.getVisibility() == View.GONE)
@@ -197,7 +197,7 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     public void addNewContact(View v) {
         String email = editText.getText().toString();
 
-        customHorizontalAdapter.add(new Contact(-1, email, email, false, -1), true);
+        customHorizontalAdapter.add(new Contact(-1, email, email, false, -1), true, true);
         customHorizontalAdapter.notifyDataSetChanged();
 
         if (relativeTwoWayView.getVisibility() == View.GONE)
