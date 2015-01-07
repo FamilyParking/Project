@@ -38,18 +38,17 @@ public class RetrieveGroup implements Runnable {
         ArrayList<Contact> list = GroupTable.getGroup(db);
         db.close();
 
-        for(Contact contact : list) {
-            customHorizontalAdapter.add(contact,false);
-            customHorizontalAdapter.notifyDataSetChanged();
-
-            if(relativeTwoWayView.getVisibility() == View.GONE) {
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+        for(final Contact contact : list) {
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    customHorizontalAdapter.add(contact, false);
+                    customHorizontalAdapter.notifyDataSetChanged();
+                    if(relativeTwoWayView.getVisibility() == View.GONE) {
                         relativeTwoWayView.setVisibility(View.VISIBLE);
                     }
-                });
-            }
+                }
+            });
         }
 
     }

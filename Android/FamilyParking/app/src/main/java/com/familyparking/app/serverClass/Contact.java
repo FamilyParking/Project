@@ -1,9 +1,12 @@
 package com.familyparking.app.serverClass;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by francesco on 02/01/15.
  */
-public class Contact {
+public class Contact implements Parcelable {
 
     private int id;
     private int photo_Id;
@@ -17,6 +20,17 @@ public class Contact {
         this.email = email;
         this.name = name;
         this.hasPhoto = hasPhoto;
+    }
+
+    public Contact(Parcel in){
+        String[] data = new String[5];
+
+        in.readStringArray(data);
+        this.id = Integer.getInteger(data[0]).intValue();
+        this.photo_Id = Integer.getInteger(data[1]).intValue();
+        this.email = data[2];
+        this.name = data[3];
+        this.hasPhoto = Boolean.getBoolean(data[4]);
     }
 
     public Contact(int id, String name, String email, int hasPhoto, int photo_id) {
@@ -66,4 +80,24 @@ public class Contact {
     public String toString(){
         return "{"+name+"}"+email+"["+hasPhoto+"]";
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {Integer.toString(this.id),Integer.toString(this.photo_Id),this.email,this.name,Boolean.toString(hasPhoto)});
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
 }
