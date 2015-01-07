@@ -67,7 +67,7 @@ public class Tools {
         return null;
     }
 
-    private static void showSettingsAlert(final Context context) {
+    public static void showSettingsAlert(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setCancelable(false);
@@ -122,9 +122,6 @@ public class Tools {
 
         if(position == null) {
             position = getLocationNetwork(locationService, context);
-            if (position == null) {
-                showSettingsAlert(context);
-            }
         }
 
         return position;

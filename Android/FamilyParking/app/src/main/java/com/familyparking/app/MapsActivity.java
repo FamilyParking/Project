@@ -51,7 +51,8 @@ public class MapsActivity extends FragmentActivity {
 
 
     //This flag is helpful to check if it's the first time that we pass inside onResume or we come back from onPause
-    private boolean retrieve_position = false;
+    private int retrieve_position_count = 0;
+    private boolean retrieve_position_flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,11 @@ public class MapsActivity extends FragmentActivity {
 
         if(position != null){
             setUpMap();
+        }
+        else{
+            Tools.showSettingsAlert(this);
+            retrieve_position_flag = true;
+            retrieve_position_count++;
         }
 
         relativeTwoWayView = ((RelativeLayout)findViewById(R.id.group_rl_main_activity));
@@ -98,7 +104,9 @@ public class MapsActivity extends FragmentActivity {
         (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
 
         //Only if come back from onPause we need to check position
-        if(retrieve_position) {
+        if((retrieve_position_count > 1) && (retrieve_position_flag)){
+
+            retrieve_position_flag = false;
 
             boolean forcedClosure = true;
 
@@ -110,6 +118,7 @@ public class MapsActivity extends FragmentActivity {
                     if (position != null) {
                         setUpMap();
                         forcedClosure = false;
+                        retrieve_position_count = 0;
                         break;
                     }
                 }
@@ -120,7 +129,7 @@ public class MapsActivity extends FragmentActivity {
             }
         }
         else{
-            retrieve_position = true;
+            retrieve_position_count++;
         }
     }
 
