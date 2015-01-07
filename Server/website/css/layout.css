@@ -15,15 +15,18 @@
  */
 
 body {
-	color: #fff;
+	color: #000000;
 	font-family: 'Roboto';
 	height:100%;
 	margin: 0;
+	font-size:16px;
 	width:100%;
+	
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Roboto';
 }	
+
 .bg {
 	height: 100%;
 	left:0;
@@ -130,24 +133,25 @@ span.address {
 }
 .logo p {
 	display: inherit;
-	font-size: 140px;
-	line-height: 140px;	
+	font-size: 100px;
+	line-height: 100px;	
 	margin: 40px 0;
 	position: relative;
-	font-family: 'Exo';
-	color: #000;
+	font-family:'Maven Pro';
+	color: #44AC3C;
 }
 .logo h1 {
-	color: #fff;
+	color: #000000;
 }
 .description, .countdown, .socmed {
 	margin-bottom: 20px;
 }
 .description, .countdown {
 	display: block;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 18px;
 	position: relative;
+	/*text-shadow: 0 0 10px #000;*/
 }
 .countdown {
 	color: #000;

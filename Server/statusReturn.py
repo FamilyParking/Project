@@ -21,6 +21,10 @@ class StatusReturn:
 			error_data["flag"] = False
 			error_data["description"] = "Can't send the " + self.index + "email"
 			error_data["object"] = None
+		if self.number == 4:
+			error_data["flag"] = False
+			error_data["description"] = "Can't update the position"
+			error_data["object"] = None
 		else:
 			error_data["flag"] = True
 			error_data["description"] = "Email sent"
