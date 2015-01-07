@@ -2,7 +2,6 @@ package com.familyparking.app.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,8 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.familyparking.app.R;
-import com.familyparking.app.dao.DataBaseHelper;
-import com.familyparking.app.dao.GroupTable;
+import com.familyparking.app.adapter.CustomHorizontalAdapter;
 import com.familyparking.app.serverClass.Contact;
 import com.familyparking.app.utility.Tools;
 
@@ -26,13 +24,22 @@ import com.familyparking.app.utility.Tools;
 public class ContactDetailDialog extends DialogFragment{
 
     private Contact contact;
+    private int position;
+    private CustomHorizontalAdapter adapter;
+    private RelativeLayout relativeTwoWayView;
 
     public ContactDetailDialog(){}
+
+    public ContactDetailDialog(CustomHorizontalAdapter adapter, int position, RelativeLayout relativeTwoWayView){
+        this.position = position;
+        this.adapter = adapter;
+        this.contact = adapter.getItem(position);
+        this.relativeTwoWayView = relativeTwoWayView;
+    }
 
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        this.contact = args.getParcelable("contact");
     }
 
     @Override
@@ -68,10 +75,11 @@ public class ContactDetailDialog extends DialogFragment{
         ((RelativeLayout) dialog.findViewById(R.id.delete_rl)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataBaseHelper databaseHelper = new DataBaseHelper(getActivity().getApplicationContext());
-                final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-                GroupTable.deleteContact(db, contact.getEmail());
-                db.close();
+                adapter.remove(contact);
+                adapter.notifyDataSetChanged();
+
+                if(adapter.isEmpty())
+                    relativeTwoWayView.setVisibility(View.GONE);
 
                 dialog.dismiss();
             }

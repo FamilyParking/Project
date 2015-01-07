@@ -39,7 +39,7 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap googleMap;
     private LocationService locationService;
     private double[] position;
-    private int position_attempt = 30;
+    private int position_attempt = 20;
     private Tracker tr;
 
     private CustomHorizontalAdapter customHorizontalAdapter;
@@ -87,7 +87,9 @@ public class MapsActivity extends FragmentActivity {
         listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Tools.createContactDetailDialog(group.get(position),getFragmentManager());
+                ContactDetailDialog dialog = new ContactDetailDialog(customHorizontalAdapter,position,relativeTwoWayView);
+                dialog.show(getFragmentManager(), "");
+
             }
         });
         (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();

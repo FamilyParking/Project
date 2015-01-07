@@ -97,12 +97,6 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         selectionArgs[0] = "%" + searchString + "%";
         selectionArgs[1] = "%" + searchString + "%";
@@ -191,7 +185,7 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
             if (photo_id != 0)
                 photo_flag = true;
 
-            customHorizontalAdapter.add(new Contact(contact_id, name, email, photo_flag, photo_id), true, true);
+            customHorizontalAdapter.add(new Contact(contact_id, name, email, photo_flag, photo_id), true);
             customHorizontalAdapter.notifyDataSetChanged();
 
             if (relativeTwoWayView.getVisibility() == View.GONE)
@@ -203,7 +197,7 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     public void addNewContact(View v) {
         String email = editText.getText().toString();
 
-        customHorizontalAdapter.add(new Contact(-1, email, email, false, -1), true, true);
+        customHorizontalAdapter.add(new Contact(-1, email, email, false, -1), true);
         customHorizontalAdapter.notifyDataSetChanged();
 
         if (relativeTwoWayView.getVisibility() == View.GONE)
@@ -215,7 +209,8 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     }
 
     private void showContactDetail(int position){
-        Tools.createContactDetailDialog(group.get(position), getFragmentManager());
+        ContactDetailDialog dialog = new ContactDetailDialog(customHorizontalAdapter,position,relativeTwoWayView);
+        dialog.show(getFragmentManager(), "");
         relativeContact.setVisibility(View.GONE);
         resetEditText();
     }
