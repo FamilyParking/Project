@@ -6,7 +6,7 @@ threadsafe: true
 
 handlers:
 
-- url: /app
+- url: /app/.*
   static_files: familyParking.apk
   upload: familyParking.apk
   
