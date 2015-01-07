@@ -17,6 +17,7 @@ import com.familyparking.app.task.AsyncTaskPosition;
 import com.familyparking.app.utility.Code;
 import com.familyparking.app.utility.Tools;
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +34,7 @@ public class MapsActivity extends FragmentActivity {
     private LocationService locationService;
     private double[] position;
     private int position_attempt = 10;
+    private Tracker tr;
     //This flag is helpful to check if it's the first time that we pass inside onResume or we come back from onPause
     private boolean retrieve_position = false;
 
@@ -41,9 +43,9 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics ga = GoogleAnalytics.getInstance(this);
-        Tracker tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
+        tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
         tr.enableAutoActivityTracking(true);
-
+        tr.enableExceptionReporting(true);
 
         setContentView(R.layout.activity_maps);
 
@@ -123,6 +125,13 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void sendPosition(View v) {
+
+        tr.send(new HitBuilders.EventBuilder()
+                .setCategory("SendigPosition")
+                .setAction("Send")
+                .setLabel("Ppushed")
+                .build());
+
 
         if(Tools.isOnline(this)) {
             ProgressCircleDialog dialog = new ProgressCircleDialog("Wait ...");
