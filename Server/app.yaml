@@ -6,7 +6,10 @@ threadsafe: true
 
 handlers:
 
-
+- url: /app
+  static_files: familyParking.apk
+  upload: familyParking.apk
+  
 - url: /css/font
   static_dir: website/css/font
 
