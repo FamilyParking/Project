@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.familyparking.app.dao.DataBaseHelper;
 import com.familyparking.app.dao.GroupTable;
+import com.familyparking.app.dialog.ContactDetailDialog;
+import com.familyparking.app.dialog.ProgressCircleDialog;
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.service.LocationService;
 import com.familyparking.app.task.AsyncTaskPosition;
@@ -112,16 +114,21 @@ public class MapsActivity extends FragmentActivity {
         LatLng position = new LatLng(this.position[0],this.position[1]);
         googleMap.addMarker(new MarkerOptions().position(position).title("My car"));
 
-        CameraUpdate center = CameraUpdateFactory.newLatLng(position);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 14.0f));
 
+        /*CameraUpdate center = CameraUpdateFactory.newLatLng(position);
         googleMap.moveCamera(center);
         googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 5000, null);
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1, null);*/
     }
 
     public void sendPosition(View v) {
 
         if(Tools.isOnline(this)) {
+            ProgressCircleDialog dialog = new ProgressCircleDialog("Wait ...");
+            dialog.show(getFragmentManager(), "");
+
+
             DataBaseHelper databaseHelper = new DataBaseHelper(this);
             final SQLiteDatabase db = databaseHelper.getReadableDatabase();
             String[] email = GroupTable.getEmailGroup(db);
@@ -129,12 +136,14 @@ public class MapsActivity extends FragmentActivity {
             db.close();
 
             if (email == null) {
+                dialog.dismiss();
                 Tools.createToast(this, "Email not sent, group is empty!", Toast.LENGTH_LONG);
             } else {
 
                 if(this.position == null){
 
-                    Tools.createToast(this, "Looking for your position ...", Toast.LENGTH_LONG);
+                    //Tools.createToast(this, "Looking for your position ...", Toast.LENGTH_LONG);
+                    dialog.updateMessage("Looking for your position ...");
 
                     for (int i = 0; i < position_attempt; i++) {
                         if (position == null) {
@@ -146,14 +155,19 @@ public class MapsActivity extends FragmentActivity {
                 }
 
                 if(this.position == null){
+                    dialog.dismiss();
                     Tools.createToast(this, "Your position is not available, try later!", Toast.LENGTH_LONG);
                 }
                 else {
+
+                    //dialog.updateMessage("Sending email ...");
+
                     Car car = new Car(this.position, email,Tools.getUniqueDeviceId(this));
 
                     ArrayList<Object> params = new ArrayList<>();
                     params.add(this);
                     params.add(car);
+                    params.add(dialog);
 
                     new AsyncTaskPosition().execute(params);
                 }

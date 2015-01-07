@@ -149,6 +149,9 @@ public class Tools {
 
     private static Bitmap fetchThumbnail(Context context,Integer photo_id) {
 
+        if(photo_id == -1)
+            return null;
+
         Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
 
         Cursor cursor = context.getContentResolver().query(uri, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
