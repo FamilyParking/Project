@@ -3,6 +3,7 @@ package com.familyparking.app.utility;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.FragmentManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +24,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -30,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.familyparking.app.R;
+import com.familyparking.app.dialog.ContactDetailDialog;
+import com.familyparking.app.serverClass.Contact;
 import com.familyparking.app.service.LocationService;
 
 /**
@@ -160,7 +164,7 @@ public class Tools {
                 photo_iv.setImageBitmap(thumbnail);
             }
             else{
-                photo_iv.setImageResource(R.drawable.user);
+                photo_iv.setImageResource(R.drawable.userw);
             }
         }
 
@@ -241,5 +245,13 @@ public class Tools {
         }
 
         return id;
+    }
+
+    public static void createContactDetailDialog(Contact contact,FragmentManager fragmentManager){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("contact",contact);
+        ContactDetailDialog dialog = new ContactDetailDialog();
+        dialog.setArguments(bundle);
+        dialog.show(fragmentManager, "");
     }
 }

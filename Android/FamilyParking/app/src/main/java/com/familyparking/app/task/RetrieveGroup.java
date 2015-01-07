@@ -42,7 +42,7 @@ public class RetrieveGroup implements Runnable {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    customHorizontalAdapter.add(contact, false);
+                    customHorizontalAdapter.add(contact, false, false);
                     customHorizontalAdapter.notifyDataSetChanged();
                     if(relativeTwoWayView.getVisibility() == View.GONE) {
                         relativeTwoWayView.setVisibility(View.VISIBLE);
