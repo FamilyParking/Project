@@ -9,3 +9,6 @@ www.FamilyParking.it
 
 You can dowload the apk from:
 www.FamilyParking.it/app/familyParking.apk
+
+You can find  the presentation in the following URL : 
+http://prezi.com/dznsfoioqjin/?utm_campaign=share&utm_medium=copy&rc=ex0share
