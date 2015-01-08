@@ -1,9 +1,11 @@
 package com.familyparking.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -12,7 +14,6 @@ import android.widget.Toast;
 import com.familyparking.app.adapter.CustomHorizontalAdapter;
 import com.familyparking.app.dao.DataBaseHelper;
 import com.familyparking.app.dao.GroupTable;
-import com.familyparking.app.dialog.ContactDetailDialog;
 import com.familyparking.app.dialog.ProgressCircleDialog;
 import com.familyparking.app.serverClass.Car;
 import com.familyparking.app.serverClass.Contact;
@@ -49,6 +50,8 @@ public class MapsActivity extends FragmentActivity {
 
     private ArrayList<Contact> group;
 
+    private Context context;
+
     //This flag is helpful to check if it's the first time that we pass inside onResume or we come back from onPause
     private int retrieve_position_count = 0;
     private boolean retrieve_position_flag = false;
@@ -70,6 +73,8 @@ public class MapsActivity extends FragmentActivity {
 
         position = Tools.getLocationAlert(locationService, this);
 
+        context = this;
+
         if(position != null){
             setUpMap();
         }
@@ -81,15 +86,18 @@ public class MapsActivity extends FragmentActivity {
 
         relativeTwoWayView = ((RelativeLayout)findViewById(R.id.group_rl_main_activity));
         listGroup = ((TwoWayView)findViewById(R.id.group_list_main_activity));
+
         group = new ArrayList<>();
         customHorizontalAdapter = new CustomHorizontalAdapter(this,group);
         listGroup.setAdapter(customHorizontalAdapter);
+
         listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Tools.createContactDetailDialog(group.get(position),getFragmentManager());
+                Tools.createContactDetailDialog(group.get(position),getFragmentManager(),1);
             }
         });
+
         (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
 
     }
@@ -98,8 +106,7 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
 
-        relativeTwoWayView.setVisibility(View.GONE);
-        (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
+        resetCustomHorizontal();
 
         //Only if come back from onPause we need to check position
         if((retrieve_position_count > 1) && (retrieve_position_flag)){
@@ -222,8 +229,26 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void manageGroup(View v) {
+
+        relativeTwoWayView.setVisibility(View.GONE);
+
         Intent toManageGroup = new Intent(this,ManageGroupActivity.class);
         startActivity(toManageGroup);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    private void resetCustomHorizontal(){
+        relativeTwoWayView.setVisibility(View.GONE);
+        group = new ArrayList<>();
+        customHorizontalAdapter = new CustomHorizontalAdapter(this,group);
+        listGroup.setAdapter(customHorizontalAdapter);
+        (new Thread(new RetrieveGroup(this,relativeTwoWayView,customHorizontalAdapter))).start();
+    }
+
+    public void removeContactGroup(Contact contact){
+        customHorizontalAdapter.remove(contact);
+        customHorizontalAdapter.notifyDataSetChanged();
+        if(customHorizontalAdapter.isEmpty())
+            relativeTwoWayView.setVisibility(View.GONE);
     }
 }

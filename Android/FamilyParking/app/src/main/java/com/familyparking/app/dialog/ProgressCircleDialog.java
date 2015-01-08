@@ -30,6 +30,7 @@ public class ProgressCircleDialog extends DialogFragment{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+
         this.setCancelable(false);
 
         Dialog dialog = new Dialog(getActivity());

@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.familyparking.app.ManageGroupActivity;
+import com.familyparking.app.MapsActivity;
 import com.familyparking.app.R;
 import com.familyparking.app.dao.DataBaseHelper;
 import com.familyparking.app.dao.GroupTable;
@@ -26,6 +28,7 @@ import com.familyparking.app.utility.Tools;
 public class ContactDetailDialog extends DialogFragment{
 
     private Contact contact;
+    private int activity_id;
 
     public ContactDetailDialog(){}
 
@@ -33,11 +36,13 @@ public class ContactDetailDialog extends DialogFragment{
     public void setArguments(Bundle args) {
         super.setArguments(args);
         this.contact = args.getParcelable("contact");
+        this.activity_id = args.getInt("activity");
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        this.setCancelable(false);
+
+        this.setCancelable(true);
 
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -68,10 +73,13 @@ public class ContactDetailDialog extends DialogFragment{
         ((RelativeLayout) dialog.findViewById(R.id.delete_rl)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataBaseHelper databaseHelper = new DataBaseHelper(getActivity().getApplicationContext());
-                final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-                GroupTable.deleteContact(db, contact.getEmail());
-                db.close();
+
+                if(activity_id == 1) {
+                    ((MapsActivity) getActivity()).removeContactGroup(contact);
+                }
+                else if(activity_id == 2) {
+                    ((ManageGroupActivity) getActivity()).removeContactGroup(contact);
+                }
 
                 dialog.dismiss();
             }

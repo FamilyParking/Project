@@ -247,9 +247,10 @@ public class Tools {
         return id;
     }
 
-    public static void createContactDetailDialog(Contact contact,FragmentManager fragmentManager){
+    public static void createContactDetailDialog(Contact contact,FragmentManager fragmentManager, int activity_id){
         Bundle bundle = new Bundle();
         bundle.putParcelable("contact",contact);
+        bundle.putInt("activity",activity_id);
         ContactDetailDialog dialog = new ContactDetailDialog();
         dialog.setArguments(bundle);
         dialog.show(fragmentManager, "");

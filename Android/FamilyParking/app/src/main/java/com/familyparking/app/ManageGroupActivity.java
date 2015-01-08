@@ -215,7 +215,7 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     }
 
     private void showContactDetail(int position){
-        Tools.createContactDetailDialog(group.get(position), getFragmentManager());
+        Tools.createContactDetailDialog(group.get(position), getFragmentManager(),2);
         relativeContact.setVisibility(View.GONE);
         resetEditText();
     }
@@ -223,5 +223,12 @@ public class ManageGroupActivity extends FragmentActivity implements LoaderManag
     private void resetEditText(){
         resetText = true;
         editText.setText("");
+    }
+
+    public void removeContactGroup(Contact contact){
+        customHorizontalAdapter.remove(contact);
+        customHorizontalAdapter.notifyDataSetChanged();
+        if(customHorizontalAdapter.isEmpty())
+            relativeTwoWayView.setVisibility(View.GONE);
     }
 }

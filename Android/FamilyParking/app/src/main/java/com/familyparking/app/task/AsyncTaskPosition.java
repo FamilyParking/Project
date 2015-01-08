@@ -33,6 +33,10 @@ public class AsyncTaskPosition extends AsyncTask<ArrayList<Object>,Void, Result>
     @Override
     protected void onPostExecute(Result response) {
         dialog.dismiss();
-        Toast.makeText(this.context, response.getDescription(), Toast.LENGTH_SHORT).show();
+
+        if((response == null) && (response.getDescription() == null))
+            Toast.makeText(this.context, "Connection not available. Please, try one more time!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this.context, response.getDescription(), Toast.LENGTH_SHORT).show();
     }
 }
