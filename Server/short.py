@@ -1,10 +1,8 @@
-import webapp2
 import json
-import statusReturn
-import urllib
-from google.appengine.api import urlfetch
-from google.appengine.api import mail
 
+import webapp2
+from Class import statusReturn
+from google.appengine.api import mail
 
 
 class MainPage(webapp2.RequestHandler):

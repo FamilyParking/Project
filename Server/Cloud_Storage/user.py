@@ -6,7 +6,7 @@ __author__ = 'Nazzareno'
 import datetime
 from google.appengine.ext import ndb
 
-class Statistic(ndb.Model):
+class User(ndb.Model):
   id_android = ndb.StringProperty()
   counter = ndb.IntegerProperty()
   latitude = ndb.StringProperty()
@@ -14,8 +14,14 @@ class Statistic(ndb.Model):
   last_time = ndb.StringProperty()
 
   def querySearch(self):
-    id_android = Statistic.query(Statistic.id_android == self.id_android)
+    id_android = User.query(User.id_android == self.id_android)
     return id_android
+
+  def getPositionFromID(self):
+    id_android = User.query(User.id_android == self.id_android)
+    id_android.get()
+
+
 
   def update_contact(self,latitude,longitude):
     self.counter += 1
