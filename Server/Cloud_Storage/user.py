@@ -17,12 +17,6 @@ class User(ndb.Model):
     id_android = User.query(User.id_android == self.id_android)
     return id_android
 
-  def getPositionFromID(self):
-    id_android = User.query(User.id_android == self.id_android)
-    id_android.get()
-
-
-
   def update_contact(self,latitude,longitude):
     self.counter += 1
     self.latitude = latitude

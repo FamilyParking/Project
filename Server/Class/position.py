@@ -8,6 +8,9 @@ class Position():
         self.longitude = long
         self.latitude = lat
 
+    def __str__(self):
+     return "Latitude = "+self.latitude+" Longitude = "+self.longitude
+
     def getLatitude(self):
         return self.latitude
     def getLongitude(self):

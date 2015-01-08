@@ -4,6 +4,8 @@ import sys
 import datetime
 import webapp2
 
+from decimal import Decimal
+
 from Class.statusReturn import StatusReturn
 
 from Cloud_Storage.user import User
@@ -13,7 +15,7 @@ from google.appengine.api import mail
 
 
 class MainPage(webapp2.RequestHandler):
-    def get(self):
+	def get(self):
 		in_file = open("website/index.html", "r")
 		MAIN_PAGE_HTML = in_file.read()
 		self.response.write(MAIN_PAGE_HTML)
@@ -21,7 +23,7 @@ class MainPage(webapp2.RequestHandler):
 
 
 class SendEmail(webapp2.RequestHandler):
-    def post(self):
+	def post(self):
 		try:
 			data = json.loads(self.request.body)
 			new_contact = User(id_android=data["ID"], counter=1, latitude=data["latitude"],
@@ -39,8 +41,11 @@ class SendEmail(webapp2.RequestHandler):
 				if contact_key.count() == 0:
 					add_db_contact = new_contact.put()
 					add_db_car = new_car.put()
+
 				else:
 					temp_contact = contact_key.get()
+					logging.debug(new_car.getPositionFromID())
+
 					if bool(temp_contact.update_contact(data["latitude"], data["longitude"])):
 						try:
 							message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
