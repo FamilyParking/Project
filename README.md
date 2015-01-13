@@ -13,5 +13,5 @@ www.FamilyParking.it/app/familyParking.apk
 You can find the presentation of Milestone 1 in the following URL : 
 http://prezi.com/dznsfoioqjin/?utm_campaign=share&utm_medium=copy&rc=ex0share
 
-You can find our progress report for the first milestone here:
+You can check  our progress report for the first milestone here:
 https://drive.google.com/file/d/0B-LA21BUgdkfRDhpSlcxQzdqeHc/view
