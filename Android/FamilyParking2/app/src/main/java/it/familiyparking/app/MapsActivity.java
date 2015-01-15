@@ -1,27 +1,16 @@
-package com.familyparking.app;
+package it.familiyparking.app;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.familyparking.app.adapter.CustomHorizontalAdapter;
-import com.familyparking.app.dao.DataBaseHelper;
-import com.familyparking.app.dao.GroupTable;
-import com.familyparking.app.dialog.ProgressCircleDialog;
-import com.familyparking.app.serverClass.Car;
-import com.familyparking.app.serverClass.Contact;
-import com.familyparking.app.service.LocationService;
-import com.familyparking.app.task.AsyncTaskPosition;
-import com.familyparking.app.task.RetrieveGroup;
-import com.familyparking.app.utility.Code;
-import com.familyparking.app.utility.Tools;
+
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -35,6 +24,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
+
+import it.familiyparking.app.adapter.CustomHorizontalAdapter;
+import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dialog.ProgressCircleDialog;
+import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.service.LocationService;
+import it.familiyparking.app.task.AsyncTaskPosition;
+import it.familiyparking.app.task.RetrieveGroup;
+import it.familiyparking.app.utility.Code;
+import it.familiyparking.app.utility.Tools;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -163,12 +164,6 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
         LatLng position = new LatLng(this.position[0],this.position[1]);
         Marker marker = googleMap.addMarker(new MarkerOptions().position(position).title("My car"));
-
-
-        marker.
-
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setMyLocationEnabled(true);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 18.0f));
     }
