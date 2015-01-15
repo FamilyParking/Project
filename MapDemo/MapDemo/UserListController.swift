@@ -80,6 +80,28 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         
      //   self.view.addSubview(self.textField)
         // Do any additional setup after loading the view.
+    
+        swiftAddressBook?.requestAccessWithCompletion({ (success, error) -> Void in
+            if success {
+                //do something with swiftAddressBook
+            }
+            else {
+                //no success. Optionally evaluate error
+            }
+        })
+        if let peopleBookList = swiftAddressBook?.allPeople {
+            for person in peopleBookList {
+                //person.phoneNumbers is a "multivalue" entry
+                //so you get an array of MultivalueEntrys
+                //see MultivalueEntry in SwiftAddressBook
+                println(person.phoneNumbers!.map( {$0.value} ))
+            }
+        }
+        
+    
+    
+    
+    
     }
    
     
