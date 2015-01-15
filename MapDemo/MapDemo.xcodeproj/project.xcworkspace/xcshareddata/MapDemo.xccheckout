@@ -5,7 +5,11 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
+<<<<<<< HEAD
 	<string>5DDBC973-57CC-46EF-B8DC-602E2B08FDAE</string>
+=======
+	<string>2382269B-07EC-41A1-8932-51E34C48A22A</string>
+>>>>>>> FETCH_HEAD
 	<key>IDESourceControlProjectName</key>
 	<string>MapDemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -34,7 +38,11 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>059899E2D61D5498882D7A8C52EDA94131DC0897</string>
 			<key>IDESourceControlWCCName</key>
+<<<<<<< HEAD
 			<string>Project</string>
+=======
+			<string>FamilyParkingGit</string>
+>>>>>>> FETCH_HEAD
 		</dict>
 	</array>
 </dict>

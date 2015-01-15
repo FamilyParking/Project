@@ -15,7 +15,9 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     var gmaps: GMSMapView!
     var people = [NSManagedObject]()
 
+    @IBOutlet weak var Running: UIActivityIndicatorView!
     
+    @IBOutlet weak var PButton: UIButton!
     @IBAction func PrintPos() {
         println("Mail Sent! :D",self.gmaps.myLocation)
         println("positionfinder", self.gmaps.myLocationEnabled.boolValue)
@@ -84,6 +86,32 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     
     func sendToServer(){
         
+        if(self.gmaps.myLocation==nil)
+        {
+            var alert = UIAlertController(title: "No Position",
+                message: "Please activate your position services",
+                preferredStyle: .Alert)
+            
+            let saveAction = UIAlertAction(title: "Save",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+                    
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+            }
+            
+            
+            alert.addAction(cancelAction)
+            
+            presentViewController(alert,
+                animated: true,
+                completion: nil)
+            
+            
+            return
+        }
+        
         let appDelegate =
         UIApplication.sharedApplication().delegate as AppDelegate
         
@@ -142,7 +170,14 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+          
+            
             println("Response: \(response)")
+            
+            self.PButton.hidden = true
+            self.Running.startAnimating()
+            
+            
             var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
             println("Body: \(strData)")
             var err: NSError?
@@ -168,6 +203,9 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                     println("Error could not parse JSON: \(jsonStr)")
                 }
             }
+            
+            self.PButton.hidden = false
+            self.Running.stopAnimating()
         })
         
         task.resume()

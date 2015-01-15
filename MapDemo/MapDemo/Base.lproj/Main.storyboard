@@ -20,21 +20,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ni0-cg-x0f" userLabel="Mappa">
                                 <rect key="frame" x="11" y="357" width="300" height="99"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNh-HT-5lZ">
-                                        <rect key="frame" x="240" y="30" width="60" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="jIO-KE-CIn"/>
-                                            <constraint firstAttribute="width" constant="60" id="ytI-Dj-hhC"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="34"/>
-                                        <state key="normal" title="P" image="park">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="PrintPos" destination="BYZ-38-t0r" eventType="touchUpInside" id="YhV-wR-g2t"/>
-                                        </connections>
-                                    </button>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="nJD-3G-6OZ">
+                                        <rect key="frame" x="260" y="50" width="20" height="20"/>
+                                    </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gG8-Mg-syd">
                                         <rect key="frame" x="0.0" y="30" width="60" height="60"/>
                                         <constraints>
@@ -48,6 +36,21 @@
                                         </state>
                                         <connections>
                                             <segue destination="c86-lC-Pi0" kind="push" id="z5e-iP-ROr"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNh-HT-5lZ">
+                                        <rect key="frame" x="240" y="30" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="jIO-KE-CIn"/>
+                                            <constraint firstAttribute="width" constant="60" id="ytI-Dj-hhC"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                        <state key="normal" title="P" image="park">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="PrintPos" destination="BYZ-38-t0r" eventType="touchUpInside" id="YhV-wR-g2t"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -73,6 +76,10 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Family Parking" id="TE7-0u-Yzg"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="PButton" destination="GNh-HT-5lZ" id="S4u-wV-Jfa"/>
+                        <outlet property="Running" destination="nJD-3G-6OZ" id="GgS-qT-wxh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
