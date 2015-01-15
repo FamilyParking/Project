@@ -3,15 +3,22 @@ import json
 import sys
 import datetime
 import webapp2
+import random
+
 
 from decimal import Decimal
+
 
 from Class.statusReturn import StatusReturn
 
 from Cloud_Storage.user import User
 from Cloud_Storage.car import Car
+from Cloud_Storage.user_copy import User_copy
 
 from google.appengine.api import mail
+
+
+from Tool.send_email import Send_email
 
 
 class MainPage(webapp2.RequestHandler):
@@ -27,7 +34,7 @@ class SendEmail(webapp2.RequestHandler):
         logging.debug("Received from user: "+str(self.request.body))
         try:
             data = json.loads(self.request.body)
-            new_contact = User(id_android=data["ID"], counter=1, latitude=data["latitude"],
+            new_contact = User_copy(id_android=data["ID"], counter=1, latitude=data["latitude"],
                                               longitude=data["longitude"], last_time=str(datetime.datetime.now()))
             new_car = Car(model="testModel",latitude=data["latitude"],
                                               longitude=data["longitude"], timestamp=str(datetime.datetime.now()))
@@ -82,6 +89,13 @@ class SendEmail(webapp2.RequestHandler):
             error = StatusReturn(1, 0)
             self.response.write(error.toJSON())
 
+class getIDGroup(webapp2.RequestHandler):
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+        except:
+            logging.debug(str(sys.exc_info()))
+
 
 class getPositionCar(webapp2.RequestHandler):
     def post(self):
@@ -107,15 +121,51 @@ class getPositionCar(webapp2.RequestHandler):
             logging.debug("Error first try: "+ str(sys.exc_info()))
 
 
+class registrationForm(webapp2.RequestHandler):
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+
+            try:
+                code = random.randint(100000,999999)
+                new_user = User(id_android=data["ID"], code=code, temp_code=code, email=data["Email"], nickname=data["Nickname"])
+
+                try:
+                    contact_key = new_user.querySearch_email()
+                    if contact_key.count() == 0:
+                        new_user.put()
+                    else:
+                        temp_user = contact_key.get()
+                        temp_user.update_contact(code)
+                    try:
+                        Send_email.send_code(code,data["Email"])
+
+                        right = StatusReturn(0, 0)
+                        self.response.write(right.error_registration())
 
 
 
+                    except:
+                        self.error(500)
+                        error = StatusReturn(3, 0)
+                        self.response.write(error.error_registration())
+                except:
+                    self.error(500)
+                    error = StatusReturn(4, 0)
+                    self.response.write(error.error_registration())
+            except:
+                self.error(500)
+                error = StatusReturn(2, 0)
+                self.response.write(error.error_registration())
 
-
-
+        except:
+            self.error(500)
+            error = StatusReturn(1, 0)
+            self.response.write(error.error_registration())
 
 application = webapp2.WSGIApplication([
                                           ('/', MainPage),
                                           ('/sign', SendEmail),
-                                          ('/requestPosition',getPositionCar),
+                                          ('/requestPositionCar',getPositionCar),
+                                          ('/registration',registrationForm),
                                       ], debug=True)
