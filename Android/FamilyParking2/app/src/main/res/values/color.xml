@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue">#2196F3</color>
-    <color name="dark_blue">#1976D2</color>
+    <color name="blue">#3F6EAF</color>
+    <color name="dark_blue">#31569D</color>
+    <color name="red">#E91D4A</color>
+    <color name="dark_red">#C80F1D</color>
+    <color name="green">#57B571</color>
+    <color name="dark_green">#3AAC4C</color>
+    <color name="yellow">#FDC13E</color>
+    <color name="dark_yellow">#FFCE41</color>
     <color name="sapienza">#7F2632</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

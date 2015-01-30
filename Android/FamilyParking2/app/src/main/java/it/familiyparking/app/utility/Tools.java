@@ -23,12 +23,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import it.familiyparking.app.R;
 import it.familiyparking.app.dialog.ContactDetailDialog;
@@ -258,5 +263,24 @@ public class Tools {
 
     public static String getActivtyName(Activity activity) {
         return activity.getClass().getSimpleName();
+    }
+
+    public static void setActionBar(ActionBarActivity activity){
+
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            android.app.ActionBar actionBar = activity.getActionBar();
+        } else{
+            android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setLogo(R.drawable.logo_actionbar);
+            actionBar.setDisplayUseLogoEnabled(true);
+        }
+    }
+
+    public static void activeAnalytic(Context context){
+        GoogleAnalytics ga = GoogleAnalytics.getInstance(context);
+        Tracker tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
+        tr.enableAutoActivityTracking(true);
+        tr.enableExceptionReporting(true);
     }
 }
