@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity {
         tr.enableAutoActivityTracking(true);
         tr.enableExceptionReporting(true);
 
-        setContentView(R.layout.activity_maps);
+        //setContentView(R.layout.activity_maps);
 
         setUpFragmentMap();
 

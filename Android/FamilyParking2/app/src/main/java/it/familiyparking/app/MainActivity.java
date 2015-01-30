@@ -1,15 +1,12 @@
 package it.familiyparking.app;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
+import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -20,8 +17,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Tools.activeAnalytic(this);
+
+        Tools.setActionBar(this);
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, new Map()).commit();
         }
     }
 
@@ -54,16 +55,4 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
 }
