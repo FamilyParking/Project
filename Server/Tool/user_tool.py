@@ -1,3 +1,4 @@
+import logging
 from Cloud_Storage.user_group import User_group
 
 __author__ = 'Nazzareno'
@@ -24,5 +25,14 @@ class User_tool():
             temp_id_user = temp_key_user.get().key.id()
             id_groups = User_group.getGroupFromUser(temp_id_user)
             return id_groups
+        except:
+            return -1
+
+    @staticmethod
+    def return_ID_from_email(email):
+        temp_key_user = User.static_querySearch_email(email)
+        try:
+            temp_id_user = temp_key_user.get().key.id()
+            return temp_id_user
         except:
             return -1

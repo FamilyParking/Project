@@ -1,3 +1,4 @@
+import sys
 
 __author__ = 'Nazzareno'
 
@@ -17,16 +18,25 @@ class Car(ndb.Model):
         result = Position(self.longitude,self.longitude)
         return result
 
+    def updatePosition(self,latitude,longitude):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.put()
+        return 0
+
     def toString_JSON(self):
-        idString = "\"ID\":\"" + str(self.key.id()) +"\""
-        modelString = "\"model\":\"" + self.model + "\""
-        latitudeString = "\"latitude\":\"" + self.latitude + "\""
-        longitudeString = "\"longitude\":\"" + self.longitude +"\""
+        idString = "'ID':'" + str(self.key.id()) +"'"
+        modelString = "'model':'" + self.model + "'"
+        latitudeString = "'latitude':'" + self.latitude + "'"
+        longitudeString = "'longitude':'" + self.longitude +"'"
         return "{" + idString + "," + modelString + "," + latitudeString + "," + longitudeString + "}"
 
     @staticmethod
     def getCarbyID(id):
-        app_key = ndb.Key('Car',id)
-        logging.debug(Car.get_by_id(id))
-        return app_key.get()
+        app_key = Car.get_by_id(long(id))
+        return app_key
 
+    @staticmethod
+    def update_position_ID(id,latitude,longitude):
+        temp_car = Car.getCarbyID(id)
+        return temp_car.updatePosition(latitude,longitude)
