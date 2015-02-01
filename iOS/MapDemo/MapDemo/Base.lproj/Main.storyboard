@@ -88,6 +88,7 @@
                     <connections>
                         <outlet property="PButton" destination="GNh-HT-5lZ" id="S4u-wV-Jfa"/>
                         <outlet property="Running" destination="nJD-3G-6OZ" id="GgS-qT-wxh"/>
+                        <outlet property="Title" destination="TE7-0u-Yzg" id="Hqz-P9-bYU"/>
                         <segue destination="Qu7-uJ-1Ad" kind="modal" identifier="goto_login" id="ebg-zw-Dui"/>
                         <segue destination="5f9-IH-U2Z" kind="modal" identifier="add_car" id="HTR-2Y-p6f"/>
                     </connections>

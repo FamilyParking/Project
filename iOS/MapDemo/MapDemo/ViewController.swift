@@ -15,6 +15,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     var gmaps: GMSMapView!
     var people = [NSManagedObject]()
 
+    @IBOutlet weak var Title: UINavigationItem!
     @IBOutlet weak var Running: UIActivityIndicatorView!
     
     @IBOutlet weak var PButton: UIButton!
@@ -36,7 +37,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
+        Title.title = "CIAOCIAO"
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
         if (isLoggedIn != 1) {
@@ -51,6 +52,8 @@ class ViewController: UIViewController, GMSMapViewDelegate {
             //  self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
         }
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,10 +87,32 @@ class ViewController: UIViewController, GMSMapViewDelegate {
             self.view.sendSubviewToBack(gmaps)
            //self.view.addSubview(gmaps)
             
+            var position = CLLocationCoordinate2DMake(51, -0)
+            var london = GMSMarker(position: position)
+            london.title = "London"
+            london.snippet = "Population: 8,174,100"
+            london.infoWindowAnchor = CGPointMake(0.5, 0.5)
+            london.userData = "Londra"
+           // london.icon = UIImage(named: "house")
+            london.map = map
+          //  map.
         }
+        
+        
         
     }
     
+   
+  //  override func mapView:(GMSMapView *)mapView->didTapInfoWindowOfMarker:(id<GMSMarker>)marker {
+    
+    
+   // }
+    
+    func mapView(mapView: GMSMapView!, didTapInfoWindowOfMarker marker: GMSMarker!) {
+        
+        println(marker.userData);
+        
+    }
   
     
     override func didReceiveMemoryWarning() {
@@ -109,44 +134,24 @@ class ViewController: UIViewController, GMSMapViewDelegate {
             var alert = UIAlertController(title: "No Position",
                 message: "Please activate your position services",
                 preferredStyle: .Alert)
-            
             let saveAction = UIAlertAction(title: "Save",
                 style: .Default) { (action: UIAlertAction!) -> Void in
-                    
             }
-            
             let cancelAction = UIAlertAction(title: "Cancel",
                 style: .Default) { (action: UIAlertAction!) -> Void in
             }
-            
-            
             alert.addAction(cancelAction)
-            
-            presentViewController(alert,
-                animated: true,
-                completion: nil)
-            
-            
+            presentViewController(alert,animated: true,completion: nil)
             return
         }
         
-        let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
-        
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         let managedContext = appDelegate.managedObjectContext!
-        
-        
-        
-        //2
         let fetchRequest = NSFetchRequest(entityName:"Entity")
-        
-        //3
         var error: NSError?
-        
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
             error: &error) as [NSManagedObject]?
-        
         if let results = fetchedResults {
             people = results
         } else {
@@ -155,7 +160,6 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         var str = ""
         var firstTime = true
         for man in people {
-            
             if (!firstTime){
                 str += " "
             }
@@ -167,7 +171,6 @@ class ViewController: UIViewController, GMSMapViewDelegate {
             str += appoggio
             
         }
-        
         println(str)
 
         
@@ -231,13 +234,96 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     }
     
     @IBAction func resetAction() {
-        
-        
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         prefs.setInteger(0, forKey: "HOWMANYCARS")
         prefs.setInteger(0, forKey: "ISLOGGEDIN")
         prefs.synchronize()
-        
     }
+    
+    
+    func sendUpdate(){
+        
+        
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let activeCar:String = prefs.objectForKey("ACTIVECAR") as String
+
+        
+        if(self.gmaps.myLocation==nil)
+        {
+            var alert = UIAlertController(title: "No Position",
+                message: "Please activate your position services",
+                preferredStyle: .Alert)
+            let saveAction = UIAlertAction(title: "Save",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+            }
+            let cancelAction = UIAlertAction(title: "Cancel",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+            }
+            alert.addAction(cancelAction)
+            presentViewController(alert,animated: true,completion: nil)
+            return
+        }
+        
+        if(self.gmaps.myLocation != nil){
+            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/sign")!)
+            var session = NSURLSession.sharedSession()
+            request.HTTPMethod = "POST"
+            
+         //       {"Email":"nazzareno.marziale@gmail.com","Code":"163930",”ID_car”:”756565656”,”Latitude”:”24234234234”,”Longitude”:”3123123231”}
+
+            
+            var params = ["ID":UIDevice.currentDevice().identifierForVendor.UUIDString,
+                "latitude":self.gmaps.myLocation.coordinate.latitude.description,
+                "longitude":self.gmaps.myLocation.coordinate.longitude.description,
+                "Email":] as Dictionary<String, NSObject>
+            
+            var err: NSError?
+            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                
+                
+                println("Response: \(response)")
+                
+                self.PButton.hidden = true
+                self.Running.startAnimating()
+                
+                
+                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                println("Body: \(strData)")
+                var err: NSError?
+                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+                
+                // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
+                if(err != nil) {
+                    println(err!.localizedDescription)
+                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
+                    println("Error could not parse JSON: '\(jsonStr)'")
+                }
+                else {
+                    // The JSONObjectWithData constructor didn't return an error. But, we should still
+                    // check and make sure that json has a value using optional binding.
+                    if let parseJSON = json {
+                        // Okay, the parsedJSON is here, let's get the value for 'success' out of it
+                        var success = parseJSON["success"] as? Int
+                        println("Succes: \(success)")
+                    }
+                    else {
+                        // Woa, okay the json object was nil, something went worng. Maybe the server isn't running?
+                        let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
+                        println("Error could not parse JSON: \(jsonStr)")
+                    }
+                }
+                
+                self.PButton.hidden = false
+                self.Running.stopAnimating()
+            })
+            
+            task.resume()
+        }
+    }
+
     
 }

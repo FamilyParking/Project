@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AddCar: UIViewController, UITextFieldDelegate {
 
@@ -91,11 +92,26 @@ class AddCar: UIViewController, UITextFieldDelegate {
                         var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
                         println(flag)
                         
+                        var id = array[1].componentsSeparatedByString(":")
+                        var idCar: String = id[1].stringByReplacingOccurrencesOfString(" ", withString: "") as String;
+                        println(idCar)
                         var desc = array[2].componentsSeparatedByString(":")
                         var descri = desc[1].componentsSeparatedByString("'")
                         var description: AnyObject=descri[1]
                         println(description)
+                        
+                        if(flag=="True"){
+                            self.saveCarLocal(idCar);
+                            let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int;
+                            prefs.setInteger(carsNumber + 1, forKey: "HOWMANYCARS")
+                            prefs.setObject(idCar, forKey: "ACTIVECAR")
+                            prefs.synchronize()
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
                     }
+                }
+                else{
+                    //TODO Show general error
                 }
             }
                 
@@ -116,6 +132,41 @@ class AddCar: UIViewController, UITextFieldDelegate {
         })
         task.resume()
 
+    }
+    
+    func saveCarLocal(idCar:String){
+            //1
+            let appDelegate =
+            UIApplication.sharedApplication().delegate as AppDelegate
+            
+            let managedContext = appDelegate.managedObjectContext!
+            
+            //2
+            let entity =  NSEntityDescription.entityForName("Car",
+                inManagedObjectContext:
+                managedContext)
+            
+            
+            
+            let person = NSManagedObject(entity: entity!,
+                insertIntoManagedObjectContext:managedContext)
+            
+            //3
+            person.setValue(idCar, forKey: "id")
+            person.setValue(0, forKey: "latitude")
+            person.setValue(0, forKey: "longitude")
+            person.setValue(CarModel.text, forKey: "name")
+
+        
+            
+            //4
+            var error: NSError?
+            if !managedContext.save(&error) {
+                println("Could not save \(error), \(error?.userInfo)")
+            }  
+
+        
+    
     }
 
 }
