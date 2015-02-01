@@ -9,6 +9,7 @@ class StatusReturn:
         self.number=numb
         self.index=ind
 
+
     def toJSON(self):
         error_data = {}
         if self.number == 1:
@@ -61,6 +62,42 @@ class StatusReturn:
             error_data["flag"] = False
             error_data["description"] = "Can't search inside DB"
             error_data["object"] = None
+
+        else:
+            logging.debug("No error: OK")
+            error_data["flag"] = True
+            error_data["description"] = "Code sent"
+            error_data["object"] = None
+
+        return error_data
+
+    def error_getIDGroups(self):
+        error_data = {}
+        if self.number == 1:
+            logging.debug("Error IDGroups: 1")
+            error_data["flag"] = False
+            error_data["description"] = "Can't load json"
+            error_data["object"] = None
+        if self.number == 2:
+            logging.debug("Error IDGroups: 2")
+            error_data["flag"] = False
+            error_data["description"] = "User not found"
+            error_data["object"] = None
+        if self.number == 3:
+            logging.debug("Error IDGroups: 3")
+            error_data["flag"] = False
+            error_data["description"] = "Code not valid"
+            error_data["object"] = None
+        if self.number == 4:
+            logging.debug("Error IDGroups: 4")
+            error_data["flag"] = False
+            error_data["description"] = "Return value not possible"
+            error_data["object"] = None
+        if self.number == 5:
+            logging.debug("Result IDGroups: 5")
+            error_data["flag"] = True
+            error_data["description"] = "All the id of the group"
+            error_data["object"] = self.index
 
         else:
             logging.debug("No error: OK")

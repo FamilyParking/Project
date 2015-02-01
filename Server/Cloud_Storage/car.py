@@ -13,13 +13,20 @@ class Car(ndb.Model):
     longitude = ndb.StringProperty()
     timestamp = ndb.StringProperty()
 
-
     def getPositionFromID(self):
         result = Position(self.longitude,self.longitude)
         return result
+
+    def toString_JSON(self):
+        idString = "\"ID\":\"" + str(self.key.id()) +"\""
+        modelString = "\"model\":\"" + self.model + "\""
+        latitudeString = "\"latitude\":\"" + self.latitude + "\""
+        longitudeString = "\"longitude\":\"" + self.longitude +"\""
+        return "{" + idString + "," + modelString + "," + latitudeString + "," + longitudeString + "}"
 
     @staticmethod
     def getCarbyID(id):
         app_key = ndb.Key('Car',id)
         logging.debug(Car.get_by_id(id))
         return app_key.get()
+

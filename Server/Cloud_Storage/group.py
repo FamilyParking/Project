@@ -6,3 +6,5 @@ class Group(ndb.Model):
     name = ndb.StringProperty()
     timestamp = ndb.StringProperty()
 
+
+

@@ -18,18 +18,30 @@ class User(ndb.Model):
         return id_android
 
     def querySearch_email(self):
-        email = User.query(User.email == self.email)
+        try:
+            email = User.query(User.email == self.email)
+        except:
+            logging.debug(sys.exc_info())
+        return email
+
+    @staticmethod
+    def static_querySearch_email(email_user):
+        try:
+            email = User.query(User.email == email_user)
+        except:
+            logging.debug(sys.exc_info())
         return email
 
     def check_code(self,new_code):
         if new_code == self.temp_code:
             if self.temp_code == self.code:
-                return True
+                return 0
             else:
                 self.code = new_code
-                return True
+                self.put()
+                return 1
         else:
-            return False
+            return -1
 
     def update_contact(self,code):
         self.temp_code = code

@@ -7,10 +7,12 @@ class User_group(ndb.Model):
     id_user = ndb.IntegerProperty()
     id_group = ndb.IntegerProperty()
 
-    def getGroupFromUser(id_group):
+    @staticmethod
+    def getUserFromGroup(id_group):
         result_group = User_group.query(User_group.id_group == id_group)
         return result_group
 
-    def getUserFromGroup(id_user):
+    @staticmethod
+    def getGroupFromUser(id_user):
         result_user = User_group.query(User_group.id_user == id_user)
         return result_user
