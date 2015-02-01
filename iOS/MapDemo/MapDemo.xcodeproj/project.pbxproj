@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8003099B1A6198F6004A2DEA /* SwiftAddressBookAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8003099A1A6198F6004A2DEA /* SwiftAddressBookAdapter.swift */; };
+		80041DE61A7E859C00C26C2C /* AddCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80041DE51A7E859C00C26C2C /* AddCar.swift */; };
 		803929681A67C8FA00982073 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803929671A67C8FA00982073 /* Login.swift */; };
 		80AD74E91A5F2872002B48CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD74E81A5F2872002B48CA /* AppDelegate.swift */; };
 		80AD74EB1A5F2872002B48CA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD74EA1A5F2872002B48CA /* ViewController.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		8003099A1A6198F6004A2DEA /* SwiftAddressBookAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAddressBookAdapter.swift; sourceTree = "<group>"; };
+		80041DE51A7E859C00C26C2C /* AddCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddCar.swift; path = ../AddCar.swift; sourceTree = "<group>"; };
 		803929671A67C8FA00982073 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		80AD74E31A5F2872002B48CA /* MapDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80AD74E71A5F2872002B48CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		80AD74E51A5F2872002B48CA /* MapDemo */ = {
 			isa = PBXGroup;
 			children = (
+				80041DE51A7E859C00C26C2C /* AddCar.swift */,
 				80AD74E81A5F2872002B48CA /* AppDelegate.swift */,
 				80B1AD591A6090B700833DD5 /* Emails.xcdatamodeld */,
 				80AD75251A5F2E93002B48CA /* Bring.m */,
@@ -290,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80AD75261A5F2E93002B48CA /* Bring.m in Sources */,
+				80041DE61A7E859C00C26C2C /* AddCar.swift in Sources */,
 				80AD74EB1A5F2872002B48CA /* ViewController.swift in Sources */,
 				80B1AD561A6076A000833DD5 /* UserListController.swift in Sources */,
 				80B1AD581A608A3900833DD5 /* MyTableViewCell.swift in Sources */,

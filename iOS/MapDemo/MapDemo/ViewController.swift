@@ -44,6 +44,12 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         } else {
           //  self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
         }
+        let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int
+        if (carsNumber < 1) {
+            self.performSegueWithIdentifier("add_car", sender: self)
+        } else {
+            //  self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
+        }
     }
     
     override func viewDidLoad() {
@@ -228,7 +234,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         
         
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-     
+        prefs.setInteger(0, forKey: "HOWMANYCARS")
         prefs.setInteger(0, forKey: "ISLOGGEDIN")
         prefs.synchronize()
         

@@ -168,7 +168,7 @@ class Login: UIViewController, UITextFieldDelegate {
                     println(description)
                 if (flag == "True"){
                     println("activating pin")
-                    self.VerifyButton.enabled=true
+                    self.VerifyButton.enabled=false
                     self.activatePin()
                     }
                 else{
@@ -294,7 +294,8 @@ class Login: UIViewController, UITextFieldDelegate {
                             println(description)
                             if (flag == "True"){
                                 var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                                prefs.setObject(self.PinTextField.text, forKey: "USERNAME")
+                                prefs.setObject(self.PinTextField.text, forKey: "PIN")
+                                
                                 prefs.setObject(self.EmailTextField.text, forKey: "EMAIL")
                                 prefs.setInteger(1, forKey: "ISLOGGEDIN")
                                 prefs.synchronize()

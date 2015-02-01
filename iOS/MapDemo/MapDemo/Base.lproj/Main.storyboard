@@ -89,11 +89,12 @@
                         <outlet property="PButton" destination="GNh-HT-5lZ" id="S4u-wV-Jfa"/>
                         <outlet property="Running" destination="nJD-3G-6OZ" id="GgS-qT-wxh"/>
                         <segue destination="Qu7-uJ-1Ad" kind="modal" identifier="goto_login" id="ebg-zw-Dui"/>
+                        <segue destination="5f9-IH-U2Z" kind="modal" identifier="add_car" id="HTR-2Y-p6f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="103" y="133"/>
+            <point key="canvasLocation" x="141" y="209"/>
         </scene>
         <!--Registration-->
         <scene sceneID="hIb-hQ-rWj">
@@ -173,7 +174,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJ5-Wv-23K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="121" y="846"/>
+            <point key="canvasLocation" x="-163" y="924"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gZy-KY-JMA">
@@ -222,6 +223,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNf-ap-coh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="537" y="209"/>
+        </scene>
+        <!--Add First Car-->
+        <scene sceneID="PlT-xl-J2T">
+            <objects>
+                <viewController title="Add First Car" id="5f9-IH-U2Z" customClass="AddCar" customModule="MapDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OfM-2S-Q52"/>
+                        <viewControllerLayoutGuide type="bottom" id="w29-Zc-cC5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XWy-tV-rra">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add you first car" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BzR-fN-MQv">
+                                <rect key="frame" x="74" y="102" width="127" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nz2-dR-sBE">
+                                <rect key="frame" x="74" y="151" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Insert your car model" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hrl-VA-wRz">
+                                <rect key="frame" x="74" y="182" width="163" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXF-Tr-H3V">
+                                <rect key="frame" x="221" y="235" width="49" height="30"/>
+                                <state key="normal" title="Go On!">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="AddACar" destination="5f9-IH-U2Z" eventType="touchUpInside" id="Gol-bL-pPW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="CarModel" destination="nz2-dR-sBE" id="yDK-bg-GGZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U4V-M9-oIW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="481" y="911"/>
         </scene>
     </scenes>
     <resources>
