@@ -18,27 +18,14 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 15/01/15.
  */
-public class Map extends Fragment{
+public class Group extends Fragment{
 
-    private GoogleMap googleMap;
-
-    public Map() {}
+    public Group() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
-        setUpMap();
+        View rootView = inflater.inflate(R.layout.fragment_group, container, false);
+        Tools.setUpButtonActionBar((ActionBarActivity) getActivity());
         return rootView;
-    }
-
-    private void setUpMap(){
-        if (googleMap == null) {
-            googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
-            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            googleMap.setMyLocationEnabled(true);
-
-            new AsyncTaskLocationMap().execute(googleMap,getActivity());
-        }
     }
 }

@@ -38,10 +38,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/park"
-        android:onClick="sendPosition"/>
+        android:onClick="onClick_Parking"/>
 
     <Button
-        android:id="@+id/toGroup"
+        android:id="@+id/toCreate"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"
@@ -49,7 +49,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/plus"
-        android:onClick="manageGroup"/>
+        android:onClick="onClick_Plus"/>
 </RelativeLayout>
 
 

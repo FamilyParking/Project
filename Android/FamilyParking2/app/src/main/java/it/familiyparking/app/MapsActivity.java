@@ -168,7 +168,7 @@ public class MapsActivity extends FragmentActivity {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 18.0f));
     }
 
-    public void sendPosition(View v) {
+    /*public void sendPosition(View v) {
 
         tr.send(new HitBuilders.EventBuilder()
                 .setCategory("SendigPosition")
@@ -228,16 +228,16 @@ public class MapsActivity extends FragmentActivity {
         else{
             Tools.createToast(this, "No available connection!", Toast.LENGTH_LONG);
         }
-    }
+    }*/
 
-    public void manageGroup(View v) {
+    /*public void manageGroup(View v) {
 
         relativeTwoWayView.setVisibility(View.GONE);
 
         Intent toManageGroup = new Intent(this,ManageGroupActivity.class);
         startActivity(toManageGroup);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
+    }*/
 
     private void resetCustomHorizontal(){
         relativeTwoWayView.setVisibility(View.GONE);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,7 +32,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
             });
 
             try{
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
             catch(InterruptedException e){
                 Log.e("AsyncTaskLocationMap",e.getMessage());

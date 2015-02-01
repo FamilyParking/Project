@@ -277,10 +277,31 @@ public class Tools {
         }
     }
 
-    public static void activeAnalytic(Context context){
+    public static void setUpButtonActionBar(ActionBarActivity activity){
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            android.app.ActionBar actionBar = activity.getActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        } else{
+            android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    public static void resetUpButtonActionBar(ActionBarActivity activity){
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            android.app.ActionBar actionBar = activity.getActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        } else{
+            android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    public static Tracker activeAnalytic(Context context){
         GoogleAnalytics ga = GoogleAnalytics.getInstance(context);
         Tracker tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
         tr.enableAutoActivityTracking(true);
         tr.enableExceptionReporting(true);
+        return tr;
     }
 }
