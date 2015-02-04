@@ -21,11 +21,13 @@ import it.familiyparking.app.utility.Tools;
 public class CustomCursorAdapter extends CursorAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
+    private View.OnClickListener listener;
 
-    public CustomCursorAdapter(Context context, Cursor c, int flags) {
+    public CustomCursorAdapter(Context context, Cursor c, int flags, View.OnClickListener l) {
         super(context, c, flags);
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
+        listener = l;
     }
 
     @Override
@@ -57,6 +59,8 @@ public class CustomCursorAdapter extends CursorAdapter {
         else{
             relativeContact.setVisibility(View.GONE);
             buttonAdd.setVisibility(View.VISIBLE);
+            buttonAdd.setClickable(true);
+            buttonAdd.setOnClickListener(listener);
         }
     }
 

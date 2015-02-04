@@ -28,6 +28,8 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -127,7 +129,7 @@ public class Tools {
                 photo_iv.setImageBitmap(thumbnail);
             }
             else{
-                photo_iv.setImageResource(R.drawable.userw);
+                photo_iv.setImageResource(R.drawable.user);
             }
         }
 
@@ -210,15 +212,6 @@ public class Tools {
         return id;
     }
 
-    public static void createContactDetailDialog(Contact contact,FragmentManager fragmentManager, int activity_id){
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("contact",contact);
-        bundle.putInt("activity",activity_id);
-        ContactDetailDialog dialog = new ContactDetailDialog();
-        dialog.setArguments(bundle);
-        dialog.show(fragmentManager, "");
-    }
-
     public static String getActivtyName(Activity activity) {
         return activity.getClass().getSimpleName();
     }
@@ -273,5 +266,10 @@ public class Tools {
         }
 
         return output;
+    }
+
+    public static void closeKeyboard(View v, Activity activity){
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }

@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity {
         listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Tools.createContactDetailDialog(group.get(position),getFragmentManager(),1);
+               // Tools.createContactDetailDialog(group.get(position),getFragmentManager(),1);
             }
         });
 

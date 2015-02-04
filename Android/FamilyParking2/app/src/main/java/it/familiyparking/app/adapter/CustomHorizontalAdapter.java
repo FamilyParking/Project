@@ -47,25 +47,18 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
         if(contact.hasPhoto())
             Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_Id()));
         else
-            photo.setImageResource(R.drawable.userw);
+            photo.setImageResource(R.drawable.user);
 
         return convertView;
     }
 
-    public void add(Contact contact,boolean flag_db,boolean flag_toast) {
+    public void add(Contact contact,boolean flag_toast) {
         if(!set.contains(contact.getEmail())) {
             set.add(contact.getEmail());
             super.add(contact);
 
             if(flag_toast)
                 Tools.createToast(getContext(),"Contact added to group!", Toast.LENGTH_SHORT);
-
-            if(flag_db) {
-                DataBaseHelper databaseHelper = new DataBaseHelper(getContext());
-                final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-                GroupTable.insertContact(db, contact);
-                db.close();
-            }
         }
         else{
             if(flag_toast)
@@ -77,9 +70,5 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
     public void remove(Contact contact) {
         super.remove(contact);
         set.remove(contact.getEmail());
-        DataBaseHelper databaseHelper = new DataBaseHelper(getContext());
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        GroupTable.deleteContact(db,contact.getEmail());
-        db.close();
     }
 }

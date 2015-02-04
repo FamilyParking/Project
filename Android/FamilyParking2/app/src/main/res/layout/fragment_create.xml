@@ -19,7 +19,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/plus"/>
+            android:background="@drawable/add_group"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -29,10 +29,11 @@
             android:layout_centerVertical="true"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:background="@color/white">
+            android:background="@drawable/rectangle_signin">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/soft_gray"
                 android:text="@string/new_group"/>
         </RelativeLayout>
     </RelativeLayout>
@@ -52,7 +53,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/plus"/>
+            android:background="@drawable/add_car"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -62,10 +63,11 @@
             android:layout_centerVertical="true"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:background="@color/white">
+            android:background="@drawable/rectangle_signin">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/soft_gray"
                 android:text="@string/new_car"/>
         </RelativeLayout>
     </RelativeLayout>

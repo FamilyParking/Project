@@ -15,6 +15,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import it.familiyparking.app.fragment.Create;
 import it.familiyparking.app.fragment.Car;
+import it.familiyparking.app.fragment.CreateGroup;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Group;
 import it.familiyparking.app.fragment.Map;
@@ -30,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
     private GhostMode ghostMode;
     private Create create;
     private SignIn signIn;
+    private CreateGroup createGroup;
     private Tracker tracker;
     private boolean counterclockwise = false;
     private boolean inflateMenu = false;
@@ -117,6 +119,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClick_NewGroup(View v) {
         managePlusButton();
+        createGroup = new CreateGroup();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, createGroup).commit();
     }
 
     public void onClick_NewCar(View v) {
@@ -141,8 +145,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClick_SignIn(View v){
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        Tools.closeKeyboard(v,this);
 
         inflateMenu = true;
         this.invalidateOptionsMenu();

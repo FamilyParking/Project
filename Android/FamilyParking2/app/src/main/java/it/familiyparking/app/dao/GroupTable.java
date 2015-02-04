@@ -13,29 +13,35 @@ import it.familiyparking.app.serverClass.Contact;
 public class GroupTable {
 	
 	public static final String ID = "ID";
-    public static final String NAME = "NAME";
+    public static final String GROUP_ID = "GROUP_ID";
+    public static final String GROUP_NAME = "GROUP_NAME";
+    public static final String CONTACT_NAME = "CONTACT_NAME";
     public static final String EMAIL = "EMAIL";
     public static final String HAS_PHOTO = "HAS_PHOTO";
     public static final String PHOTO_ID = "PHOTO_ID";
-	public static final String[] COLUMNS = new String[]{ID,NAME,EMAIL,HAS_PHOTO,PHOTO_ID};
+	public static final String[] COLUMNS = new String[]{ID,GROUP_ID,GROUP_NAME,CONTACT_NAME,EMAIL,HAS_PHOTO,PHOTO_ID};
 
     public static final String TABLE = "group_table";
 
-    public static void insertContact(SQLiteDatabase db,Contact contact){
+    public static void insertContact(SQLiteDatabase db,String groupID, String group_name, Contact contact){
         String[] data = contact.getArray();
 
         ContentValues v = new ContentValues();
         for(int i=0;i<COLUMNS.length;i++){
-            v.put(COLUMNS[i], data[i]);
+            switch (i){
+                case 1 : v.put(COLUMNS[i], groupID); break;
+                case 2 : v.put(COLUMNS[i], group_name); break;
+                default: v.put(COLUMNS[i], data[i]);
+            }
         }
 
         db.insert(TABLE, null, v);
     }
 
-    public static ArrayList<Contact> getGroup(SQLiteDatabase db) throws SQLException{
+    public static ArrayList<Contact> getGroup(SQLiteDatabase db,String groupID, String group_name) throws SQLException{
         ArrayList<Contact> list = new ArrayList<>();
 
-        Cursor c = db.query(true, TABLE, COLUMNS, null, null, null, null, null, null);
+        Cursor c = db.query(true, TABLE, COLUMNS, GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[]{groupID,group_name}, null, null, null, null);
 
         if((c != null) && (c.getCount() > 0)){
 
@@ -50,8 +56,8 @@ public class GroupTable {
         return list;
     }
 
-    public static String[] getEmailGroup(SQLiteDatabase db) throws SQLException{
-        Cursor c = db.query(true, TABLE, new String[]{EMAIL}, null, null, null, null, null, null);
+    public static String[] getEmailGroup(SQLiteDatabase db,String groupID, String group_name) throws SQLException{
+        Cursor c = db.query(true, TABLE, COLUMNS, GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[]{groupID,group_name}, null, null, null, null);
 
         String[] list = null;
 
@@ -71,8 +77,12 @@ public class GroupTable {
         return list;
     }
 
-    public static boolean deleteContact(SQLiteDatabase db,String email){
-        return db.delete(TABLE, EMAIL + " = ?", new String[] { email }) > 0;
+    public static boolean deleteGroup(SQLiteDatabase db,String groupID,String group_name){
+        return db.delete(TABLE, GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[] {groupID,group_name}) > 0;
+    }
+
+    public static boolean deleteContact(SQLiteDatabase db,String email,String groupID,String group_name){
+        return db.delete(TABLE, EMAIL + " = ? AND "+GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[] {email,groupID,group_name}) > 0;
     }
 
     public static boolean deleteGroupTable(SQLiteDatabase db){

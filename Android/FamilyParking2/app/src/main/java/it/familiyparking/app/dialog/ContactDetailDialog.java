@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import it.familiyparking.app.ManageGroupActivity;
 import it.familiyparking.app.MapsActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Contact;
@@ -76,7 +75,7 @@ public class ContactDetailDialog extends DialogFragment{
                     ((MapsActivity) getActivity()).removeContactGroup(contact);
                 }
                 else if(activity_id == 2) {
-                    ((ManageGroupActivity) getActivity()).removeContactGroup(contact);
+                    //((ManageGroupActivity) getActivity()).removeContactGroup(contact);
                 }
 
                 dialog.dismiss();

@@ -1,0 +1,275 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/soft_gray_transparent"
+    android:clickable="true"
+    tools:context=".MainActivity$Create">
+
+    <RelativeLayout
+        android:id="@+id/relative_new_group_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:padding="15dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+
+        <RelativeLayout
+            android:id="@+id/relative_insert_name_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+            <ImageView
+                android:id="@+id/new_group_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/add_group"/>
+
+            <EditText
+                android:id="@+id/new_group_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/new_group_iv"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:background="@color/transparent"
+                android:singleLine="true"
+                android:hint="@string/name_group"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/group_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/relative_insert_name_group"
+            android:visibility="gone">
+            <Button
+                android:id="@+id/check_group_bt"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:background="@drawable/ic_check_grey"/>
+
+            <org.lucasr.twowayview.TwoWayView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/group_list"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/check_group_bt"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                style="@style/TwoWayView"
+                android:drawSelectorOnTop="false"
+                tools:context=".ManageGroupDialog"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/finder_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/relative_new_group_container"
+        android:padding="15dp"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+
+        <ImageView
+            android:id="@+id/find_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/abc_ic_search_api_mtrl_alpha"
+            android:backgroundTint="@color/blue" />
+
+        <EditText
+            android:id="@+id/find_contact_edt"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:hint="@string/find_contact"
+            android:textColorHint="@color/gray"
+            android:background="@color/transparent"
+            android:singleLine="true"
+            android:layout_toLeftOf="@+id/find_iv"
+            android:layout_toStartOf="@+id/find_iv" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/contact_detail_container_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/finder_rl"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/abc_popup_background_mtrl_mult">
+
+            <RelativeLayout
+                android:id="@+id/contact_rl_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp">
+
+                <ImageView
+                    android:id="@+id/contact_image_iv_detail"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/user"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/contact_image_iv_detail"
+                    android:layout_toEndOf="@id/contact_image_iv_detail">
+
+                    <TextView
+                        android:id="@+id/contact_name_tv_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Francesco Nobilia"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/contact_email_tv_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/contact_name_tv_detail"
+                        android:text="f.nobilia@gmail.com"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/gray"
+                android:layout_below="@id/contact_rl_detail"/>
+
+            <RelativeLayout
+                android:id="@+id/button_rl_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/line">
+
+
+                <RelativeLayout
+                    android:id="@+id/back_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/image_back"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:background="@android:drawable/ic_menu_revert"
+                        android:backgroundTint="@color/gray"/>
+
+                    <TextView
+                        android:id="@+id/back_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/image_back"
+                        android:layout_centerVertical="true"
+                        android:text="@string/back"
+                        android:textSize="15sp"
+                        android:textColor="@color/gray"
+                        android:background="@color/transparent"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/delete_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/image_delete"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@android:drawable/ic_menu_delete"
+                        android:backgroundTint="@color/gray"/>
+
+                    <TextView
+                        android:id="@+id/delete_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/image_delete"
+                        android:text="@string/delete"
+                        android:textSize="15sp"
+                        android:textColor="@color/gray"
+                        android:background="@color/transparent"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/contact_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:layout_below="@id/finder_rl"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+        <ListView
+            android:id="@+id/contact_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"/>
+    </RelativeLayout>
+
+</RelativeLayout>
+
+
