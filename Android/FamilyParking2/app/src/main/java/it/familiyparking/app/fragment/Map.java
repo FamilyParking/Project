@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -21,24 +22,58 @@ import it.familiyparking.app.utility.Tools;
 public class Map extends Fragment{
 
     private GoogleMap googleMap;
+    private Button toPark;
+    private Button toCreate;
+    private boolean afterPositionSettings;
 
     public Map() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+
         Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
+
         setUpMap();
+
+        toPark = (Button)rootView.findViewById(R.id.toPark);
+        toCreate = (Button)rootView.findViewById(R.id.toCreate);
+
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(afterPositionSettings){
+            if(Tools.isPositionHardwareEnable(getActivity()))
+                afterPositionSettings = false;
+            else
+                Tools.showClosedInfoAlert(getActivity());
+        }
     }
 
     private void setUpMap(){
         if (googleMap == null) {
             googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            googleMap.setMyLocationEnabled(true);
-
-            new AsyncTaskLocationMap().execute(googleMap,getActivity());
         }
+    }
+
+    public void enableGraphics(){
+        if(!Tools.isPositionHardwareEnable(getActivity())){
+            afterPositionSettings = true;
+            Tools.showAlertPosition(getActivity());
+        }
+
+        googleMap.setMyLocationEnabled(true);
+        new AsyncTaskLocationMap().execute(googleMap,getActivity());
+
+        toPark.setClickable(true);
+        toPark.setVisibility(View.VISIBLE);
+
+        toCreate.setClickable(true);
+        toCreate.setVisibility(View.VISIBLE);
     }
 }

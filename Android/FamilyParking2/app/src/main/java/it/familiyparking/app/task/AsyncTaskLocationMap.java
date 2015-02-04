@@ -2,11 +2,14 @@ package it.familiyparking.app.task;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 18/12/14.

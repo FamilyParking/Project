@@ -17,5 +17,7 @@
     <string name="action_ghostmode">Ghostmode</string>
     <string name="new_group">New Group</string>
     <string name="new_car">New Car</string>
+    <string name="name_surname">Name and Surname</string>
+    <string name="email">Email</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package it.familiyparking.app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.analytics.Tracker;
 
@@ -16,6 +18,7 @@ import it.familiyparking.app.fragment.Car;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Group;
 import it.familiyparking.app.fragment.Map;
+import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -26,8 +29,10 @@ public class MainActivity extends ActionBarActivity {
     private Car car;
     private GhostMode ghostMode;
     private Create create;
+    private SignIn signIn;
     private Tracker tracker;
     private boolean counterclockwise = false;
+    private boolean inflateMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +46,17 @@ public class MainActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             map = new Map();
             getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
+
+            signIn = new SignIn();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
         }
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if(inflateMenu)
+            getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -129,5 +138,18 @@ public class MainActivity extends ActionBarActivity {
             ft.add(R.id.container,create).commit();
         }
         counterclockwise = !(counterclockwise);
+    }
+
+    public void onClick_SignIn(View v){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+        inflateMenu = true;
+        this.invalidateOptionsMenu();
+
+        map.enableGraphics();
+
+        getSupportFragmentManager().beginTransaction().remove(signIn).commit();
+        signIn = null;
     }
 }

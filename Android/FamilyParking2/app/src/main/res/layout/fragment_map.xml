@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity$Map">
+    tools:context=".MainActivity$Map">
 
     <fragment
         android:id="@+id/map"
@@ -38,6 +38,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/park"
+        android:visibility="invisible"
+        android:clickable="false"
         android:onClick="onClick_Parking"/>
 
     <Button
@@ -49,6 +51,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/plus"
+        android:visibility="invisible"
+        android:clickable="false"
         android:onClick="onClick_Plus"/>
 </RelativeLayout>
 

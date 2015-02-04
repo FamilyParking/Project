@@ -1,18 +1,14 @@
 package it.familiyparking.app;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,13 +22,7 @@ import org.lucasr.twowayview.TwoWayView;
 import java.util.ArrayList;
 
 import it.familiyparking.app.adapter.CustomHorizontalAdapter;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.dialog.ProgressCircleDialog;
-import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
-import it.familiyparking.app.service.LocationService;
-import it.familiyparking.app.task.AsyncTaskPosition;
 import it.familiyparking.app.task.RetrieveGroup;
 import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
@@ -40,7 +30,6 @@ import it.familiyparking.app.utility.Tools;
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap googleMap;
-    private LocationService locationService;
     private double[] position;
     private int position_attempt = 30;
     private Tracker tr;
@@ -71,17 +60,12 @@ public class MapsActivity extends FragmentActivity {
 
         setUpFragmentMap();
 
-        locationService = new LocationService(this);
-
-        position = Tools.getLocationAlert(locationService, this);
-
         context = this;
 
         if(position != null){
             setUpMap();
         }
         else{
-            Tools.showSettingsAlert(this);
             retrieve_position_flag = true;
             retrieve_position_count++;
         }
@@ -120,7 +104,7 @@ public class MapsActivity extends FragmentActivity {
             for (int i = 0; i < position_attempt; i++) {
                 if (position == null) {
 
-                    position = Tools.getLocation(locationService, this);
+
 
                     if (position != null) {
                         setUpMap();
@@ -131,9 +115,7 @@ public class MapsActivity extends FragmentActivity {
                 }
             }
 
-            if(forcedClosure){
-                Tools.showInfoAlert(this);
-            }
+
         }
         else{
             retrieve_position_count++;

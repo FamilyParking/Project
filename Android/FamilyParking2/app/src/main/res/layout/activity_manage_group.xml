@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:orientation="vertical"
-    android:background="@color/trasparent"
+    android:background="@color/soft_gray_transparent"
     android:onClick="closeActivity"
     android:clickable="true"
     tools:context=".ManageGroupDialog">
@@ -59,7 +59,7 @@
             android:textColor="@color/black"
             android:hint="@string/find_contact"
             android:textColorHint="@color/gray"
-            android:background="@color/trasparent"
+            android:background="@color/transparent"
             android:singleLine="true"
             android:layout_toLeftOf="@+id/find_iv"
             android:layout_toStartOf="@+id/find_iv" />

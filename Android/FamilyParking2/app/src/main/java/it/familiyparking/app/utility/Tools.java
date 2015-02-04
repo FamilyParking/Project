@@ -16,7 +16,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -38,7 +37,6 @@ import com.google.android.gms.analytics.Tracker;
 import it.familiyparking.app.R;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.serverClass.Contact;
-import it.familiyparking.app.service.LocationService;
 
 
 /**
@@ -52,38 +50,14 @@ public class Tools {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private static double[] getLocationGPS(LocationService locationService,Context context){
-        Location gpsLocation = locationService.getLocation(LocationManager.GPS_PROVIDER);
-
-        if (gpsLocation != null) {
-            double[] position = {gpsLocation.getLatitude(),gpsLocation.getLongitude()};
-
-            return position;
-        }
-
-        return null;
-    }
-
-    private static double[] getLocationNetwork(LocationService locationService,Context context){
-        Location nwLocation = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
-
-        if (nwLocation != null) {
-            double[] position = {nwLocation.getLatitude(),nwLocation.getLongitude()};
-
-            return position;
-        }
-
-        return null;
-    }
-
-    public static void showSettingsAlert(final Context context) {
+    public static void showAlertPosition(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setCancelable(false);
 
         alertDialog.setTitle("Location services disabled");
 
-        alertDialog.setMessage(getAppName(context)+" needs access to your location. Please turn on location access.");
+        alertDialog.setMessage(getAppName(context)+" needs access to your location. Please turn on location access, otherwise the app will be closed.");
 
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
@@ -104,7 +78,15 @@ public class Tools {
         alertDialog.show();
     }
 
-    public static void showInfoAlert(final Context context) {
+    public static boolean isPositionHardwareEnable(Context context){
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        return (gps_enabled || network_enabled);
+    }
+
+    public static void showClosedInfoAlert(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setCancelable(false);
@@ -122,30 +104,6 @@ public class Tools {
                 });
 
         alertDialog.show();
-    }
-
-    public static double[] getLocationAlert(LocationService locationService,Context context){
-        double[] position;
-
-        position = getLocationGPS(locationService, context);
-
-        if(position == null) {
-            position = getLocationNetwork(locationService, context);
-        }
-
-        return position;
-    }
-
-    public static double[] getLocation(LocationService locationService,Context context){
-        double[] position;
-
-        position = getLocationGPS(locationService, context);
-
-        if(position == null) {
-            position = getLocationNetwork(locationService, context);
-        }
-
-        return position;
     }
 
     public static String getAppName(Context context){
@@ -303,5 +261,17 @@ public class Tools {
         tr.enableAutoActivityTracking(true);
         tr.enableExceptionReporting(true);
         return tr;
+    }
+
+    public static String removeSpace(String input){
+        char[] array = input.toCharArray();
+        String output = "";
+
+        for(int i=0; i<array.length; i++){
+            if(array[i]!=' ')
+                output = output + array[i];
+        }
+
+        return output;
     }
 }
