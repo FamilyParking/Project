@@ -30,6 +30,7 @@ public class SignIn extends Fragment implements TextWatcher{
     private EditText email;
     private Button signIn;
     private boolean correctInput;
+    private boolean isRotated;
 
     public SignIn() {}
 
@@ -46,6 +47,7 @@ public class SignIn extends Fragment implements TextWatcher{
         email.addTextChangedListener(this);
 
         correctInput = false;
+        isRotated = false;
 
         signIn = (Button)rootView.findViewById(R.id.signIn_b);
 
@@ -63,15 +65,19 @@ public class SignIn extends Fragment implements TextWatcher{
         if(email.getText().toString().contains("@") && (Tools.removeSpace(name_surname.getText().toString()).length() > 0)) {
             correctInput = true;
 
-            Animation rotate_clockwise = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_clockwise);
-            signIn.startAnimation(rotate_clockwise);
+            if(!isRotated) {
+                Animation rotate_clockwise = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_clockwise);
+                signIn.startAnimation(rotate_clockwise);
+                isRotated = true;
 
-            new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration()-1,signIn,getActivity(),R.drawable.arrow_blue_right,true);
+                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration() - 1, signIn, getActivity(), R.drawable.arrow_blue_right, true);
+            }
         }
         else {
             if(correctInput) {
                 Animation rotate_clockwise = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_counterclockwise);
                 signIn.startAnimation(rotate_clockwise);
+                isRotated = false;
 
                 new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration()-1,signIn,getActivity(),R.drawable.arrow_blue_up,false);
             }

@@ -1,10 +1,8 @@
 package it.familiyparking.app.fragment;
 
-import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -13,7 +11,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +26,13 @@ import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 
-import it.familiyparking.app.MapsActivity;
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomCursorAdapter;
 import it.familiyparking.app.adapter.CustomHorizontalAdapter;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.task.DoSaveGroup;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -338,37 +335,17 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     private void saveGroup(){
-        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "","Saving group",false);
+        Tools.closeKeyboard(rootView,getActivity());
 
-        new Thread(new Runnable() {
-            @Override
-            public void run(){
-                String group_name = editTextName.getText().toString();
-                String groupID = "123456789";
+        ProgressDialogCircular progressDialog = new ProgressDialogCircular();
+        ((MainActivity)getActivity()).setProgressDialogCircular(progressDialog);
 
-                /***************/
-                /* CALL SERVER */
-                /***************/
+        Bundle bundle = new Bundle();
+        bundle.putString("message", "Creating group ...");
+        progressDialog.setArguments(bundle);
 
-                DataBaseHelper databaseHelper = new DataBaseHelper(getActivity());
-                final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-                GroupTable.deleteGroup(db,groupID,group_name);
-
-                for(Contact contact : group)
-                    GroupTable.insertContact(db,groupID,group_name,contact);
-
-                db.close();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        progressDialog.dismiss();
-                    }
-                });
-            }
-        }).start();
-
+        new Thread(new DoSaveGroup(getActivity(),editTextName.getText().toString(),null,group,progressDialog)).start();
     }
 }

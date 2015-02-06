@@ -41,7 +41,7 @@ public class GroupTable {
     public static ArrayList<Contact> getGroup(SQLiteDatabase db,String groupID, String group_name) throws SQLException{
         ArrayList<Contact> list = new ArrayList<>();
 
-        Cursor c = db.query(true, TABLE, COLUMNS, GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[]{groupID,group_name}, null, null, null, null);
+        Cursor c = db.query(true, TABLE, COLUMNS, GROUP_ID+" = ? OR "+GROUP_NAME+" = ?", new String[]{groupID,group_name}, null, null, null, null);
 
         if((c != null) && (c.getCount() > 0)){
 
@@ -56,8 +56,20 @@ public class GroupTable {
         return list;
     }
 
-    public static String[] getEmailGroup(SQLiteDatabase db,String groupID, String group_name) throws SQLException{
-        Cursor c = db.query(true, TABLE, COLUMNS, GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[]{groupID,group_name}, null, null, null, null);
+    public static String getGroupIDbyName(SQLiteDatabase db, String group_name) throws SQLException{
+        Cursor c = db.query(true, TABLE, new String[]{GROUP_ID}, GROUP_NAME+" = ?", new String[]{group_name}, null, null, null, "1");
+
+        if((c != null) && (c.getCount() > 0) && (c.moveToNext()))
+            return c.getString(0);
+
+        c.close();
+
+        return null
+                ;
+    }
+
+    public static String[] getEmailGroup(SQLiteDatabase db,String groupID) throws SQLException{
+        Cursor c = db.query(true, TABLE, COLUMNS, GROUP_ID+" = ? ", new String[]{groupID}, null, null, null, null);
 
         String[] list = null;
 
@@ -78,11 +90,11 @@ public class GroupTable {
     }
 
     public static boolean deleteGroup(SQLiteDatabase db,String groupID,String group_name){
-        return db.delete(TABLE, GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[] {groupID,group_name}) > 0;
+        return db.delete(TABLE, GROUP_ID+" = ? ", new String[] {groupID}) > 0;
     }
 
-    public static boolean deleteContact(SQLiteDatabase db,String email,String groupID,String group_name){
-        return db.delete(TABLE, EMAIL + " = ? AND "+GROUP_ID+" = ? "+GROUP_NAME+" = ?", new String[] {email,groupID,group_name}) > 0;
+    public static boolean deleteContact(SQLiteDatabase db,String email,String groupID){
+        return db.delete(TABLE, EMAIL + " = ? AND "+GROUP_ID+ " = ? ", new String[] {email,groupID}) > 0;
     }
 
     public static boolean deleteGroupTable(SQLiteDatabase db){

@@ -35,7 +35,8 @@ public class RetrieveGroup implements Runnable {
 
         DataBaseHelper databaseHelper = new DataBaseHelper(context);
         final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        ArrayList<Contact> list = GroupTable.getGroup(db);
+        //ArrayList<Contact> list = GroupTable.getGroup(db);
+        ArrayList<Contact> list = null;
         db.close();
 
         for(final Contact contact : list) {
