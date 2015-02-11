@@ -5,12 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-
-import it.familiyparking.app.R;
-
 /**
  * Created by francesco on 18/12/14.
  */

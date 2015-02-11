@@ -16,4 +16,6 @@
     <color name="soft_gray">#EEEEEE</color>
     <color name="soft_gray_transparent">#AAEEEEEE</color>
     <color name="transparent">@android:color/transparent</color>
+    <color name="purple">#9C27B0</color>
+    <color name="orange">#FF5722</color>
 </resources>

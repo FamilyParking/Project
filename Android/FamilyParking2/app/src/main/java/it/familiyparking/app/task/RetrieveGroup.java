@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.adapter.CustomHorizontalAdapter;
 import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Contact;
 
 /**

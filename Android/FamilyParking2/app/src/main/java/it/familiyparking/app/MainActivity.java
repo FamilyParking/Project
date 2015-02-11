@@ -1,9 +1,8 @@
 package it.familiyparking.app;
 
-import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -12,19 +11,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.ArrayList;
+
+import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
+import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Create;
-import it.familiyparking.app.fragment.Car;
 import it.familiyparking.app.fragment.CreateGroup;
 import it.familiyparking.app.fragment.GhostMode;
-import it.familiyparking.app.fragment.Group;
+import it.familiyparking.app.fragment.GroupFragment;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.task.DoSignIn;
@@ -34,13 +36,14 @@ import it.familiyparking.app.utility.Tools;
 public class MainActivity extends ActionBarActivity {
 
     private Map map;
-    private Group group;
-    private Car car;
+    private GroupFragment groupFragment;
+    private CarFragment car;
     private GhostMode ghostMode;
     private Create create;
     private SignIn signIn;
     private CreateGroup createGroup;
     private ProgressDialogCircular progressDialogCircular;
+    private ContactDetailDialog contactDetailDialog;
     private Tracker tracker;
     private boolean counterclockwise;
     private boolean inflateMenu;
@@ -86,19 +89,42 @@ public class MainActivity extends ActionBarActivity {
                 return true;
 
             case R.id.action_cars:
-                car = new Car();
-                replaceFragment(car);
-                return true;
+                if(car == null) {
+                    car = new CarFragment();
+                    replaceFragment(car);
+                    return true;
+                }
+                return false;
 
             case R.id.action_groups:
-                group = new Group();
-                replaceFragment(group);
-                return true;
+                if(groupFragment == null) {
+                    DataBaseHelper databaseHelper = new DataBaseHelper(this);
+                    final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+                    ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
+                    db.close();
+
+                    if (list_groupID.isEmpty()) {
+                        Tools.createToast(this, getResources().getText(R.string.group_empty), Toast.LENGTH_SHORT);
+                    } else {
+                        groupFragment = new GroupFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArrayList("groupsID", list_groupID);
+                        groupFragment.setArguments(bundle);
+
+                        replaceFragment(groupFragment);
+                    }
+
+                    return true;
+                }
+                return false;
 
             case R.id.action_ghostmode:
-                ghostMode = new GhostMode();
-                replaceFragment(ghostMode);
-                return true;
+                if(ghostMode == null) {
+                    ghostMode = new GhostMode();
+                    replaceFragment(ghostMode);
+                    return true;
+                }
+                return false;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -110,9 +136,8 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(car).commit();
             car = null;
         }
-        if((group != null)&&(group != avoid)){
-            getSupportFragmentManager().beginTransaction().remove(group).commit();
-            group = null;
+        if((groupFragment != null)&&(groupFragment != avoid)){
+            removeGroupFragment(false);
         }
         if((ghostMode != null)&&(ghostMode != avoid)){
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
@@ -200,24 +225,41 @@ public class MainActivity extends ActionBarActivity {
         progressDialogCircular = fragment;
     }
 
+    public void setContactDetailDialog(ContactDetailDialog fragment){
+        contactDetailDialog = fragment;
+    }
+
+    public void resetContactDetailDialog(){
+        contactDetailDialog = null;
+    }
+
     @Override
     public void onBackPressed() {
         if(progressDialogCircular != null){
             //Do nop
         }
+        else if(contactDetailDialog != null){
+            setMenu();
+            getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
+            contactDetailDialog = null;
+        }
         else if(createGroup != null){
+            Tools.resetUpButtonActionBar(this);
             getSupportFragmentManager().beginTransaction().remove(createGroup).commit();
             createGroup = null;
         }
         else if(car != null){
+            Tools.resetUpButtonActionBar(this);
             getSupportFragmentManager().beginTransaction().remove(car).commit();
             car = null;
         }
-        else if(group != null){
-            getSupportFragmentManager().beginTransaction().remove(group).commit();
-            group = null;
+        else if(groupFragment != null){
+            Tools.resetUpButtonActionBar(this);
+            getSupportFragmentManager().beginTransaction().remove(groupFragment).commit();
+            groupFragment = null;
         }
         else if(ghostMode != null){
+            Tools.resetUpButtonActionBar(this);
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
             ghostMode = null;
         }
@@ -235,5 +277,15 @@ public class MainActivity extends ActionBarActivity {
                 }
             }, 2000);
         }
+    }
+
+    public void removeGroupFragment(boolean flagMessage){
+        getSupportFragmentManager().beginTransaction().remove(groupFragment).commit();
+        groupFragment = null;
+
+        setMenu();
+
+        if(flagMessage)
+            Tools.createToast(this, getResources().getText(R.string.group_empty), Toast.LENGTH_SHORT);
     }
 }

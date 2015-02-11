@@ -70,6 +70,9 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
 
     private View rootView;
 
+    private View circularProgress;
+    private View findLens;
+
     private boolean addButton;
     private boolean resetText;
     private boolean resetTextFromName;
@@ -152,6 +155,9 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         relativeContactDetail = (RelativeLayout)rootView.findViewById(R.id.contact_detail_container_rl);
 
+        circularProgress = rootView.findViewById(R.id.find_progress_circular);
+        findLens = rootView.findViewById(R.id.find_iv);
+
         return rootView;
     }
 
@@ -174,6 +180,12 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        resetEditText();
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(addButton){
             MatrixCursor extras = new MatrixCursor(PROJECTION);
@@ -187,6 +199,9 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
             relativeContact.setVisibility(View.VISIBLE);
         else if(Tools.isCursorEmpty(data))
             relativeContact.setVisibility(View.GONE);
+
+        findLens.setVisibility(View.VISIBLE);
+        circularProgress.setVisibility(View.GONE);
 
         customCursorAdapter.swapCursor(data);
     }
@@ -212,6 +227,8 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
         }
         else {
             searchString = editTextFinder.getText().toString();
+            while(searchString.charAt(searchString.length()-1) == ' ')
+                searchString = searchString.substring(0,searchString.length()-1);
 
             if(!lastSearchString.equals(searchString)) {
                 lastSearchString = searchString;
@@ -219,6 +236,9 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
                 if (searchString.equals("")) {
                     relativeContact.setVisibility(View.GONE);
                 } else {
+                    findLens.setVisibility(View.GONE);
+                    circularProgress.setVisibility(View.VISIBLE);
+
                     loaderManager.restartLoader(0, null, this);
 
                     if (searchString.contains("@"))

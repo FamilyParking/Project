@@ -2,7 +2,6 @@ package it.familiyparking.app.utility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,11 +22,11 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -36,9 +35,9 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.Random;
+
 import it.familiyparking.app.R;
-import it.familiyparking.app.dialog.ContactDetailDialog;
-import it.familiyparking.app.serverClass.Contact;
 
 
 /**
@@ -271,5 +270,26 @@ public class Tools {
     public static void closeKeyboard(View v, Activity activity){
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public static int randomColor(Activity activity){
+        int color = new Random().nextInt(4);
+        switch (color){
+            case 0:
+                color = activity.getResources().getColor(R.color.purple);
+                break;
+            case 1:
+                color = activity.getResources().getColor(R.color.dark_red);
+                break;
+            case 2:
+                color = activity.getResources().getColor(R.color.orange);
+                break;
+            case 3:
+                color = activity.getResources().getColor(R.color.dark_yellow);
+                break;
+            default:
+                color = activity.getResources().getColor(R.color.sapienza);
+        }
+        return color;
     }
 }

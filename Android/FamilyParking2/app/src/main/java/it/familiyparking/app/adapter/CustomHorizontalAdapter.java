@@ -1,7 +1,6 @@
 package it.familiyparking.app.adapter;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.utility.Tools;
 
@@ -39,7 +36,7 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
         Contact contact = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.group_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_group_item, parent, false);
         }
 
         ImageView photo = (ImageView) convertView.findViewById(R.id.group_contact_image_iv);

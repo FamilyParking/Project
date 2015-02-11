@@ -11,12 +11,15 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TABLE_GROUP =
             "CREATE TABLE IF NOT EXISTS "+ GroupTable.TABLE+" ( " +
-                    GroupTable.ID+" INTEGER NOT NULL, "+
+                    GroupTable.ID+" TEXT NOT NULL, "+
                     GroupTable.GROUP_ID+" TEXT NOT NULL, "+
                     GroupTable.GROUP_NAME+" TEXT NOT NULL, "+
-                    GroupTable.EMAIL+" TEXT PRIMARY KEY, "+
+                    GroupTable.TIMESTAMP+" TEXT NOT NULL, "+
+                    GroupTable.CONTACT_NAME+" TEXT NOT NULL, "+
+                    GroupTable.EMAIL+" TEXT NOT NULL, "+
                     GroupTable.HAS_PHOTO+" INTEGER DEFAULT 0, "+
-                    GroupTable.PHOTO_ID+" TEXT NOT NULL "+" ) ; ";
+                    GroupTable.PHOTO_ID+" TEXT NOT NULL, "+
+                    "PRIMARY KEY ( "+GroupTable.GROUP_ID+" , "+GroupTable.EMAIL+" )"+" ) ; ";
 
     public static final String DROP_TABLE_GROUP = "DROP TABLE IF EXISTS "+ GroupTable.TABLE+" ;";
 

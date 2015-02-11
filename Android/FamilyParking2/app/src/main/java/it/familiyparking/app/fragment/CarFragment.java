@@ -7,25 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-
 import it.familiyparking.app.R;
-import it.familiyparking.app.task.AsyncTaskLocationMap;
 import it.familiyparking.app.utility.Tools;
 
 
 /**
  * Created by francesco on 15/01/15.
  */
-public class Group extends Fragment{
+public class CarFragment extends Fragment{
 
-    public Group() {}
+    public CarFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_group, container, false);
-        Tools.setUpButtonActionBar((ActionBarActivity) getActivity());
+        View rootView = inflater.inflate(R.layout.fragment_car, container, false);
+        Tools.setUpButtonActionBar((ActionBarActivity)getActivity());
         return rootView;
     }
 }

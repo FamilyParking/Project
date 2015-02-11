@@ -1,6 +1,5 @@
 package it.familiyparking.app.task;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 

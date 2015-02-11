@@ -17,19 +17,23 @@ public class Car{
     @SerializedName("longitude")
     private String longitude;
 
-    @SerializedName("email")
-    private String[] email;
-
     @SerializedName("ID")
     private String id;
 
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("brand")
+    private String brand;
+
     public Car(){}
 
-    public Car(double[] position,String[] email,String id){
-        this.latitude = Double.toString(position[0]);
-        this.longitude = Double.toString(position[1]);
-        this.email = email;
+    public Car(String latitude, String longitude, String id, String name, String brand) {
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.id = id;
+        this.name = name;
+        this.brand = brand;
     }
 
     public String getLatitude() {
@@ -40,11 +44,15 @@ public class Car{
         return longitude;
     }
 
-    public String[] getEmail() {
-        return email;
-    }
-
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBrand() {
+        return brand;
     }
 }

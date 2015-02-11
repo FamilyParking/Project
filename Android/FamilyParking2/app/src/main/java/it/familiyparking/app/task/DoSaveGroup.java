@@ -1,6 +1,5 @@
 package it.familiyparking.app.task;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
@@ -36,36 +35,33 @@ public class DoSaveGroup implements Runnable {
     public void run() {
         Looper.prepare();
 
-        while(!progressDialogCircular.updateMessage("Contact server ..."));
+        DataBaseHelper databaseHelper = new DataBaseHelper(activity);
+        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
+        if(groupID != null) {
+            GroupTable.deleteGroup(db, groupID);
+        }
+
+        /************************************************************************************/
+        /* Aggiungere alla lista dei contatti da inviare l'utente che sta utilizzando l'app */
+        /************************************************************************************/
         /***************/
         /* CALL SERVER */
         /***************/
+        /**************************************/
+        /**/groupID = "0123456789";         /**/
+        /**/String timestamp = "0123456789";/**/
+        /**************************************/
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        while(!progressDialogCircular.updateMessage("Save data ..."));
-
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity);
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-
-        /*GroupTable.deleteGroup(db, groupID, group_name);
-
-        for(Contact contact : group)
-            GroupTable.insertContact(db,groupID,group_name,contact);*/
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        for (Contact contact : group)
+            GroupTable.insertContact(db, groupID, group_name, contact, timestamp);
 
         db.close();
-
-        while(!progressDialogCircular.updateMessage("Finish!"));
 
         activity.getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
         activity.closeCreateGroup();

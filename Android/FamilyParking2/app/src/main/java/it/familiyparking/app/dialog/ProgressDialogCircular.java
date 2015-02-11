@@ -3,7 +3,6 @@ package it.familiyparking.app.dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,11 @@ public class ProgressDialogCircular extends Fragment{
         this.text = args.getString("message");
     }
 
-    public boolean updateMessage(String message){
+    public void updateMessage(String message){
+        while(!updateMessagePrivate(message));
+    }
+
+    private boolean updateMessagePrivate(String message){
         this.text = message;
         if(textView != null) {
             getActivity().runOnUiThread(new Runnable() {
