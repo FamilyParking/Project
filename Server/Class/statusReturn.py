@@ -93,6 +93,12 @@ class StatusReturn:
             error_data["description"] = " Car updated with success"
             error_data["object"] = self.object_result
 
+        elif self.number == 6:
+            logging.debug("[" + str(self.function) + "] OK 6 --> updateCar ")
+            error_data["flag"] = True
+            error_data["description"] = " Group created with success"
+            error_data["object"] = self.object_result
+
         return error_data
 
 

@@ -29,7 +29,6 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
 
-
 class SendEmail(webapp2.RequestHandler):
     def post(self):
         logging.debug("Received from user: " + str(self.request.body))
@@ -92,7 +91,6 @@ class SendEmail(webapp2.RequestHandler):
             error = StatusReturn(1, 0)
             self.response.write(error.toJSON())
 
-
 class getIDGroups(webapp2.RequestHandler):
     def post(self):
         try:
@@ -144,7 +142,6 @@ class getIDGroups(webapp2.RequestHandler):
             self.error(500)
             error = StatusReturn(1, "getIDGroups")
             self.response.write(error.print_general_error())
-
 
 class getAllCars_groupID(webapp2.RequestHandler):
     def post(self):
@@ -200,7 +197,6 @@ class getAllCars_groupID(webapp2.RequestHandler):
             error = StatusReturn(1, "getAllCars_groupID")
             self.response.write(error.print_general_error())
 
-
 class getAllCars(webapp2.RequestHandler):
     def post(self):
         try:
@@ -250,7 +246,6 @@ class getAllCars(webapp2.RequestHandler):
             error = StatusReturn(1, "getAllCars")
             self.response.write(error.print_general_error())
 
-
 class getPositionCar(webapp2.RequestHandler):
     def post(self):
         result = {}
@@ -273,7 +268,6 @@ class getPositionCar(webapp2.RequestHandler):
 
         except:
             logging.debug("Error first try: " + str(sys.exc_info()))
-
 
 class createCar(webapp2.RequestHandler):
     def post(self):
@@ -320,6 +314,46 @@ class createCar(webapp2.RequestHandler):
             error = StatusReturn(1, "createCar")
             self.response.write(error.print_general_error())
 
+class createGroup(webapp2.RequestHandler):
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+            code = int(data["Code"])
+            try:
+                result_check_code = User_tool.check_code(data["Email"], code)
+
+                if result_check_code == -2:
+                    self.error(500)
+                    error = StatusReturn(2, "createGroup")
+                    self.response.write(error.print_general_error())
+
+                elif result_check_code == -1:
+                    self.error(500)
+                    error = StatusReturn(3, "createGroup")
+                    self.response.write(error.print_general_error())
+
+                elif result_check_code >= 0:
+                    new_group = Group(name=data["Name"], timestamp=str(datetime.datetime.now()))
+                    new_group.put()
+                    new_user_group = User_group(id_user=int(User_tool.return_ID_from_email(str(data["Email"]))),
+                                                    id_group=int(new_group.key.id()))
+                    new_user_group.put()
+
+                    right = StatusReturn(6, "createGroup", new_group.key.id())
+                    self.response.write(right.print_result())
+                else:
+                    self.error(500)
+                    error = StatusReturn(5, "createGroup")
+                    self.response.write(error.print_general_error())
+            except:
+                self.error(500)
+                error = StatusReturn(4, "createGroup")
+                self.response.write(error.print_general_error())
+        except:
+            self.error(500)
+            error = StatusReturn(1, "createGroup")
+            self.response.write(error.print_general_error())
+
 class updatePosition(webapp2.RequestHandler):
     def post(self):
         try:
@@ -364,7 +398,6 @@ class updatePosition(webapp2.RequestHandler):
             self.error(500)
             error = StatusReturn(1, "updatePosition")
             self.response.write(error.print_general_error())
-
 
 class registrationForm(webapp2.RequestHandler):
     def post(self):
