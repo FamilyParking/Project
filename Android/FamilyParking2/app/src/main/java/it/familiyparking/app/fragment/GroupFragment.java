@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomAdapterGroup;
 import it.familiyparking.app.dao.DataBaseHelper;
@@ -42,6 +40,12 @@ public class GroupFragment extends Fragment{
 
         Tools.setUpButtonActionBar((ActionBarActivity) getActivity());
 
+        getData();
+
+        return rootView;
+    }
+
+    private void getData(){
         DataBaseHelper databaseHelper = new DataBaseHelper(getActivity());
         final SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -64,11 +68,9 @@ public class GroupFragment extends Fragment{
         customAdapterGroup = new CustomAdapterGroup(this,getActivity(),groups,getActivity());
         group_list.setAdapter(customAdapterGroup);
         customAdapterGroup.notifyDataSetChanged();
-
-        return rootView;
     }
 
     public void updateAdapter(){
-        customAdapterGroup.notifyDataSetChanged();
+        getData();
     }
 }

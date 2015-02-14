@@ -23,5 +23,7 @@
     <string name="name_group">Insert group\'s name</string>
     <string name="car_model">Insert car\'s name and select a brand</string>
     <string name="group_empty">No group is available!</string>
+    <string name="save">SAVE</string>
+    <string name="discard">DISCARD</string>
 
 </resources>

@@ -13,8 +13,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,6 +32,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -38,6 +41,7 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.Random;
 
 import it.familiyparking.app.R;
+import it.familiyparking.app.serverClass.Group;
 
 
 /**
@@ -272,8 +276,8 @@ public class Tools {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static int randomColor(Activity activity){
-        int color = new Random().nextInt(4);
+    public static int getColor(Activity activity, String group_ID){
+        int color = Integer.parseInt(group_ID) % 4;
         switch (color){
             case 0:
                 color = activity.getResources().getColor(R.color.purple);
@@ -291,5 +295,13 @@ public class Tools {
                 color = activity.getResources().getColor(R.color.sapienza);
         }
         return color;
+    }
+
+    public static void setImageForGroup(Activity activity, TextView group_image, Group group){
+        Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
+        drawable.setColorFilter(new PorterDuffColorFilter(Tools.getColor(activity,group.getId()),PorterDuff.Mode.SCREEN));
+        group_image.setBackgroundDrawable(drawable);
+        String initial = ""+group.getName().charAt(0)+"";
+        group_image.setText(initial.toUpperCase());
     }
 }

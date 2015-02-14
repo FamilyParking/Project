@@ -6,11 +6,13 @@ import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +34,16 @@ import it.familiyparking.app.adapter.CustomCursorAdapter;
 import it.familiyparking.app.adapter.CustomHorizontalAdapter;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.serverClass.Group;
 import it.familiyparking.app.task.DoSaveGroup;
+import it.familiyparking.app.task.DoUpdateGroup;
 import it.familiyparking.app.utility.Tools;
 
 
 /**
  * Created by francesco on 15/01/15.
  */
-public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
+public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
 
     final private String[] PROJECTION ={ContactsContract.Contacts._ID,ContactsContract.Contacts.LOOKUP_KEY,ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
             ContactsContract.CommonDataKinds.Email.DATA,ContactsContract.Contacts.PHOTO_ID};
@@ -54,7 +58,7 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
     private ListView listContact;
     private CustomCursorAdapter customCursorAdapter;
 
-    private ArrayList<Contact> group;
+    private ArrayList<Contact> contactArrayList;
     private CustomHorizontalAdapter customHorizontalAdapter;
     private TwoWayView listGroup;
     private RelativeLayout relativeTwoWayView;
@@ -77,88 +81,28 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
     private boolean resetText;
     private boolean resetTextFromName;
 
-    public CreateGroup() {}
+    private Group group;
+
+    public ManageGroup() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_create_group, container, false);
+        rootView = inflater.inflate(R.layout.fragment_manage_group, container, false);
 
         lastSearchString = "";
 
-        group = new ArrayList<>();
-        customHorizontalAdapter = new CustomHorizontalAdapter(getActivity(),group);
-        listGroup = ((TwoWayView)rootView.findViewById(R.id.group_list));
-        listGroup.setAdapter(customHorizontalAdapter);
-
-        listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showContactDetail(position);
-            }
-        });
-
-        relativeTwoWayView = ((RelativeLayout)rootView.findViewById(R.id.group_rl));
-
-        editTextName = ((EditText)rootView.findViewById(R.id.new_group_name_et));
-        editTextName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!resetTextFromName) {
-                    resetEditText();
-                    relativeContact.setVisibility(View.GONE);
-                    resetTextFromName = true;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                resetTextFromName = false;
-                manageSaveButton();
-            }
-        });
-
-        editTextFinder = ((EditText)rootView.findViewById(R.id.find_contact_edt));
-        editTextFinder.addTextChangedListener(this);
-        relativeContact = ((RelativeLayout)rootView.findViewById(R.id.contact_rl));
-        listContact = ((ListView)rootView.findViewById(R.id.contact_lv));
-
-        listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewContact();
-            }
-        };
-
-        customCursorAdapter = new CustomCursorAdapter(getActivity(),null,0,listener);
-        listContact.setAdapter(customCursorAdapter);
-        listContact.setOnItemClickListener(this);
-
-        addButton = false;
-        resetText = false;
-        resetTextFromName = false;
-
-        loaderManager = getActivity().getSupportLoaderManager();
-        loaderManager.initLoader(0, null, this);
-
-        save_button = (Button) rootView.findViewById(R.id.check_group_bt);
-        save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveGroup();
-            }
-        });
-
-        relativeContactDetail = (RelativeLayout)rootView.findViewById(R.id.contact_detail_container_rl);
-
-        circularProgress = rootView.findViewById(R.id.find_progress_circular);
-        findLens = rootView.findViewById(R.id.find_iv);
+        if(creating())
+            setGraphicToCreate();
+        else
+            setGraphicToModify();
 
         return rootView;
+    }
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        this.group = args.getParcelable("group");
     }
 
     @Override
@@ -220,7 +164,8 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
 
     @Override
     public void afterTextChanged(Editable s) {
-        manageSaveButton();
+        if(creating())
+            manageSaveButton();
 
         if(resetText){
             resetText = false;
@@ -269,7 +214,8 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
             customHorizontalAdapter.add(new Contact(contact_id, name, email, photo_flag, photo_id), true);
             customHorizontalAdapter.notifyDataSetChanged();
 
-            manageSaveButton();
+            if(creating())
+                manageSaveButton();
 
             if (relativeTwoWayView.getVisibility() == View.GONE)
                 relativeTwoWayView.setVisibility(View.VISIBLE);
@@ -298,7 +244,7 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
         relativeContact.setVisibility(View.GONE);
         resetEditText();
 
-        showContactDetail(group.get(position));
+        showContactDetail(contactArrayList.get(position));
     }
 
     private void resetEditText(){
@@ -314,7 +260,7 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     private void manageSaveButton(){
-        if((!editTextName.getText().toString().isEmpty())&&(!group.isEmpty())) {
+        if((!editTextName.getText().toString().isEmpty())&&(!contactArrayList.isEmpty())) {
             save_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_green));
             save_button.setClickable(true);
         }
@@ -366,6 +312,175 @@ public class CreateGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoSaveGroup(getActivity(),editTextName.getText().toString(),null,group,progressDialog)).start();
+        new Thread(new DoSaveGroup(getActivity(),editTextName.getText().toString(),null,contactArrayList,progressDialog)).start();
+    }
+
+    private void setGraphicToCreate(){
+        contactArrayList = new ArrayList<>();
+
+        setEditTextGroupName(null);
+        setEditTextFindContact();
+        setHorizontalList();
+        setListForResult();
+        setPointer();
+        setLoader();
+        setSaveButton();
+        setBoolean();
+    }
+
+    private void setGraphicToModify(){
+        contactArrayList = group.getContacts();
+
+        setGroupImage();
+        setEditTextGroupName(group.getName());
+        setEditTextFindContact();
+        setHorizontalList();
+        setListForResult();
+        setPointer();
+        setLoader();
+        updateSaveButton();
+        setBoolean();
+    }
+
+    private void setEditTextGroupName(String name){
+        editTextName = ((EditText)rootView.findViewById(R.id.new_group_name_et));
+
+        if(name != null)
+            editTextName.setText(name);
+
+        editTextName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!resetTextFromName) {
+                    resetEditText();
+                    relativeContact.setVisibility(View.GONE);
+                    resetTextFromName = true;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                resetTextFromName = false;
+                manageSaveButton();
+            }
+        });
+    }
+
+    private void setEditTextFindContact(){
+        editTextFinder = ((EditText)rootView.findViewById(R.id.find_contact_edt));
+        editTextFinder.addTextChangedListener(this);
+    }
+
+    private void setHorizontalList(){
+        customHorizontalAdapter = new CustomHorizontalAdapter(getActivity(),contactArrayList);
+        listGroup = ((TwoWayView)rootView.findViewById(R.id.group_list));
+        listGroup.setAdapter(customHorizontalAdapter);
+
+        listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showContactDetail(position);
+            }
+        });
+
+        relativeTwoWayView = ((RelativeLayout)rootView.findViewById(R.id.group_rl));
+    }
+
+    private void setListForResult(){
+        relativeContact = ((RelativeLayout)rootView.findViewById(R.id.contact_rl));
+        listContact = ((ListView)rootView.findViewById(R.id.contact_lv));
+
+        listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewContact();
+            }
+        };
+
+        customCursorAdapter = new CustomCursorAdapter(getActivity(),null,0,listener);
+        listContact.setAdapter(customCursorAdapter);
+        listContact.setOnItemClickListener(this);
+    }
+
+    private void setPointer(){
+        relativeContactDetail = (RelativeLayout)rootView.findViewById(R.id.contact_detail_container_rl);
+
+        circularProgress = rootView.findViewById(R.id.find_progress_circular);
+        findLens = rootView.findViewById(R.id.find_iv);
+    }
+
+    private void setLoader(){
+        loaderManager = getActivity().getSupportLoaderManager();
+        loaderManager.initLoader(0, null, this);
+    }
+
+    private void setSaveButton(){
+        save_button = (Button) rootView.findViewById(R.id.check_group_bt);
+        save_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveGroup();
+            }
+        });
+    }
+
+    private void updateSaveButton(){
+        rootView.findViewById(R.id.check_group_bt).setVisibility(View.GONE);
+        rootView.findViewById(R.id.button_rl_group).setVisibility(View.VISIBLE);
+
+        rootView.findViewById(R.id.back_group_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickBack();
+            }
+        });
+
+        rootView.findViewById(R.id.save_group_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateGroup();
+            }
+        });
+    }
+
+    private void setBoolean(){
+        addButton = false;
+        resetText = false;
+        resetTextFromName = false;
+    }
+
+    private void setGroupImage(){
+        TextView group_image = (TextView) rootView.findViewById(R.id.new_group_tv);
+        group_image.setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.new_group_iv).setVisibility(View.GONE);
+        Tools.setImageForGroup(getActivity(),group_image,group);
+    }
+
+    public void onClickBack(){
+        ((MainActivity) getActivity()).resetModifyGroup();
+    }
+
+    private void updateGroup(){
+        Tools.closeKeyboard(rootView,getActivity());
+
+        ProgressDialogCircular progressDialog = new ProgressDialogCircular();
+        ((MainActivity)getActivity()).setProgressDialogCircular(progressDialog);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("message", "Creating group ...");
+        progressDialog.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
+
+        new Thread(new DoUpdateGroup(getActivity(),editTextName.getText().toString(),contactArrayList,group,progressDialog)).start();
+    }
+
+    private boolean creating(){
+        return group == null;
     }
 }

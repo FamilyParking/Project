@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,7 @@ import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Create;
-import it.familiyparking.app.fragment.CreateGroup;
+import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.GroupFragment;
 import it.familiyparking.app.fragment.Map;
@@ -41,7 +40,8 @@ public class MainActivity extends ActionBarActivity {
     private GhostMode ghostMode;
     private Create create;
     private SignIn signIn;
-    private CreateGroup createGroup;
+    private ManageGroup createGroup;
+    private ManageGroup modifyGroup;
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private Tracker tracker;
@@ -158,7 +158,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClick_NewGroup(View v) {
         managePlusButton();
-        createGroup = new CreateGroup();
+        createGroup = new ManageGroup();
         getSupportFragmentManager().beginTransaction().add(R.id.container, createGroup).commit();
     }
 
@@ -221,6 +221,16 @@ public class MainActivity extends ActionBarActivity {
         createGroup = null;
     }
 
+    public void closeModifyGroup(){
+        setMenu();
+        getSupportFragmentManager().beginTransaction().remove(modifyGroup).commit();
+        modifyGroup = null;
+    }
+
+    public void updateAdapterGroup(){
+        groupFragment.updateAdapter();
+    }
+
     public void setProgressDialogCircular(ProgressDialogCircular fragment){
         progressDialogCircular = fragment;
     }
@@ -233,9 +243,21 @@ public class MainActivity extends ActionBarActivity {
         contactDetailDialog = null;
     }
 
+    public void setModifyGroup(ManageGroup fragment){
+        modifyGroup = fragment;
+    }
+
+    public void resetModifyGroup(){
+        getSupportFragmentManager().beginTransaction().remove(modifyGroup);
+        modifyGroup = null;
+    }
+
     @Override
     public void onBackPressed() {
         if(progressDialogCircular != null){
+            //Do nop
+        }
+        else if(modifyGroup != null){
             //Do nop
         }
         else if(contactDetailDialog != null){

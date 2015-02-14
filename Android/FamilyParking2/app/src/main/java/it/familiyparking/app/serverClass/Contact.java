@@ -100,4 +100,8 @@ public class Contact implements Parcelable {
             return new Contact[size];
         }
     };
+
+    public boolean equals(Contact c){
+        return (c.getId() == this.id);
+    }
 }

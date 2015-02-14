@@ -8,8 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -25,7 +26,6 @@ import it.familiyparking.app.utility.Tools;
 public class ContactDetailDialog extends Fragment{
 
     private Contact contact;
-    private String groupID;
 
     public ContactDetailDialog() {}
 
@@ -55,9 +55,6 @@ public class ContactDetailDialog extends Fragment{
             }
         });
 
-
-        (rootView.findViewById(R.id.delete_rl)).setVisibility(View.GONE);
-
         return rootView;
     }
 
@@ -65,7 +62,6 @@ public class ContactDetailDialog extends Fragment{
     public void setArguments(Bundle args) {
         super.setArguments(args);
         this.contact = args.getParcelable("contact");
-        this.groupID = args.getString("groupID");
     }
 
     public void closeDialog(){

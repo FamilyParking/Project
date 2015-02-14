@@ -2,8 +2,6 @@ package it.familiyparking.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +25,7 @@ import it.familiyparking.app.R;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.fragment.GroupFragment;
+import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
 import it.familiyparking.app.task.DoRemoveGroup;
@@ -59,67 +57,15 @@ public class CustomAdapterGroup extends ArrayAdapter<Group> implements View.OnLo
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.group_item, parent, false);
         }
 
-        TextView group_image = (TextView) convertView.findViewById(R.id.group_iv);
-        Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
-        drawable.setColorFilter(new PorterDuffColorFilter(Tools.randomColor(activity),PorterDuff.Mode.SCREEN));
-        group_image.setBackgroundDrawable(drawable);
-        String initial = ""+group.getName().charAt(0)+"";
-        group_image.setText(initial.toUpperCase());
+        setImageForGroup(convertView,group);
 
-        ((TextView) convertView.findViewById(R.id.group_name_tv)).setText(group.getName());
-        ((TextView) convertView.findViewById(R.id.car_name_tv)).setText(group.getCar().getName());
+        setTextEdit(convertView,group);
 
-        TwoWayView listGroup = ((TwoWayView)convertView.findViewById(R.id.group_list));
-        CustomHorizontalAdapter customHorizontalAdapter = new CustomHorizontalAdapter(activity,group.getContacts());
-        listGroup.setAdapter(customHorizontalAdapter);
-        listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Contact contact = (Contact) parent.getItemAtPosition(position);
+        setListGroup(convertView,group);
 
-                ContactDetailDialog contactDetailDialog = new ContactDetailDialog();
+        setOnLongClick(convertView,group);
 
-                activity.setContactDetailDialog(contactDetailDialog);
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("contact",contact);
-                bundle.putString("groupID",group.getId());
-
-                contactDetailDialog.setArguments(bundle);
-
-                activity.getSupportFragmentManager().beginTransaction().add(R.id.container, contactDetailDialog).commit();
-            }
-        });
-
-        RelativeLayout container_item = (RelativeLayout) convertView.findViewById(R.id.group_item_container);
-        container_item.setOnLongClickListener(this);
-        container_item.setContentDescription(group.getId());
-
-        (convertView.findViewById(R.id.group_rl)).setOnLongClickListener(this);
-        (convertView.findViewById(R.id.relative_car_group)).setOnLongClickListener(this);
-        (convertView.findViewById(R.id.relative_name_group)).setOnLongClickListener(this);
-
-        convertView.findViewById(R.id.back_rl).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.getRootView().findViewById(R.id.button_rl_group).setVisibility(View.GONE);
-                v.getRootView().findViewById(R.id.line).setVisibility(View.GONE);
-            }
-        });
-
-        convertView.findViewById(R.id.modify_rl).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        convertView.findViewById(R.id.delete_rl).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteGroup(v.getRootView().findViewById(R.id.group_item_container).getContentDescription().toString());
-            }
-        });
+        setOnClick(convertView,group);
 
         return convertView;
     }
@@ -152,5 +98,95 @@ public class CustomAdapterGroup extends ArrayAdapter<Group> implements View.OnLo
         new Thread(new DoRemoveGroup(activity,groupFragment,groupID,groups,progressDialog)).start();
     }
 
+    private void showContact(AdapterView<?> parent, Group group, int position){
+        Contact contact = (Contact) parent.getItemAtPosition(position);
 
+        ContactDetailDialog contactDetailDialog = new ContactDetailDialog();
+
+        activity.setContactDetailDialog(contactDetailDialog);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("contact",contact);
+
+        contactDetailDialog.setArguments(bundle);
+
+        activity.getSupportFragmentManager().beginTransaction().add(R.id.container, contactDetailDialog).commit();
+    }
+
+    private void setImageForGroup(View convertView, Group group){
+        TextView group_image = (TextView) convertView.findViewById(R.id.group_iv);
+        Tools.setImageForGroup(activity,group_image,group);
+    }
+
+    private void setTextEdit(View convertView, Group group){
+        ((TextView) convertView.findViewById(R.id.group_name_tv)).setText(group.getName());
+        ((TextView) convertView.findViewById(R.id.car_name_tv)).setText(group.getCar().getName());
+    }
+
+    private void setListGroup(View convertView, final Group group){
+        TwoWayView listGroup = ((TwoWayView)convertView.findViewById(R.id.group_list));
+        CustomHorizontalAdapter customHorizontalAdapter = new CustomHorizontalAdapter(activity,group.getContacts());
+        listGroup.setAdapter(customHorizontalAdapter);
+        listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showContact(parent,group,position);
+            }
+        });
+    }
+
+    private void setOnLongClick(View convertView, Group group){
+        RelativeLayout container_item = (RelativeLayout) convertView.findViewById(R.id.group_item_container);
+        container_item.setOnLongClickListener(this);
+        container_item.setContentDescription(group.getId());
+
+        (convertView.findViewById(R.id.group_rl)).setOnLongClickListener(this);
+        (convertView.findViewById(R.id.relative_car_group)).setOnLongClickListener(this);
+        (convertView.findViewById(R.id.relative_name_group)).setOnLongClickListener(this);
+    }
+
+    private void setOnClickDelete(View convertView){
+        convertView.findViewById(R.id.delete_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteGroup(v.getRootView().findViewById(R.id.group_item_container).getContentDescription().toString());
+            }
+        });
+    }
+
+    private void setOnClickModify(View convertView, final Group group){
+        convertView.findViewById(R.id.modify_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ManageGroup modifyGroup = new ManageGroup();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("group",group);
+
+                modifyGroup.setArguments(bundle);
+
+                activity.setModifyGroup(modifyGroup);
+
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.container, modifyGroup).commit();
+            }
+        });
+    }
+
+    private void setOnClickBack(View convertView){
+        convertView.findViewById(R.id.back_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getRootView().findViewById(R.id.button_rl_group).setVisibility(View.GONE);
+                v.getRootView().findViewById(R.id.line).setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setOnClick(View convertView,Group group){
+        setOnClickBack(convertView);
+
+        setOnClickModify(convertView,group);
+
+        setOnClickDelete(convertView);
+    }
 }

@@ -67,7 +67,7 @@ public class SignIn extends Fragment implements TextWatcher{
                 signIn.startAnimation(rotate_clockwise);
                 isRotated = true;
 
-                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration() - 1, signIn, getActivity(), R.drawable.arrow_blue_right, true);
+                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration() - 10, signIn, getActivity(), R.drawable.arrow_blue_right, true);
             }
         }
         else {

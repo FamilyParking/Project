@@ -125,4 +125,11 @@ public class GroupTable {
         return db.delete(TABLE, null, null) > 0;
     }
 
+    public static int updateNameGroup(SQLiteDatabase db, String oldName, String newName){
+        ContentValues values = new ContentValues();
+        values.put(GROUP_NAME, newName);
+
+        return db.update(TABLE, values, GROUP_NAME + " = ?", new String[] { oldName });
+    }
+
 }
