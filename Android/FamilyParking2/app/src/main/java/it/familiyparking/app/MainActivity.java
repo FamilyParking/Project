@@ -1,11 +1,13 @@
 package it.familiyparking.app;
 
+import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -228,11 +230,30 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateAdapterGroup(){
-        groupFragment.updateAdapter();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                groupFragment.updateAdapter();
+            }
+        });
     }
 
     public void setProgressDialogCircular(ProgressDialogCircular fragment){
         progressDialogCircular = fragment;
+    }
+
+    public void resetProgressDialogCircular(){
+        final ActionBarActivity activity = this;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+                progressDialogCircular = null;
+                Tools.setUpButtonActionBar(activity);
+                setMenu();
+            }
+        });
     }
 
     public void setContactDetailDialog(ContactDetailDialog fragment){
@@ -240,15 +261,28 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetContactDetailDialog(){
-        contactDetailDialog = null;
+        final ActionBarActivity activity = this;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Tools.setUpButtonActionBar(activity);
+                setMenu();
+                getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
+                contactDetailDialog = null;
+            }
+        });
     }
 
     public void setModifyGroup(ManageGroup fragment){
+        resetMenu();
         modifyGroup = fragment;
     }
 
     public void resetModifyGroup(){
-        getSupportFragmentManager().beginTransaction().remove(modifyGroup);
+        Tools.setUpButtonActionBar(this);
+        setMenu();
+        getSupportFragmentManager().beginTransaction().remove(modifyGroup).commit();
         modifyGroup = null;
     }
 
@@ -261,9 +295,7 @@ public class MainActivity extends ActionBarActivity {
             //Do nop
         }
         else if(contactDetailDialog != null){
-            setMenu();
-            getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
-            contactDetailDialog = null;
+            resetContactDetailDialog();
         }
         else if(createGroup != null){
             Tools.resetUpButtonActionBar(this);

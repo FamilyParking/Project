@@ -4,10 +4,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +27,7 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 15/01/15.
  */
-public class GroupFragment extends Fragment{
+public class GroupFragment extends Fragment {
 
     private ListView group_list;
     private ArrayList<Group> groups;
@@ -71,6 +74,10 @@ public class GroupFragment extends Fragment{
     }
 
     public void updateAdapter(){
+        customAdapterGroup = new CustomAdapterGroup(this,getActivity(),new ArrayList<Group>(),getActivity());
+        group_list.setAdapter(customAdapterGroup);
+        customAdapterGroup.notifyDataSetChanged();
         getData();
     }
+
 }

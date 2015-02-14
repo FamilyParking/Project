@@ -82,4 +82,20 @@ public class Group implements Parcelable {
 
         return result;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public void addContact(Contact c){
+        contacts.add(c);
+    }
+
+    public void removeContact(Contact c){
+        contacts.remove(c);
+    }
 }

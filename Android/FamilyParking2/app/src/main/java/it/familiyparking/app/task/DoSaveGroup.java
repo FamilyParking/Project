@@ -42,9 +42,6 @@ public class DoSaveGroup implements Runnable {
             GroupTable.deleteGroup(db, groupID);
         }
 
-        /************************************************************************************/
-        /* Aggiungere alla lista dei contatti da inviare l'utente che sta utilizzando l'app */
-        /************************************************************************************/
         /***************/
         /* CALL SERVER */
         /***************/
@@ -63,7 +60,7 @@ public class DoSaveGroup implements Runnable {
 
         db.close();
 
-        activity.getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+        activity.resetProgressDialogCircular();
         activity.closeCreateGroup();
     }
 }

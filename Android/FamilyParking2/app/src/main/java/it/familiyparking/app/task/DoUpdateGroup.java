@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class DoUpdateGroup implements Runnable {
     public void run() {
         Looper.prepare();
 
-        ArrayList<Contact> difference = new ArrayList<>();
+        ArrayList<Contact> toAdd = new ArrayList<>();
 
         for(Contact newContact : newArray){
             boolean add = true;
@@ -46,7 +47,20 @@ public class DoUpdateGroup implements Runnable {
                     break;
                 }
             }
-            if(add) difference.add(newContact);
+            if(add) toAdd.add(newContact);
+        }
+
+        ArrayList<Contact> toRemove = new ArrayList<>();
+
+        for(Contact oldContact : group.getContacts()){
+            boolean remove = true;
+            for(Contact newContact : newArray){
+                if(oldContact.equals(newContact)){
+                    remove = false;
+                    break;
+                }
+            }
+            if(remove) toRemove.add(oldContact);
         }
 
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
@@ -54,20 +68,37 @@ public class DoUpdateGroup implements Runnable {
 
         boolean notifyAdapter = false;
 
-        if(!difference.isEmpty()){
+        if(!toRemove.isEmpty()){
             /***************/
             /* CALL SERVER */
             /***************/
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            for (Contact contact : difference)
-                GroupTable.deleteContact(db,contact.getEmail(),group.getId());
+            for (Contact contact : toRemove) {
+                GroupTable.deleteContact(db, contact.getEmail(), group.getId());
+                group.removeContact(contact);
+            }
 
-            notifyAdapter = true;
+        }
+
+        if(!toAdd.isEmpty()){
+            /***************/
+            /* CALL SERVER */
+            /***************/
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            for (Contact contact : toAdd) {
+                GroupTable.insertContact(db, group.getId(), group.getName(), contact, "");
+                group.addContact(contact);
+            }
         }
 
         if(!(newName.equals(group.getName()))){
@@ -75,22 +106,20 @@ public class DoUpdateGroup implements Runnable {
             /* CALL SERVER */
             /***************/
             try {
-                Thread.sleep(2000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             GroupTable.updateNameGroup(db,group.getName(),newName);
 
-            notifyAdapter = true;
+            group.setName(newName);
         }
-
-        if(notifyAdapter)
-            activity.updateAdapterGroup();
 
         db.close();
 
-        activity.getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+        activity.updateAdapterGroup();
+        activity.resetProgressDialogCircular();
         activity.closeModifyGroup();
     }
 }

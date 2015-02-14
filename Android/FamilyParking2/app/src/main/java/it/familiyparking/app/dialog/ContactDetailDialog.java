@@ -66,6 +66,7 @@ public class ContactDetailDialog extends Fragment{
 
     public void closeDialog(){
         MainActivity activity = (MainActivity) getActivity();
+        Tools.setUpButtonActionBar(activity);
         activity.setMenu();
         activity.resetContactDetailDialog();
         activity.getSupportFragmentManager().beginTransaction().remove(this).commit();

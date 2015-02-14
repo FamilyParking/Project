@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.lucasr.twowayview.TwoWayView;
@@ -65,6 +67,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
     private EditText editTextFinder;
     private EditText editTextName;
+    private EditText editTextCar;
 
     private Button save_button;
 
@@ -83,6 +86,8 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
     private Group group;
 
+    private ScrollView scrollView;
+
     public ManageGroup() {}
 
     @Override
@@ -91,10 +96,28 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         lastSearchString = "";
 
-        if(creating())
-            setGraphicToCreate();
-        else
-            setGraphicToModify();
+        contactArrayList = new ArrayList<>();
+
+        if(creating()) {
+            setEditTextGroupName(null);
+            setSaveButton();
+        }
+        else {
+            Tools.resetUpButtonActionBar((MainActivity)getActivity());
+            cloneContactArray();
+            setGroupImage();
+            setEditTextGroupName(group.getName());
+            updateSaveButton();
+            setCarLayout();
+        }
+
+        setScrollView();
+        setEditTextFindContact();
+        setHorizontalList();
+        setListForResult();
+        setPointer();
+        setLoader();
+        setBoolean();
 
         return rootView;
     }
@@ -139,15 +162,19 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
             data = extendedCursor;
         }
 
-        if(!relativeContact.isShown() && !Tools.isCursorEmpty(data))
-            relativeContact.setVisibility(View.VISIBLE);
-        else if(Tools.isCursorEmpty(data))
-            relativeContact.setVisibility(View.GONE);
-
         findLens.setVisibility(View.VISIBLE);
         circularProgress.setVisibility(View.GONE);
 
         customCursorAdapter.swapCursor(data);
+
+        if(!relativeContact.isShown() && !Tools.isCursorEmpty(data)) {
+            relativeContact.setVisibility(View.VISIBLE);
+            relativeContact.requestFocus();
+        }
+        else if(Tools.isCursorEmpty(data)) {
+            relativeContact.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -172,7 +199,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         }
         else {
             searchString = editTextFinder.getText().toString();
-            while(searchString.charAt(searchString.length()-1) == ' ')
+            while((searchString.length() > 0) && (searchString.charAt(searchString.length()-1) == ' '))
                 searchString = searchString.substring(0,searchString.length()-1);
 
             if(!lastSearchString.equals(searchString)) {
@@ -229,7 +256,8 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         customHorizontalAdapter.add(new Contact(-1, email, email, false, -1), true);
         customHorizontalAdapter.notifyDataSetChanged();
 
-        manageSaveButton();
+        if(creating())
+            manageSaveButton();
 
         if (relativeTwoWayView.getVisibility() == View.GONE)
             relativeTwoWayView.setVisibility(View.VISIBLE);
@@ -315,33 +343,6 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         new Thread(new DoSaveGroup(getActivity(),editTextName.getText().toString(),null,contactArrayList,progressDialog)).start();
     }
 
-    private void setGraphicToCreate(){
-        contactArrayList = new ArrayList<>();
-
-        setEditTextGroupName(null);
-        setEditTextFindContact();
-        setHorizontalList();
-        setListForResult();
-        setPointer();
-        setLoader();
-        setSaveButton();
-        setBoolean();
-    }
-
-    private void setGraphicToModify(){
-        contactArrayList = group.getContacts();
-
-        setGroupImage();
-        setEditTextGroupName(group.getName());
-        setEditTextFindContact();
-        setHorizontalList();
-        setListForResult();
-        setPointer();
-        setLoader();
-        updateSaveButton();
-        setBoolean();
-    }
-
     private void setEditTextGroupName(String name){
         editTextName = ((EditText)rootView.findViewById(R.id.new_group_name_et));
 
@@ -366,7 +367,9 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
             @Override
             public void afterTextChanged(Editable s) {
                 resetTextFromName = false;
-                manageSaveButton();
+
+                if(creating())
+                    manageSaveButton();
             }
         });
     }
@@ -389,6 +392,10 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         });
 
         relativeTwoWayView = ((RelativeLayout)rootView.findViewById(R.id.group_rl));
+
+        if(!creating()){
+            relativeTwoWayView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setListForResult(){
@@ -431,7 +438,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
     private void updateSaveButton(){
         rootView.findViewById(R.id.check_group_bt).setVisibility(View.GONE);
-        rootView.findViewById(R.id.button_rl_group).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.container_button).setVisibility(View.VISIBLE);
 
         rootView.findViewById(R.id.back_group_rl).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -472,7 +479,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         ((MainActivity)getActivity()).setProgressDialogCircular(progressDialog);
 
         Bundle bundle = new Bundle();
-        bundle.putString("message", "Creating group ...");
+        bundle.putString("message", "Updating group ...");
         progressDialog.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
@@ -482,5 +489,21 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
     private boolean creating(){
         return group == null;
+    }
+
+    private void setCarLayout(){
+        rootView.findViewById(R.id.relative_modify_car_group).setVisibility(View.VISIBLE);
+
+        editTextCar = (EditText) rootView.findViewById(R.id.car_name_et);
+        editTextCar.setText(group.getCar().getName());
+    }
+
+    private void setScrollView(){
+        scrollView = (ScrollView) rootView.findViewById(R.id.scroll_manage_group);
+    }
+
+    private void cloneContactArray(){
+        for(Contact c : group.getContacts())
+            contactArrayList.add(c);
     }
 }

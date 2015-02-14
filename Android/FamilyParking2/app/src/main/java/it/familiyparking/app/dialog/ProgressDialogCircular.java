@@ -30,6 +30,7 @@ public class ProgressDialogCircular extends Fragment{
         Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
         ((MainActivity) getActivity()).resetMenu();
 
+
         textView = (TextView) rootView.findViewById(R.id.message_dialog);
         textView.setText(text);
 
