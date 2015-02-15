@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -303,5 +304,10 @@ public class Tools {
         group_image.setBackgroundDrawable(drawable);
         String initial = ""+group.getName().charAt(0)+"";
         group_image.setText(initial.toUpperCase());
+    }
+
+    public static String getBrand(Spinner spinner, Activity activity){
+        String[] array = activity.getResources().getStringArray(R.array.car_brands);
+        return array[spinner.getSelectedItemPosition()];
     }
 }

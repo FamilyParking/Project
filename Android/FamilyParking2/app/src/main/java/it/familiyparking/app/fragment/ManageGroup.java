@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.lucasr.twowayview.TwoWayView;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
+import it.familiyparking.app.adapter.CustomAdapterCarBrand;
 import it.familiyparking.app.adapter.CustomCursorAdapter;
 import it.familiyparking.app.adapter.CustomHorizontalAdapter;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
@@ -64,6 +66,9 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
     private CustomHorizontalAdapter customHorizontalAdapter;
     private TwoWayView listGroup;
     private RelativeLayout relativeTwoWayView;
+
+    private Spinner spinner;
+    private CustomAdapterCarBrand adapterCarBrand;
 
     private EditText editTextFinder;
     private EditText editTextName;
@@ -484,7 +489,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoUpdateGroup(getActivity(),editTextName.getText().toString(),contactArrayList,group,progressDialog)).start();
+        new Thread(new DoUpdateGroup(getActivity(),editTextName.getText().toString(),contactArrayList,editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()),group,progressDialog)).start();
     }
 
     private boolean creating(){
@@ -494,8 +499,20 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
     private void setCarLayout(){
         rootView.findViewById(R.id.relative_modify_car_group).setVisibility(View.VISIBLE);
 
+        spinner = (Spinner) rootView.findViewById(R.id.car_sp);
+        adapterCarBrand = new CustomAdapterCarBrand(getActivity());
+        spinner.setAdapter(adapterCarBrand);
+
         editTextCar = (EditText) rootView.findViewById(R.id.car_name_et);
         editTextCar.setText(group.getCar().getName());
+
+        rootView.findViewById(R.id.delete_car_group).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                group.setCar(null);
+                rootView.findViewById(R.id.relative_modify_car_group).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void setScrollView(){

@@ -29,14 +29,50 @@ public class Car implements Parcelable {
     @SerializedName("brand")
     private String brand;
 
+    @SerializedName("bluetoothName")
+    private String bluetoothName;
+
+    @SerializedName("bluetoothMac")
+    private String bluetoothMac;
+
     public Car(){}
 
-    public Car(String latitude, String longitude, String id, String name, String brand) {
+    public Car(String latitude, String longitude, String id, String name, String brand, String bluetoothName, String bluetoothMac) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.id = id;
         this.name = name;
         this.brand = brand;
+        this.bluetoothName = bluetoothName;
+        this.bluetoothMac = bluetoothMac;
+    }
+
+    public Car(String id, String name, String brand, String bluetoothName, String bluetoothMac) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.bluetoothName = bluetoothName;
+        this.bluetoothMac = bluetoothMac;
+    }
+
+    public String[] getArray(){
+        return new String[]{id,name,brand,bluetoothName,bluetoothMac};
+    }
+
+    public String getBluetoothName() {
+        return bluetoothName;
+    }
+
+    public void setBluetoothName(String bluetoothName) {
+        this.bluetoothName = bluetoothName;
+    }
+
+    public String getBluetoothMac() {
+        return bluetoothMac;
+    }
+
+    public void setBluetoothMac(String bluetoothMac) {
+        this.bluetoothMac = bluetoothMac;
     }
 
     public String getLatitude() {
@@ -57,6 +93,22 @@ public class Car implements Parcelable {
 
     public String getBrand() {
         return brand;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     @Override

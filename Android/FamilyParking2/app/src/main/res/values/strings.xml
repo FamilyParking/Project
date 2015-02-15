@@ -21,9 +21,47 @@
     <string name="name_surname">Name and Surname</string>
     <string name="email">Email</string>
     <string name="name_group">Insert group\'s name</string>
-    <string name="car_model">Insert car\'s name and select a brand</string>
+    <string name="car_model">Insert car\'s name and brand</string>
     <string name="group_empty">No group is available!</string>
     <string name="save">SAVE</string>
     <string name="discard">DISCARD</string>
+
+    <string-array name="car_brands">
+        <item><string name="no_brand">add_car</string></item>
+        <item><string name="alfa_romeo">alfa_romeo</string></item>
+        <item><string name="audi">audi</string></item>
+        <item><string name="bmw">bmw</string></item>
+        <item><string name="chevrolet">chevrolet</string></item>
+        <item><string name="citroen">citroen</string></item>
+        <item><string name="dacia">dacia</string></item>
+        <item><string name="ferrari">ferrari</string></item>
+        <item><string name="fiat">fiat</string></item>
+        <item><string name="ford">ford</string></item>
+        <item><string name="honda">honda</string></item>
+        <item><string name="hunday">hunday</string></item>
+        <item><string name="jaguar">jaguar</string></item>
+        <item><string name="jeep">jeep</string></item>
+        <item><string name="kia">kia</string></item>
+        <item><string name="lancia">lancia</string></item>
+        <item><string name="land_rover">land_rover</string></item>
+        <item><string name="lexus">lexus</string></item>
+        <item><string name="mazda">mazda</string></item>
+        <item><string name="mercedes">mercedes</string></item>
+        <item><string name="mg">mg</string></item>
+        <item><string name="mini">mini</string></item>
+        <item><string name="mitsubishi">mitsubishi</string></item>
+        <item><string name="nissan">nissan</string></item>
+        <item><string name="opel">opel</string></item>
+        <item><string name="peugeot">peugeot</string></item>
+        <item><string name="porsche">porsche</string></item>
+        <item><string name="renault">renault</string></item>
+        <item><string name="seat">seat</string></item>
+        <item><string name="skoda">skoda</string></item>
+        <item><string name="smart">smart</string></item>
+        <item><string name="subaru">subaru</string></item>
+        <item><string name="toyota">toyota</string></item>
+        <item><string name="volkswagen">volkswagen</string></item>
+        <item><string name="volvo">volvo</string></item>
+    </string-array>
 
 </resources>

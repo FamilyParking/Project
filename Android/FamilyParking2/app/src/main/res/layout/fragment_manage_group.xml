@@ -79,23 +79,34 @@
                     android:layout_marginTop="5dp"
                     android:visibility="gone"
                     android:layout_below="@id/relative_insert_name_group">
+                    <Spinner
+                        android:id="@+id/car_sp"
+                        android:layout_width="75dp"
+                        android:layout_height="55dp"
+                        android:layout_alignParentLeft="true"/>
+
                     <ImageView
-                        android:id="@+id/car_iv"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/add_car"/>
+                        android:id="@+id/delete_car_group"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:clickable="true"
+                        android:background="@android:drawable/ic_menu_delete"
+                        android:backgroundTint="@color/gray"/>
 
                     <EditText
                         android:id="@+id/car_name_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/car_iv"
+                        android:layout_toRightOf="@id/car_sp"
+                        android:layout_toLeftOf="@id/delete_car_group"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
                         android:textSize="16sp"
                         android:textColor="@color/black"
+                        android:inputType="textCapSentences"
                         android:textColorHint="@color/gray"
                         android:background="@color/transparent"
                         android:singleLine="true"
