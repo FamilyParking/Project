@@ -28,6 +28,14 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     
     @IBAction func TestButton() {
+        
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int
+        if (carsNumber < 1) {
+            self.performSegueWithIdentifier("add_car", sender: self)
+        } else {
+            //  self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
+        
             var alert = UIAlertController(title: "New Mail",
                 message: "Add a new mail to the family",
                 preferredStyle: .Alert)
@@ -55,6 +63,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
             presentViewController(alert,
                 animated: true,
                 completion: nil)
+        }
     }
     
     

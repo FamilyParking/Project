@@ -129,6 +129,8 @@ class AddCar: UIViewController, UITextFieldDelegate {
                     println("Error could not parse JSON: \(jsonStr)")
                 }
             }
+            
+
         })
         task.resume()
 

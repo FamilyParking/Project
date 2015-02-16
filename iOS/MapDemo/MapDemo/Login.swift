@@ -69,8 +69,8 @@ class Login: UIViewController, UITextFieldDelegate {
         }
         else{
             sendMailForPin()
-          //  VerifyButton.enabled=false
-            //ConfirmButton.enabled=false
+            VerifyButton.enabled=false
+            ConfirmButton.enabled=false
         }
        
 
@@ -153,19 +153,22 @@ class Login: UIViewController, UITextFieldDelegate {
                 let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
                 println("Error could not parse JSON because there is an error: '\(jsonStr)'")
                 var stringa:NSString = "" + jsonStr!
+                //**DEBUG**//
+                if(stringa.length>3||true){
+            //    var array = stringa.componentsSeparatedByString(",")
+              //      if(array.count==3){
+                    if(true){
+              //  var fl = array[0].componentsSeparatedByString(":")
+              //  var fla = fl[1].componentsSeparatedByString("'")
+              //  var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
                 
-                if(stringa.length>3){
-                var array = stringa.componentsSeparatedByString(",")
-                    if(array.count==3){
-                var fl = array[0].componentsSeparatedByString(":")
-                var fla = fl[1].componentsSeparatedByString("'")
-                var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
+                    var flag = "True";
                 println(flag)
                 
-                var desc = array[2].componentsSeparatedByString(":")
-                var descri = desc[1].componentsSeparatedByString("'")
-                var description: AnyObject=descri[1]
-                    println(description)
+           //     var desc = array[2].componentsSeparatedByString(":")
+            //    var descri = desc[1].componentsSeparatedByString("'")
+            //    var description: AnyObject=descri[1]
+            //        println(description)
                 if (flag == "True"){
                     println("activating pin")
                     self.VerifyButton.enabled=false
@@ -282,7 +285,8 @@ class Login: UIViewController, UITextFieldDelegate {
                     var stringa:NSString = "" + jsonStr!
                     
                     if(stringa.length>3){
-                        var array = stringa.componentsSeparatedByString(",")
+                        println("Check 1 Complete")
+                        var array = stringa.componentsSeparatedByString(", ")
                         if(array.count==3){
                             var fl = array[0].componentsSeparatedByString(":")
                             var fla = fl[1].componentsSeparatedByString("'")
@@ -293,6 +297,7 @@ class Login: UIViewController, UITextFieldDelegate {
                             var description: AnyObject=descri[1]
                             println(description)
                             if (flag == "True"){
+                                println("Check Complete")
                                 var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                                 prefs.setObject(self.PinTextField.text, forKey: "PIN")
                                 
