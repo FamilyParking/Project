@@ -2,12 +2,8 @@ package it.familiyparking.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +91,7 @@ public class CustomAdapterGroup extends ArrayAdapter<Group> implements View.OnLo
 
         activity.getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoRemoveGroup(activity,groupFragment,groupID,groups,progressDialog)).start();
+        new Thread(new DoRemoveGroup(activity,groupFragment,groupID)).start();
     }
 
     private void showContact(AdapterView<?> parent, Group group, int position){

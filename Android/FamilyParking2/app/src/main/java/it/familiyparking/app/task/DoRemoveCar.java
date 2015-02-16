@@ -8,23 +8,24 @@ import android.support.v4.app.FragmentActivity;
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.fragment.GroupFragment;
+import it.familiyparking.app.fragment.CarFragment;
+import it.familiyparking.app.serverClass.Car;
 
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoRemoveGroup implements Runnable {
+public class DoRemoveCar implements Runnable {
 
-    private String groupID;
     private MainActivity activity;
-    private GroupFragment groupFragment;
+    private CarFragment carFragment;
+    private String carID;
 
-    public DoRemoveGroup(FragmentActivity activity, Fragment fragment, String groupID) {
-        this.groupID = groupID;
+    public DoRemoveCar(FragmentActivity activity, Fragment fragment, String carID) {
         this.activity = (MainActivity)activity;
-        groupFragment = (GroupFragment) fragment;
+        this.carID = carID;
+        this.carFragment = (CarFragment) fragment;
     }
 
     @Override
@@ -44,23 +45,24 @@ public class DoRemoveGroup implements Runnable {
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        GroupTable.deleteGroup(db, groupID);
 
-        final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
-        boolean emptyGroup = list_groupID.isEmpty();
+        CarTable.deleteCar(db,carID);
+
+        final ArrayList<Car> cars = CarTable.getAllCar(db);
+        boolean emptyCar = cars.isEmpty();
 
         db.close();
 
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                groupFragment.updateAdapter(list_groupID);
+                carFragment.updateAdapter(cars);
             }
         });
 
         activity.resetProgressDialogCircular(true);
 
-        if(emptyGroup)
-            activity.removeGroupFragment(emptyGroup);
+        if(emptyCar)
+            activity.removeCarFragment(emptyCar);
     }
 }

@@ -28,7 +28,6 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -38,8 +37,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-
-import java.util.Random;
 
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Group;
@@ -309,5 +306,15 @@ public class Tools {
     public static String getBrand(Spinner spinner, Activity activity){
         String[] array = activity.getResources().getStringArray(R.array.car_brands);
         return array[spinner.getSelectedItemPosition()];
+    }
+
+    public static int getBrandIndex(String brand, Activity activity){
+        String[] array = activity.getResources().getStringArray(R.array.car_brands);
+
+        for(int i=0; i<array.length; i++)
+            if(array[i].equals(brand))
+                return i;
+
+        return -1;
     }
 }

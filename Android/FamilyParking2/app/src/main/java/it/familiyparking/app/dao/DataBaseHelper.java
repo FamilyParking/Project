@@ -4,11 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import it.familiyparking.app.serverClass.Car;
-
 public class DataBaseHelper extends SQLiteOpenHelper{
 
-    public static final String NAME_DB = "familypark_db";
+    public static final String NAME_DB = "familyparking_db";
     public static final int VERSION_DB = 1;
 
     public static final String CREATE_TABLE_GROUP =
@@ -30,10 +28,20 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     CarTable.BRAND+" TEXT NOT NULL, "+
                     CarTable.BLUETOOTH_NAME+" TEXT , "+
                     CarTable.BLUETOOTH_MAC+" TEXT , "+
+                    CarTable.TIMESTAMP+" TEXT NOT NULL, "+
                     "PRIMARY KEY ( "+CarTable.CAR_ID+" )"+" ) ; ";
+
+    public static final String CREATE_TABLE_CAR_GROUP_RELATION =
+            "CREATE TABLE IF NOT EXISTS "+ CarGroupRelationTable.TABLE+" ( " +
+                    CarGroupRelationTable.GROUP_ID+" TEXT NOT NULL, "+
+                    CarGroupRelationTable.CAR_ID+" TEXT NOT NULL, "+
+                    "PRIMARY KEY ( "+CarGroupRelationTable.GROUP_ID+" , "+CarGroupRelationTable.CAR_ID+" )"+" ) ; ";
+
+
 
     public static final String DROP_TABLE_GROUP = "DROP TABLE IF EXISTS "+ GroupTable.TABLE+" ;";
     public static final String DROP_TABLE_CAR = "DROP TABLE IF EXISTS "+ CarTable.TABLE+" ;";
+    public static final String DROP_TABLE_CAR_GROUP_RELATION = "DROP TABLE IF EXISTS "+ CarGroupRelationTable.TABLE+" ;";
 
     public DataBaseHelper(Context context){
         super(context, NAME_DB, null, VERSION_DB);
@@ -43,12 +51,14 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_TABLE_GROUP);
         db.execSQL(CREATE_TABLE_CAR);
+        db.execSQL(CREATE_TABLE_CAR_GROUP_RELATION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DROP_TABLE_GROUP);
         db.execSQL(DROP_TABLE_CAR);
+        db.execSQL(DROP_TABLE_CAR_GROUP_RELATION);
         onCreate(db);
     }
 

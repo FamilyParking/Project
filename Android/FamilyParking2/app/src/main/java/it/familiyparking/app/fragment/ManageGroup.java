@@ -3,17 +3,15 @@ package it.familiyparking.app.fragment;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +31,13 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.adapter.CustomAdapterCarBrand;
+import it.familiyparking.app.adapter.CustomAdapterCarGroup;
 import it.familiyparking.app.adapter.CustomCursorAdapter;
 import it.familiyparking.app.adapter.CustomHorizontalAdapter;
+import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
 import it.familiyparking.app.task.DoSaveGroup;
@@ -68,7 +69,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
     private RelativeLayout relativeTwoWayView;
 
     private Spinner spinner;
-    private CustomAdapterCarBrand adapterCarBrand;
+    private CustomAdapterCarGroup adapterCarGroup;
 
     private EditText editTextFinder;
     private EditText editTextName;
@@ -345,7 +346,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoSaveGroup(getActivity(),editTextName.getText().toString(),null,contactArrayList,progressDialog)).start();
+        new Thread(new DoSaveGroup(getActivity(),editTextName.getText().toString(),contactArrayList,progressDialog)).start();
     }
 
     private void setEditTextGroupName(String name){
@@ -489,7 +490,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoUpdateGroup(getActivity(),editTextName.getText().toString(),contactArrayList,editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()),group,progressDialog)).start();
+        new Thread(new DoUpdateGroup(getActivity(),this,editTextName.getText().toString(),contactArrayList,(Car)spinner.getSelectedItem(),group)).start();
     }
 
     private boolean creating(){
@@ -500,19 +501,30 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         rootView.findViewById(R.id.relative_modify_car_group).setVisibility(View.VISIBLE);
 
         spinner = (Spinner) rootView.findViewById(R.id.car_sp);
-        adapterCarBrand = new CustomAdapterCarBrand(getActivity());
-        spinner.setAdapter(adapterCarBrand);
 
-        editTextCar = (EditText) rootView.findViewById(R.id.car_name_et);
-        editTextCar.setText(group.getCar().getName());
+        DataBaseHelper databaseHelper = new DataBaseHelper(getActivity());
+        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        rootView.findViewById(R.id.delete_car_group).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                group.setCar(null);
-                rootView.findViewById(R.id.relative_modify_car_group).setVisibility(View.VISIBLE);
-            }
-        });
+        ArrayList<Car> cars = CarTable.getAllCar(db);
+
+        db.close();
+
+        adapterCarGroup = new CustomAdapterCarGroup(getActivity(),cars,group.getId());
+        spinner.setAdapter(adapterCarGroup);
+
+        int selectedIndex = 0;
+        for(Car car : cars){
+            if(car.getId().equals(group.getId()))
+                break;
+
+            selectedIndex++;
+        }
+
+        if(selectedIndex == cars.size())
+            selectedIndex = 0;
+
+        spinner.setSelection(selectedIndex);
+
     }
 
     private void setScrollView(){

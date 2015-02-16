@@ -1,6 +1,5 @@
 package it.familiyparking.app.dialog;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -10,12 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.utility.Tools;
 

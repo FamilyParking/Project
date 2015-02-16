@@ -4,13 +4,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,18 +40,16 @@ public class GroupFragment extends Fragment {
 
         Tools.setUpButtonActionBar((ActionBarActivity) getActivity());
 
-        getData();
+        getData(getArguments().getStringArrayList("groupsID"));
 
         return rootView;
     }
 
-    private void getData(){
+    private void getData(ArrayList<String> list_groupID){
         DataBaseHelper databaseHelper = new DataBaseHelper(getActivity());
         final SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         groups = new ArrayList<>();
-
-        ArrayList<String> list_groupID = getArguments().getStringArrayList("groupsID");
 
         Iterator<String> iterator = list_groupID.iterator();
         while(iterator.hasNext()){
@@ -73,11 +68,11 @@ public class GroupFragment extends Fragment {
         customAdapterGroup.notifyDataSetChanged();
     }
 
-    public void updateAdapter(){
+    public void updateAdapter(ArrayList<String> list_groupID){
         customAdapterGroup = new CustomAdapterGroup(this,getActivity(),new ArrayList<Group>(),getActivity());
         group_list.setAdapter(customAdapterGroup);
         customAdapterGroup.notifyDataSetChanged();
-        getData();
+        getData(list_groupID);
     }
 
 }

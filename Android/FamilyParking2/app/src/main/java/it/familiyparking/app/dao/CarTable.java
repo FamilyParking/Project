@@ -4,11 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.Contact;
 
 public class CarTable {
 
@@ -42,6 +42,21 @@ public class CarTable {
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
                 car = new Car(c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5));
+        }
+
+        c.close();
+
+        return car;
+    }
+
+    public static ArrayList<Car> getAllCar(SQLiteDatabase db) throws SQLException{
+        ArrayList<Car> car = new ArrayList<>();
+
+        Cursor c = db.query(true, TABLE, COLUMNS, null, null, null, null, null, null);
+
+        if((c != null) && (c.getCount() > 0)){
+            while(c.moveToNext())
+                car.add(new Car(c.getString(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4)));
         }
 
         c.close();

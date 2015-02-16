@@ -4,29 +4,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 
-import java.util.ArrayList;
-
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.dialog.ProgressDialogCircular;
-import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.serverClass.Car;
 
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoSaveGroup implements Runnable {
+public class DoSaveCar implements Runnable {
 
-    private String group_name;
     private MainActivity activity;
-    private ArrayList<Contact> group;
-    private ProgressDialogCircular progressDialogCircular;
+    private Car car;
 
-    public DoSaveGroup(FragmentActivity activity, String group_name, ArrayList<Contact> group, ProgressDialogCircular progressDialogCircular) {
-        this.group_name = group_name;
+    public DoSaveCar(FragmentActivity activity, Car car) {
         this.activity = (MainActivity)activity;
-        this.group = group;
-        this.progressDialogCircular = progressDialogCircular;
+        this.car = car;
     }
 
     @Override
@@ -40,7 +33,7 @@ public class DoSaveGroup implements Runnable {
         /* CALL SERVER */
         /***************/
         /**************************************/
-        /**/String groupID = "0123456789";         /**/
+        /**/String carID = "0123456789";    /**/
         /**/String timestamp = "0123456789";/**/
         /**************************************/
         try {
@@ -49,12 +42,13 @@ public class DoSaveGroup implements Runnable {
             e.printStackTrace();
         }
 
-        for (Contact contact : group)
-            GroupTable.insertContact(db, groupID, group_name, contact, timestamp);
+        car.setId(carID);
+
+        CarTable.insertCar(db,car,timestamp);
 
         db.close();
 
         activity.resetProgressDialogCircular(false);
-        activity.closeCreateGroup();
+        activity.closeCreateCar();
     }
 }

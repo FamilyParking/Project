@@ -1,34 +1,14 @@
 package it.familiyparking.app.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import org.lucasr.twowayview.TwoWayView;
-
-import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dialog.ContactDetailDialog;
-import it.familiyparking.app.dialog.ProgressDialogCircular;
-import it.familiyparking.app.fragment.GroupFragment;
-import it.familiyparking.app.fragment.ManageGroup;
-import it.familiyparking.app.serverClass.Contact;
-import it.familiyparking.app.serverClass.Group;
-import it.familiyparking.app.task.DoRemoveGroup;
-import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.

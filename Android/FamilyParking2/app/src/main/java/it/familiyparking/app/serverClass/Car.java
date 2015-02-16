@@ -55,6 +55,22 @@ public class Car implements Parcelable {
         this.bluetoothMac = bluetoothMac;
     }
 
+    public Car(String name, String brand, String bluetoothName, String bluetoothMac) {
+        this.name = name;
+        this.brand = brand;
+        this.bluetoothName = bluetoothName;
+        this.bluetoothMac = bluetoothMac;
+    }
+
+    public Car(String name, String brand) {
+        this.name = name;
+        this.brand = brand;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String[] getArray(){
         return new String[]{id,name,brand,bluetoothName,bluetoothMac};
     }
@@ -118,11 +134,11 @@ public class Car implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.latitude,this.longitude,this.id,this.name,this.brand});
+        dest.writeStringArray(new String[] {this.latitude,this.longitude,this.id,this.name,this.brand,this.bluetoothName,this.bluetoothMac});
     }
 
     public Car(Parcel in){
-        String[] data = new String[5];
+        String[] data = new String[7];
         in.readStringArray(data);
 
         this.latitude = data[0];
@@ -130,6 +146,8 @@ public class Car implements Parcelable {
         this.id = data[2];
         this.name = data[3];
         this.brand = data[4];
+        this.bluetoothName = data[5];
+        this.bluetoothMac = data[6];
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -141,6 +159,10 @@ public class Car implements Parcelable {
             return new Car[size];
         }
     };
+
+    public boolean equals(Car car){
+        return this.getId().equals(car.getId());
+    }
 
     public String toString(){
         return "[CAR]: "+id+"-"+name+"-"+brand;

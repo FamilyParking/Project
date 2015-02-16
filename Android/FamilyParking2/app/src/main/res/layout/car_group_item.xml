@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <RadioButton
+        android:id="@+id/car_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/car_logo_item_iv"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/alfa_romeo"
+        android:layout_toRightOf="@id/car_radio_button"/>
+
+    <TextView
+        android:id="@+id/car_name_item_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:inputType="textCapSentences"
+        android:textColorHint="@color/gray"
+        android:background="@color/transparent"
+        android:singleLine="true"
+        android:text="Giulietta"
+        android:layout_toRightOf="@id/car_logo_item_iv"/>
+
+
+</RelativeLayout>

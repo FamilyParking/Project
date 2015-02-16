@@ -2,8 +2,8 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,7 @@ import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
+import it.familiyparking.app.fragment.GroupFragment;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
@@ -27,16 +28,16 @@ public class DoUpdateGroup implements Runnable {
     private Group group;
     private MainActivity activity;
     private ArrayList<Contact> newArray;
-    private ProgressDialogCircular progressDialogCircular;
+    private GroupFragment groupFragment;
 
-    public DoUpdateGroup(FragmentActivity activity, String newName, ArrayList<Contact> newArray, String newCarName, String newCarBrand, Group group, ProgressDialogCircular progressDialogCircular) {
+    public DoUpdateGroup(FragmentActivity activity, Fragment fragment, String newName, ArrayList<Contact> newArray, Car newCar, Group group) {
         this.newName = newName;
-        this.newCarName = newCarName;
-        this.newCarBrand = newCarBrand;
+        this.newCarName = newCar.getName();
+        this.newCarBrand = newCar.getBrand();
         this.newArray = newArray;
         this.activity = (MainActivity)activity;
         this.group = group;
-        this.progressDialogCircular = progressDialogCircular;
+        this.groupFragment = (GroupFragment) fragment;
     }
 
     @Override
@@ -147,12 +148,20 @@ public class DoUpdateGroup implements Runnable {
             notifyAdapter = true;
         }
 
+        if(notifyAdapter) {
+            final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    groupFragment.updateAdapter(list_groupID);
+                }
+            });
+        }
+
         db.close();
 
-        if(notifyAdapter)
-            activity.updateAdapterGroup();
-
-        activity.resetProgressDialogCircular();
+        activity.resetProgressDialogCircular(false);
         activity.closeModifyGroup();
     }
 }

@@ -1,0 +1,158 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/soft_gray_transparent"
+    android:clickable="true"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/relative_car_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:padding="15dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+
+        <RelativeLayout
+            android:id="@+id/relative_modify_car"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true">
+            <Spinner
+                android:id="@+id/car_sp"
+                android:layout_width="75dp"
+                android:layout_height="55dp"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                android:id="@+id/car_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/car_sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:inputType="textCapSentences"
+                android:textColorHint="@color/gray"
+                android:background="@color/transparent"
+                android:singleLine="true"
+                android:hint="@string/car_model"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/car_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/relative_modify_car">
+            <Button
+                android:id="@+id/check_car_bt"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:background="@drawable/ic_check_grey"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/container_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/relative_modify_car"
+            android:visibility="gone">
+
+            <View
+                android:id="@+id/line_car"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/gray"/>
+
+            <RelativeLayout
+                android:id="@+id/button_rl_car"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/line_car">
+
+
+                <RelativeLayout
+                    android:id="@+id/back_car_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/image_back_car"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:background="@android:drawable/ic_menu_revert"
+                        android:backgroundTint="@color/gray"/>
+
+                    <TextView
+                        android:id="@+id/back_car"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/image_back_car"
+                        android:layout_centerVertical="true"
+                        android:text="@string/discard"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+                        android:background="@color/transparent"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/save_car_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/image_save_car"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@android:drawable/ic_menu_save"
+                        android:backgroundTint="@color/gray"/>
+
+                    <TextView
+                        android:id="@+id/delete_car"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/image_save_car"
+                        android:text="@string/save"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+                        android:background="@color/transparent"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
+
+
+

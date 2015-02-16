@@ -1,6 +1,5 @@
 package it.familiyparking.app;
 
-import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,17 +18,20 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Create;
-import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.GroupFragment;
+import it.familiyparking.app.fragment.ManageCar;
+import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.task.DoSignIn;
 import it.familiyparking.app.utility.Tools;
 
@@ -38,12 +40,14 @@ public class MainActivity extends ActionBarActivity {
 
     private Map map;
     private GroupFragment groupFragment;
-    private CarFragment car;
+    private CarFragment carFragment;
     private GhostMode ghostMode;
     private Create create;
     private SignIn signIn;
     private ManageGroup createGroup;
     private ManageGroup modifyGroup;
+    private ManageCar createCar;
+    private ManageCar modifyCar;
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private Tracker tracker;
@@ -91,10 +95,20 @@ public class MainActivity extends ActionBarActivity {
                 return true;
 
             case R.id.action_cars:
-                if(car == null) {
-                    car = new CarFragment();
-                    replaceFragment(car);
-                    return true;
+                if(carFragment == null) {
+                    DataBaseHelper databaseHelper = new DataBaseHelper(this);
+                    final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+                    ArrayList<Car> cars = CarTable.getAllCar(db);
+                    db.close();
+
+                    if (cars.isEmpty()) {
+                        Tools.createToast(this, getResources().getText(R.string.car_empty), Toast.LENGTH_SHORT);
+                    } else {
+                        carFragment = new CarFragment();
+                        replaceFragment(carFragment);
+
+                        return true;
+                    }
                 }
                 return false;
 
@@ -134,9 +148,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void replaceFragment(Fragment avoid){
-        if((car != null)&&(car != avoid)){
-            getSupportFragmentManager().beginTransaction().remove(car).commit();
-            car = null;
+        if((carFragment != null)&&(carFragment != avoid)){
+            getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
+            carFragment = null;
         }
         if((groupFragment != null)&&(groupFragment != avoid)){
             removeGroupFragment(false);
@@ -166,6 +180,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClick_NewCar(View v) {
         managePlusButton();
+        createCar = new ManageCar();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
     }
 
     private void managePlusButton(){
@@ -223,26 +239,24 @@ public class MainActivity extends ActionBarActivity {
         createGroup = null;
     }
 
+    public void closeCreateCar(){
+        setMenu();
+        Tools.resetUpButtonActionBar(this);
+        getSupportFragmentManager().beginTransaction().remove(createCar).commit();
+        createCar = null;
+    }
+
     public void closeModifyGroup(){
         setMenu();
         getSupportFragmentManager().beginTransaction().remove(modifyGroup).commit();
         modifyGroup = null;
     }
 
-    public void updateAdapterGroup(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                groupFragment.updateAdapter();
-            }
-        });
-    }
-
     public void setProgressDialogCircular(ProgressDialogCircular fragment){
         progressDialogCircular = fragment;
     }
 
-    public void resetProgressDialogCircular(){
+    public void resetProgressDialogCircular(final boolean resetUpButton){
         final ActionBarActivity activity = this;
 
         runOnUiThread(new Runnable() {
@@ -250,7 +264,12 @@ public class MainActivity extends ActionBarActivity {
             public void run() {
                 getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
                 progressDialogCircular = null;
-                Tools.setUpButtonActionBar(activity);
+
+                if(resetUpButton)
+                    Tools.resetUpButtonActionBar(activity);
+                else
+                    Tools.setUpButtonActionBar(activity);
+
                 setMenu();
             }
         });
@@ -279,11 +298,30 @@ public class MainActivity extends ActionBarActivity {
         modifyGroup = fragment;
     }
 
+    public void setModifyCar(ManageCar fragment){
+        resetMenu();
+        modifyCar = fragment;
+    }
+
     public void resetModifyGroup(){
         Tools.setUpButtonActionBar(this);
         setMenu();
         getSupportFragmentManager().beginTransaction().remove(modifyGroup).commit();
         modifyGroup = null;
+    }
+
+    public void resetModifyCar(){
+        final ActionBarActivity activity = this;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Tools.setUpButtonActionBar(activity);
+                setMenu();
+                getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
+                modifyCar = null;
+            }
+        });
     }
 
     @Override
@@ -294,6 +332,9 @@ public class MainActivity extends ActionBarActivity {
         else if(modifyGroup != null){
             //Do nop
         }
+        else if(modifyCar != null){
+            //Do nop
+        }
         else if(contactDetailDialog != null){
             resetContactDetailDialog();
         }
@@ -302,10 +343,15 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(createGroup).commit();
             createGroup = null;
         }
-        else if(car != null){
+        else if(createCar != null){
             Tools.resetUpButtonActionBar(this);
-            getSupportFragmentManager().beginTransaction().remove(car).commit();
-            car = null;
+            getSupportFragmentManager().beginTransaction().remove(createCar).commit();
+            createCar = null;
+        }
+        else if(carFragment != null){
+            Tools.resetUpButtonActionBar(this);
+            getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
+            carFragment = null;
         }
         else if(groupFragment != null){
             Tools.resetUpButtonActionBar(this);
@@ -341,5 +387,15 @@ public class MainActivity extends ActionBarActivity {
 
         if(flagMessage)
             Tools.createToast(this, getResources().getText(R.string.group_empty), Toast.LENGTH_SHORT);
+    }
+
+    public void removeCarFragment(boolean flagMessage){
+        getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
+        carFragment = null;
+
+        setMenu();
+
+        if(flagMessage)
+            Tools.createToast(this, getResources().getText(R.string.car_empty), Toast.LENGTH_SHORT);
     }
 }
