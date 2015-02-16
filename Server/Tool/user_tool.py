@@ -1,15 +1,16 @@
+import json
 import logging
+from Class.statusReturn import StatusReturn
 from Cloud_Storage.user_group import User_group
 
 __author__ = 'Nazzareno'
 
-
 from Cloud_Storage.user import User
 
-class User_tool():
 
+class User_tool():
     @staticmethod
-    def check_code(email,code):
+    def check_code(email, code):
         temp_userKey = User.static_querySearch_email(email)
         if temp_userKey.count() == 0:
             return -2
@@ -36,3 +37,36 @@ class User_tool():
             return temp_id_user
         except:
             return -1
+
+    @staticmethod
+    def check_before_start(method_name, result):
+        try:
+            data = json.loads(result.request.body)
+            code = int(data["Code"])
+            try:
+                result_check_code = User_tool.check_code(data["Email"], code)
+
+                if result_check_code == -2:
+                    result.error(500)
+                    error = StatusReturn(2, method_name)
+                    result.response.write(error.print_general_error())
+                elif result_check_code == -1:
+                    result.error(500)
+                    error = StatusReturn(3, method_name)
+                    result.response.write(error.print_general_error())
+                elif result_check_code < 0:
+                    result.error(500)
+                    error = StatusReturn(5, method_name)
+                    result.response.write(error.print_general_error())
+                else:
+                    return result_check_code
+
+            except:
+                result.error(500)
+                error = StatusReturn(4, method_name)
+                result.response.write(error.print_general_error())
+        except:
+            result.error(500)
+            error = StatusReturn(1, method_name)
+            result.response.write(error.print_general_error())
+

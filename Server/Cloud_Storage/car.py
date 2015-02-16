@@ -15,7 +15,7 @@ class Car(ndb.Model):
     timestamp = ndb.StringProperty()
 
     def getPositionFromID(self):
-        result = Position(self.longitude,self.longitude)
+        result = Position(self.latitude,self.longitude)
         return result
 
     def updatePosition(self,latitude,longitude):
@@ -40,3 +40,14 @@ class Car(ndb.Model):
     def update_position_ID(id,latitude,longitude):
         temp_car = Car.getCarbyID(id)
         return temp_car.updatePosition(latitude,longitude)
+
+    @staticmethod
+    def delete_car_ID(id):
+        app_key = Car.getCarbyID(id)
+        app_key.key.delete()
+
+    @staticmethod
+    def get_position_id(ID):
+        app_key = Car.getCarbyID(ID)
+        return app_key.getPositionFromID()
+

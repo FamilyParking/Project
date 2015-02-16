@@ -29,6 +29,7 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
 
+
 class SendEmail(webapp2.RequestHandler):
     def post(self):
         logging.debug("Received from user: " + str(self.request.body))
@@ -91,6 +92,7 @@ class SendEmail(webapp2.RequestHandler):
             error = StatusReturn(1, 0)
             self.response.write(error.toJSON())
 
+
 class getIDGroups(webapp2.RequestHandler):
     def post(self):
         try:
@@ -143,6 +145,7 @@ class getIDGroups(webapp2.RequestHandler):
             error = StatusReturn(1, "getIDGroups")
             self.response.write(error.print_general_error())
 
+
 class getAllCars_groupID(webapp2.RequestHandler):
     def post(self):
         try:
@@ -171,7 +174,7 @@ class getAllCars_groupID(webapp2.RequestHandler):
                     try:
                         # id_groups = User_tool.return_groups(data["Email"])
                         result = []
-                        #                    if(id_groups>0):
+                        # if(id_groups>0):
                         #                        for key in id_groups:
                         id_car_by_group = Car_group.getCarFromGroup(id_group)
 
@@ -196,6 +199,7 @@ class getAllCars_groupID(webapp2.RequestHandler):
             self.error(500)
             error = StatusReturn(1, "getAllCars_groupID")
             self.response.write(error.print_general_error())
+
 
 class getAllCars(webapp2.RequestHandler):
     def post(self):
@@ -246,73 +250,38 @@ class getAllCars(webapp2.RequestHandler):
             error = StatusReturn(1, "getAllCars")
             self.response.write(error.print_general_error())
 
-class getPositionCar(webapp2.RequestHandler):
-    def post(self):
-        result = {}
-        logging.debug("Received from user: " + str(self.request.body))
-        try:
-            data = json.loads(self.request.body)
-            key_car = data["ID"]
-            try:
-                car_select = Car.getCarbyID(key_car)
-                logging.debug(car_select)
-                try:
-                    position = car_select.getPositionFromID
-                    result["latitude"] = position.latitude
-                    result["longitude"] = position.longitude
-                    self.response.write(result)
-                except:
-                    logging.debug("Third try: " + str(sys.exc_info()))
-            except:
-                logging.debug("Second try: " + str(sys.exc_info()))
-
-        except:
-            logging.debug("Error first try: " + str(sys.exc_info()))
 
 class createCar(webapp2.RequestHandler):
     def post(self):
-        try:
+        if User_tool.check_before_start("createCar", self) >= 0:
             data = json.loads(self.request.body)
-            code = int(data["Code"])
-            try:
-                result_check_code = User_tool.check_code(data["Email"], code)
+            new_car = Car(model=data["Name"], latitude="0",
+                          longitude="0", timestamp=str(datetime.datetime.now()))
+            new_car.put()
+            right = StatusReturn(4, "createCar", new_car.key.id())
+            self.response.write(right.print_result())
 
-                if result_check_code == -2:
-                    self.error(500)
-                    error = StatusReturn(2, "createCar")
-                    self.response.write(error.print_general_error())
 
-                elif result_check_code == -1:
-                    self.error(500)
-                    error = StatusReturn(3, "createCar")
-                    self.response.write(error.print_general_error())
+class deleteCar(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("deleteCar", self) >= 0:
+            data = json.loads(self.request.body)
+            Car.delete_car_ID(data["ID"])
+            right = StatusReturn(7, "deleteCar", "Delete " + str(data["ID"]))
+            self.response.write(right.print_result())
 
-                elif result_check_code >= 0:
-                    new_car = Car(model=data["Name"], latitude="0",
-                                  longitude="0", timestamp=str(datetime.datetime.now()))
-                    new_group = Group(name=data["Name"], timestamp=str(datetime.datetime.now()))
-                    new_car.put()
-                    new_group.put()
-                    new_car_group = Car_group(id_car=int(new_car.key.id()), id_group=int(new_group.key.id()))
-                    new_car_group.put()
-                    new_user_group = User_group(id_user=int(User_tool.return_ID_from_email(str(data["Email"]))),
-                                                    id_group=int(new_group.key.id()))
-                    new_user_group.put()
+class getPositionCar(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("getPositionCar", self) >= 0:
+            data = json.loads(self.request.body)
 
-                    right = StatusReturn(4, "createCar", new_car.key.id())
-                    self.response.write(right.print_result())
-                else:
-                    self.error(500)
-                    error = StatusReturn(5, "createCar")
-                    self.response.write(error.print_general_error())
-            except:
-                self.error(500)
-                error = StatusReturn(4, "createCar")
-                self.response.write(error.print_general_error())
-        except:
-            self.error(500)
-            error = StatusReturn(1, "createCar")
-            self.response.write(error.print_general_error())
+            result = Car.get_position_id(data["ID"])
+            result_JSON = {}
+            result_JSON["latitude"] = result.latitude
+            result_JSON["longitude"] = result.longitude
+
+            right = StatusReturn(9, "getPositionCar", result_JSON)
+            self.response.write(right.print_result())
 
 class createGroup(webapp2.RequestHandler):
     def post(self):
@@ -336,7 +305,7 @@ class createGroup(webapp2.RequestHandler):
                     new_group = Group(name=data["Name"], timestamp=str(datetime.datetime.now()))
                     new_group.put()
                     new_user_group = User_group(id_user=int(User_tool.return_ID_from_email(str(data["Email"]))),
-                                                    id_group=int(new_group.key.id()))
+                                                id_group=int(new_group.key.id()))
                     new_user_group.put()
 
                     right = StatusReturn(6, "createGroup", new_group.key.id())
@@ -353,6 +322,79 @@ class createGroup(webapp2.RequestHandler):
             self.error(500)
             error = StatusReturn(1, "createGroup")
             self.response.write(error.print_general_error())
+
+
+class deleteGroup(webapp2.RequestHandler):
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+            code = int(data["Code"])
+            try:
+                result_check_code = User_tool.check_code(data["Email"], code)
+
+                if result_check_code == -2:
+                    self.error(500)
+                    error = StatusReturn(2, "createCar")
+                    self.response.write(error.print_general_error())
+
+                elif result_check_code == -1:
+                    self.error(500)
+                    error = StatusReturn(3, "createCar")
+                    self.response.write(error.print_general_error())
+
+                elif result_check_code >= 0:
+                    Group.delete_group_ID(data["ID"])
+                    right = StatusReturn(8, "deleteGroup", "Delete " + str(data["ID"]))
+                    self.response.write(right.print_result())
+                else:
+                    self.error(500)
+                    error = StatusReturn(5, "createCar")
+                    self.response.write(error.print_general_error())
+            except:
+                self.error(500)
+                error = StatusReturn(4, "createCar")
+                self.response.write(error.print_general_error())
+        except:
+            self.error(500)
+            error = StatusReturn(1, "createCar")
+            self.response.write(error.print_general_error())
+
+
+class insertContactGroup(webapp2.RequestHandler):
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+            code = int(data["Code"])
+            try:
+                result_check_code = User_tool.check_code(data["Email"], code)
+
+                if result_check_code == -2:
+                    self.error(500)
+                    error = StatusReturn(2, "createCar")
+                    self.response.write(error.print_general_error())
+
+                elif result_check_code == -1:
+                    self.error(500)
+                    error = StatusReturn(3, "createCar")
+                    self.response.write(error.print_general_error())
+
+                elif result_check_code >= 0:
+                    Group.delete_group_ID(data["ID"])
+                    right = StatusReturn(8, "deleteGroup", "Delete " + str(data["ID"]))
+                    self.response.write(right.print_result())
+                else:
+                    self.error(500)
+                    error = StatusReturn(5, "createCar")
+                    self.response.write(error.print_general_error())
+            except:
+                self.error(500)
+                error = StatusReturn(4, "createCar")
+                self.response.write(error.print_general_error())
+        except:
+            self.error(500)
+            error = StatusReturn(1, "createCar")
+            self.response.write(error.print_general_error())
+
 
 class updatePosition(webapp2.RequestHandler):
     def post(self):
@@ -378,13 +420,13 @@ class updatePosition(webapp2.RequestHandler):
                 elif result_check_code >= 0:
                     try:
 
-                        Car.update_position_ID(id_car,latitude,longitude)
+                        Car.update_position_ID(id_car, latitude, longitude)
 
                         right = StatusReturn(5, "updatePosition")
                         self.response.write(right.print_result())
                     except:
                         self.error(500)
-                        error = StatusReturn(8, "updatePosition",str(sys.exc_info()))
+                        error = StatusReturn(8, "updatePosition", str(sys.exc_info()))
                         self.response.write(error.print_general_error())
                 else:
                     self.error(500)
@@ -398,6 +440,7 @@ class updatePosition(webapp2.RequestHandler):
             self.error(500)
             error = StatusReturn(1, "updatePosition")
             self.response.write(error.print_general_error())
+
 
 class registrationForm(webapp2.RequestHandler):
     def post(self):
@@ -449,5 +492,9 @@ application = webapp2.WSGIApplication([
                                           ('/getIDGroups', getIDGroups),
                                           ('/getAllCars', getAllCars),
                                           ('/createCar', createCar),
+                                          ('/deleteCar', deleteCar),
+                                          ('/createGroup', createGroup),
+                                          ('/deleteGroup', deleteGroup),
                                           ('/updatePosition', updatePosition),
+                                          ('/getPositionCar', getPositionCar),
                                       ], debug=True)

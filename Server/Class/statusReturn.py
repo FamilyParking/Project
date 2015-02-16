@@ -17,45 +17,47 @@ class StatusReturn:
             logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json ")
             error_data["flag"] = False
             error_data["description"] = "Can't load json"
-            error_data["object"] = None
+            error_data["object"] = 1
         elif self.number == 2:
             logging.debug("[" + str(self.function) + "] Error 2 --> User not found ")
             error_data["flag"] = False
             error_data["description"] = "User not found"
-            error_data["object"] = None
+            error_data["object"] = 2
         elif self.number == 3:
             logging.debug("[" + str(self.function) + "] Error 3 --> Code not valid")
             error_data["flag"] = False
             error_data["description"] = "Code not valid"
-            error_data["object"] = None
+            error_data["object"] = 3
         elif self.number == 4:
             logging.debug("[" + str(self.function) + "] Error 4 --> Check code problem")
             error_data["flag"] = False
             error_data["description"] = "Check code problem"
-            error_data["object"] = None
+            error_data["object"] = 4
         elif self.number == 5:
             logging.debug("[" + str(self.function) + "] Error 5 --> Return value not match")
             error_data["flag"] = False
             error_data["description"] = "Return value not match"
-            error_data["object"] = None
+            error_data["object"] = 5
         elif self.number == 6:
             logging.debug("[" + str(self.function) + "] Error 6 --> Generic error")
             error_data["flag"] = False
             error_data["description"] = "Generic error"
-            error_data["object"] = None
+            error_data["object"] = 6
         elif self.number == 7:
             logging.debug("[" + str(self.function) + "] Error 7 --> ERROR ID_group")
             error_data["flag"] = False
             error_data["description"] = "ERROR ID_group"
-            error_data["object"] = None
+            error_data["object"] = 7
         elif self.number == 8:
             logging.debug("[" + str(self.function) + "] Error 8 --> SysError = "+self.object_result)
             error_data["flag"] = False
             error_data["description"] = "Sys ERROR"
-            error_data["object"] = None
+            error_data["object"] = 8
+
+
         else:
             logging.debug("[" + str(self.function) + "]: -----ERROR---- ")
-            error_data["flag"] = True
+            error_data["flag"] = False
             error_data["description"] = "ERROR"
             error_data["object"] = None
 
@@ -94,9 +96,27 @@ class StatusReturn:
             error_data["object"] = self.object_result
 
         elif self.number == 6:
-            logging.debug("[" + str(self.function) + "] OK 6 --> updateCar ")
+            logging.debug("[" + str(self.function) + "] OK 6 --> createCar ")
             error_data["flag"] = True
             error_data["description"] = " Group created with success"
+            error_data["object"] = self.object_result
+
+        elif self.number == 7:
+            logging.debug("[" + str(self.function) + "] OK 7 --> deleteCar ")
+            error_data["flag"] = True
+            error_data["description"] = " Car removed with success"
+            error_data["object"] = self.object_result
+
+        elif self.number == 8:
+            logging.debug("[" + str(self.function) + "] OK 8 --> deleteGroup ")
+            error_data["flag"] = True
+            error_data["description"] = " Group removed with success"
+            error_data["object"] = self.object_result
+
+        elif self.number == 9:
+            logging.debug("[" + str(self.function) + "] OK 8 --> deleteGroup ")
+            error_data["flag"] = True
+            error_data["description"] = "Position of the car"
             error_data["object"] = self.object_result
 
         return error_data
