@@ -2,17 +2,15 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.dialog.ProgressDialogCircular;
-import it.familiyparking.app.fragment.GroupFragment;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
@@ -28,16 +26,14 @@ public class DoUpdateGroup implements Runnable {
     private Group group;
     private MainActivity activity;
     private ArrayList<Contact> newArray;
-    private GroupFragment groupFragment;
 
-    public DoUpdateGroup(FragmentActivity activity, Fragment fragment, String newName, ArrayList<Contact> newArray, Car newCar, Group group) {
+    public DoUpdateGroup(FragmentActivity activity, String newName, ArrayList<Contact> newArray, Car newCar, Group group) {
         this.newName = newName;
         this.newCarName = newCar.getName();
         this.newCarBrand = newCar.getBrand();
         this.newArray = newArray;
         this.activity = (MainActivity)activity;
         this.group = group;
-        this.groupFragment = (GroupFragment) fragment;
     }
 
     @Override
@@ -129,21 +125,28 @@ public class DoUpdateGroup implements Runnable {
         }
 
         Car car = group.getCar();
-        if(!newCarName.equals(car.getName()) || !newCarBrand.equals(car.getBrand())){
-            car.setName(newCarName);
-            car.setName(newCarBrand);
+        if((car == null) || (!newCarName.equals(car.getName()) || !newCarBrand.equals(car.getBrand()))){
 
-            /***************/
-            /* CALL SERVER */
-            /***************/
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(car == null){
+                car = new Car(newCarName,newCarBrand);
+
+                callServer(car);
+
+                CarTable.insertCar(db,car,"");
+
+                CarGroupRelationTable.insertRelation(db,car.getId(),group.getId());
+
+                group.setCar(car);
             }
+            else {
+                car.setName(newCarName);
+                car.setName(newCarBrand);
 
-            CarTable.updateNameCar(db,car.getId(),newCarName);
-            CarTable.updateNameBrand(db,car.getId(),newCarBrand);
+                callServer(car);
+
+                CarTable.updateNameCar(db,car.getId(),newCarName);
+                CarTable.updateNameBrand(db,car.getId(),newCarBrand);
+            }
 
             notifyAdapter = true;
         }
@@ -154,14 +157,29 @@ public class DoUpdateGroup implements Runnable {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    groupFragment.updateAdapter(list_groupID);
+                    activity.updateGroupAdapter(list_groupID);
+                    activity.resetProgressDialogCircular(false);
+                    activity.closeModifyGroup();
                 }
             });
         }
 
         db.close();
+    }
 
-        activity.resetProgressDialogCircular(false);
-        activity.closeModifyGroup();
+    private Car callServer(Car car){
+        String id = "0123456789";
+        /***************/
+        /* CALL SERVER */
+        /***************/
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        car.setId(id);
+
+        return car;
     }
 }

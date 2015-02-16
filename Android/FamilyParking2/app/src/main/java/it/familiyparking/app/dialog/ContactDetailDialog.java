@@ -60,11 +60,13 @@ public class ContactDetailDialog extends Fragment{
     }
 
     public void closeDialog(){
-        MainActivity activity = (MainActivity) getActivity();
-        Tools.setUpButtonActionBar(activity);
-        activity.setMenu();
-        activity.resetContactDetailDialog();
-        activity.getSupportFragmentManager().beginTransaction().remove(this).commit();
+        final MainActivity activity = (MainActivity) getActivity();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.resetContactDetailDialog();
+            }
+        });
     }
 
 }

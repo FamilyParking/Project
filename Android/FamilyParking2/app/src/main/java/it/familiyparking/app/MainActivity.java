@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,6 +86,9 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        removeCreate(null);
+
         int id = item.getItemId();
 
         switch (id){
@@ -185,20 +187,33 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void managePlusButton(){
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.bottom_top, R.anim.top_bottom);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.bottom_top, R.anim.top_bottom);
 
         if(counterclockwise) {
             findViewById(R.id.toCreate).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_counterclockwise));
-            ft.remove(create).commit();
-            create = null;
+            removeCreate(fragmentTransaction);
         }
         else {
             findViewById(R.id.toCreate).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise));
             create = new Create();
-            ft.add(R.id.container,create).commit();
+            fragmentTransaction.add(R.id.container, create).commit();
         }
         counterclockwise = !(counterclockwise);
+    }
+
+    private void removeCreate(FragmentTransaction fragmentTransaction){
+        if(create != null) {
+
+            if(fragmentTransaction != null)
+                fragmentTransaction.remove(create).commit();
+            else
+                getSupportFragmentManager().beginTransaction().remove(create).commit();
+
+            create = null;
+
+            counterclockwise = false;
+        }
     }
 
     public void onClick_SignIn(View v){
@@ -252,27 +267,27 @@ public class MainActivity extends ActionBarActivity {
         modifyGroup = null;
     }
 
+    public void closeModifyCar(){
+        setMenu();
+        Tools.resetUpButtonActionBar(this);
+        getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
+        modifyCar = null;
+    }
+
     public void setProgressDialogCircular(ProgressDialogCircular fragment){
         progressDialogCircular = fragment;
     }
 
     public void resetProgressDialogCircular(final boolean resetUpButton){
-        final ActionBarActivity activity = this;
+        getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+        progressDialogCircular = null;
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
-                progressDialogCircular = null;
+        if(resetUpButton)
+            Tools.resetUpButtonActionBar(this);
+        else
+            Tools.setUpButtonActionBar(this);
 
-                if(resetUpButton)
-                    Tools.resetUpButtonActionBar(activity);
-                else
-                    Tools.setUpButtonActionBar(activity);
-
-                setMenu();
-            }
-        });
+        setMenu();
     }
 
     public void setContactDetailDialog(ContactDetailDialog fragment){
@@ -280,17 +295,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetContactDetailDialog(){
-        final ActionBarActivity activity = this;
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Tools.setUpButtonActionBar(activity);
-                setMenu();
-                getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
-                contactDetailDialog = null;
-            }
-        });
+        Tools.setUpButtonActionBar(this);
+        setMenu();
+        getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
+        contactDetailDialog = null;
     }
 
     public void setModifyGroup(ManageGroup fragment){
@@ -311,17 +319,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetModifyCar(){
-        final ActionBarActivity activity = this;
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Tools.setUpButtonActionBar(activity);
-                setMenu();
-                getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
-                modifyCar = null;
-            }
-        });
+        Tools.setUpButtonActionBar(this);
+        setMenu();
+        getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
+        modifyCar = null;
     }
 
     @Override
@@ -397,5 +398,13 @@ public class MainActivity extends ActionBarActivity {
 
         if(flagMessage)
             Tools.createToast(this, getResources().getText(R.string.car_empty), Toast.LENGTH_SHORT);
+    }
+
+    public void updateCarAdapter(ArrayList<Car> cars){
+        carFragment.updateAdapter(cars);
+    }
+
+    public void updateGroupAdapter(ArrayList<String> list_groupID){
+        groupFragment.updateAdapter(list_groupID);
     }
 }

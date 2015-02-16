@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.fragment.GroupFragment;
@@ -45,6 +46,7 @@ public class DoRemoveGroup implements Runnable {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         GroupTable.deleteGroup(db, groupID);
+        CarGroupRelationTable.deleteGroup(db, groupID);
 
         final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
         boolean emptyGroup = list_groupID.isEmpty();
@@ -55,10 +57,9 @@ public class DoRemoveGroup implements Runnable {
             @Override
             public void run() {
                 groupFragment.updateAdapter(list_groupID);
+                activity.resetProgressDialogCircular(true);
             }
         });
-
-        activity.resetProgressDialogCircular(true);
 
         if(emptyGroup)
             activity.removeGroupFragment(emptyGroup);

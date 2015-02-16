@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -41,7 +40,7 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
-                car = new Car(c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5));
+                car = new Car(c.getString(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4));
         }
 
         c.close();
@@ -74,7 +73,7 @@ public class CarTable {
 
     public static int updateNameCar(SQLiteDatabase db, String carID, String newName){
         ContentValues values = new ContentValues();
-        values.put(CAR_ID, newName);
+        values.put(NAME, newName);
 
         return db.update(TABLE, values, CAR_ID + " = ?", new String[] { carID });
     }

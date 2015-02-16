@@ -48,7 +48,13 @@ public class DoSaveCar implements Runnable {
 
         db.close();
 
-        activity.resetProgressDialogCircular(false);
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.resetProgressDialogCircular(false);
+            }
+        });
+
         activity.closeCreateCar();
     }
 }

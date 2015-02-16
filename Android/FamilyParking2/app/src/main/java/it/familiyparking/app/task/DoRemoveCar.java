@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.fragment.CarFragment;
@@ -47,6 +48,7 @@ public class DoRemoveCar implements Runnable {
 
 
         CarTable.deleteCar(db,carID);
+        CarGroupRelationTable.deleteCar(db,carID);
 
         final ArrayList<Car> cars = CarTable.getAllCar(db);
         boolean emptyCar = cars.isEmpty();
@@ -57,10 +59,9 @@ public class DoRemoveCar implements Runnable {
             @Override
             public void run() {
                 carFragment.updateAdapter(cars);
+                activity.resetProgressDialogCircular(true);
             }
         });
-
-        activity.resetProgressDialogCircular(true);
 
         if(emptyCar)
             activity.removeCarFragment(emptyCar);

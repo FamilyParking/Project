@@ -13,7 +13,7 @@
     <string name="modify">MODIFY</string>
     <string name="ok">OK</string>
     <string name="infoBeforeClose">Family Parking can not access your location. The application will be closed!</string>
-    <string name="action_groups">Group</string>
+    <string name="action_groups">Groups</string>
     <string name="action_cars">Cars</string>
     <string name="action_ghostmode">Ghostmode</string>
     <string name="new_group">New Group</string>

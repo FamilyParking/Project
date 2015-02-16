@@ -490,7 +490,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoUpdateGroup(getActivity(),this,editTextName.getText().toString(),contactArrayList,(Car)spinner.getSelectedItem(),group)).start();
+        new Thread(new DoUpdateGroup(getActivity(),editTextName.getText().toString(),contactArrayList,(Car)spinner.getSelectedItem(),group)).start();
     }
 
     private boolean creating(){

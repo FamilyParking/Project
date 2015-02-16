@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +45,7 @@ public class ManageCar extends Fragment implements TextWatcher{
         setCarLayout();
 
         if(modifing()){
+            Tools.resetUpButtonActionBar((MainActivity)getActivity());
             setButtonModify();
             showInfo();
         }
@@ -140,7 +140,13 @@ public class ManageCar extends Fragment implements TextWatcher{
     }
 
     private void onClickBack(){
-
+        final MainActivity activity = ((MainActivity) getActivity());
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.resetModifyCar();
+            }
+        });
     }
 
     private void showInfo(){
@@ -160,7 +166,7 @@ public class ManageCar extends Fragment implements TextWatcher{
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoUpdateCar(getActivity(),this,editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()),car)).start();
+        new Thread(new DoUpdateCar(getActivity(),editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()),car)).start();
     }
 
     @Override
@@ -175,6 +181,7 @@ public class ManageCar extends Fragment implements TextWatcher{
 
     @Override
     public void afterTextChanged(Editable s) {
-        manageSaveButton();
+        if(!modifing())
+            manageSaveButton();
     }
 }

@@ -2,7 +2,6 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
@@ -10,12 +9,7 @@ import java.util.ArrayList;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.fragment.CarFragment;
-import it.familiyparking.app.fragment.GroupFragment;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.Contact;
-import it.familiyparking.app.serverClass.Group;
 
 /**
  * Created by francesco on 02/01/15.
@@ -26,14 +20,12 @@ public class DoUpdateCar implements Runnable {
     private String newBrand;
     private Car oldCar;
     private MainActivity activity;
-    private CarFragment carFragment;
 
-    public DoUpdateCar(FragmentActivity activity, Fragment fragment, String newName, String newBrand, Car oldCar) {
+    public DoUpdateCar(FragmentActivity activity, String newName, String newBrand, Car oldCar) {
         this.newName = newName;
         this.newBrand = newBrand;
         this.oldCar = oldCar;
         this.activity = (MainActivity)activity;
-        this.carFragment = (CarFragment) fragment;
     }
 
     @Override
@@ -42,8 +34,6 @@ public class DoUpdateCar implements Runnable {
 
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-
-        boolean notifyAdapter = false;
 
         if(!newName.equals(oldCar.getName()) || !newBrand.equals(oldCar.getBrand())){
             oldCar.setName(newName);
@@ -66,14 +56,13 @@ public class DoUpdateCar implements Runnable {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    carFragment.updateAdapter(cars);
+                    activity.updateCarAdapter(cars);
+                    activity.resetProgressDialogCircular(false);
+                    activity.closeModifyCar();
                 }
             });
         }
 
         db.close();
-
-        activity.resetProgressDialogCircular(false);
-        activity.closeModifyGroup();
     }
 }

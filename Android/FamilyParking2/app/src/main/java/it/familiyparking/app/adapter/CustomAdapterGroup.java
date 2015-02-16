@@ -22,6 +22,7 @@ import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.fragment.GroupFragment;
 import it.familiyparking.app.fragment.ManageGroup;
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
 import it.familiyparking.app.task.DoRemoveGroup;
@@ -53,9 +54,9 @@ public class CustomAdapterGroup extends ArrayAdapter<Group> implements View.OnLo
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.group_item, parent, false);
         }
 
-        setImageForGroup(convertView,group);
+        setImageAndNameForGroup(convertView, group);
 
-        setTextEdit(convertView,group);
+        setLayoutCar(convertView, group);
 
         setListGroup(convertView,group);
 
@@ -109,14 +110,11 @@ public class CustomAdapterGroup extends ArrayAdapter<Group> implements View.OnLo
         activity.getSupportFragmentManager().beginTransaction().add(R.id.container, contactDetailDialog).commit();
     }
 
-    private void setImageForGroup(View convertView, Group group){
+    private void setImageAndNameForGroup(View convertView, Group group){
         TextView group_image = (TextView) convertView.findViewById(R.id.group_iv);
         Tools.setImageForGroup(activity,group_image,group);
-    }
 
-    private void setTextEdit(View convertView, Group group){
         ((TextView) convertView.findViewById(R.id.group_name_tv)).setText(group.getName());
-        ((TextView) convertView.findViewById(R.id.car_name_tv)).setText(group.getCar().getName());
     }
 
     private void setListGroup(View convertView, final Group group){
@@ -184,5 +182,18 @@ public class CustomAdapterGroup extends ArrayAdapter<Group> implements View.OnLo
         setOnClickModify(convertView,group);
 
         setOnClickDelete(convertView);
+    }
+
+    private void setLayoutCar(View convertView,Group group){
+        Car car = group.getCar();
+
+        if(car == null) {
+            convertView.findViewById(R.id.relative_car_group).setVisibility(View.GONE);
+        }
+        else{
+            convertView.findViewById(R.id.relative_car_group).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.car_iv).setBackgroundDrawable(activity.getResources().getDrawable(activity.getResources().getIdentifier(car.getBrand(), "drawable", activity.getPackageName())));
+            ((TextView) convertView.findViewById(R.id.car_name_tv)).setText(car.getName());
+        }
     }
 }
