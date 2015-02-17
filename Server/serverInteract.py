@@ -309,6 +309,16 @@ class removeContactGroup(webapp2.RequestHandler):
             right = StatusReturn(10, "removeContactGroup")
             self.response.write(right.print_result())
 
+class removeCarGroup(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("removeCarGroup", self) >= 0:
+			data = json.loads(self.request.body)
+			Car_group.delete_car_ID(data["ID_car"], data["ID_group"])
+			right = StatusReturn(14, "removeCarGroup", "Delete " + str(data["ID"]))
+			self.response.write(right.print_result())
+			
+
+			
 class insertCarGroup(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("insertCarGroup", self) >= 0:
@@ -322,7 +332,9 @@ class insertCarGroup(webapp2.RequestHandler):
             right = StatusReturn(13, "insertCarGroup")
             self.response.write(right.print_result())
 
-
+class deleteCarGroup(webapp2.RequestHandler):
+	def post(self):
+		
 class updatePosition(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updatePosition", self) >= 0:

@@ -144,7 +144,14 @@ class StatusReturn:
             error_data["flag"] = True
             error_data["description"] = " Car connect with group"
             error_data["object"] = self.object_result
-
+			
+		
+        elif self.number == 14:
+            logging.debug("[" + str(self.function) + "] OK 13 --> Delete car connect with group")
+            error_data["flag"] = True
+            error_data["description"] = " Delete car connect with group"
+            error_data["object"] = self.object_result
+		
         return error_data
 
     def toJSON(self):
