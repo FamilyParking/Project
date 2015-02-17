@@ -47,6 +47,29 @@ class User(ndb.Model):
             logging.debug(sys.exc_info())
         return -1
 
+    @staticmethod
+    def update_google_code(email_user,id_android):
+        try:
+            code = User.static_querySearch_email(email_user)
+            #logging.debug(email.count())
+            temp_user = code.get()
+            temp_user.id_android = id_android
+            temp_user.put()
+            return 0
+        except:
+            logging.debug(sys.exc_info())
+        return -1
+
+    @staticmethod
+    def get_id_android(id):
+        temp_user = User.get_by_id(long(id))
+        return temp_user.id_android
+
+    @staticmethod
+    def get_user_by_id(id):
+        temp_user = User.get_by_id(long(id))
+        return temp_user
+
     def check_code(self, new_code):
         if new_code == self.temp_code:
             if self.temp_code == self.code:

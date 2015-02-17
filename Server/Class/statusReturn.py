@@ -15,7 +15,7 @@ class StatusReturn:
     def print_general_error(self):
         error_data = {}
         if self.number == 1:
-            logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json ")
+            logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json "+ str(sys.exc_info()))
             error_data["flag"] = False
             error_data["description"] = "Can't load json"
             error_data["object"] = 1
@@ -144,14 +144,19 @@ class StatusReturn:
             error_data["flag"] = True
             error_data["description"] = " Car connect with group"
             error_data["object"] = self.object_result
-			
-		
+
         elif self.number == 14:
             logging.debug("[" + str(self.function) + "] OK 13 --> Delete car connect with group")
             error_data["flag"] = True
             error_data["description"] = " Delete car connect with group"
             error_data["object"] = self.object_result
-		
+
+        elif self.number == 15:
+            logging.debug("[" + str(self.function) + "] OK 15 --> Update google code")
+            error_data["flag"] = True
+            error_data["description"] = " Update google code"
+            error_data["object"] = self.object_result
+
         return error_data
 
     def toJSON(self):

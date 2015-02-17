@@ -98,6 +98,15 @@ class SendEmail(webapp2.RequestHandler):
             self.response.write(error.toJSON())
 
 
+class updateGoogleCode(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("updateGoogleCode", self) >= 0:
+            data = json.loads(self.request.body)
+            User.update_google_code(data["Email"], data["ID_google"])
+            right = StatusReturn(14, "updateGoogleCode")
+            self.response.write(right.print_result())
+
+
 class confirmCode(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("confirmCode", self) >= 0:
@@ -201,8 +210,11 @@ class createCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("createCar", self) >= 0:
             data = json.loads(self.request.body)
-            new_car = Car(name=data["Name"], latitude="0",
-                          longitude="0", timestamp=str(datetime.datetime.now()), email=data["Email"], bluetooth_MAC=data["Bluetooth_MAC"], bluetooth_name=data["Bluetooth_name"])
+            if "Bluetooth_MAC" in data:
+                new_car = Car(name=data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()), email=data["Email"], bluetooth_MAC=data["Bluetooth_MAC"], bluetooth_name=data["Bluetooth_name"], brand=data["Brand"])
+            else:
+                new_car = Car(name=data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()), email=data["Email"], brand=data["Brand"])
+
             new_car.put()
 
             right = StatusReturn(4, "createCar", new_car.key.id())
@@ -222,7 +234,6 @@ class getPositionCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("getPositionCar", self) >= 0:
             data = json.loads(self.request.body)
-
             result = Car.get_position_id(data["ID"])
             result_JSON = {}
             result_JSON["latitude"] = result.latitude
@@ -309,16 +320,16 @@ class removeContactGroup(webapp2.RequestHandler):
             right = StatusReturn(10, "removeContactGroup")
             self.response.write(right.print_result())
 
-class removeCarGroup(webapp2.RequestHandler):
-	def post(self):
-		if User_tool.check_before_start("removeCarGroup", self) >= 0:
-			data = json.loads(self.request.body)
-			Car_group.delete_car_ID(data["ID_car"], data["ID_group"])
-			right = StatusReturn(14, "removeCarGroup", "Delete " + str(data["ID"]))
-			self.response.write(right.print_result())
-			
 
-			
+class removeCarGroup(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("removeCarGroup", self) >= 0:
+            data = json.loads(self.request.body)
+            Car_group.delete_car_ID(data["ID_car"], data["ID_group"])
+            right = StatusReturn(14, "removeCarGroup", "Delete " + str(data["ID"]))
+            self.response.write(right.print_result())
+
+
 class insertCarGroup(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("insertCarGroup", self) >= 0:
@@ -326,15 +337,13 @@ class insertCarGroup(webapp2.RequestHandler):
             id_car = data["ID_car"]
             id_group = data["ID_group"]
 
-            temp_car_group = Car_group(id_car= id_car,id_group= id_group)
+            temp_car_group = Car_group(id_car=long(id_car), id_group=long(id_group))
             temp_car_group.put()
 
             right = StatusReturn(13, "insertCarGroup")
             self.response.write(right.print_result())
 
-class deleteCarGroup(webapp2.RequestHandler):
-	def post(self):
-		
+
 class updatePosition(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updatePosition", self) >= 0:
@@ -345,7 +354,20 @@ class updatePosition(webapp2.RequestHandler):
             try:
                 Car.update_position_ID(id_car, latitude, longitude)
 
-                push_class.send_post_request("APA91bHEPz23R7Esaq70tw7iY4Zw_e9UwC7RWDe8hOJz2jzttLJr5b969vqAh3zSTvGhCWOfLhuVyEAP0Sm9CTeGJI4SPNnqdDD0ygKHFMQbodBcwZO4-xo-J8nQgqxCAOSUasPEoFBN1rsLdA07CxEKFwUhRe71dWVScm7bfEYzlhDEujIovvSNGVM62XjFKVva4evDGJSl")
+                #push_class.send_post_request("APA91bFKpc1XNokg3Gv9GTWI49oE-UXe-ED6JMam2YPdAYG23yJf_P3c7Tl_55f9iECuhSNVa86PfZfcZ4knQ2VzFuBy_lNrq5_DLRHcghMkTQtRl9jyCbL6tV5TquDrse-dMQlGx9HKDLbtCNwEhGEFVeWXQH9EBjCt-VewSitHtgk2BxIB-w20ZLZtz2MCGAqRnTKD8B5n")
+
+                temp_car_group = Car_group.getGroupFromCar(long(id_car))
+                for group_result in temp_car_group:
+                    logging.debug(group_result.id_group)
+                    list_user = User_group.getUserFromGroup(group_result.id_group)
+
+                    for user_result in list_user:
+
+                        temp_user = User.get_user_by_id(user_result.id_user)
+                        logging.debug(temp_user.email)
+                        if temp_user.email != data["Email"]:
+                            push_class.send_post_request(temp_user.id_android)
+
 
                 right = StatusReturn(5, "updatePosition")
                 self.response.write(right.print_result())
@@ -353,9 +375,6 @@ class updatePosition(webapp2.RequestHandler):
                 self.error(500)
                 error = StatusReturn(8, "updatePosition", str(sys.exc_info()))
                 self.response.write(error.print_general_error())
-
-
-
 
 
 class registrationForm(webapp2.RequestHandler):
@@ -404,6 +423,7 @@ application = webapp2.WSGIApplication([
                                           ('/', MainPage),
                                           ('/howtouse', HowToUsePage),
                                           ('/sign', SendEmail),
+                                          ('/updateGoogleCode', updateGoogleCode),
                                           ('/requestPositionCar', getPositionCar),
                                           ('/registration', registrationForm),
                                           ('/getIDGroups', getIDGroups),
