@@ -6,12 +6,14 @@ __author__ = 'Nazzareno'
 import datetime
 from google.appengine.ext import ndb
 
+
 class User(ndb.Model):
     id_android = ndb.StringProperty()
     email = ndb.StringProperty()
     code = ndb.IntegerProperty()
     temp_code = ndb.IntegerProperty()
     nickname = ndb.StringProperty()
+    is_user = ndb.IntegerProperty()
 
     def querySearch_id_android(self):
         id_android = User.query(User.id_android == self.id_android)
@@ -32,7 +34,20 @@ class User(ndb.Model):
             logging.debug(sys.exc_info())
         return email
 
-    def check_code(self,new_code):
+    @staticmethod
+    def is_user_check(email_user):
+        try:
+            email = User.static_querySearch_email(email_user)
+            #logging.debug(email.count())
+            if email.count() == 0:
+                return 0
+            else:
+                return email.get().key.id()
+        except:
+            logging.debug(sys.exc_info())
+        return -1
+
+    def check_code(self, new_code):
         if new_code == self.temp_code:
             if self.temp_code == self.code:
                 return 0
@@ -43,11 +58,11 @@ class User(ndb.Model):
         else:
             return -1
 
-    def update_contact(self,code):
+    def update_contact(self, code):
         self.temp_code = code
         try:
-          self.put()
-          return True
+            self.put()
+            return True
         except:
-          logging.debug(sys.exc_info())
-          return False
+            logging.debug(sys.exc_info())
+            return False

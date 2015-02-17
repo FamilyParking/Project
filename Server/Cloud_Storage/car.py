@@ -9,10 +9,14 @@ import logging
 from google.appengine.ext import ndb
 
 class Car(ndb.Model):
-    model = ndb.StringProperty()
+    brand = ndb.StringProperty()
     latitude = ndb.StringProperty()
     longitude = ndb.StringProperty()
     timestamp = ndb.StringProperty()
+    bluetooth_MAC = ndb.StringProperty()
+    bluetooth_name = ndb.StringProperty()
+    name = ndb.StringProperty()
+    email = ndb.StringProperty()
 
     def getPositionFromID(self):
         result = Position(self.latitude,self.longitude)
@@ -25,11 +29,12 @@ class Car(ndb.Model):
         return 0
 
     def toString_JSON(self):
-        idString = "'ID':'" + str(self.key.id()) +"'"
-        modelString = "'model':'" + self.model + "'"
+        idString = "'ID':'" + str(self.key.id()) + "'"
+        modelString = "'brand':'" + str(self.brand) + "'"
+        nameString = "'name':'" + str(self.name) + "'"
         latitudeString = "'latitude':'" + self.latitude + "'"
-        longitudeString = "'longitude':'" + self.longitude +"'"
-        return "{" + idString + "," + modelString + "," + latitudeString + "," + longitudeString + "}"
+        longitudeString = "'longitude':'" + self.longitude + "'"
+        return "{" + idString + "," + modelString + "," + nameString + "," + latitudeString + "," + longitudeString + "}"
 
     @staticmethod
     def getCarbyID(id):
@@ -50,4 +55,12 @@ class Car(ndb.Model):
     def get_position_id(ID):
         app_key = Car.getCarbyID(ID)
         return app_key.getPositionFromID()
+
+    @staticmethod
+    def get_all_cars(email_user):
+        try:
+            cars = Car.query(Car.email == email_user)
+        except:
+            logging.debug(sys.exc_info())
+        return cars
 

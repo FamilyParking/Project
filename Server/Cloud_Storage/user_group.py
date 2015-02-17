@@ -16,3 +16,11 @@ class User_group(ndb.Model):
     def getGroupFromUser(id_user):
         result_user = User_group.query(User_group.id_user == id_user)
         return result_user
+
+    @staticmethod
+    def check_user_exist(id_user):
+        temp_user = User_group.getGroupFromUser(id_user)
+        if temp_user.count() == 0:
+            return 1
+        else:
+            return -1
