@@ -26,6 +26,7 @@ class AddCar: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func Back() {
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func AddACar() {
@@ -63,7 +64,7 @@ class AddCar: UIViewController, UITextFieldDelegate {
         var params = ["Code":pin,
             "Bluetooth_MAC":"",
             "Bluetooth_name":"",
-
+            "Brand":"",
             // "Code":PinTextField.text,
             "Name":CarModel.text,
             "Email":mail] as Dictionary<String, NSObject>

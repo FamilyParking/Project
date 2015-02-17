@@ -5,11 +5,11 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Item-->
+        <!--Map-->
         <scene sceneID="4Fe-2Z-FhN">
             <objects>
                 <navigationController id="vmA-p8-L0u" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="R6F-3K-9Fh"/>
+                    <tabBarItem key="tabBarItem" title="Map" id="R6F-3K-9Fh"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UB6-zo-VDC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -242,11 +242,11 @@
             </objects>
             <point key="canvasLocation" x="-227" y="1554"/>
         </scene>
-        <!--Item-->
+        <!--Cars-->
         <scene sceneID="aTU-Vg-Zck">
             <objects>
                 <navigationController id="uJX-CU-ybp" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="L1K-HP-yYj"/>
+                    <tabBarItem key="tabBarItem" title="Cars" id="L1K-HP-yYj"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oFT-he-7nH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -365,6 +365,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="hwe-az-w7F"/>
+        <segue reference="HTR-2Y-p6f"/>
     </inferredMetricsTieBreakers>
 </document>

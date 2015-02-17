@@ -281,8 +281,10 @@ class ViewController: UIViewController, GMSMapViewDelegate {
             self.PButton.hidden = false
             self.Running.stopAnimating()
             CarList().removeCode(activeCar)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.gmaps.clear()
-            self.addACar2(activeCar, name: prefs.objectForKey("ACTIVECAR") as String, lat: self.gmaps.myLocation.coordinate.latitude.description, long: self.gmaps.myLocation.coordinate.longitude.description)
+                self.addACar2(activeCar, name: prefs.objectForKey("ACTIVECAR") as String, lat: self.gmaps.myLocation.coordinate.latitude.description, long: self.gmaps.myLocation.coordinate.longitude.description)
+            })
         })
         
         task.resume()
@@ -337,20 +339,27 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                 if(array.count==2){
                     var fl = array[1].componentsSeparatedByString("]")
                     var test:String = fl[0] as String
-                    var cars = test.componentsSeparatedByString("\",\"")
-                    self.gmaps.clear()
-                    CarList().removeAll()
-                    
-                    for name:String in cars{
-                        if(!name.isEmpty){
-                            var name2 = name.componentsSeparatedByString("'")
-                            self.addACar2(name2[3], name: name2[11], lat: name2[15], long: name2[19])
+                    //dispatch_async(dispatch_get_main_queue(),
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.gmaps.clear()
+                        if(!test.isEmpty){
+                            var cars = test.componentsSeparatedByString("\",\"")
+                            
+                            CarList().removeAll()
+                            
+                            for name:String in cars{
+                                if(!name.isEmpty){
+                                    var name2 = name.componentsSeparatedByString("'")
+                                    self.addACar2(name2[3], name: name2[11], lat: name2[15], long: name2[19])
+                                }
                             }
                         }
-                    }
+                    })
+                    
+                    
                   //  var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
                 }
-            
+            }
             var err: NSError?
             var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
