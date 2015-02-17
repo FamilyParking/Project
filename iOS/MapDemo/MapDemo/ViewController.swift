@@ -42,12 +42,12 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         
         
         
-        Title.title = "CIAOCIAO"
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
         if (isLoggedIn != 1) {
             self.performSegueWithIdentifier("goto_login", sender: self)
-            } else {
+                
+        } else {
           getGroups()
         }
        
@@ -129,13 +129,42 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        println("mia posizione",self.gmaps.myLocation)
+       // println("mia posizione",self.gmaps.myLocation)
         firstLocationUpdate = true
-        let location = change[NSKeyValueChangeNewKey] as CLLocation
-        gmaps!.camera = GMSCameraPosition.cameraWithTarget(location.coordinate, zoom: 14)
+    //    let location = change[NSKeyValueChangeNewKey] as CLLocation
+       // gmaps!.camera = GMSCameraPosition.cameraWithTarget(location.coordinate, zoom: 14)
     }
     
     func updatePosition(){
+        
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if (prefs.objectForKey("CARCODE")==nil){
+            prefs.setObject("", forKey: "CARCODE")
+            prefs.synchronize()
+        }
+        let activeCar = prefs.objectForKey("CARCODE") as String
+        if(activeCar.isEmpty){
+            var alert = UIAlertController(title: "No Car",
+                message: "Please add a car",
+                preferredStyle: .Alert)
+            
+            let saveAction = UIAlertAction(title: "Add",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+            
+                self.performSegueWithIdentifier("add_car", sender: self)
+            
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+            }
+            
+            alert.addAction(saveAction)
+            alert.addAction(cancelAction)
+            presentViewController(alert,animated: true,completion: nil)
+            return
+        }
+        println(activeCar)
         
         if(self.gmaps.myLocation==nil)
         {
@@ -154,8 +183,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         }
        // Link richiesta = http://first-vision-798.appspot.com/updatePosition
        // Struttura richiesta = {"Email":"nazzareno.marziale@gmail.com","Code":"163930",”ID”:”756565656”,”Latitude”:”24234234234”,”Longitude”:”3123123231”}
-        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let activeCar = prefs.objectForKey("CARCODE") as String
+        
         let code = prefs.objectForKey("PIN") as String
         let mail = prefs.objectForKey("EMAIL") as String
         
@@ -165,7 +193,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["ID":activeCar,
+        var params = ["ID_car":activeCar,
                         "Code":code,
                         "Latitude":self.gmaps.myLocation.coordinate.latitude.description,
                         "Longitude":self.gmaps.myLocation.coordinate.longitude.description,
@@ -210,10 +238,13 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                     println("Error could not parse JSON: \(jsonStr)")
                 }
             }
+            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             
             self.PButton.hidden = false
             self.Running.stopAnimating()
-            self.addACar(code)
+            CarList().removeCode(activeCar)
+            self.gmaps.clear()
+            self.addACar2(activeCar, name: prefs.objectForKey("ACTIVECAR") as String, lat: self.gmaps.myLocation.coordinate.latitude.description, long: self.gmaps.myLocation.coordinate.longitude.description)
         })
         
         task.resume()
@@ -224,13 +255,16 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         prefs.setInteger(0, forKey: "HOWMANYCARS")
         prefs.setInteger(0, forKey: "ISLOGGEDIN")
+        prefs.setObject("", forKey: "CARCODE")
         prefs.synchronize()
+        CarList().removeAll()
+     //   exit(0)
     }
     
     
    
     func getGroups(){
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getIDGroups")!)
+        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars_fromEmail")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
@@ -264,14 +298,21 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                 var array = strData!.componentsSeparatedByString("[")
                 if(array.count==2){
                     var fl = array[1].componentsSeparatedByString("]")
-                    var fla = fl[0].componentsSeparatedByString(",")
-                    for name in fla{
-                        self.addACar(name as String)
-                    }
+                    var test:String = fl[0] as String
+                    var cars = test.componentsSeparatedByString("\",\"")
+                    self.gmaps.clear()
+                    CarList().removeAll()
                     
-                    var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
+                    for name:String in cars{
+                        if(!name.isEmpty){
+                            var name2 = name.componentsSeparatedByString("'")
+                            self.addACar2(name2[3], name: name2[11], lat: name2[15], long: name2[19])
+                            }
+                        }
+                    }
+                  //  var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
                 }
-            }
+            
             var err: NSError?
             var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
@@ -302,6 +343,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     
     }
     func addACar(code:String){
+        
         var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int;
@@ -346,10 +388,12 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                     var model = fla[7] as String
                     var lat = fla[11] as String
                     var long = fla[15] as String
-                        println("model\(model)");
-                    println("model3\(carCode)");
-                    println("model1\(lat)");
-                    println("model2\(long)");
+                        println("model\(model)")
+                    CarList().removeAll()
+                    CarList().saveName(model,id: carCode.stringByReplacingOccurrencesOfString("\"",withString: ""))
+                    println("model3\(carCode)")
+                    println("model1\(lat)")
+                    println("model2\(long)")
                     prefs.setObject(carCode, forKey: "CARCODE")
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         var latDouble = (lat as NSString).doubleValue
@@ -378,4 +422,45 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         task.resume()
         
     }
+    func addACar2(code:String,name:String,lat:String,long:String){
+        
+       
+        var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int;
+        prefs.setInteger(carsNumber + 1, forKey: "HOWMANYCARS")
+        prefs.setObject(name, forKey: "ACTIVECAR")
+        prefs.synchronize()
+        println("Ora aggiungo \(code)")
+        
+        
+                    CarList().saveName(name,id: code.stringByReplacingOccurrencesOfString("\"",withString: ""))
+                 //   println("model3\(carCode)")
+                    println("model1\(lat)")
+                    println("model2\(long)")
+                    prefs.setObject(code, forKey: "CARCODE")
+        if(lat=="0"||long=="0") {
+            return
+        }
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        var latDouble = (lat as NSString).doubleValue
+                        var longDouble = (long as NSString).doubleValue
+                        
+                        var position = CLLocationCoordinate2DMake(latDouble, longDouble)
+                        var london = GMSMarker(position: position)
+                        london.title = name
+                        london.snippet = "Click here for more info"
+                        london.infoWindowAnchor = CGPointMake(0.5, 0.5)
+                        london.userData = "Londra"
+                        // london.icon = UIImage(named: "house")
+                        london.map = self.gmaps
+                        var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
+                        
+                        self.gmaps.camera = camera
+                        self.Title.title = name
+                    })
+    }
+    
+    
+    
 }

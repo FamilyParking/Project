@@ -32,12 +32,12 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int
         if (carsNumber < 1) {
-            self.performSegueWithIdentifier("add_car", sender: self)
+            self.performSegueWithIdentifier("add_car2", sender: self)
         } else {
             //  self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
-        
-            var alert = UIAlertController(title: "New Mail",
-                message: "Add a new mail to the family",
+            println("ho \(carsNumber) auto!")
+            var alert = UIAlertController(title: "One Car",
+                message: "Right now, only one car is admitted",
                 preferredStyle: .Alert)
             
             let saveAction = UIAlertAction(title: "Save",
@@ -53,12 +53,12 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
                 style: .Default) { (action: UIAlertAction!) -> Void in
             }
             
-            alert.addTextFieldWithConfigurationHandler {
-                (textField: UITextField!) -> Void in
-            }
+        //    alert.addTextFieldWithConfigurationHandler {
+        //        (textField: UITextField!) -> Void in
+        //    }
             
-            alert.addAction(saveAction)
-            alert.addAction(cancelAction)
+       //     alert.addAction(saveAction)
+           alert.addAction(cancelAction)
             
             presentViewController(alert,
                 animated: true,
@@ -73,9 +73,9 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewDidLoad()
         
         
-      //  var barHeight :Double = self.navigationController?.navigationBar.frame.height.description
+       //var barHeight:CGFloat = super.navigationController!.navigationBar.frame.height
   //      println(self.navigationController?.navigationBar.frame.height.description)
-        self.tableView = UITableView(frame: CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
+        self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
         self.tableView.registerClass(MyTableViewCell.self, forCellReuseIdentifier: "myCell")
        // self.tableView.backgroundColor = UIColor.purpleColor()
         self.tableView.delegate = self
@@ -243,18 +243,19 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         var mail = self.people[index.item].valueForKey("name")?.description
         
-        var alert = UIAlertController(title: "Remove Mail",
+        var alert = UIAlertController(title: "What to do?",
             message: mail,
             preferredStyle: .Alert)
         
-        let saveAction = UIAlertAction(title: "Yes",
+        let saveAction = UIAlertAction(title: "Choose",
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
                 
-                let toRem = self.people.removeAtIndex(index.item)
-                self.removeName(toRem)
-                self.tableView.reloadData()
+                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 
+                prefs.setObject(self.people[index.item].valueForKey("name")?.description, forKey: "ACTIVECAR")
+                prefs.setObject(self.people[index.item].valueForKey("id")?.description, forKey: "CARCODE")
+                prefs.synchronize()
              //
                // let textField = alert.textFields![0] as UITextField
                // self.saveName(textField.text)
@@ -262,17 +263,79 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
                // self.tableView.reloadData()
         }
         
-        let cancelAction = UIAlertAction(title: "No",
+        let deleteAction = UIAlertAction(title: "Delete",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                
+                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                let activeCar = prefs.objectForKey("CARCODE") as String
+                
+                let code = prefs.objectForKey("PIN") as String
+                let mail = prefs.objectForKey("EMAIL") as String
+                
+                
+                
+                var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/deleteCar")!)
+                var session = NSURLSession.sharedSession()
+                request.HTTPMethod = "POST"
+                
+                var params = ["ID":self.people[index.item].valueForKey("id")!.description,
+                    "Code":code,
+                    "Email":mail] as Dictionary<String, NSObject>
+                
+                var err: NSError?
+                request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("application/json", forHTTPHeaderField: "Accept")
+                
+                var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                    
+                    
+                    println("Response: \(response)")
+                    
+                    var strData:NSString = NSString(data: data, encoding: NSUTF8StringEncoding)!
+                    println("Body: \(strData)")
+                    if(strData.containsString("'flag': True")){
+                        CarList().removeName(self.people[index.item])
+                        let toRem = self.people.removeAtIndex(index.item)
+                        self.removeName(toRem)
+                        self.tableView.reloadData()
+                        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                            prefs.setObject("", forKey: "CARCODE")
+                            prefs.synchronize()
+                    }
+                    else{
+                        var alert = UIAlertController(title: "Oopsss",
+                            message: "We can't delete your car right now.",
+                            preferredStyle: .Alert)
+                        
+                        let cancelAction = UIAlertAction(title: "Ok",
+                            style: .Default) { (action: UIAlertAction!) -> Void in
+                        }
+                       
+                        alert.addAction(cancelAction)
+                        
+                        self.presentViewController(alert,
+                            animated: true,
+                            completion: nil)
+                    }
+
+                })
+                
+                task.resume()
+                
+        }
+        let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
-        
+        alert.addAction(deleteAction)
         presentViewController(alert,
             animated: true,
             completion: nil)
     }
     
+        
 
 }

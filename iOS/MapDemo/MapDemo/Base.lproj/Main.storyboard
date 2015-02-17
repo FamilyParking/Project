@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="gRg-Is-tIi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1qp-0b-shj">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -95,7 +95,46 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="141" y="209"/>
+            <point key="canvasLocation" x="177" y="169"/>
+        </scene>
+        <!--Groups-->
+        <scene sceneID="qf9-6o-K1R">
+            <objects>
+                <viewController id="tRf-WH-9y6" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pcn-LF-GyY"/>
+                        <viewControllerLayoutGuide type="bottom" id="fc6-Qc-w0m"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="otj-dx-jLi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Groups" id="5nK-AD-pxT"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lCX-G6-6mL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1412" y="934"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="dVW-jP-3M3">
+            <objects>
+                <tabBarController id="1qp-0b-shj" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="fgm-q2-Qt1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="gRg-Is-tIi" kind="relationship" relationship="viewControllers" id="cvf-y8-E50"/>
+                        <segue destination="tRf-WH-9y6" kind="relationship" relationship="viewControllers" id="QL4-bS-PVT"/>
+                        <segue destination="c86-lC-Pi0" kind="relationship" relationship="viewControllers" id="k37-C9-5Bv"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vni-ns-Fvz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-883" y="121"/>
         </scene>
         <!--Registration-->
         <scene sceneID="hIb-hQ-rWj">
@@ -109,7 +148,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Create an account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B25-WD-i7p">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Insert your name and email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B25-WD-i7p">
                                 <rect key="frame" x="56" y="39" width="229" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -175,12 +214,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJ5-Wv-23K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-163" y="924"/>
+            <point key="canvasLocation" x="-205" y="934"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Mappa-->
         <scene sceneID="gZy-KY-JMA">
             <objects>
                 <navigationController id="gRg-Is-tIi" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Mappa" id="Yso-lP-QaV"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2KE-vg-FsJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -191,9 +231,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fa7-Ez-7yC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-299" y="209"/>
+            <point key="canvasLocation" x="-323" y="341"/>
         </scene>
-        <!--Your Family-->
+        <!--Your Cars-->
         <scene sceneID="kQn-zy-gAd">
             <objects>
                 <viewController id="c86-lC-Pi0" customClass="UserListController" customModule="MapDemo" customModuleProvider="target" sceneMemberID="viewController">
@@ -204,9 +244,18 @@
                     <view key="view" contentMode="scaleToFill" id="Brg-V0-ldW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vu7-h6-070">
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <items>
+                                    <navigationItem title="Your Cars" id="RGe-5l-A8i"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Your Family" id="u0H-XI-oDu">
+                    <tabBarItem key="tabBarItem" title="Item" id="D39-fG-2zG"/>
+                    <navigationItem key="navigationItem" title="Your Cars" id="u0H-XI-oDu">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="Q3l-W3-JeD">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xCb-sg-TIW">
                                 <rect key="frame" x="137" y="239" width="46" height="30"/>
@@ -220,10 +269,13 @@
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="5f9-IH-U2Z" kind="modal" identifier="add_car2" id="hwe-az-w7F"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNf-ap-coh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="649" y="197"/>
+            <point key="canvasLocation" x="755" y="-327"/>
         </scene>
         <!--Add First Car-->
         <scene sceneID="PlT-xl-J2T">
@@ -272,7 +324,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4V-M9-oIW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="481" y="911"/>
+            <point key="canvasLocation" x="419" y="957"/>
         </scene>
     </scenes>
     <resources>
@@ -284,4 +336,8 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="xTB-Md-Y2H"/>
+        <segue reference="hwe-az-w7F"/>
+    </inferredMetricsTieBreakers>
 </document>

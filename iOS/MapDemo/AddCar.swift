@@ -101,10 +101,11 @@ class AddCar: UIViewController, UITextFieldDelegate {
                         println(description)
                         
                         if(flag=="True"){
-                            self.saveCarLocal(idCar);
+                      //      self.saveCarLocal(idCar);
                             let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int;
                             prefs.setInteger(carsNumber + 1, forKey: "HOWMANYCARS")
                             prefs.setObject(idCar, forKey: "ACTIVECAR")
+                            prefs.setObject(idCar, forKey: "CARCODE")
                             prefs.synchronize()
                             self.dismissViewControllerAnimated(true, completion: nil)
                         }
@@ -136,11 +137,53 @@ class AddCar: UIViewController, UITextFieldDelegate {
 
     }
     
+    func addGroupToServer(){
+        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/createGroup")!)
+        var session = NSURLSession.sharedSession()
+        request.HTTPMethod = "POST"
+        var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let pin:String = prefs.objectForKey("PIN") as String
+        let mail:String = prefs.objectForKey("EMAIL") as String
+        // prefs.setInteger(carsNumber + 1, forKey: "HOWMANYCARS")
+        var params = ["Code":pin,
+            // "Code":PinTextField.text,
+            "Name":CarModel.text,
+            "Email":mail] as Dictionary<String, NSObject>
+        
+        var err: NSError?
+        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            println("Response: \(response)")
+            
+            
+            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+            
+            println("Body: \(strData!)")
+            var err: NSError?
+            var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
+            
+            // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
+            if(err != nil) {
+                println(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                println("Error could not parse JSON because there is an error: '\(jsonStr)'")
+                var stringa:NSString = "" + jsonStr!
+            }
+            
+        })
+        task.resume()
+    }
+
+    
     func saveCarLocal(idCar:String){
+        CarList().saveName(CarModel.text,id: idCar)
             //1
             let appDelegate =
             UIApplication.sharedApplication().delegate as AppDelegate
-            
+        
             let managedContext = appDelegate.managedObjectContext!
             
             //2
