@@ -139,6 +139,12 @@ class StatusReturn:
             error_data["description"] = " Car by email"
             error_data["object"] = self.object_result
 
+        elif self.number == 13:
+            logging.debug("[" + str(self.function) + "] OK 13 --> Car connect with group")
+            error_data["flag"] = True
+            error_data["description"] = " Car connect with group"
+            error_data["object"] = self.object_result
+
         return error_data
 
     def toJSON(self):

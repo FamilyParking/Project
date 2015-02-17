@@ -24,3 +24,9 @@ class User_group(ndb.Model):
             return 1
         else:
             return -1
+
+    @staticmethod
+    def delete_contact_group(id_user):
+        delete_entry = User_group.getGroupFromUser(id_user)
+        delete_entry.get().key.delete()
+        return 0;

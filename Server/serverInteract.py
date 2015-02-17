@@ -15,6 +15,7 @@ from Cloud_Storage.user_copy import User_copy
 from Cloud_Storage.user_group import User_group
 
 from google.appengine.api import mail
+from Tool.push_notification import push_class
 
 from Tool.send_email import Send_email
 from Tool.user_tool import User_tool
@@ -27,12 +28,13 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
 
+
 class HowToUsePage(webapp2.RequestHandler):
-	def get(self):
-		in_file = open("website/howtouse.html", "r")
-		MAIN_PAGE_HTML = in_file.read()
-		self.response.write(MAIN_PAGE_HTML)
-		in_file.close()
+    def get(self):
+        in_file = open("website/howtouse.html", "r")
+        MAIN_PAGE_HTML = in_file.read()
+        self.response.write(MAIN_PAGE_HTML)
+        in_file.close()
 
 
 class SendEmail(webapp2.RequestHandler):
@@ -200,8 +202,9 @@ class createCar(webapp2.RequestHandler):
         if User_tool.check_before_start("createCar", self) >= 0:
             data = json.loads(self.request.body)
             new_car = Car(name=data["Name"], latitude="0",
-                          longitude="0", timestamp=str(datetime.datetime.now()), email=data["Email"])
+                          longitude="0", timestamp=str(datetime.datetime.now()), email=data["Email"], bluetooth_MAC=data["Bluetooth_MAC"], bluetooth_name=data["Bluetooth_name"])
             new_car.put()
+
             right = StatusReturn(4, "createCar", new_car.key.id())
             self.response.write(right.print_result())
 
@@ -239,6 +242,21 @@ class createGroup(webapp2.RequestHandler):
                                         id_group=int(new_group.key.id()))
             new_user_group.put()
 
+            list_user = data["List_email"]
+            logging.debug(list_user)
+            for user in list_user:
+
+                user_key = User.is_user_check(user)
+                if user_key == 0:
+                    new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)
+                    temp_user_key = new_user.put()
+                    # logging.debug(temp_user_key)
+                    user_key = temp_user_key.id()
+
+                if User_group.check_user_exist(user_key) > 0:
+                    new_contact_group = User_group(id_user=user_key, id_group=int(new_group.key.id()))
+                    new_contact_group.put()
+
             right = StatusReturn(6, "createGroup", new_group.key.id())
             self.response.write(right.print_result())
 
@@ -264,7 +282,7 @@ class insertContactGroup(webapp2.RequestHandler):
                 if user_key == 0:
                     new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)
                     temp_user_key = new_user.put()
-                    logging.debug(temp_user_key)
+                    # logging.debug(temp_user_key)
                     user_key = temp_user_key.id()
 
                 if User_group.check_user_exist(user_key) > 0:
@@ -284,17 +302,24 @@ class removeContactGroup(webapp2.RequestHandler):
             for user in list_user:
 
                 user_key = User.is_user_check(user)
-                if user_key == 0:
-                    new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)
-                    temp_user_key = new_user.put()
-                    logging.debug(temp_user_key)
-                    user_key = temp_user_key.id()
 
-                if User_group.check_user_exist(user_key) > 0:
-                    new_contact_group = User_group(id_user=user_key, id_group=int(data["ID_group"]))
-                    new_contact_group.put()
+                if user_key != 0 and User_group.check_user_exist(user_key) < 0:
+                    User_group.delete_contact_group(user_key)
 
             right = StatusReturn(10, "removeContactGroup")
+            self.response.write(right.print_result())
+
+class insertCarGroup(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("insertCarGroup", self) >= 0:
+            data = json.loads(self.request.body)
+            id_car = data["ID_car"]
+            id_group = data["ID_group"]
+
+            temp_car_group = Car_group(id_car= id_car,id_group= id_group)
+            temp_car_group.put()
+
+            right = StatusReturn(13, "insertCarGroup")
             self.response.write(right.print_result())
 
 
@@ -307,12 +332,18 @@ class updatePosition(webapp2.RequestHandler):
             id_car = data["ID_car"]
             try:
                 Car.update_position_ID(id_car, latitude, longitude)
+
+                push_class.send_post_request("APA91bHEPz23R7Esaq70tw7iY4Zw_e9UwC7RWDe8hOJz2jzttLJr5b969vqAh3zSTvGhCWOfLhuVyEAP0Sm9CTeGJI4SPNnqdDD0ygKHFMQbodBcwZO4-xo-J8nQgqxCAOSUasPEoFBN1rsLdA07CxEKFwUhRe71dWVScm7bfEYzlhDEujIovvSNGVM62XjFKVva4evDGJSl")
+
                 right = StatusReturn(5, "updatePosition")
                 self.response.write(right.print_result())
             except:
                 self.error(500)
                 error = StatusReturn(8, "updatePosition", str(sys.exc_info()))
                 self.response.write(error.print_general_error())
+
+
+
 
 
 class registrationForm(webapp2.RequestHandler):
@@ -358,21 +389,23 @@ class registrationForm(webapp2.RequestHandler):
 
 
 application = webapp2.WSGIApplication([
-									  ('/', MainPage),
-									  ('/howtouse', HowToUsePage),
-									  ('/sign', SendEmail),
-									  ('/requestPositionCar', getPositionCar),
-									  ('/registration', registrationForm),
-									  ('/getIDGroups', getIDGroups),
-									  ('/getAllCars', getAllCars),
-									  ('/getAllCars_groupID', getAllCars_groupID),
-									  ('/getAllCars_fromEmail', getAllCars_fromEmail),
-									  ('/createCar', createCar),
-									  ('/deleteCar', deleteCar),
-									  ('/createGroup', createGroup),
-									  ('/deleteGroup', deleteGroup),
-									  ('/updatePosition', updatePosition),
-									  ('/getPositionCar', getPositionCar),
-									  ('/confirmCode', confirmCode),
-									  ('/insertContactGroup', insertContactGroup),
-								  ], debug=True)
+                                          ('/', MainPage),
+                                          ('/howtouse', HowToUsePage),
+                                          ('/sign', SendEmail),
+                                          ('/requestPositionCar', getPositionCar),
+                                          ('/registration', registrationForm),
+                                          ('/getIDGroups', getIDGroups),
+                                          ('/getAllCars', getAllCars),
+                                          ('/getAllCars_groupID', getAllCars_groupID),
+                                          ('/getAllCars_fromEmail', getAllCars_fromEmail),
+                                          ('/createCar', createCar),
+                                          ('/deleteCar', deleteCar),
+                                          ('/createGroup', createGroup),
+                                          ('/deleteGroup', deleteGroup),
+                                          ('/insertCarGroup', insertCarGroup),
+                                          ('/updatePosition', updatePosition),
+                                          ('/getPositionCar', getPositionCar),
+                                          ('/confirmCode', confirmCode),
+                                          ('/insertContactGroup', insertContactGroup),
+                                          ('/removeContactGroup', removeContactGroup),
+                                      ], debug=True)
