@@ -3,12 +3,14 @@ package it.familiyparking.app.utility;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -30,9 +32,11 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,7 +51,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
+import it.familiyparking.app.dao.CarGroupRelationTable;
+import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.fragment.ManageCar;
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
 
@@ -377,7 +389,7 @@ public class Tools {
 
         alertDialog.setTitle("Bluetooth disabled");
 
-        alertDialog.setMessage(getAppName(context)+" needs bluetooth to join car's device. Please turn on it.");
+        alertDialog.setMessage(getAppName(context)+" needs bluetooth to join the car's device. Please turn it on.");
 
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
@@ -391,14 +403,90 @@ public class Tools {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        Tools.closeApp(context);
                     }
                 });
 
         alertDialog.show();
     }
 
-    public static void getAllBluetoothDeviceConnected(){
-        
+    public static void invalidDB(MainActivity activity){
+        DataBaseHelper databaseHelper = new DataBaseHelper(activity);
+        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        UserTable.deleteUser(db);
+        GroupTable.deleteGroupTable(db);
+        CarTable.deleteCarTable(db);
+        CarGroupRelationTable.deleteCarGroupRelationTable(db);
+
+        db.close();
+    }
+
+    public static void showAlertBluetoothJoin(final Context context, final ManageCar fragment, final String bluetooth_name, final String bluetooth_mac, final Car car, final Button button) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.setTitle("Join bluetooth device");
+
+        if(car.getName() == null)
+            alertDialog.setMessage("Do you want link \n"+bluetooth_name+" ("+bluetooth_mac+") ?");
+        else
+            alertDialog.setMessage("Do you want link \n"+bluetooth_name+" ("+bluetooth_mac+") \n to "+car.getName()+" ?");
+
+        alertDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        car.setBluetoothName(bluetooth_name);
+                        car.setBluetoothMac(bluetooth_mac);
+
+                        button.setText(context.getResources().getString(R.string.remove_bluetooth));
+
+                        fragment.setBluetoothUpdate();
+
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+    public static void showAlertBluetoothRemove(final Context context, final ManageCar fragment, final Car car, final Button button) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.setTitle("Join bluetooth device");
+
+        alertDialog.setMessage("Do you want unlink \n "+car.getBluetoothName()+" ("+car.getBluetoothMac()+") \n from "+car.getName()+"?");
+
+        alertDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        car.setBluetoothName(null);
+                        car.setBluetoothMac(null);
+
+                        button.setText(context.getResources().getString(R.string.add_bluetooth));
+
+                        fragment.setBluetoothUpdate();
+
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 }

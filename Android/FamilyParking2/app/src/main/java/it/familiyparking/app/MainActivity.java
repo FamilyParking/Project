@@ -1,5 +1,6 @@
 package it.familiyparking.app;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,9 +23,11 @@ import java.util.ArrayList;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.fragment.CarFragment;
+import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.fragment.Create;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.GroupFragment;
@@ -32,7 +36,9 @@ import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.task.DoConfirmation;
 import it.familiyparking.app.task.DoSignIn;
+import it.familiyparking.app.utility.ServiceBluetooth;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -44,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
     private GhostMode ghostMode;
     private Create create;
     private SignIn signIn;
+    private Confirmation confirmation;
     private ManageGroup createGroup;
     private ManageGroup modifyGroup;
     private ManageCar createCar;
@@ -51,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private Tracker tracker;
+    private View progressCircle;
     private boolean counterclockwise;
     private boolean inflateMenu;
     private boolean doubleBackToExitPressedOnce;
@@ -59,6 +67,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startService();
 
         counterclockwise = false;
         inflateMenu = false;
@@ -69,14 +79,26 @@ public class MainActivity extends ActionBarActivity {
         Tools.setActionBar(this);
 
         if (savedInstanceState == null) {
-            map = new Map();
-            getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
+            setMap();
 
-            signIn = new SignIn();
-            getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
+            DataBaseHelper databaseHelper = new DataBaseHelper(this);
+            final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+            if(UserTable.getUser(db) == null) {
+                setSignIn();
+            }
+            else if(!UserTable.isConfirmed(db)){
+                setConfirmation();
+            }
+            else{
+                map.enableGraphics();
+
+                setMenu();
+            }
+
+            db.close();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,6 +172,21 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void startService(){
+        Intent serviceIntent = new Intent(this, ServiceBluetooth.class);
+        this.startService(serviceIntent);
+    }
+
+    private void setSignIn(){
+        signIn = new SignIn();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
+    }
+
+    private void setMap(){
+        map = new Map();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
+    }
+
     private void replaceFragment(Fragment avoid){
         if((carFragment != null)&&(carFragment != avoid)){
             getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
@@ -176,13 +213,30 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClick_NewGroup(View v) {
-        managePlusButton();
-        createGroup = new ManageGroup();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, createGroup).commit();
+
+        DataBaseHelper databaseHelper = new DataBaseHelper(this);
+        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        if(GroupTable.getAllGroup(db).size() >= 1){
+            Log.e("onClick_NewGroup","Rimuovere limitazione");
+            Tools.createToast(this,"You can create only one group",Toast.LENGTH_SHORT);
+        }
+        else {
+            managePlusButton();
+            createGroup = new ManageGroup();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, createGroup).commit();
+        }
     }
 
     public void onClick_NewCar(View v) {
-        setNewCar(null);
+        DataBaseHelper databaseHelper = new DataBaseHelper(this);
+        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        if(CarTable.getAllCar(db).size() >= 1){
+            Log.e("onClick_NewCar","Rimuovere limitazione");
+            Tools.createToast(this,"You can create only one car",Toast.LENGTH_SHORT);
+        }
+        else {
+            setNewCar(null);
+        }
     }
 
     public void setNewCar(String groupID){
@@ -198,6 +252,16 @@ public class MainActivity extends ActionBarActivity {
         }
 
         getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
+    }
+
+    private void resetConfirmation(){
+        getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
+        confirmation = null;
+    }
+
+    private void setConfirmation(){
+        confirmation = new Confirmation();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, confirmation).commit();
     }
 
     private void managePlusButton(){
@@ -235,7 +299,10 @@ public class MainActivity extends ActionBarActivity {
         Tools.closeKeyboard(v,this);
 
         v.setVisibility(View.GONE);
-        v.getRootView().findViewById(R.id.progress_signIn).setVisibility(View.VISIBLE);
+
+        progressCircle = v.getRootView().findViewById(R.id.progress_signIn);
+        progressCircle.setVisibility(View.VISIBLE);
+
         EditText email_et = (EditText) v.getRootView().findViewById(R.id.email_et);
         email_et.setKeyListener(null);
         EditText name_et = (EditText) v.getRootView().findViewById(R.id.name_surname_et);
@@ -244,13 +311,47 @@ public class MainActivity extends ActionBarActivity {
         new Thread(new DoSignIn(this,name_et.getText().toString(),email_et.getText().toString())).start();
     }
 
-    public void callToEndSignIn(){
-        setMenu();
+    public void onClick_Confirmation(View v){
+        Tools.closeKeyboard(v,this);
 
-        map.enableGraphics();
+        v.setVisibility(View.GONE);
+
+        progressCircle = v.getRootView().findViewById(R.id.progress_confirmation);
+        progressCircle.setVisibility(View.VISIBLE);
+
+        EditText code_et = (EditText) v.getRootView().findViewById(R.id.confirmation_et);
+        code_et.setKeyListener(null);
+
+        new Thread(new DoConfirmation(this,code_et.getText().toString())).start();
+    }
+
+    public void callToEndSignIn(){
+        progressCircle = null;
 
         getSupportFragmentManager().beginTransaction().remove(signIn).commit();
         signIn = null;
+
+        setConfirmation();
+    }
+
+    public void callToEndSignInError(){
+        progressCircle.setVisibility(View.GONE);
+        progressCircle = null;
+    }
+
+    public void callToEndConfirmation(){
+        progressCircle = null;
+
+        setMenu();
+        resetConfirmation();
+        map.enableGraphics();
+    }
+
+    public void callToEndConfirmationInError(){
+        progressCircle.setVisibility(View.GONE);
+        progressCircle = null;
+
+        confirmation.resetEditText();
     }
 
     public void setMenu(){
@@ -421,5 +522,67 @@ public class MainActivity extends ActionBarActivity {
 
     public void updateGroupAdapter(ArrayList<String> list_groupID){
         groupFragment.updateAdapter(list_groupID);
+    }
+
+    public void resetAppDB(){
+        Tools.invalidDB(this);
+    }
+
+    public void resetAppGraphic(){
+        if(map != null){
+            getSupportFragmentManager().beginTransaction().remove(map).commit();
+            map = null;
+        }
+        if(groupFragment != null){
+            getSupportFragmentManager().beginTransaction().remove(groupFragment).commit();
+            groupFragment = null;
+        }
+        if(carFragment != null){
+            getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
+            carFragment = null;
+        }
+        if(ghostMode != null){
+            getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
+            ghostMode = null;
+        }
+        if(create != null){
+            getSupportFragmentManager().beginTransaction().remove(create).commit();
+            create = null;
+        }
+        if(signIn != null){
+            getSupportFragmentManager().beginTransaction().remove(signIn).commit();
+            signIn = null;
+        }
+        if(confirmation != null){
+            getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
+            confirmation = null;
+        }
+        if(createGroup != null){
+            getSupportFragmentManager().beginTransaction().remove(createGroup).commit();
+            createGroup = null;
+        }
+        if(modifyGroup != null){
+            getSupportFragmentManager().beginTransaction().remove(modifyGroup).commit();
+            modifyGroup = null;
+        }
+        if(createCar != null){
+            getSupportFragmentManager().beginTransaction().remove(createCar).commit();
+            createCar = null;
+        }
+        if(modifyCar != null){
+            getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
+            modifyCar = null;
+        }
+        if(contactDetailDialog != null){
+            getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
+            contactDetailDialog = null;
+        }
+        if(progressDialogCircular != null){
+            getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+            progressDialogCircular = null;
+        }
+
+        setMap();
+        setSignIn();
     }
 }

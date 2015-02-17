@@ -47,11 +47,29 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/car_rl"
+            android:id="@+id/bluetooth_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/relative_modify_car">
+            <Button
+                android:id="@+id/add_bluetooth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/add_bluetooth"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:clickable="true"
+                android:background="@color/transparent"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/car_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/bluetooth_rl">
             <Button
                 android:id="@+id/check_car_bt"
                 android:layout_width="30dp"
@@ -68,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/relative_modify_car"
+            android:layout_below="@id/bluetooth_rl"
             android:visibility="gone">
 
             <View

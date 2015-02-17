@@ -14,25 +14,31 @@ import com.google.gson.annotations.SerializedName;
 
 public class Car implements Parcelable {
 
-    @SerializedName("latitude")
+    @SerializedName("Email")
+    private String email;
+
+    @SerializedName("Code")
+    private String code;
+
+    @SerializedName("Latitude")
     private String latitude;
 
-    @SerializedName("longitude")
+    @SerializedName("Longitude")
     private String longitude;
 
     @SerializedName("ID")
     private String id;
 
-    @SerializedName("name")
+    @SerializedName("Name")
     private String name;
 
-    @SerializedName("brand")
+    @SerializedName("Brand")
     private String brand;
 
-    @SerializedName("bluetoothName")
+    @SerializedName("Bluetooth_name")
     private String bluetoothName;
 
-    @SerializedName("bluetoothMac")
+    @SerializedName("Bluetooth_MAC")
     private String bluetoothMac;
 
     public Car(){}
@@ -165,6 +171,17 @@ public class Car implements Parcelable {
     }
 
     public String toString(){
-        return "[CAR]: "+id+"-"+name+"-"+brand;
+        if(bluetoothMac != null)
+            return "[CAR]: "+id+"-"+name+"-"+brand+"-"+bluetoothName+"-"+bluetoothMac;
+        else
+            return "[CAR]: "+id+"-"+name+"-"+brand;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

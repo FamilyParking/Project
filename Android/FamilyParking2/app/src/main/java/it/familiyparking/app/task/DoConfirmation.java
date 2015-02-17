@@ -15,15 +15,13 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoSignIn implements Runnable {
+public class DoConfirmation implements Runnable {
 
-    private String name;
-    private String email;
+    private String code;
     private MainActivity activity;
 
-    public DoSignIn(MainActivity activity, String name, String email) {
-        this.name = name;
-        this.email = email;
+    public DoConfirmation(MainActivity activity, String code) {
+        this.code = code;
         this.activity = activity;
     }
 
@@ -31,31 +29,39 @@ public class DoSignIn implements Runnable {
     public void run() {
         Looper.prepare();
 
-        User user = new User(name,email, Tools.getUniqueDeviceId(activity));
-        final Result result = ServerCall.signIn(user);
+        DataBaseHelper databaseHelper = new DataBaseHelper(activity.getApplicationContext());
+        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        User user = UserTable.getUser(db);
+        user.setCode(code);
+
+        final Result result = ServerCall.confirmation(user);
 
         if(result.isFlag()) {
-            DataBaseHelper databaseHelper = new DataBaseHelper(activity.getApplicationContext());
-            final SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-            UserTable.insertUser(db,user);
+            UserTable.updateUser(db,user);
 
             db.close();
 
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Tools.createToast(activity,"Confirmation code sent to your email!", Toast.LENGTH_SHORT);
-                    activity.callToEndSignIn();
+                    Tools.createToast(activity,"Account confirmed!", Toast.LENGTH_SHORT);
+                    activity.callToEndConfirmation();
                 }
             });
         }
         else{
+
+            UserTable.deleteUser(db);
+
+            db.close();
+
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Tools.createToast(activity,result.getDescription(), Toast.LENGTH_SHORT);
-                    activity.callToEndSignInError();
+                    activity.callToEndConfirmationInError();
                 }
             });
         }

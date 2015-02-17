@@ -507,7 +507,10 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         ArrayList<Car> cars = CarTable.getAllCar(db);
-        cars.add(new Car("empty","empty","empty","empty","empty"));
+        if(cars.isEmpty()) {
+            cars.add(new Car("empty", "empty", "empty", "empty", "empty"));
+            Log.e("ManageGroup","Ricorda di aggiungere sempre la entry per aggiungere la macchina");
+        }
 
         db.close();
 

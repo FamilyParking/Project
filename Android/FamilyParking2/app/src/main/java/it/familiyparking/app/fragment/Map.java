@@ -1,6 +1,8 @@
 package it.familiyparking.app.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ public class Map extends Fragment{
     private Button toPark;
     private Button toCreate;
     private boolean afterPositionSettings;
+    private Context context;
+    private boolean setGraphic;
 
     public Map() {}
 
@@ -40,6 +44,14 @@ public class Map extends Fragment{
         toCreate = (Button)rootView.findViewById(R.id.toCreate);
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(setGraphic){
+            enableGraphics();
+        }
     }
 
     @Override
@@ -62,18 +74,26 @@ public class Map extends Fragment{
     }
 
     public void enableGraphics(){
-        if(!Tools.isPositionHardwareEnable(getActivity())){
-            afterPositionSettings = true;
-            Tools.showAlertPosition(getActivity());
+
+        if(getActivity() == null) {
+            setGraphic = true;
         }
+        else {
+            setGraphic = false;
 
-        googleMap.setMyLocationEnabled(true);
-        new AsyncTaskLocationMap().execute(googleMap,getActivity());
+            if (!Tools.isPositionHardwareEnable(getActivity())) {
+                afterPositionSettings = true;
+                Tools.showAlertPosition(getActivity());
+            }
 
-        toPark.setClickable(true);
-        toPark.setVisibility(View.VISIBLE);
+            googleMap.setMyLocationEnabled(true);
+            new AsyncTaskLocationMap().execute(googleMap, getActivity());
 
-        toCreate.setClickable(true);
-        toCreate.setVisibility(View.VISIBLE);
+            toPark.setClickable(true);
+            toPark.setVisibility(View.VISIBLE);
+
+            toCreate.setClickable(true);
+            toCreate.setVisibility(View.VISIBLE);
+        }
     }
 }

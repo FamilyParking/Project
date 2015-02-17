@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomAdapterCarBrand;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.task.DoBluetoothJoin;
 import it.familiyparking.app.task.DoSaveCar;
 import it.familiyparking.app.task.DoUpdateCar;
 import it.familiyparking.app.utility.Tools;
@@ -31,11 +33,16 @@ public class ManageCar extends Fragment implements TextWatcher{
 
     private EditText editTextCar;
     private Button save_button;
+    private Button add_bluetooth;
 
     private View rootView;
 
     private Car car;
     private String groupID;
+
+    private boolean removeBluetooth;
+    private boolean addBluetooth;
+    private boolean bluetoothChange;
 
     public ManageCar() {}
 
@@ -43,9 +50,11 @@ public class ManageCar extends Fragment implements TextWatcher{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_manage_car, container, false);
 
+        bluetoothChange = false;
+
         setCarLayout();
 
-        if(modifing()){
+        if(modifying()){
             Tools.resetUpButtonActionBar((MainActivity)getActivity());
             setButtonModify();
             showInfo();
@@ -53,6 +62,8 @@ public class ManageCar extends Fragment implements TextWatcher{
         else{
             setButtonSave();
         }
+
+        setButtonBluetooth();
 
         return rootView;
     }
@@ -64,8 +75,24 @@ public class ManageCar extends Fragment implements TextWatcher{
         groupID = args.getString("groupID");
     }
 
-    private boolean modifing(){
-        return car != null;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(car != null){
+            if(car.getBluetoothName() == null){
+                addBluetooth = true;
+                removeBluetooth = false;
+            }
+            else{
+                addBluetooth = false;
+                removeBluetooth = true;
+            }
+        }
+    }
+
+    private boolean modifying(){
+        return (car != null)&&(car.getName() != null);
     }
 
 
@@ -81,7 +108,13 @@ public class ManageCar extends Fragment implements TextWatcher{
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        car = new Car(editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()));
+        if(car == null) {
+            car = new Car(editTextCar.getText().toString(), Tools.getBrand(spinner, getActivity()));
+        }
+        else{
+            car.setName(editTextCar.getText().toString());
+            car.setBrand(Tools.getBrand(spinner, getActivity()));
+        }
 
         new Thread(new DoSaveCar(getActivity(),car,groupID)).start();
     }
@@ -126,6 +159,54 @@ public class ManageCar extends Fragment implements TextWatcher{
         });
     }
 
+    private void setButtonBluetooth(){
+        add_bluetooth = (Button) rootView.findViewById(R.id.add_bluetooth);
+
+        if((car == null) || (car.getBluetoothName() == null)) {
+            add_bluetooth.setText(getActivity().getResources().getString(R.string.add_bluetooth));
+            addBluetooth = true;
+        }
+        else {
+            add_bluetooth.setText(getActivity().getResources().getString(R.string.remove_bluetooth));
+            removeBluetooth = true;
+        }
+
+        final ManageCar fragment = this;
+
+        add_bluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Tools.isBluetoothEnable()) {
+                    if(removeBluetooth){
+                        Tools.showAlertBluetoothRemove(getActivity(),fragment,car,add_bluetooth);
+                    }
+                    else if(addBluetooth) {
+                        searchBluetoothDevice();
+                    }
+                }
+                else {
+                    Tools.showAlertBluetooth(getActivity());
+                }
+            }
+        });
+    }
+
+    private void searchBluetoothDevice(){
+        ProgressDialogCircular progressDialog = new ProgressDialogCircular();
+        ((MainActivity)getActivity()).setProgressDialogCircular(progressDialog);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("message", "Looking for bluetooth device ...");
+        progressDialog.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
+
+        if(!modifying())
+            car = new Car();
+
+        new Thread(new DoBluetoothJoin(getActivity(),car,add_bluetooth,this)).start();
+    }
+
     private void manageSaveButton(){
         if(editTextCar.getText().toString().isEmpty()) {
             save_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_grey));
@@ -168,7 +249,15 @@ public class ManageCar extends Fragment implements TextWatcher{
 
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
 
-        new Thread(new DoUpdateCar(getActivity(),editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()),car)).start();
+        new Thread(new DoUpdateCar(getActivity(),editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()),car,bluetoothChange)).start();
+    }
+
+    public void setBluetoothUpdate(){
+        bluetoothChange = true;
+    }
+
+    public void resetBluetoothUpdate(){
+        bluetoothChange = false;
     }
 
     @Override
@@ -183,7 +272,8 @@ public class ManageCar extends Fragment implements TextWatcher{
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(!modifing())
+        if(!modifying())
             manageSaveButton();
     }
+
 }

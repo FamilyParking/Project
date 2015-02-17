@@ -40,6 +40,40 @@
             android:hint="@string/car_model"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/relative_bluetooth_car"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:layout_below="@id/relative_car_car"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/bluetooth_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:background="@android:drawable/stat_sys_data_bluetooth"
+            android:backgroundTint="@color/blue"/>
+
+        <TextView
+            android:id="@+id/car_bluetooth_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/bluetooth_iv"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:background="@color/transparent"
+            android:singleLine="true"
+            android:hint="@string/car_model"/>
+    </RelativeLayout>
+
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
@@ -48,7 +82,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
         android:background="@color/gray"
-        android:layout_below="@id/relative_car_car"
+        android:layout_below="@id/relative_bluetooth_car"
         android:visibility="gone"/>
 
     <RelativeLayout

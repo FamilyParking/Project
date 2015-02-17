@@ -13,7 +13,11 @@ import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -38,57 +42,80 @@ public class DoSaveCar implements Runnable {
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        /***************/
-        /* CALL SERVER */
-        /***************/
-        /**********************************************/
-        /**/String timestamp = Tools.getTimestamp();/**/
-        /**/String carID = timestamp;             /**/
-        /**********************************************/
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        car.setId(carID);
+        String timestamp = Tools.getTimestamp();
 
-        CarTable.insertCar(db,car,timestamp);
+        User user = UserTable.getUser(db);
+        car.setCode(user.getCode());
+        car.setEmail(user.getEmail());
 
-        if(groupID != null){
-            Log.e("Do Save Car","Insert");
-            CarGroupRelationTable.insertRelation(db,car.getId(),groupID);
-        }
+        final Result result = ServerCall.createCar(car);
 
-        final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
+        if(result.isFlag()) {
 
-        db.close();
+            car.setId((String)result.getObject());
 
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activity.resetProgressDialogCircular(false);
+            CarTable.insertCar(db, car, timestamp);
+
+            if (groupID != null) {
+                CarGroupRelationTable.insertRelation(db, car.getId(), groupID);
             }
-        });
 
-        activity.closeCreateCar();
+            final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
 
-        if(groupID != null) {
+            db.close();
+
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    activity.updateGroupAdapter(list_groupID);
-                    Tools.createToast(activity, "Car created and added to group!", Toast.LENGTH_SHORT);
+                    activity.resetProgressDialogCircular(false);
                 }
             });
+
+            activity.closeCreateCar();
+
+            if (groupID != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.updateGroupAdapter(list_groupID);
+                        Tools.createToast(activity, "Car created and added to group!", Toast.LENGTH_SHORT);
+                    }
+                });
+            } else {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
+                    }
+                });
+            }
         }
-        else {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
-                }
-            });
+        else{
+            Double temp = (Double)result.getObject();
+
+            if(temp.doubleValue() == 3){
+
+                activity.resetAppDB();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.resetProgressDialogCircular(false);
+                        Tools.createToast(activity, "Your account is invalid, please signIn!", Toast.LENGTH_SHORT);
+                        activity.resetAppGraphic();
+                    }
+                });
+            }
+            else{
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.resetProgressDialogCircular(false);
+                        Tools.createToast(activity,result.getDescription(), Toast.LENGTH_SHORT);
+                    }
+                });
+            }
         }
     }
 }

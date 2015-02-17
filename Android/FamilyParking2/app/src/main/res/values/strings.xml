@@ -8,8 +8,11 @@
     <string name="add">+</string>
     <string name="find_contact">Write name or email</string>
     <string name="add_contact">Add contact to group ...</string>
+    <string name="add_bluetooth">Add bluetooth device ...</string>
+    <string name="remove_bluetooth">Remove bluetooth device ...</string>
     <string name="add_car">Create new car ...</string>
     <string name="back">BACK</string>
+    <string name="code">Insert the code received by email</string>
     <string name="delete">DELETE</string>
     <string name="modify">MODIFY</string>
     <string name="ok">OK</string>

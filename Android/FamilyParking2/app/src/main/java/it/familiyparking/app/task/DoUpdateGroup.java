@@ -153,19 +153,22 @@ public class DoUpdateGroup implements Runnable {
             notifyAdapter = true;
         }
 
-        if(notifyAdapter) {
-            final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
 
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+        final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
+        final boolean notifyAdapterF = notifyAdapter;
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if(notifyAdapterF)
                     activity.updateGroupAdapter(list_groupID);
-                    activity.resetProgressDialogCircular(false);
-                    activity.closeModifyGroup();
-                    Tools.createToast(activity, "Group updated!", Toast.LENGTH_SHORT);
-                }
-            });
-        }
+
+                activity.resetProgressDialogCircular(false);
+                activity.closeModifyGroup();
+                Tools.createToast(activity, "Group updated!", Toast.LENGTH_SHORT);
+            }
+        });
 
         db.close();
     }

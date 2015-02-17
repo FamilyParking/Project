@@ -14,8 +14,8 @@ public class CarTable {
     public static final String CAR_ID = "CAR_ID";
     public static final String NAME = "NAME";
     public static final String BRAND = "BRAND";
-    public static final String BLUETOOTH_MAC = "BLUETOOTH_MAC";
     public static final String BLUETOOTH_NAME = "BLUETOOTH_NAME";
+    public static final String BLUETOOTH_MAC = "BLUETOOTH_MAC";
     public static final String TIMESTAMP = "TIMESTAMP";
 	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,BLUETOOTH_MAC,BLUETOOTH_NAME,TIMESTAMP};
 
@@ -83,6 +83,14 @@ public class CarTable {
         values.put(BRAND, newBrand);
 
         return db.update(TABLE, values, CAR_ID + " = ?", new String[] { carID });
+    }
+
+    public static int updateBluetooth(SQLiteDatabase db, Car car){
+        ContentValues values = new ContentValues();
+        values.put(BLUETOOTH_NAME, car.getBluetoothName());
+        values.put(BLUETOOTH_MAC, car.getBluetoothMac());
+
+        return db.update(TABLE, values, CAR_ID + " = ?", new String[] { car.getId() });
     }
 
 }

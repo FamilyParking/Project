@@ -93,6 +93,14 @@ public class CustomAdapterCar extends ArrayAdapter<Car> implements View.OnLongCl
 
     private void setTextEdit(View convertView, Car car){
         ((TextView) convertView.findViewById(R.id.car_name_tv)).setText(car.getName());
+
+        if(car.getBluetoothName() != null){
+            convertView.findViewById(R.id.relative_bluetooth_car).setVisibility(View.VISIBLE);
+            ((TextView) convertView.findViewById(R.id.car_bluetooth_tv)).setText(car.getBluetoothName()+" ("+car.getBluetoothMac()+")");
+        }
+        else{
+            convertView.findViewById(R.id.relative_bluetooth_car).setVisibility(View.GONE);
+        }
     }
 
     private void setOnLongClick(View convertView, Car car){
@@ -101,6 +109,7 @@ public class CustomAdapterCar extends ArrayAdapter<Car> implements View.OnLongCl
         container_item.setContentDescription(car.getId());
 
         (convertView.findViewById(R.id.relative_car_car)).setOnLongClickListener(this);
+        (convertView.findViewById(R.id.relative_bluetooth_car)).setOnLongClickListener(this);
     }
 
     private void setOnClickDelete(View convertView){
