@@ -27,6 +27,13 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
 
+class HowToUsePage(webapp2.RequestHandler):
+	def get(self):
+		in_file = open("website/howtouse.html", "r")
+		MAIN_PAGE_HTML = in_file.read()
+		self.response.write(MAIN_PAGE_HTML)
+		in_file.close()
+
 
 class SendEmail(webapp2.RequestHandler):
     def post(self):
@@ -351,20 +358,21 @@ class registrationForm(webapp2.RequestHandler):
 
 
 application = webapp2.WSGIApplication([
-                                          ('/', MainPage),
-                                          ('/sign', SendEmail),
-                                          ('/requestPositionCar', getPositionCar),
-                                          ('/registration', registrationForm),
-                                          ('/getIDGroups', getIDGroups),
-                                          ('/getAllCars', getAllCars),
-                                          ('/getAllCars_groupID', getAllCars_groupID),
-                                          ('/getAllCars_fromEmail', getAllCars_fromEmail),
-                                          ('/createCar', createCar),
-                                          ('/deleteCar', deleteCar),
-                                          ('/createGroup', createGroup),
-                                          ('/deleteGroup', deleteGroup),
-                                          ('/updatePosition', updatePosition),
-                                          ('/getPositionCar', getPositionCar),
-                                          ('/confirmCode', confirmCode),
-                                          ('/insertContactGroup', insertContactGroup),
-                                      ], debug=True)
+									  ('/', MainPage),
+									  ('/howtouse', HowToUsePage),
+									  ('/sign', SendEmail),
+									  ('/requestPositionCar', getPositionCar),
+									  ('/registration', registrationForm),
+									  ('/getIDGroups', getIDGroups),
+									  ('/getAllCars', getAllCars),
+									  ('/getAllCars_groupID', getAllCars_groupID),
+									  ('/getAllCars_fromEmail', getAllCars_fromEmail),
+									  ('/createCar', createCar),
+									  ('/deleteCar', deleteCar),
+									  ('/createGroup', createGroup),
+									  ('/deleteGroup', deleteGroup),
+									  ('/updatePosition', updatePosition),
+									  ('/getPositionCar', getPositionCar),
+									  ('/confirmCode', confirmCode),
+									  ('/insertContactGroup', insertContactGroup),
+								  ], debug=True)
