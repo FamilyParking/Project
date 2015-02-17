@@ -12,6 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -506,6 +507,7 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         ArrayList<Car> cars = CarTable.getAllCar(db);
+        cars.add(new Car("empty","empty","empty","empty","empty"));
 
         db.close();
 
@@ -513,11 +515,16 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
         spinner.setAdapter(adapterCarGroup);
 
         int selectedIndex = 0;
-        for(Car car : cars){
-            if(car.getId().equals(group.getId()))
-                break;
 
-            selectedIndex++;
+        Car car_group = group.getCar();
+
+        if(car_group != null) {
+            for (Car car : cars) {
+                if (group.getCar().getId().equals(car.getId()))
+                    break;
+
+                selectedIndex++;
+            }
         }
 
         if(selectedIndex == cars.size())

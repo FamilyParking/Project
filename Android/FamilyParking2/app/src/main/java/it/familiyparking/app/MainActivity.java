@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -181,8 +182,21 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClick_NewCar(View v) {
-        managePlusButton();
+        setNewCar(null);
+    }
+
+    public void setNewCar(String groupID){
         createCar = new ManageCar();
+
+        if(groupID != null){
+            Bundle bundle = new Bundle();
+            bundle.putString("groupID",groupID);
+            createCar.setArguments(bundle);
+        }
+        else{
+            managePlusButton();
+        }
+
         getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
     }
 
@@ -198,8 +212,9 @@ public class MainActivity extends ActionBarActivity {
             findViewById(R.id.toCreate).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise));
             create = new Create();
             fragmentTransaction.add(R.id.container, create).commit();
+            counterclockwise = !(counterclockwise);
         }
-        counterclockwise = !(counterclockwise);
+
     }
 
     private void removeCreate(FragmentTransaction fragmentTransaction){
@@ -212,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
 
             create = null;
 
-            counterclockwise = false;
+            counterclockwise = !counterclockwise;
         }
     }
 
@@ -331,10 +346,10 @@ public class MainActivity extends ActionBarActivity {
             //Do nop
         }
         else if(modifyGroup != null){
-            //Do nop
+            resetModifyGroup();
         }
         else if(modifyCar != null){
-            //Do nop
+            resetModifyCar();
         }
         else if(contactDetailDialog != null){
             resetContactDetailDialog();

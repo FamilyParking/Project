@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.fragment.GroupFragment;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -58,6 +60,7 @@ public class DoRemoveGroup implements Runnable {
             public void run() {
                 groupFragment.updateAdapter(list_groupID);
                 activity.resetProgressDialogCircular(true);
+                Tools.createToast(activity, "Group removed!", Toast.LENGTH_SHORT);
             }
         });
 

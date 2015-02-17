@@ -35,6 +35,7 @@ public class ManageCar extends Fragment implements TextWatcher{
     private View rootView;
 
     private Car car;
+    private String groupID;
 
     public ManageCar() {}
 
@@ -60,6 +61,7 @@ public class ManageCar extends Fragment implements TextWatcher{
     public void setArguments(Bundle args) {
         super.setArguments(args);
         car = args.getParcelable("car");
+        groupID = args.getString("groupID");
     }
 
     private boolean modifing(){
@@ -81,7 +83,7 @@ public class ManageCar extends Fragment implements TextWatcher{
 
         car = new Car(editTextCar.getText().toString(),Tools.getBrand(spinner,getActivity()));
 
-        new Thread(new DoSaveCar(getActivity(),car)).start();
+        new Thread(new DoSaveCar(getActivity(),car,groupID)).start();
     }
 
     private void setCarLayout(){

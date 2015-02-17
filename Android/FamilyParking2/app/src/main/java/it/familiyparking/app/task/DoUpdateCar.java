@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -59,6 +61,7 @@ public class DoUpdateCar implements Runnable {
                     activity.updateCarAdapter(cars);
                     activity.resetProgressDialogCircular(false);
                     activity.closeModifyCar();
+                    Tools.createToast(activity, "Car updated!", Toast.LENGTH_SHORT);
                 }
             });
         }

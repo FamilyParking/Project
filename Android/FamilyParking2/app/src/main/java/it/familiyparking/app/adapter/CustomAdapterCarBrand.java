@@ -1,6 +1,7 @@
 package it.familiyparking.app.adapter;
 
 import android.app.Activity;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class CustomAdapterCarBrand extends ArrayAdapter<String> {
 
         ImageView brand_icon = (ImageView) convertView.findViewById(R.id.car_logo_item_iv);
         brand_icon.setBackgroundDrawable(activity.getResources().getDrawable(activity.getResources().getIdentifier(getItem(position),"drawable",activity.getPackageName())));
+
 
         return convertView;
     }

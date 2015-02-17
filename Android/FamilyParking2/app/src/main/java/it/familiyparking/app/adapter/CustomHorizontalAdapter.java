@@ -1,11 +1,13 @@
 package it.familiyparking.app.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,9 +23,12 @@ import it.familiyparking.app.utility.Tools;
 public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
 
     private HashSet<String> set;
+    private Activity activity;
 
-    public CustomHorizontalAdapter(Context context, ArrayList<Contact> contacts) {
-        super(context, 0, contacts);
+    public CustomHorizontalAdapter(Activity activity, ArrayList<Contact> contacts) {
+        super(activity.getApplicationContext(), 0, contacts);
+
+        this.activity = activity;
 
         set = new HashSet<>();
         for(Contact contact : contacts)
@@ -40,11 +45,18 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
         }
 
         ImageView photo = (ImageView) convertView.findViewById(R.id.group_contact_image_iv);
+        TextView textView = (TextView) convertView.findViewById(R.id.group_contact_image_tv);
 
-        if(contact.hasPhoto())
+        if(contact.hasPhoto()) {
+            photo.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
             Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_Id()));
-        else
-            photo.setImageResource(R.drawable.user);
+        }
+        else {
+            photo.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+            Tools.setImageForContact(activity,textView,contact);
+        }
 
         return convertView;
     }

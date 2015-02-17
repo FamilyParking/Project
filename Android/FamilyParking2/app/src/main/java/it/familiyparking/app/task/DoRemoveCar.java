@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -60,6 +62,7 @@ public class DoRemoveCar implements Runnable {
             public void run() {
                 carFragment.updateAdapter(cars);
                 activity.resetProgressDialogCircular(true);
+                Tools.createToast(activity, "Car removed!", Toast.LENGTH_SHORT);
             }
         });
 

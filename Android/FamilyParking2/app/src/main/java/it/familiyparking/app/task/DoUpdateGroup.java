@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -160,6 +162,7 @@ public class DoUpdateGroup implements Runnable {
                     activity.updateGroupAdapter(list_groupID);
                     activity.resetProgressDialogCircular(false);
                     activity.closeModifyGroup();
+                    Tools.createToast(activity, "Group updated!", Toast.LENGTH_SHORT);
                 }
             });
         }

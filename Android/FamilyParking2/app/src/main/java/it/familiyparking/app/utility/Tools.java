@@ -2,6 +2,8 @@ package it.familiyparking.app.utility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +32,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,7 +41,14 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
 import it.familiyparking.app.R;
+import it.familiyparking.app.serverClass.Contact;
 import it.familiyparking.app.serverClass.Group;
 
 
@@ -274,8 +284,8 @@ public class Tools {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static int getColor(Activity activity, String group_ID){
-        int color = Integer.parseInt(group_ID) % 4;
+    public static int getColor(Activity activity, String name){
+        int color =  hashFunction(name) % 4;
         switch (color){
             case 0:
                 color = activity.getResources().getColor(R.color.purple);
@@ -295,12 +305,41 @@ public class Tools {
         return color;
     }
 
+    private static int hashFunction(String s){
+        int hash=7;
+
+        for (int i=0; i < s.length(); i++) {
+            hash = hash*31+s.charAt(i);
+        }
+
+        return hash;
+    }
+
     public static void setImageForGroup(Activity activity, TextView group_image, Group group){
         Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
-        drawable.setColorFilter(new PorterDuffColorFilter(Tools.getColor(activity,group.getId()),PorterDuff.Mode.SCREEN));
+        drawable.setColorFilter(new PorterDuffColorFilter(activity.getResources().getColor(R.color.green),PorterDuff.Mode.SCREEN));
         group_image.setBackgroundDrawable(drawable);
         String initial = ""+group.getName().charAt(0)+"";
         group_image.setText(initial.toUpperCase());
+    }
+
+    public static void setImageForContact(Activity activity, TextView group_image, Contact contact){
+        Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
+        drawable.setColorFilter(new PorterDuffColorFilter(getColor(activity,contact.getName()),PorterDuff.Mode.SCREEN));
+        group_image.setBackgroundDrawable(drawable);
+        String initial = getInitial(contact.getName());
+        group_image.setText(initial.toUpperCase());
+    }
+
+    private static String getInitial(String name){
+        String[] splited = name.split("\\s+");
+        String ret = ""+splited[0].charAt(0);
+
+        for(int i=1; i < splited.length; i++){
+            ret = ret + splited[i].charAt(0);
+        }
+
+        return ret;
     }
 
     public static String getBrand(Spinner spinner, Activity activity){
@@ -316,5 +355,50 @@ public class Tools {
                 return i;
 
         return -1;
+    }
+
+    public static String getTimestamp(){
+        return (new Timestamp((new java.util.Date()).getTime())).toString();
+    }
+
+    public static boolean isBluetoothEnable(){
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if ((mBluetoothAdapter == null) || (!mBluetoothAdapter.isEnabled()))
+                return false;
+
+        return true;
+    }
+
+    public static void showAlertBluetooth(final Context context) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setCancelable(false);
+
+        alertDialog.setTitle("Bluetooth disabled");
+
+        alertDialog.setMessage(getAppName(context)+" needs bluetooth to join car's device. Please turn on it.");
+
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                        context.startActivity(intent);
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Tools.closeApp(context);
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+    public static void getAllBluetoothDeviceConnected(){
+        
     }
 }

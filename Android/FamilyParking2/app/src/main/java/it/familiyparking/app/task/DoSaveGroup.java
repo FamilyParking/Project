@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -39,10 +41,10 @@ public class DoSaveGroup implements Runnable {
         /***************/
         /* CALL SERVER */
         /***************/
-        /**************************************/
-        /**/String groupID = "0123456789";         /**/
-        /**/String timestamp = "0123456789";/**/
-        /**************************************/
+        /**********************************************/
+        /**/String timestamp = Tools.getTimestamp();/**/
+        /**/String groupID = timestamp;             /**/
+        /**********************************************/
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -62,5 +64,12 @@ public class DoSaveGroup implements Runnable {
         });
 
         activity.closeCreateGroup();
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Tools.createToast(activity,"Group created!", Toast.LENGTH_SHORT);
+            }
+        });
     }
 }

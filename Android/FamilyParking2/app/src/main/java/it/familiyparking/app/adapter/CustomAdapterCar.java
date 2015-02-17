@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class CustomAdapterCar extends ArrayAdapter<Car> implements View.OnLongCl
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_item, parent, false);
         }
 
-        setBrand(convertView, car);
+        setBrand(convertView,car);
 
         setTextEdit(convertView,car);
 
