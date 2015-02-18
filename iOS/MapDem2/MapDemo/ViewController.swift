@@ -27,16 +27,42 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         
         let saveAction = UIAlertAction(title: "Add Group",
             style: .Default) { (action: UIAlertAction!) -> Void in
+                    self.performSegueWithIdentifier("add_group_plus", sender: self)
                 
-               // self.tabBarController!.selectedIndex = 2;
-                self.performSegueWithIdentifier("add_group_plus", sender: self)
         }
         
         let deleteAction = UIAlertAction(title: "Add Car",
             style: .Default) { (action: UIAlertAction!) -> Void in
               //  self.tabBarController!.selectedIndex = 2;
-            self.performSegueWithIdentifier("add_car", sender: self)
-        }
+                var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                
+                let carsNumber:Int = prefs.integerForKey("HOWMANYCARS") as Int
+                
+                println("ho \(carsNumber) auto!")
+                
+                
+                if (carsNumber>0) {
+                    //  self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
+                    var alert2 = UIAlertController(title: "One Car",
+                        message: "Right now, only one car is admitted",
+                        preferredStyle: .Alert)
+                    
+                    
+                    let cancelAction = UIAlertAction(title: "Cancel",
+                        style: .Default) { (action: UIAlertAction!) -> Void in
+                            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                            
+                    }
+                    alert2.addAction(cancelAction)
+                    
+                    self.presentViewController(alert2,
+                        animated: true,
+                        completion: nil)
+                }
+                else{
+                    self.performSegueWithIdentifier("add_car", sender: self)
+                }
+            }
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
