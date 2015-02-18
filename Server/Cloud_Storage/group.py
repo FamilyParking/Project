@@ -6,6 +6,11 @@ class Group(ndb.Model):
     name = ndb.StringProperty()
     timestamp = ndb.StringProperty()
 
+	def update(self,name)
+		self.name = name
+		self.put()
+		return 0
+		
     @staticmethod
     def getGroupbyID(id):
         app_key = Group.get_by_id(long(id))
@@ -15,4 +20,9 @@ class Group(ndb.Model):
     def delete_group_ID(id):
         app_key = Group.get_by_id(long(id))
         app_key.key.delete()
+	
+	@staticmethod
+	def updateGroup(id,name):
+		app_key = Group.getGroupbyID(id)
+		return app_key.update(name)
 

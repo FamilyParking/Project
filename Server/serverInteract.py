@@ -343,6 +343,43 @@ class insertCarGroup(webapp2.RequestHandler):
             right = StatusReturn(13, "insertCarGroup")
             self.response.write(right.print_result())
 
+def class editCar(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("editCar", self) >= 0:
+			data = json.loads(self.request.body)
+			id = data["ID_car"]
+			latitude = data["Latitude"]
+			longitude = data["Longitude"]
+			email = data["Email"]
+			bluetooth_MAC = data["Bluetooth_MAC"]
+			bluetooth_name = data["Bluetooth_name"]
+			brand = data["Brand"]
+			name = data["Name"]
+			try:
+				Car.update_car(id,bluetooth_MAC,bluetooth_name,brand,email,latitude,longitude,name)
+				right = StatusReturn(16, "editCar")
+				self.response.write(right.print_result())
+			except:
+				self.error(500)
+				error = StatusReturn(8, "editCar", str(sys.exc_info()))
+				self.response.write(error.print_general_error())
+
+
+def class editGroup(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("editGroup", self) >= 0:
+			data = json.loads(self.request.body)
+			name = data["Name"]
+			id = data["ID_group"]
+			try:
+				Group.update_group(id,name)
+				right = StatusReturn(17, "editGroup")
+				self.response.write(right.print_result())
+			except:
+				self.error(500)
+				error = StatusReturn(8, "editGroup", str(sys.exc_info()))
+				self.response.write(error.print_general_error())
+
 
 class updatePosition(webapp2.RequestHandler):
     def post(self):
@@ -419,25 +456,28 @@ class registrationForm(webapp2.RequestHandler):
             self.response.write(error.error_registration())
 
 
+
 application = webapp2.WSGIApplication([
-                                          ('/', MainPage),
-                                          ('/howtouse', HowToUsePage),
-                                          ('/sign', SendEmail),
-                                          ('/updateGoogleCode', updateGoogleCode),
-                                          ('/requestPositionCar', getPositionCar),
-                                          ('/registration', registrationForm),
-                                          ('/getIDGroups', getIDGroups),
-                                          ('/getAllCars', getAllCars),
-                                          ('/getAllCars_groupID', getAllCars_groupID),
-                                          ('/getAllCars_fromEmail', getAllCars_fromEmail),
-                                          ('/createCar', createCar),
-                                          ('/deleteCar', deleteCar),
-                                          ('/createGroup', createGroup),
-                                          ('/deleteGroup', deleteGroup),
-                                          ('/insertCarGroup', insertCarGroup),
-                                          ('/updatePosition', updatePosition),
-                                          ('/getPositionCar', getPositionCar),
-                                          ('/confirmCode', confirmCode),
-                                          ('/insertContactGroup', insertContactGroup),
-                                          ('/removeContactGroup', removeContactGroup),
-                                      ], debug=True)
+										  ('/', MainPage),
+										  ('/howtouse', HowToUsePage),
+										  ('/sign', SendEmail),
+										  ('/updateGoogleCode', updateGoogleCode),
+										  ('/requestPositionCar', getPositionCar),
+										  ('/registration', registrationForm),
+										  ('/getIDGroups', getIDGroups),
+										  ('/getAllCars', getAllCars),
+										  ('/getAllCars_groupID', getAllCars_groupID),
+										  ('/getAllCars_fromEmail', getAllCars_fromEmail),
+										  ('/createCar', createCar),
+										  ('/deleteCar', deleteCar),
+										  ('/createGroup', createGroup),
+										  ('/deleteGroup', deleteGroup),
+										  ('/insertCarGroup', insertCarGroup),
+										  ('/updatePosition', updatePosition),
+										  ('/getPositionCar', getPositionCar),
+										  ('/confirmCode', confirmCode),
+										  ('/insertContactGroup', insertContactGroup),
+										  ('/removeContactGroup', removeContactGroup),
+										  ('/editCar', editCar),
+										  ('/editGroup',editGroup)
+									  ], debug=True)

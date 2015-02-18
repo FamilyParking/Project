@@ -35,7 +35,18 @@ class Car(ndb.Model):
         latitudeString = "'latitude':'" + self.latitude + "'"
         longitudeString = "'longitude':'" + self.longitude + "'"
         return "{" + idString + "," + modelString + "," + nameString + "," + latitudeString + "," + longitudeString + "}"
-
+		
+	def update(self,bluetooth_MAC,bluetooth_name,brand,email,latitude,longitude,name):
+		self.latitude = latitude
+		self.longitude = longitude
+		self.bluetooth_MAC = bluetooth_MAC
+		self.bluetooth_name = bluetooth_name
+		self.brand = brand
+		self.email = email
+		self.name = name
+		self.put()
+		return 0
+		
     @staticmethod
     def getCarbyID(id):
         app_key = Car.get_by_id(long(id))
@@ -45,7 +56,12 @@ class Car(ndb.Model):
     def update_position_ID(id,latitude,longitude):
         temp_car = Car.getCarbyID(id)
         return temp_car.updatePosition(latitude,longitude)
-
+	
+	@staticmethod
+	def update_car(id,bluetooth_MAC,bluetooth_name,brand,email,latitude,longitude,name)
+		temp_car = Car.getCarbyID(id)
+		temp_car.update(bluetooth_MAC,bluetooth_name,brand,email,latitude,longitude,name)
+	
     @staticmethod
     def delete_car_ID(id):
         app_key = Car.getCarbyID(id)
