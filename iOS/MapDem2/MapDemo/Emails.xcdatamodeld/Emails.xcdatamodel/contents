@@ -10,8 +10,13 @@
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Groups" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Car" positionX="-63" positionY="-9" width="128" height="105"/>
         <element name="Entity" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Groups" positionX="-63" positionY="18" width="128" height="73"/>
     </elements>
 </model>

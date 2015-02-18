@@ -1,39 +1,32 @@
 //
-//  UserListController.swift
+//  GroupListViewController.swift
 //  MapDemo
 //
-//  Created by mauro piva on 09/01/15.
+//  Created by mauro piva on 18/02/15.
 //  Copyright (c) 2015 familyParking. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class UserListController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
-
+class GroupListViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+    
     var tableView: UITableView!
     var textField: UITextField!
-//    var tableViewData = [String]()
-//    var tableViewData = ["mauro993@gmail.com","mauromauro@mauro.mauro"]
+    //    var tableViewData = [String]()
+    //    var tableViewData = ["mauro993@gmail.com","mauromauro@mauro.mauro"]
     var people = [NSManagedObject]()
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName:nibNameOrNil, bundle: nibBundleOrNil)
     }
-
+    
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
-
-    func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        return true
-    }
     
-    func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
-        if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            // handle delete (by removing the data from your array and updating the tableview)
-        }
-    }
+    
+    
     @IBAction func TestButton() {
         
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -60,12 +53,12 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
                 style: .Default) { (action: UIAlertAction!) -> Void in
             }
             
-        //    alert.addTextFieldWithConfigurationHandler {
-        //        (textField: UITextField!) -> Void in
-        //    }
+            //    alert.addTextFieldWithConfigurationHandler {
+            //        (textField: UITextField!) -> Void in
+            //    }
             
-       //     alert.addAction(saveAction)
-           alert.addAction(cancelAction)
+            //     alert.addAction(saveAction)
+            alert.addAction(cancelAction)
             
             presentViewController(alert,
                 animated: true,
@@ -79,11 +72,11 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-     //  var barHeight:CGFloat = navigationController!.navigationBar.frame.height + navigationController!.navigationBar.frame.height
-  //      println(self.navigationController?.navigationBar.frame.height.description)
+        //  var barHeight:CGFloat = navigationController!.navigationBar.frame.height + navigationController!.navigationBar.frame.height
+        //      println(self.navigationController?.navigationBar.frame.height.description)
         self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
         self.tableView.registerClass(MyTableViewCell.self, forCellReuseIdentifier: "myCell")
-       // self.tableView.backgroundColor = UIColor.purpleColor()
+        // self.tableView.backgroundColor = UIColor.purpleColor()
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -93,9 +86,9 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         //self.textField.backgroundColor = UIColor.whiteColor()
         //self.textField.delegate = self
         
-     //   self.view.addSubview(self.textField)
+        //   self.view.addSubview(self.textField)
         // Do any additional setup after loading the view.
-    
+        
         swiftAddressBook?.requestAccessWithCompletion({ (success, error) -> Void in
             if success {
                 //do something with swiftAddressBook
@@ -113,12 +106,12 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
             }
         }
         
-    
-    
-    
-    
+        
+        
+        
+        
     }
-   
+    
     
     func tableView(tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int {
@@ -141,9 +134,9 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         RemoveConfirmation(indexPath)
         
-      //  let toRem = people.removeAtIndex(indexPath.item)
-      //  removeName(toRem)
-      //  self.tableView.reloadData()
+        //  let toRem = people.removeAtIndex(indexPath.item)
+        //  removeName(toRem)
+        //  self.tableView.reloadData()
         
         
         
@@ -152,7 +145,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-       // tableViewData.append(textField.text)
+        // tableViewData.append(textField.text)
         saveName(textField.text)
         textField.text = ""
         self.tableView.reloadData()
@@ -167,7 +160,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         let managedContext = appDelegate.managedObjectContext!
         
         //2
-        let entity =  NSEntityDescription.entityForName("Entity",
+        let entity =  NSEntityDescription.entityForName("Groups",
             inManagedObjectContext:
             managedContext)
         
@@ -176,7 +169,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         let person = NSManagedObject(entity: entity!,
             insertIntoManagedObjectContext:managedContext)
         
-            //3
+        //3
         person.setValue(name, forKey: "name")
         
         
@@ -184,7 +177,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         var error: NSError?
         if !managedContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
-        }  
+        }
         //5
         people.append(person)
         
@@ -207,7 +200,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         if !managedContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
         }
-       
+        
         
     }
     
@@ -223,7 +216,7 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         
         //2
-        let fetchRequest = NSFetchRequest(entityName:"Entity")
+        let fetchRequest = NSFetchRequest(entityName:"Groups")
         
         //3
         var error: NSError?
@@ -259,14 +252,14 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
                 let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 
-                prefs.setObject(self.people[index.item].valueForKey("name")?.description, forKey: "ACTIVECAR")
-                prefs.setObject(self.people[index.item].valueForKey("id")?.description, forKey: "CARCODE")
-                prefs.synchronize()
-             //
-               // let textField = alert.textFields![0] as UITextField
-               // self.saveName(textField.text)
+           //     prefs.setObject(self.people[index.item].valueForKey("name")?.description, forKey: "ACTIVECAR")
+         //       prefs.setObject(self.people[index.item].valueForKey("id")?.description, forKey: "CARCODE")
+         //       prefs.synchronize()
+                //
+                // let textField = alert.textFields![0] as UITextField
+                // self.saveName(textField.text)
                 //   self.names.append(textField.text)
-               // self.tableView.reloadData()
+                // self.tableView.reloadData()
         }
         
         let deleteAction = UIAlertAction(title: "Delete",
@@ -306,9 +299,9 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
                         self.removeName(toRem)
                         self.tableView.reloadData()
                         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                            prefs.setObject("", forKey: "CARCODE")
-                            prefs.setInteger(0, forKey: "HOWMANYCARS")
-                            prefs.synchronize()
+                        prefs.setObject("", forKey: "CARCODE")
+                        prefs.setInteger(0, forKey: "HOWMANYCARS")
+                        prefs.synchronize()
                     }
                     else{
                         var alert = UIAlertController(title: "Oopsss",
@@ -318,14 +311,14 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
                         let cancelAction = UIAlertAction(title: "Ok",
                             style: .Default) { (action: UIAlertAction!) -> Void in
                         }
-                       
+                        
                         alert.addAction(cancelAction)
                         
                         self.presentViewController(alert,
                             animated: true,
                             completion: nil)
                     }
-
+                    
                 })
                 
                 task.resume()
@@ -335,14 +328,14 @@ class UserListController: UIViewController, UITextFieldDelegate, UITableViewDele
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
         
-        alert.addAction(saveAction)
+    //    alert.addAction(saveAction)
         alert.addAction(cancelAction)
-        alert.addAction(deleteAction)
+//alert.addAction(deleteAction)
         presentViewController(alert,
             animated: true,
             completion: nil)
     }
     
-        
-
+    
+    
 }

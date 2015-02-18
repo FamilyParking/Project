@@ -28,12 +28,14 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         let saveAction = UIAlertAction(title: "Add Group",
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
-                self.tabBarController!.selectedIndex = 0;
+               // self.tabBarController!.selectedIndex = 2;
+                self.performSegueWithIdentifier("add_group_plus", sender: self)
         }
         
         let deleteAction = UIAlertAction(title: "Add Car",
             style: .Default) { (action: UIAlertAction!) -> Void in
-                self.tabBarController!.selectedIndex = 2;
+              //  self.tabBarController!.selectedIndex = 2;
+            self.performSegueWithIdentifier("add_car", sender: self)
         }
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
@@ -350,7 +352,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                             for name:String in cars{
                                 if(!name.isEmpty){
                                     var name2 = name.componentsSeparatedByString("'")
-                                    self.addACar2(name2[3], name: name2[11], lat: name2[15], long: name2[19])
+                                    self.addACar2(name2[19], name: name2[15], lat: name2[3], long: name2[11])
                                 }
                             }
                         }
