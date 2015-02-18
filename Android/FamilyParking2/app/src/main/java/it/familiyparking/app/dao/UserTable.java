@@ -49,6 +49,19 @@ public class UserTable {
         return null;
     }
 
+    public static boolean getGhostMode(SQLiteDatabase db) throws SQLException{
+        Cursor c = db.query(true, TABLE, new String[]{GHOST_MODE}, null, null, null, null, null, null);
+
+        if((c != null) && (c.getCount() > 0)){
+            if(c.moveToNext())
+                return Boolean.parseBoolean(c.getString(0));
+        }
+
+        c.close();
+
+        return false;
+    }
+
     public static boolean isConfirmed(SQLiteDatabase db){
         Cursor c = db.query(true, TABLE, new String[]{CODE}, null, null, null, null, null, null);
 

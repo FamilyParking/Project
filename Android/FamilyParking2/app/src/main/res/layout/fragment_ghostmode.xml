@@ -2,13 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity$GhostMode">
+    tools:context=".MainActivity$GhostMode"
+    android:background="@color/transparent"
+    android:clickable="true">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/ghostmode_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="GHOSTMODE"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/abc_popup_background_mtrl_mult">
+
+        <TextView
+            android:id="@+id/ghostmode_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:text="@string/info_ghostmode"
+            android:textColor="@color/black"/>
+
+        <Switch
+            android:id="@+id/ghostmode_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:layout_below="@id/ghostmode_info"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
 

@@ -9,18 +9,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.User;
 
 /**
  * Created by mauropiva on 13/02/15.
  */
 public class ServiceBluetooth extends Service{
 
-    public ServiceBluetooth(){
+    private MainActivity activity;
 
-    }
+    public ServiceBluetooth(){}
 
     @Override
     public void onCreate() {
@@ -36,7 +49,7 @@ public class ServiceBluetooth extends Service{
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+            final String action = intent.getAction();
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
@@ -46,6 +59,8 @@ public class ServiceBluetooth extends Service{
                 edit.putString("address", device.getAddress());
                 edit.commit();
 
+                Log.e("Bluetooth","Connected");
+
                 //Log.e("Preferences",preferences.getAll().toString());
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
@@ -53,6 +68,43 @@ public class ServiceBluetooth extends Service{
                 SharedPreferences.Editor edit = preferences.edit();
                 edit.clear();
                 edit.commit();
+
+                Log.e("Bluetooth","Disconnected");
+
+                DataBaseHelper databaseHelper = new DataBaseHelper(getApplicationContext());
+                final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+                if(!UserTable.getGhostMode(db)) {
+
+                    ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
+
+                    LocationService locationService = new LocationService(getApplicationContext());
+                    double[] position = Tools.getPoistion(locationService);
+
+                    User user = UserTable.getUser(db);
+
+                    for (final Car car : carID) {
+
+                        car.setLatitude(Double.toString(position[0]));
+                        car.setLongitude(Double.toString(position[1]));
+                        car.setCode(user.getCode());
+                        car.setEmail(user.getEmail());
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ServerCall.updatePosition(car);
+                                Intent intent = new Intent(Code.INTENT_TAG);
+                                intent.putExtra("car", car);
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                            }
+                        }).start();
+
+
+                    }
+                }
+
+                db.close();
 
                 //Log.e("Preferences",preferences.getAll().toString());
             }

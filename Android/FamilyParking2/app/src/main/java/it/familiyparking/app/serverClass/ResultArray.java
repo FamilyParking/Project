@@ -3,22 +3,22 @@ package it.familiyparking.app.serverClass;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Arrays;
 
 /**
  * Created by francesco on 03/01/15.
  */
-public class Result {
+public class ResultArray {
     @SerializedName("flag")
     private boolean flag;
 
     @SerializedName("object")
-    private Object object;
+    private Object[] object;
 
     @SerializedName("description")
     private String description;
 
-    public Result(boolean flag, Object object, String description) {
+    public ResultArray(boolean flag, Object[] object, String description) {
         this.flag = flag;
         this.object = object;
         this.description = description;
@@ -36,11 +36,7 @@ public class Result {
         return object;
     }
 
-    public void setObject(String object) {
-        this.object = object;
-    }
-
-    public void setObject(ArrayList object) {
+    public void setObject(Object[] object) {
         this.object = object;
     }
 
@@ -53,6 +49,6 @@ public class Result {
     }
 
     public String toString(){
-        return Boolean.toString(flag)+"-"+description+"-"+object.toString();
+        return Boolean.toString(flag)+"-"+description+"-"+ Arrays.toString(object);
     }
 }

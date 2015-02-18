@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -12,9 +13,15 @@ import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.serverClass.CreateRelationGroupCar;
 import it.familiyparking.app.serverClass.Group;
+import it.familiyparking.app.serverClass.GroupForCall;
+import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -25,6 +32,7 @@ public class DoUpdateGroup implements Runnable {
     private String newName;
     private String newCarName;
     private String newCarBrand;
+    private Car newCar;
     private Group group;
     private MainActivity activity;
     private ArrayList<Contact> newArray;
@@ -33,6 +41,7 @@ public class DoUpdateGroup implements Runnable {
         this.newName = newName;
         this.newCarName = newCar.getName();
         this.newCarBrand = newCar.getBrand();
+        this.newCar = newCar;
         this.newArray = newArray;
         this.activity = (MainActivity)activity;
         this.group = group;
@@ -71,86 +80,84 @@ public class DoUpdateGroup implements Runnable {
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
+        User user = UserTable.getUser(db);
+
         boolean notifyAdapter = false;
 
         if(!toRemove.isEmpty()){
-            /***************/
-            /* CALL SERVER */
-            /***************/
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            final Result resultAdd = ServerCall.removeContactFromGroup(new GroupForCall(group.getId(),user.getEmail(), user.getCode(), group.getName(), toRemove));
 
-            for (Contact contact : toRemove) {
-                GroupTable.deleteContact(db, contact.getEmail(), group.getId());
-                group.removeContact(contact);
-            }
+            if(resultAdd.isFlag()) {
+                for (Contact contact : toRemove) {
+                    GroupTable.deleteContact(db, contact.getEmail(), group.getId());
+                    group.removeContact(contact);
+                }
 
-            notifyAdapter = true;
+                notifyAdapter = true;
+            }
+            else{
+                Log.e("UpdateGroup[REMOVE]",resultAdd.getDescription());
+            }
         }
 
         if(!toAdd.isEmpty()){
-            /***************/
-            /* CALL SERVER */
-            /***************/
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            for (Contact contact : toAdd) {
-                GroupTable.insertContact(db, group.getId(), group.getName(), contact, "");
-                group.addContact(contact);
-            }
+            final Result resultAdd = ServerCall.addContactFromGroup(new GroupForCall(group.getId(), user.getEmail(), user.getCode(), group.getName(), toAdd));
 
-            notifyAdapter = true;
+            if(resultAdd.isFlag()){
+                for (Contact contact : toAdd) {
+                    GroupTable.insertContact(db, group.getId(), group.getName(), contact, "");
+                    group.addContact(contact);
+                }
+
+                notifyAdapter = true;
+            }
+            else{
+                Log.e("UpdateGroup[ADD]",resultAdd.getDescription());
+            }
         }
 
         if(!(newName.equals(group.getName()))){
-            /***************/
-            /* CALL SERVER */
-            /***************/
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+            final Result resultName = ServerCall.updateGroupName(new GroupForCall(group.getId(), user.getEmail(), user.getCode(), newName, null));
+
+            if(resultName.isFlag()) {
+                GroupTable.updateNameGroup(db, group.getName(), newName);
+
+                group.setName(newName);
+
+                notifyAdapter = true;
             }
-
-            GroupTable.updateNameGroup(db,group.getName(),newName);
-
-            group.setName(newName);
-
-            notifyAdapter = true;
+            else{
+                Log.e("UpdateGroup[NAME]",resultName.getDescription());
+            }
         }
 
         Car car = group.getCar();
-        if((car == null) || (!newCarName.equals(car.getName()) || !newCarBrand.equals(car.getBrand()))){
 
-            if(car == null){
-                car = new Car(newCarName,newCarBrand);
+        if((!newCarName.equals("empty") || !newCarBrand.equals("empty"))) {
+            if ((car == null) || (!newCarName.equals(car.getName()) || !newCarBrand.equals(car.getBrand()))) {
 
-                callServer(car);
+                if (car == null) {
+                    car = newCar;
 
-                CarTable.insertCar(db,car,"");
+                    callServer(car, user);
 
-                CarGroupRelationTable.insertRelation(db,car.getId(),group.getId());
+                    CarGroupRelationTable.insertRelation(db, car.getId(), group.getId());
 
-                group.setCar(car);
+                    group.setCar(car);
+                } else {
+                    car.setName(newCarName);
+                    car.setName(newCarBrand);
+
+                    callServer(car, user);
+
+                    CarTable.updateNameCar(db, car.getId(), newCarName);
+                    CarTable.updateNameBrand(db, car.getId(), newCarBrand);
+                }
+
+                notifyAdapter = true;
             }
-            else {
-                car.setName(newCarName);
-                car.setName(newCarBrand);
-
-                callServer(car);
-
-                CarTable.updateNameCar(db,car.getId(),newCarName);
-                CarTable.updateNameBrand(db,car.getId(),newCarBrand);
-            }
-
-            notifyAdapter = true;
         }
 
 
@@ -173,19 +180,9 @@ public class DoUpdateGroup implements Runnable {
         db.close();
     }
 
-    private Car callServer(Car car){
-        String id = "0123456789";
-        /***************/
-        /* CALL SERVER */
-        /***************/
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        car.setId(id);
-
-        return car;
+    private void callServer(Car car, User user){
+        CreateRelationGroupCar createRelationGroupCar = new CreateRelationGroupCar(user.getEmail(),user.getCode(),car.getId(),group.getId());
+        Result result = ServerCall.insertCarToGroup(createRelationGroupCar);
+        Log.e("DoUpdateGroup [CAR]",result.toString());
     }
 }

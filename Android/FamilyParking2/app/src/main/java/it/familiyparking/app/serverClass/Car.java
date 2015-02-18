@@ -26,7 +26,7 @@ public class Car implements Parcelable {
     @SerializedName("Longitude")
     private String longitude;
 
-    @SerializedName("ID")
+    @SerializedName("ID_car")
     private String id;
 
     @SerializedName("Name")
@@ -42,6 +42,12 @@ public class Car implements Parcelable {
     private String bluetoothMac;
 
     public Car(){}
+
+    public Car(String id, String email, String code) {
+        this.id = id;
+        this.email = email;
+        this.code = code;
+    }
 
     public Car(String latitude, String longitude, String id, String name, String brand, String bluetoothName, String bluetoothMac) {
         this.latitude = latitude;

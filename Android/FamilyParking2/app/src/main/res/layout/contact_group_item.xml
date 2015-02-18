@@ -21,7 +21,7 @@
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:gravity="center"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:textSize="25sp"
         android:textColor="@color/white"
         android:background="@drawable/add_group"/>

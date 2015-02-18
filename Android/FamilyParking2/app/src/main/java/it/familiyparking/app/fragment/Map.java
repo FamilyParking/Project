@@ -12,8 +12,12 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import it.familiyparking.app.R;
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
 import it.familiyparking.app.utility.Tools;
 
@@ -50,7 +54,7 @@ public class Map extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(setGraphic){
-            enableGraphics();
+            enableGraphics(false);
         }
     }
 
@@ -73,7 +77,7 @@ public class Map extends Fragment{
         }
     }
 
-    public void enableGraphics(){
+    public void enableGraphics(boolean p_button){
 
         if(getActivity() == null) {
             setGraphic = true;
@@ -89,11 +93,29 @@ public class Map extends Fragment{
             googleMap.setMyLocationEnabled(true);
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
 
-            toPark.setClickable(true);
-            toPark.setVisibility(View.VISIBLE);
+            if(p_button)
+                setPbutton();
 
             toCreate.setClickable(true);
             toCreate.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setPbutton(){
+        toPark.setClickable(true);
+        toPark.setVisibility(View.VISIBLE);
+    }
+
+    public String getLatitude(){
+        return Double.toString(googleMap.getMyLocation().getLatitude());
+    }
+
+    public String getLongitude(){
+        return Double.toString(googleMap.getMyLocation().getLongitude());
+    }
+
+    public void parkCar(Car car){
+        googleMap.clear();
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()))).title(car.getName()));
     }
 }

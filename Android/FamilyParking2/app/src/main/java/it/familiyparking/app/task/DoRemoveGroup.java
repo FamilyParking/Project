@@ -12,7 +12,12 @@ import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.GroupFragment;
+import it.familiyparking.app.serverClass.GroupForCall;
+import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -34,37 +39,43 @@ public class DoRemoveGroup implements Runnable {
     public void run() {
         Looper.prepare();
 
-        /***************/
-        /* CALL SERVER */
-        /***************/
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        GroupTable.deleteGroup(db, groupID);
-        CarGroupRelationTable.deleteGroup(db, groupID);
+        User user = UserTable.getUser(db);
 
-        final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
-        boolean emptyGroup = list_groupID.isEmpty();
+        final Result result = ServerCall.deleteGroup(new GroupForCall(groupID,user.getEmail(),user.getCode()));
+
+        if(result.isFlag()) {
+            GroupTable.deleteGroup(db, groupID);
+            CarGroupRelationTable.deleteGroup(db, groupID);
+
+            final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
+            boolean emptyGroup = list_groupID.isEmpty();
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    groupFragment.updateAdapter(list_groupID);
+                    activity.resetProgressDialogCircular(true);
+                    Tools.createToast(activity, "Group removed!", Toast.LENGTH_SHORT);
+                }
+            });
+
+            if (emptyGroup)
+                activity.removeGroupFragment(emptyGroup);
+        }
+        else{
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.removeGroupFragment(false);
+                    activity.resetProgressDialogCircular(true);
+                    Tools.createToast(activity, result.getDescription(), Toast.LENGTH_SHORT);
+                }
+            });
+        }
 
         db.close();
-
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                groupFragment.updateAdapter(list_groupID);
-                activity.resetProgressDialogCircular(true);
-                Tools.createToast(activity, "Group removed!", Toast.LENGTH_SHORT);
-            }
-        });
-
-        if(emptyGroup)
-            activity.removeGroupFragment(emptyGroup);
     }
 }

@@ -21,6 +21,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -488,5 +489,43 @@ public class Tools {
                 });
 
         alertDialog.show();
+    }
+
+    public static double[] getPoistion(LocationService locationService){
+        double[] position = null;
+
+        while (position == null) {
+            position = getLocationGPS(locationService);
+
+            if (position == null) {
+                position = getLocationNetwork(locationService);
+            }
+        }
+
+        return position;
+    }
+
+    private static double[] getLocationGPS(LocationService locationService){
+        Location gpsLocation = locationService.getLocation(LocationManager.GPS_PROVIDER);
+
+        if (gpsLocation != null) {
+            double[] position = {gpsLocation.getLatitude(),gpsLocation.getLongitude()};
+
+            return position;
+        }
+
+        return null;
+    }
+
+    private static double[] getLocationNetwork(LocationService locationService){
+        Location nwLocation = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
+
+        if (nwLocation != null) {
+            double[] position = {nwLocation.getLatitude(),nwLocation.getLongitude()};
+
+            return position;
+        }
+
+        return null;
     }
 }

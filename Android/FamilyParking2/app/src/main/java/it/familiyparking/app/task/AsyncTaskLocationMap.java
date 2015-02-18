@@ -8,19 +8,21 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import it.familiyparking.app.MainActivity;
+
 /**
  * Created by francesco on 18/12/14.
  */
 public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
 
     private GoogleMap googleMap;
-    private Activity activity;
+    private MainActivity activity;
     private boolean flag;
 
     @Override
     protected Void doInBackground(Object... object) {
         googleMap = (GoogleMap)object[0];
-        activity = (Activity)object[1];
+        activity = (MainActivity)object[1];
         flag = true;
 
         while(flag) {
@@ -49,6 +51,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
             @Override
             public void run() {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
+            activity.setPbutton();
             }
         });
     }

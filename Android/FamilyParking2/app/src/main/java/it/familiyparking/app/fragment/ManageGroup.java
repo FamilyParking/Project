@@ -116,6 +116,9 @@ public class ManageGroup extends Fragment implements LoaderManager.LoaderCallbac
             setEditTextGroupName(group.getName());
             updateSaveButton();
             setCarLayout();
+
+            Log.e("ManageGroup","Rimuovi select della prima macchina");
+            spinner.setSelection(0);
         }
 
         setScrollView();

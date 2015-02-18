@@ -30,6 +30,7 @@
     <string name="car_empty">No car is available!</string>
     <string name="save">SAVE</string>
     <string name="discard">DISCARD</string>
+    <string name="info_ghostmode">If you enable ghostmode the automatic behaviour of the app will be disable</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

@@ -63,6 +63,21 @@ public class CarTable {
         return car;
     }
 
+    public static ArrayList<Car> getAllCarForBluetoothMAC(SQLiteDatabase db,String bluetoothMAC) throws SQLException{
+        ArrayList<Car> car = new ArrayList<>();
+
+        Cursor c = db.query(true, TABLE, COLUMNS, BLUETOOTH_MAC+" = ? ", new String[]{bluetoothMAC}, null, null, null, null);
+
+        if((c != null) && (c.getCount() > 0)){
+            while(c.moveToNext())
+                car.add(new Car(c.getString(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4)));
+        }
+
+        c.close();
+
+        return car;
+    }
+
     public static boolean deleteCar(SQLiteDatabase db,String carID){
         return db.delete(TABLE, CAR_ID+" = ? ", new String[] {carID}) > 0;
     }

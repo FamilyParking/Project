@@ -12,8 +12,13 @@ import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.GroupForCall;
+import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -35,38 +40,43 @@ public class DoRemoveCar implements Runnable {
     public void run() {
         Looper.prepare();
 
-        /***************/
-        /* CALL SERVER */
-        /***************/
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
+        User user = UserTable.getUser(db);
 
-        CarTable.deleteCar(db,carID);
-        CarGroupRelationTable.deleteCar(db,carID);
+        final Result result = ServerCall.deleteCar(new Car(carID, user.getEmail(), user.getCode()));
 
-        final ArrayList<Car> cars = CarTable.getAllCar(db);
-        boolean emptyCar = cars.isEmpty();
+        if(result.isFlag()) {
+            CarTable.deleteCar(db, carID);
+            CarGroupRelationTable.deleteCar(db, carID);
+
+            final ArrayList<Car> cars = CarTable.getAllCar(db);
+            boolean emptyCar = cars.isEmpty();
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    carFragment.updateAdapter(cars);
+                    activity.resetProgressDialogCircular(true);
+                    Tools.createToast(activity, "Car removed!", Toast.LENGTH_SHORT);
+                }
+            });
+
+            if (emptyCar)
+                activity.removeCarFragment(emptyCar);
+        }
+        else{
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.removeCarFragment(false);
+                    activity.resetProgressDialogCircular(true);
+                    Tools.createToast(activity, result.getDescription(), Toast.LENGTH_SHORT);
+                }
+            });
+        }
 
         db.close();
-
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                carFragment.updateAdapter(cars);
-                activity.resetProgressDialogCircular(true);
-                Tools.createToast(activity, "Car removed!", Toast.LENGTH_SHORT);
-            }
-        });
-
-        if(emptyCar)
-            activity.removeCarFragment(emptyCar);
     }
 }

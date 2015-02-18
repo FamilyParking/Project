@@ -1,11 +1,15 @@
 package it.familiyparking.app;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -17,9 +21,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
@@ -36,8 +42,12 @@ import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.DoConfirmation;
+import it.familiyparking.app.task.DoGetAllCarFromEmail;
+import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.task.DoSignIn;
+import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.ServiceBluetooth;
 import it.familiyparking.app.utility.Tools;
 
@@ -91,9 +101,11 @@ public class MainActivity extends ActionBarActivity {
                 setConfirmation();
             }
             else{
-                map.enableGraphics();
+                map.enableGraphics(false);
 
                 setMenu();
+
+                getAllCarFromEmail();
             }
 
             db.close();
@@ -172,9 +184,33 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void getAllCarFromEmail(){
+        DataBaseHelper databaseHelper = new DataBaseHelper(this);
+        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        new Thread(new DoGetAllCarFromEmail(this, UserTable.getUser(db))).start();
+
+        db.close();
+    }
+
     private void startService(){
+
+        final MainActivity activity = this;
+
+        BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Car car = (Car) intent.getParcelableExtra("car");
+                activity.park(car);
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,new IntentFilter(Code.INTENT_TAG));
+
         Intent serviceIntent = new Intent(this, ServiceBluetooth.class);
         this.startService(serviceIntent);
+
+
     }
 
     private void setSignIn(){
@@ -210,6 +246,41 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClick_Parking(View v) {
+        DataBaseHelper databaseHelper = new DataBaseHelper(this);
+        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        ArrayList<Car> cars = CarTable.getAllCar(db);
+
+        boolean relation = false;
+        for(Car c : cars){
+            if(CarGroupRelationTable.getGroupID(db,c.getId()).size() > 0){
+                relation = true;
+                break;
+            }
+        }
+
+        if((cars.size() > 0) && relation){
+            ProgressDialogCircular progressDialog = new ProgressDialogCircular();
+            setProgressDialogCircular(progressDialog);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("message", "Parking car ...");
+            progressDialog.setArguments(bundle);
+
+            getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialog).commit();
+
+            Log.e("onClickPark", "Ricorda che qui puoi avere una lista di auto nella prossima versione");
+
+            new Thread(new DoPark(this, cars.get(0))).start();
+        }
+        else if(cars.isEmpty()){
+            Tools.createToast(this,"No car available",Toast.LENGTH_SHORT);
+        }
+        else if(!relation){
+            Tools.createToast(this,"No car is linked to a group",Toast.LENGTH_SHORT);
+        }
+
+        db.close();
     }
 
     public void onClick_NewGroup(View v) {
@@ -257,6 +328,8 @@ public class MainActivity extends ActionBarActivity {
     private void resetConfirmation(){
         getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
         confirmation = null;
+
+        getAllCarFromEmail();
     }
 
     private void setConfirmation(){
@@ -344,7 +417,7 @@ public class MainActivity extends ActionBarActivity {
 
         setMenu();
         resetConfirmation();
-        map.enableGraphics();
+        map.enableGraphics(true);
     }
 
     public void callToEndConfirmationInError(){
@@ -584,5 +657,27 @@ public class MainActivity extends ActionBarActivity {
 
         setMap();
         setSignIn();
+    }
+
+    public String getLatitude(){
+        return map.getLatitude();
+    }
+
+    public String getLongitude(){
+        return map.getLongitude();
+    }
+
+    public void setPbutton(){
+        map.setPbutton();
+    }
+
+    public void park(Car car){
+        if(map != null) {
+            Log.e("Position",car.getLatitude()+"-"+car.getLongitude());
+            map.parkCar(car);
+        }
+        else{
+            Log.e("Park","Map fragment is null");
+        }
     }
 }

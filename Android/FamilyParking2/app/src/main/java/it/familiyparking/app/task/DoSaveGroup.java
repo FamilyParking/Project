@@ -10,8 +10,13 @@ import java.util.ArrayList;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.serverClass.GroupForCall;
+import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -37,22 +42,18 @@ public class DoSaveGroup implements Runnable {
 
         DataBaseHelper databaseHelper = new DataBaseHelper(activity);
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        User user = UserTable.getUser(db);
 
-        /***************/
-        /* CALL SERVER */
-        /***************/
-        /**********************************************/
-        /**/String timestamp = Tools.getTimestamp();/**/
-        /**/String groupID = timestamp;             /**/
-        /**********************************************/
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        final Result result = ServerCall.createGroup(new GroupForCall(user.getEmail(),user.getCode(),group_name,group));
+
+        if(result.isFlag()) {
+            String groupID = (String) result.getObject();
+            String timestamp = Tools.getTimestamp();
+
+            for (Contact contact : group)
+                GroupTable.insertContact(db, groupID, group_name, contact, timestamp);
+
         }
-
-        for (Contact contact : group)
-            GroupTable.insertContact(db, groupID, group_name, contact, timestamp);
 
         db.close();
 
@@ -65,11 +66,21 @@ public class DoSaveGroup implements Runnable {
 
         activity.closeCreateGroup();
 
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Tools.createToast(activity,"Group created!", Toast.LENGTH_SHORT);
-            }
-        });
+        if(result.isFlag()) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Tools.createToast(activity, "Group created!", Toast.LENGTH_SHORT);
+                }
+            });
+        }
+        else{
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Tools.createToast(activity, result.getDescription(), Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 }

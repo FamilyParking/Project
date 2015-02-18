@@ -15,6 +15,7 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.CreateRelationGroupCar;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
@@ -45,7 +46,7 @@ public class DoSaveCar implements Runnable {
 
         String timestamp = Tools.getTimestamp();
 
-        User user = UserTable.getUser(db);
+        final User user = UserTable.getUser(db);
         car.setCode(user.getCode());
         car.setEmail(user.getEmail());
 
@@ -58,7 +59,13 @@ public class DoSaveCar implements Runnable {
             CarTable.insertCar(db, car, timestamp);
 
             if (groupID != null) {
-                CarGroupRelationTable.insertRelation(db, car.getId(), groupID);
+                CreateRelationGroupCar createRelationGroupCar = new CreateRelationGroupCar(user.getEmail(),user.getCode(),car.getId(),groupID);
+                final Result resultCarGroup = ServerCall.insertCarToGroup(createRelationGroupCar);
+
+                if(resultCarGroup.isFlag())
+                    CarGroupRelationTable.insertRelation(db, car.getId(), groupID);
+                else
+                    Log.e("DoSaveCar","Error CarGroupRelation: "+resultCarGroup.getDescription());
             }
 
             final ArrayList<String> list_groupID = GroupTable.getAllGroup(db);
