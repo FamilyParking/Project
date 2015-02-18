@@ -543,7 +543,7 @@ public class Tools {
 
             notificationBuilder.setTicker(note);
             notificationBuilder.setWhen(System.currentTimeMillis());
-            //notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+            notificationBuilder.setSmallIcon(R.drawable.ic_notification);
             notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.logo));
 
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
