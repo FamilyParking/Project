@@ -2,9 +2,10 @@ package it.familiyparking.app.utility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothClass;
-import android.bluetooth.BluetoothDevice;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,12 +32,11 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -47,10 +47,6 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -527,5 +523,34 @@ public class Tools {
         }
 
         return null;
+    }
+
+    public static void sendNotification(Context context, String name, String type){
+
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+
+            notificationBuilder.setContentTitle(getAppName(context));
+
+            String note = "";
+            if (type == Code.TYPE_GROUP) {
+                note = "Updated group " + name;
+            } else if (type == Code.TYPE_PARK) {
+                note = name+" parked!";
+            }
+
+            notificationBuilder.setContentText(note);
+
+            notificationBuilder.setTicker(note);
+            notificationBuilder.setWhen(System.currentTimeMillis());
+            //notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.logo));
+
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+            notificationBuilder.setContentIntent(contentIntent);
+
+            notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+
+            mNotificationManager.notify(0, notificationBuilder.build());
     }
 }

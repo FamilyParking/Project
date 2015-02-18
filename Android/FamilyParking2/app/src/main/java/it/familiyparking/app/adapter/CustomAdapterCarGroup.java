@@ -1,8 +1,6 @@
 package it.familiyparking.app.adapter;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +14,7 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.Group;
 
 /**
  * Created by francesco on 02/01/15.

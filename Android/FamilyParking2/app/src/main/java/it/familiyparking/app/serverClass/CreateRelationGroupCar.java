@@ -3,8 +3,6 @@ package it.familiyparking.app.serverClass;
 /**
  * Created by francesco on 20/12/14.
  */
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 

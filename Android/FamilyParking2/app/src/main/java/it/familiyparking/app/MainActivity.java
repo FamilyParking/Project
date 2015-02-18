@@ -16,12 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 
@@ -42,7 +40,7 @@ import it.familiyparking.app.fragment.ManageGroup;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.task.AsyncTaskGCM;
 import it.familiyparking.app.task.DoConfirmation;
 import it.familiyparking.app.task.DoGetAllCarFromEmail;
 import it.familiyparking.app.task.DoPark;
@@ -106,6 +104,8 @@ public class MainActivity extends ActionBarActivity {
                 setMenu();
 
                 getAllCarFromEmail();
+
+                new AsyncTaskGCM().execute(this);
             }
 
             db.close();
@@ -330,6 +330,8 @@ public class MainActivity extends ActionBarActivity {
         confirmation = null;
 
         getAllCarFromEmail();
+
+        new AsyncTaskGCM().execute(this);
     }
 
     private void setConfirmation(){

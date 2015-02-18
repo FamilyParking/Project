@@ -4,13 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import java.util.ArrayList;
-
-import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.utility.Tools;
 
 public class UserTable {
 
@@ -84,6 +79,13 @@ public class UserTable {
     public static int updateGhostmode(SQLiteDatabase db, boolean ghostmode){
         ContentValues values = new ContentValues();
         values.put(GHOST_MODE, Boolean.toString(ghostmode));
+
+        return db.update(TABLE, values, null, null);
+    }
+
+    public static int updateDeviceID(SQLiteDatabase db, String deviceID){
+        ContentValues values = new ContentValues();
+        values.put(DEVICE_ID,deviceID);
 
         return db.update(TABLE, values, null, null);
     }

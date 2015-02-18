@@ -1,21 +1,15 @@
 package it.familiyparking.app.task;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
-import it.familiyparking.app.serverClass.ResultArray;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
-import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.

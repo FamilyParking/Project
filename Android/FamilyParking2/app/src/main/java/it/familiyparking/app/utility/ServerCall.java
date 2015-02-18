@@ -3,7 +3,6 @@ package it.familiyparking.app.utility;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -11,24 +10,18 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.CreateRelationGroupCar;
-import it.familiyparking.app.serverClass.Group;
 import it.familiyparking.app.serverClass.GroupForCall;
 import it.familiyparking.app.serverClass.Result;
-import it.familiyparking.app.serverClass.ResultArray;
 import it.familiyparking.app.serverClass.User;
 
 /**
@@ -480,6 +473,38 @@ public class ServerCall {
 
         } catch(Exception e){
             Log.e("modifyCar", e.toString() + " - " + e.getLocalizedMessage());
+        }
+
+        return null;
+    }
+
+    public static Result updateGoogleCode(User user){
+
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+
+            HttpPost httpPost = new HttpPost(service_add+"updateGoogleCode");
+
+            Gson gson = new Gson();
+            String json = gson.toJson(user);
+
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
+
+            Result result = gson.fromJson(reader,Result.class);
+
+            return result;
+
+        } catch(Exception e){
+            Log.e("signIn", e.toString() + " - " + e.getLocalizedMessage());
         }
 
         return null;

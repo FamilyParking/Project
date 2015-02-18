@@ -4,8 +4,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;

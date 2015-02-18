@@ -15,7 +15,6 @@ import android.widget.EditText;
 
 import it.familiyparking.app.R;
 import it.familiyparking.app.task.AsyncTaskChangeButton;
-import it.familiyparking.app.utility.Tools;
 
 
 /**

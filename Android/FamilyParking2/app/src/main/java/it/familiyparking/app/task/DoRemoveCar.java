@@ -15,7 +15,6 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.GroupForCall;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
