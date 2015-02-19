@@ -157,6 +157,24 @@ class StatusReturn:
             error_data["description"] = " Update google code"
             error_data["object"] = self.object_result
 
+        elif self.number == 16:
+            logging.debug("[" + str(self.function) + "] OK 16 --> Update car")
+            error_data["flag"] = True
+            error_data["description"] = " Update car"
+            error_data["object"] = self.object_result
+
+        elif self.number == 17:
+            logging.debug("[" + str(self.function) + "] OK 17 --> Update group")
+            error_data["flag"] = True
+            error_data["description"] = " Update group"
+            error_data["object"] = self.object_result
+
+        elif self.number == 18:
+            logging.debug("[" + str(self.function) + "] OK 10 --> Delete contacts in the group ")
+            error_data["flag"] = True
+            error_data["description"] = "Contacts deleted with success"
+            error_data["object"] = self.object_result
+
         return error_data
 
     def toJSON(self):

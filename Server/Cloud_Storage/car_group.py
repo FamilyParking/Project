@@ -25,4 +25,4 @@ class Car_group(ndb.Model):
     @staticmethod
     def delete_car_ID(id_car, id_group):
         app_key = Car_group.getCarGroup(id_car, id_group)
-        app_key.key.delete()
+        app_key.get().key.delete()

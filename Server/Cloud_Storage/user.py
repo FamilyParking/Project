@@ -54,6 +54,7 @@ class User(ndb.Model):
             #logging.debug(email.count())
             temp_user = code.get()
             temp_user.id_android = id_android
+            temp_user.is_user = 1
             temp_user.put()
             return 0
         except:

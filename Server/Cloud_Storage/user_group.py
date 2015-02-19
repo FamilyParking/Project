@@ -1,7 +1,9 @@
+import logging
+
 __author__ = 'Nazzareno'
 
-
 from google.appengine.ext import ndb
+
 
 class User_group(ndb.Model):
     id_user = ndb.IntegerProperty()
@@ -18,15 +20,22 @@ class User_group(ndb.Model):
         return result_user
 
     @staticmethod
-    def check_user_exist(id_user):
+    def check_user_exist(id_user, id_group):
         temp_user = User_group.getGroupFromUser(id_user)
         if temp_user.count() == 0:
             return 1
         else:
-            return -1
+            for group in temp_user:
+                if group.id_group == id_group:
+                    return -1
+        return 1
 
     @staticmethod
-    def delete_contact_group(id_user):
+    def delete_contact_group(id_user, id_group):
         delete_entry = User_group.getGroupFromUser(id_user)
-        delete_entry.get().key.delete()
+        for group in delete_entry:
+            #logging.debug("ID del gruppo da controllare: "+str(group.id_group)+" id del gruppo da eliminare: "+str(id_group))
+            if long(group.id_group) == long(id_group):
+                #logging.debug("Gruppo da eliminare: "+str(group))
+                group.key.delete()
         return 0;
