@@ -15,9 +15,13 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     var tableView: UITableView!
     var textField: UITextField!
     var people = [NSManagedObject]()
+    var selectedCar:NSObject = ""
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName:nibNameOrNil, bundle: nibBundleOrNil)
     }
+    
+    
     
     required init(coder aDecoder: NSCoder)
     {
@@ -54,7 +58,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             let person = people[indexPath.row]
             cell.textLabel.text = person.valueForKey("name") as String?
-            
+            cell.detailTextLabel?.text = "hi"
             return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
@@ -153,6 +157,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
     }
     
+   // var selectedCar : NSObject
+    
     @IBAction func RemoveConfirmation(index: NSIndexPath) {
         
         var mail = self.people[index.item].valueForKey("name")?.description
@@ -161,7 +167,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             message: mail,
             preferredStyle: .Alert)
         
-        let saveAction = UIAlertAction(title: "Choose",
+        let saveAction = UIAlertAction(title: "Find",
             style: .Default) { (action: UIAlertAction!) -> Void in
             }
         
@@ -175,13 +181,38 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
+        let editAction = UIAlertAction(title: "Edit",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                
+                self.selectedCar = self.people[index.row]
+                
+                // Create an instance of PlayerTableViewController and pass the variable
+                
+                
+               // let destinationVC = SingleCarUsersViewController()
+               // destinationVC.carID = selectedCar.valueForKey("id")?.description
+                
+                // Let's assume that the segue name is called playerSegue
+                // This will perform the segue and pre-load the variable for you to use
+              //  destinationVC.performSegueWithIdentifier("user_group", sender: self)
+                self.performSegueWithIdentifier("user_group", sender: self)
+        }
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
         alert.addAction(deleteAction)
+        alert.addAction(editAction)
         presentViewController(alert,
             animated: true,
             completion: nil)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "user_group"
+        {
+            if let destinationVC = segue.destinationViewController as? SingleCarUsersViewController{
+                destinationVC.car = selectedCar
+            }
+        }
     }
 
 }

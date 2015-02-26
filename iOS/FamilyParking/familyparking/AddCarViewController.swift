@@ -13,10 +13,13 @@ import CoreData
 class AddCarViewController: UIViewController, UITextFieldDelegate {
     
   
-    @IBOutlet weak var CarModel: UITextField!
-    @IBOutlet weak var BackButton: UIButton!
-    @IBOutlet weak var ConfirmButton: UIButton!
     
+   // @IBOuRIFAREtlet weak var BackButton: UIButton!
+ //   @IBOuRIFAREtlet weak var ConfirmButton: UIButton!
+    @IBOutlet weak var CarName: UITextField!
+    
+    @IBOutlet weak var BackButt: UIButton!
+    @IBOutlet weak var ConfButt: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +38,10 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func addACar() {
         
-        let model = self.CarModel.text
+        var model = self.CarName.text
         if(!model.isEmpty){
-            BackButton.enabled = false
-            ConfirmButton.enabled = false
+            BackButt.enabled = false
+            ConfButt.enabled = false
             addCarToServer()
         }
         else{
@@ -53,7 +56,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        CarModel.resignFirstResponder()
+        CarName.resignFirstResponder()
     }
     
     func addCarToServer(){
@@ -63,15 +66,27 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let pin:String = prefs.objectForKey("PIN") as String
         let mail:String = prefs.objectForKey("EMAIL") as String
-        var params = ["Code":pin,
-            "Bluetooth_MAC":"",
-            "Bluetooth_name":"",
-            "Brand":"",
-            "Name":CarModel.text,
+       
+        var otherUsers = ["Code":pin,
             "Email":mail] as Dictionary<String, NSObject>
         
+        
+        var car = [
+        "Bluetooth_MAC":"",
+        "Bluetooth_name":"",
+           "Brand":"",
+            "Users":"",
+        "Name":CarName.text] as Dictionary<String, NSObject>
+        
+        var user = ["Code":pin,
+                    "Email":mail] as Dictionary<String, NSObject>
+        
+        var param = [  "User":user,
+                        "Car":car] as Dictionary<String, NSObject>
+        
+        
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(param, options: nil, error: &err)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
@@ -109,16 +124,20 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
                         println(description)
                         
                         if(flag=="True"){
-                            self.BackButton.enabled = true
-                            self.ConfirmButton.enabled = true
-                            CarUpdate().addACarToLocalDatabase(idCar, name: self.CarModel.text, lat: "", long: "")
+                            self.BackButt.enabled = true
+                            self.ConfButt.enabled = true
+                            CarUpdate().addACarToLocalDatabase(idCar, name: self.CarName.text, lat: "0", long: "0",brand:"")
                             self.dismissViewControllerAnimated(true, completion: nil)
                         }
                     }
+                    else{
+                        self.BackButt.enabled = true
+                        self.ConfButt.enabled = true
+                    }
                 }
                 else{
-                    self.BackButton.enabled = true
-                    self.ConfirmButton.enabled = true
+                    self.BackButt.enabled = true
+                    self.ConfButt.enabled = true
                 }
             }
             

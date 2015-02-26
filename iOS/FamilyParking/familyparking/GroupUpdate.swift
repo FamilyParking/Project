@@ -22,8 +22,11 @@ class GroupUpdate{
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let code = prefs.objectForKey("PIN") as String
         let mail = prefs.objectForKey("EMAIL") as String
-        var params = ["Code":code,
+        var user = ["Code":code,
             "Email":mail] as Dictionary<String, NSObject>
+        var params = ["User":user,
+            ] as Dictionary<String, NSObject>
+
         
         var err: NSError?
         request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)

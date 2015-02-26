@@ -140,22 +140,7 @@
 		80AD74DA1A5F2872002B48CA = {
 			isa = PBXGroup;
 			children = (
-				80368D931A922B7400612FD2 /* libsqlite3.0.dylib */,
-				80368D911A922B0D00612FD2 /* libGoogleAnalyticsServices.a */,
-				80AD75221A5F2CC8002B48CA /* SystemConfiguration.framework */,
-				80AD75201A5F2CBF002B48CA /* QuartzCore.framework */,
-				80AD751E1A5F2CB7002B48CA /* OpenGLES.framework */,
-				80AD751C1A5F2CAE002B48CA /* libz.dylib */,
-				80AD751A1A5F2CA5002B48CA /* libicucore.dylib */,
-				80AD75181A5F2C97002B48CA /* libc++.dylib */,
-				80AD75161A5F2C8C002B48CA /* ImageIO.framework */,
-				80AD75141A5F2C83002B48CA /* GLKit.framework */,
-				80AD75121A5F2C7C002B48CA /* CoreText.framework */,
-				80AD75101A5F2C73002B48CA /* CoreLocation.framework */,
-				80AD750E1A5F2C67002B48CA /* CoreData.framework */,
-				80AD750C1A5F2C5D002B48CA /* AVFoundation.framework */,
-				80AD750A1A5F2C14002B48CA /* GoogleMaps.bundle */,
-				80AD75081A5F2BAA002B48CA /* GoogleMaps.framework */,
+				80BD23ED1A9B95C0004C4CB1 /* ExternalLibs */,
 				80AD74E51A5F2872002B48CA /* MapDemo */,
 				80AD74FB1A5F2872002B48CA /* MapDemoTests */,
 				80AD74E41A5F2872002B48CA /* Products */,
@@ -174,17 +159,7 @@
 		80AD74E51A5F2872002B48CA /* MapDemo */ = {
 			isa = PBXGroup;
 			children = (
-				80626A951A95E54F00D7AAA5 /* libGoogleAnalyticsServices.a */,
-				80368D871A92289500612FD2 /* GAI.h */,
-				80368D881A92289500612FD2 /* GAIDictionaryBuilder.h */,
-				80368D891A92289500612FD2 /* GAIEcommerceFields.h */,
-				80368D8A1A92289500612FD2 /* GAIEcommerceProduct.h */,
-				80368D8B1A92289500612FD2 /* GAIEcommerceProductAction.h */,
-				80368D8C1A92289500612FD2 /* GAIEcommercePromotion.h */,
-				80368D8D1A92289500612FD2 /* GAIFields.h */,
-				80368D8E1A92289500612FD2 /* GAILogger.h */,
-				80368D8F1A92289500612FD2 /* GAITrackedViewController.h */,
-				80368D901A92289500612FD2 /* GAITracker.h */,
+				80BD23EC1A9B95A4004C4CB1 /* libs */,
 				80041DE51A7E859C00C26C2C /* AddCar.swift */,
 				805D85B11A94AF61005C90CF /* AddGroup.swift */,
 				80AD74E81A5F2872002B48CA /* AppDelegate.swift */,
@@ -229,6 +204,47 @@
 				80AD74FD1A5F2872002B48CA /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		80BD23EC1A9B95A4004C4CB1 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				80626A951A95E54F00D7AAA5 /* libGoogleAnalyticsServices.a */,
+				80368D871A92289500612FD2 /* GAI.h */,
+				80368D881A92289500612FD2 /* GAIDictionaryBuilder.h */,
+				80368D891A92289500612FD2 /* GAIEcommerceFields.h */,
+				80368D8A1A92289500612FD2 /* GAIEcommerceProduct.h */,
+				80368D8B1A92289500612FD2 /* GAIEcommerceProductAction.h */,
+				80368D8C1A92289500612FD2 /* GAIEcommercePromotion.h */,
+				80368D8D1A92289500612FD2 /* GAIFields.h */,
+				80368D8E1A92289500612FD2 /* GAILogger.h */,
+				80368D8F1A92289500612FD2 /* GAITrackedViewController.h */,
+				80368D901A92289500612FD2 /* GAITracker.h */,
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
+		80BD23ED1A9B95C0004C4CB1 /* ExternalLibs */ = {
+			isa = PBXGroup;
+			children = (
+				80368D931A922B7400612FD2 /* libsqlite3.0.dylib */,
+				80368D911A922B0D00612FD2 /* libGoogleAnalyticsServices.a */,
+				80AD75221A5F2CC8002B48CA /* SystemConfiguration.framework */,
+				80AD75201A5F2CBF002B48CA /* QuartzCore.framework */,
+				80AD751E1A5F2CB7002B48CA /* OpenGLES.framework */,
+				80AD751C1A5F2CAE002B48CA /* libz.dylib */,
+				80AD751A1A5F2CA5002B48CA /* libicucore.dylib */,
+				80AD75181A5F2C97002B48CA /* libc++.dylib */,
+				80AD75161A5F2C8C002B48CA /* ImageIO.framework */,
+				80AD75141A5F2C83002B48CA /* GLKit.framework */,
+				80AD75121A5F2C7C002B48CA /* CoreText.framework */,
+				80AD75101A5F2C73002B48CA /* CoreLocation.framework */,
+				80AD750E1A5F2C67002B48CA /* CoreData.framework */,
+				80AD750C1A5F2C5D002B48CA /* AVFoundation.framework */,
+				80AD750A1A5F2C14002B48CA /* GoogleMaps.bundle */,
+				80AD75081A5F2BAA002B48CA /* GoogleMaps.framework */,
+			);
+			name = ExternalLibs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
