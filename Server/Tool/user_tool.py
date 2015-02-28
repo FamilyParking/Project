@@ -42,6 +42,7 @@ class User_tool():
     def check_before_start(method_name, result):
         try:
             data = json.loads(result.request.body)
+            data = data["User"]
             code = int(data["Code"])
             try:
                 result_check_code = User_tool.check_code(data["Email"], code)

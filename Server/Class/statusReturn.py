@@ -1,5 +1,6 @@
 import logging
 import sys
+import json
 
 
 class StatusReturn:
@@ -63,7 +64,7 @@ class StatusReturn:
             error_data["description"] = "ERROR"
             error_data["object"] = None
 
-        return error_data
+        return json.dumps(error_data)
 
     def print_result(self):
         error_data = {}
@@ -88,7 +89,7 @@ class StatusReturn:
         elif self.number == 4:
             logging.debug("[" + str(self.function) + "] OK 4 --> createCar ")
             error_data["flag"] = True
-            error_data["description"] = " Car created with success"
+            error_data['description'] = ' Car created with success'
             error_data["object"] = self.object_result
 
         elif self.number == 5:
@@ -148,7 +149,7 @@ class StatusReturn:
         elif self.number == 14:
             logging.debug("[" + str(self.function) + "] OK 13 --> Delete car connect with group")
             error_data["flag"] = True
-            error_data["description"] = " Delete car connect with group"
+            error_data["description"] = " Delete car"
             error_data["object"] = self.object_result
 
         elif self.number == 15:
@@ -174,8 +175,8 @@ class StatusReturn:
             error_data["flag"] = True
             error_data["description"] = "Contacts deleted with success"
             error_data["object"] = self.object_result
-
-        return error_data
+        logging.debug(error_data)
+        return json.dumps(error_data)
 
     def toJSON(self):
         error_data = {}
@@ -205,7 +206,7 @@ class StatusReturn:
             error_data["description"] = "Email sent"
             error_data["object"] = None
 
-        return error_data
+        return json.dumps(error_data)
 
     def error_registration(self):
         error_data = {}
@@ -236,4 +237,4 @@ class StatusReturn:
             error_data["description"] = "Code sent"
             error_data["object"] = None
 
-        return error_data
+        return json.dumps(error_data)
