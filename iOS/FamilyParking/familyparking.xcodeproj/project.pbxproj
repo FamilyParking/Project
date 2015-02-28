@@ -41,6 +41,8 @@
 		80626B381A96426800D7AAA5 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B371A96426800D7AAA5 /* GroupsViewController.swift */; };
 		80626B3A1A9647DC00D7AAA5 /* GroupUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */; };
 		80626B3C1A964C5000D7AAA5 /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */; };
+		809C44D41A9B895B00C9B297 /* SingleCarUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */; };
+		80B0E5941A9A63990032EC8B /* ChooseParkCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		80626B371A96426800D7AAA5 /* GroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupUpdate.swift; sourceTree = "<group>"; };
 		80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
+		809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleCarUsersViewController.swift; sourceTree = "<group>"; };
+		80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseParkCar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,22 +145,7 @@
 		80626AC91A95E97800D7AAA5 = {
 			isa = PBXGroup;
 			children = (
-				80626B181A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a */,
-				80626B161A95ED6300D7AAA5 /* libsqlite3.dylib */,
-				80626B141A95ED3500D7AAA5 /* SystemConfiguration.framework */,
-				80626B121A95ED2D00D7AAA5 /* QuartzCore.framework */,
-				80626B101A95ED2900D7AAA5 /* OpenGLES.framework */,
-				80626B0E1A95ED2300D7AAA5 /* libz.dylib */,
-				80626B0C1A95ED1C00D7AAA5 /* libicucore.dylib */,
-				80626B0A1A95ED1000D7AAA5 /* libc++.dylib */,
-				80626B081A95ED0600D7AAA5 /* ImageIO.framework */,
-				80626B061A95ECFC00D7AAA5 /* GLKit.framework */,
-				80626B041A95ECF400D7AAA5 /* CoreText.framework */,
-				80626B021A95ECED00D7AAA5 /* CoreLocation.framework */,
-				80626B001A95ECE800D7AAA5 /* CoreData.framework */,
-				80626AFE1A95ECE000D7AAA5 /* AVFoundation.framework */,
-				80626AFC1A95ECBF00D7AAA5 /* GoogleMaps.bundle */,
-				80626AFA1A95EC2300D7AAA5 /* GoogleMaps.framework */,
+				80BD23EE1A9BAE9C004C4CB1 /* ExtLib */,
 				80626AD41A95E97800D7AAA5 /* familyparking */,
 				80626AED1A95E97800D7AAA5 /* familyparkingTests */,
 				80626AD31A95E97800D7AAA5 /* Products */,
@@ -175,27 +164,11 @@
 		80626AD41A95E97800D7AAA5 /* familyparking */ = {
 			isa = PBXGroup;
 			children = (
-				80626B1A1A95EDB300D7AAA5 /* GAI.h */,
-				80626B1B1A95EDB300D7AAA5 /* GAIDictionaryBuilder.h */,
-				80626B1C1A95EDB300D7AAA5 /* GAIEcommerceFields.h */,
-				80626B1D1A95EDB300D7AAA5 /* GAIEcommerceProduct.h */,
-				80626B1E1A95EDB300D7AAA5 /* GAIEcommerceProductAction.h */,
-				80626B1F1A95EDB300D7AAA5 /* GAIEcommercePromotion.h */,
-				80626B201A95EDB300D7AAA5 /* GAIFields.h */,
-				80626B211A95EDB300D7AAA5 /* GAILogger.h */,
-				80626B221A95EDB300D7AAA5 /* GAITrackedViewController.h */,
-				80626B231A95EDB300D7AAA5 /* GAITracker.h */,
-				80626B291A95F89A00D7AAA5 /* Comments.swift */,
-				80626AD71A95E97800D7AAA5 /* AppDelegate.swift */,
-				80626B331A96207900D7AAA5 /* AddCarViewController.swift */,
-				80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */,
-				80626B2F1A961E8B00D7AAA5 /* CarsViewController.swift */,
-				80626B371A96426800D7AAA5 /* GroupsViewController.swift */,
-				80626ADC1A95E97800D7AAA5 /* ViewController.swift */,
-				80626B271A95EF7B00D7AAA5 /* MapViewController.swift */,
-				80626B351A96289500D7AAA5 /* CarUpdate.swift */,
-				80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */,
+				80BD23F11A9BAEE6004C4CB1 /* support */,
+				80BD23F01A9BAEDE004C4CB1 /* car */,
+				80BD23EF1A9BAEB0004C4CB1 /* GoogleAnalitycs */,
 				80626ADE1A95E97800D7AAA5 /* Main.storyboard */,
+				80626B271A95EF7B00D7AAA5 /* MapViewController.swift */,
 				80626B311A961ED600D7AAA5 /* MyTableViewCell.swift */,
 				80626B2B1A95FD3C00D7AAA5 /* Registration1ViewController.swift */,
 				80626B2D1A96000000D7AAA5 /* Registration2ViewController.swift */,
@@ -203,7 +176,6 @@
 				80626AE31A95E97800D7AAA5 /* LaunchScreen.xib */,
 				80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */,
 				80626AD51A95E97800D7AAA5 /* Supporting Files */,
-				80626B241A95EF3000D7AAA5 /* familyparking-Bridging-Header.h */,
 			);
 			path = familyparking;
 			sourceTree = "<group>";
@@ -231,6 +203,72 @@
 				80626AEF1A95E97800D7AAA5 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		80BD23EE1A9BAE9C004C4CB1 /* ExtLib */ = {
+			isa = PBXGroup;
+			children = (
+				80626B181A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a */,
+				80626B161A95ED6300D7AAA5 /* libsqlite3.dylib */,
+				80626B141A95ED3500D7AAA5 /* SystemConfiguration.framework */,
+				80626B121A95ED2D00D7AAA5 /* QuartzCore.framework */,
+				80626B101A95ED2900D7AAA5 /* OpenGLES.framework */,
+				80626B0E1A95ED2300D7AAA5 /* libz.dylib */,
+				80626B0C1A95ED1C00D7AAA5 /* libicucore.dylib */,
+				80626B0A1A95ED1000D7AAA5 /* libc++.dylib */,
+				80626B081A95ED0600D7AAA5 /* ImageIO.framework */,
+				80626B061A95ECFC00D7AAA5 /* GLKit.framework */,
+				80626B041A95ECF400D7AAA5 /* CoreText.framework */,
+				80626B021A95ECED00D7AAA5 /* CoreLocation.framework */,
+				80626B001A95ECE800D7AAA5 /* CoreData.framework */,
+				80626AFE1A95ECE000D7AAA5 /* AVFoundation.framework */,
+				80626AFC1A95ECBF00D7AAA5 /* GoogleMaps.bundle */,
+				80626AFA1A95EC2300D7AAA5 /* GoogleMaps.framework */,
+			);
+			name = ExtLib;
+			sourceTree = "<group>";
+		};
+		80BD23EF1A9BAEB0004C4CB1 /* GoogleAnalitycs */ = {
+			isa = PBXGroup;
+			children = (
+				80626B201A95EDB300D7AAA5 /* GAIFields.h */,
+				80626B211A95EDB300D7AAA5 /* GAILogger.h */,
+				80626B221A95EDB300D7AAA5 /* GAITrackedViewController.h */,
+				80626B231A95EDB300D7AAA5 /* GAITracker.h */,
+				80626B1A1A95EDB300D7AAA5 /* GAI.h */,
+				80626B1B1A95EDB300D7AAA5 /* GAIDictionaryBuilder.h */,
+				80626B1C1A95EDB300D7AAA5 /* GAIEcommerceFields.h */,
+				80626B1D1A95EDB300D7AAA5 /* GAIEcommerceProduct.h */,
+				80626B1E1A95EDB300D7AAA5 /* GAIEcommerceProductAction.h */,
+				80626B1F1A95EDB300D7AAA5 /* GAIEcommercePromotion.h */,
+			);
+			name = GoogleAnalitycs;
+			sourceTree = "<group>";
+		};
+		80BD23F01A9BAEDE004C4CB1 /* car */ = {
+			isa = PBXGroup;
+			children = (
+				80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */,
+				80626B351A96289500D7AAA5 /* CarUpdate.swift */,
+				80626B2F1A961E8B00D7AAA5 /* CarsViewController.swift */,
+				80626B331A96207900D7AAA5 /* AddCarViewController.swift */,
+				809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */,
+			);
+			name = car;
+			sourceTree = "<group>";
+		};
+		80BD23F11A9BAEE6004C4CB1 /* support */ = {
+			isa = PBXGroup;
+			children = (
+				80626B241A95EF3000D7AAA5 /* familyparking-Bridging-Header.h */,
+				80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */,
+				80626ADC1A95E97800D7AAA5 /* ViewController.swift */,
+				80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */,
+				80626B371A96426800D7AAA5 /* GroupsViewController.swift */,
+				80626AD71A95E97800D7AAA5 /* AppDelegate.swift */,
+				80626B291A95F89A00D7AAA5 /* Comments.swift */,
+			);
+			name = support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,6 +320,7 @@
 				TargetAttributes = {
 					80626AD11A95E97800D7AAA5 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 4UVHD887LG;
 					};
 					80626AE91A95E97800D7AAA5 = {
 						CreatedOnToolsVersion = 6.1;
@@ -341,12 +380,14 @@
 				80626B2E1A96000000D7AAA5 /* Registration2ViewController.swift in Sources */,
 				80626B321A961ED600D7AAA5 /* MyTableViewCell.swift in Sources */,
 				80626B2C1A95FD3C00D7AAA5 /* Registration1ViewController.swift in Sources */,
+				80B0E5941A9A63990032EC8B /* ChooseParkCar.swift in Sources */,
 				80626B361A96289500D7AAA5 /* CarUpdate.swift in Sources */,
 				80626B3C1A964C5000D7AAA5 /* AddGroupViewController.swift in Sources */,
 				80626B381A96426800D7AAA5 /* GroupsViewController.swift in Sources */,
 				80626B341A96207900D7AAA5 /* AddCarViewController.swift in Sources */,
 				80626AD81A95E97800D7AAA5 /* AppDelegate.swift in Sources */,
 				80626B281A95EF7B00D7AAA5 /* MapViewController.swift in Sources */,
+				809C44D41A9B895B00C9B297 /* SingleCarUsersViewController.swift in Sources */,
 				80626B3A1A9647DC00D7AAA5 /* GroupUpdate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,6 +512,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -483,8 +526,10 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "familyparking/familyparking-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -493,6 +538,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -505,7 +552,9 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "familyparking/familyparking-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -562,6 +611,7 @@
 				80626AF61A95E97800D7AAA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		80626AF71A95E97800D7AAA5 /* Build configuration list for PBXNativeTarget "familyparkingTests" */ = {
 			isa = XCConfigurationList;
@@ -570,6 +620,7 @@
 				80626AF91A95E97800D7AAA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

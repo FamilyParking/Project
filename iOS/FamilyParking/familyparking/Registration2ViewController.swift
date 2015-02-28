@@ -27,8 +27,14 @@ class Registration2ViewController: UIViewController {
         var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/confirmCode")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
-        var params = [  "Code":PinBox.text,
-                        "Email":mail] as Dictionary<String, NSObject>
+        
+        
+        var user = ["Code":PinBox.text,
+            "Email":mail] as Dictionary<String, NSObject>
+        var params = ["User":user,
+            ] as Dictionary<String, NSObject>
+        
+        
         var err: NSError?
         request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -46,7 +52,7 @@ class Registration2ViewController: UIViewController {
                 prefs.synchronize()
                 
                 
-                
+                CarUpdate().downloadCar()
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
                     

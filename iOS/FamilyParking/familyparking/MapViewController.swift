@@ -14,6 +14,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     
     var gmaps: GMSMapView!
     let locationManager=CLLocationManager()
+    var mapLoaded:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +32,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             self.performSegueWithIdentifier("registration_1", sender: self)
         } else {
             CarUpdate().downloadCar()
-            GroupUpdate().downloadGroup()
+          //  GroupUpdate().downloadGroup()
         }
         
         
@@ -65,6 +66,11 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             
             self.view.insertSubview(gmaps, atIndex: 2)
             self.view.sendSubviewToBack(gmaps)
+            mapLoaded = true
+            self.updateCars()
+        }
+        else{
+            // TODO MAP NOT LOADED
         }
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -82,6 +88,80 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             gmaps!.camera = GMSCameraPosition.cameraWithTarget(location.coordinate, zoom: 14)
         }
     }
-
     
+    func updateCars(){
+        if (mapLoaded){
+        gmaps.clear()
+        var people = [NSManagedObject]()
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName:"Car")
+        
+        //3
+        var error: NSError?
+        
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as [NSManagedObject]?
+        
+        if let results = fetchedResults {
+            people = results
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
+        
+        for man in people {
+            println("Inserisco")
+            println(man.valueForKey("name")?.description)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                var latDouble = (man.valueForKey("lat")!.description as NSString).doubleValue
+                var longDouble = (man.valueForKey("long")!.description as NSString).doubleValue
+                
+                var position = CLLocationCoordinate2DMake(latDouble, longDouble)
+                var london = GMSMarker(position: position)
+                london.title = man.valueForKey("name")?.description
+                london.snippet = man.valueForKey("brand")?.description
+                
+                london.infoWindowAnchor = CGPointMake(0.5, 0.5)
+                london.userData = man.valueForKey("id")?.description
+                london.icon = UIImage(named: "audi")
+                london.map = self.gmaps
+                var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
+                
+                self.gmaps.camera = camera
+                //   self.Title.title = name
+            })
+
+        }
+        }
+        else{
+            // TODO mappa non caricata
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        println("Showing Map")
+    }
+
+    @IBAction func ParkButtonClick() {
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
+        if(gmaps.myLocation != nil){
+        
+            
+            prefs.setObject(self.gmaps.myLocation.coordinate.latitude.description, forKey:"LAT")
+            
+            prefs.setObject(self.gmaps.myLocation.coordinate.longitude.description, forKey:"LON")
+           prefs.synchronize()
+            self.performSegueWithIdentifier("park_action", sender: self)
+        }
+        else{
+            println("NO GPS")
+            //TODO
+        }
+        
+    }
 }

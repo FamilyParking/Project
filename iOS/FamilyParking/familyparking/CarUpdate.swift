@@ -14,7 +14,7 @@ class CarUpdate{
     
     func downloadCar(){
         
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars_fromEmail")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
@@ -22,9 +22,12 @@ class CarUpdate{
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let code = prefs.objectForKey("PIN") as String
             let mail = prefs.objectForKey("EMAIL") as String
-            var params = ["Code":code,
-                "Email":mail] as Dictionary<String, NSObject>
-            
+            println(code)
+            var user = ["Code":code,
+                        "Email":mail] as Dictionary<String, NSObject>
+            var params = ["User":user,
+            ] as Dictionary<String, NSObject>
+        
             var err: NSError?
             request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -34,49 +37,26 @@ class CarUpdate{
                 println("Response: \(response)")
                 var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                 println("Body: \(strData)")
-                if(strData!.length>3){
-                    println("Check 1 Complete")
-                    var array = strData!.componentsSeparatedByString("[")
-                    if(array.count==2){
-                        var fl = array[1].componentsSeparatedByString("]")
-                        var test:String = fl[0] as String
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            if(!test.isEmpty){
-                                var cars = test.componentsSeparatedByString("\",\"")
-                                self.removeAllCar()
-                                for name:String in cars{
-                                    if(!name.isEmpty){
-                                        var name2 = name.componentsSeparatedByString("'")
-                                        self.addACarToLocalDatabase(name2[19], name: name2[15], lat: name2[3], long: name2[11])
-                                    }
-                                }
-                            }
-                        })
-                        
+               
+                var err: NSError?
+                
+                var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
+            
+                if var cars:NSArray = json?["object"]! as? NSArray{
+                    self.removeAllCar()
+                    for carz in cars{
+                        self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String)
                     }
                 }
-                var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+                MapViewController().updateCars()
                 
+                //[0] as NSDictionary
+                //println(car["Brand"])
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
                     println(err!.localizedDescription)
                     let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
                     println("Error could not parse JSON: '\(jsonStr)'")
-                }
-                else {
-                    // The JSONObjectWithData constructor didn't return an error. But, we should still
-                    // check and make sure that json has a value using optional binding.
-                    if let parseJSON = json {
-                        // Okay, the parsedJSON is here, let's get the value for 'success' out of it
-                        var success = parseJSON["success"] as? Int
-                        println("Succes: \(success)")
-                    }
-                    else {
-                        // Woa, okay the json object was nil, something went worng. Maybe the server isn't running?
-                        let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                        println("Error could not parse JSON: \(jsonStr)")
-                    }
                 }
                 
             })
@@ -85,8 +65,8 @@ class CarUpdate{
             
         }
     
-        func addACarToLocalDatabase(code:String,name:String,lat:String,long:String){
-            
+    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String){
+        
             var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
             println("Ora aggiungo l'auto \(code)")
             var id = code.stringByReplacingOccurrencesOfString("\"",withString: "")
@@ -102,7 +82,7 @@ class CarUpdate{
             person.setValue(id, forKey:"id")
             person.setValue(lat, forKey:"lat")
             person.setValue(long, forKey:"long")
-            
+            person.setValue(brand, forKey:"brand")
             
             var error: NSError?
             if !managedContext.save(&error) {
@@ -145,7 +125,7 @@ class CarUpdate{
         }
         
         for man in people {
-            removeCarByNSObj(man)
+            managedContext.deleteObject(man)
         }
     }
     
