@@ -230,9 +230,10 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             message: mail,
             preferredStyle: .Alert)
         
-        let saveAction = UIAlertAction(title: "Find",
+        let findAction = UIAlertAction(title: "Find",
             style: .Default) { (action: UIAlertAction!) -> Void in
-            }
+                self.find(self.people[index.item])
+        }
         
         let deleteAction = UIAlertAction(title: "Delete",
             style: .Default) { (action: UIAlertAction!) -> Void in
@@ -262,10 +263,11 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 self.performSegueWithIdentifier("user_group", sender: self)
         }
         
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        alert.addAction(deleteAction)
+        alert.addAction(findAction)
         alert.addAction(editAction)
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
         presentViewController(alert,
             animated: true,
             completion: nil)
@@ -277,6 +279,24 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 destinationVC.car = selectedCar
             }
         }
+    }
+    
+    func find(car:NSManagedObject){
+        var lat = car.valueForKey("lat")?.description
+        var long = car.valueForKey("long")?.description
+        if(lat! == "0"){
+            println("//TODO Car Never Parked")
+        }
+        else{
+            let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            prefs.setBool(true, forKey: "findingCar")
+            prefs.setValue(lat, forKey: "goLat")
+            prefs.setValue(long, forKey: "goLong")
+            prefs.synchronize()
+            self.tabBarController!.selectedIndex = 0;
+
+        }
+        
     }
 
 }

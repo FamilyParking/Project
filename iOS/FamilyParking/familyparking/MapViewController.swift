@@ -156,8 +156,15 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         println("Showing Map")
         CarUpdate().downloadCar(self as MapViewController)
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var finding:Bool = prefs.boolForKey("findingCar")
+        if (finding){
+            var lat:String = prefs.valueForKey("goLat") as String
+            var long:String = prefs.valueForKey("goLong") as String
+        }
         
         //updateCars()
     }

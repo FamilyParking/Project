@@ -48,7 +48,7 @@ class Registration2ViewController: UIViewController {
                 println("Code Sent")
                 let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 prefs.setObject(self.PinBox.text, forKey: "PIN")
-              //  prefs.setInteger(1, forKey:"ISLOGGEDIN")
+                prefs.setInteger(1, forKey:"ISLOGGEDIN")
                 prefs.synchronize()
                 
                 //var father = self

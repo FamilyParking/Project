@@ -165,7 +165,7 @@
             </objects>
             <point key="canvasLocation" x="-246" y="-777"/>
         </scene>
-        <!--Map-->
+        <!--Family Parking-->
         <scene sceneID="qJb-o4-24W">
             <objects>
                 <viewController id="YKt-SF-SGx" customClass="MapViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
@@ -208,7 +208,7 @@
                             <constraint firstItem="Gjh-Cj-COu" firstAttribute="top" secondItem="dZF-x0-6Kv" secondAttribute="bottom" id="g3h-TV-Kvw"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Map" id="B3U-yF-ONi"/>
+                    <navigationItem key="navigationItem" title="Family Parking" id="B3U-yF-ONi"/>
                     <connections>
                         <segue destination="sqW-gV-Gf2" kind="modal" identifier="registration_1" id="VLS-Wf-g8Y"/>
                         <segue destination="ta2-7k-jNf" kind="push" identifier="park_action" id="Pqy-fX-8L8"/>
