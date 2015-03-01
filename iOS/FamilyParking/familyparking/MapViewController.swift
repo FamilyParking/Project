@@ -157,7 +157,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         println("Showing Map")
-        updateCars()
+        CarUpdate().downloadCar(self as MapViewController)
+        
+        //updateCars()
     }
 
     @IBAction func ParkButtonClick() {

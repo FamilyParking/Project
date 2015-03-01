@@ -48,17 +48,17 @@ class Registration2ViewController: UIViewController {
                 println("Code Sent")
                 let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 prefs.setObject(self.PinBox.text, forKey: "PIN")
-                prefs.setInteger(1, forKey:"ISLOGGEDIN")
+              //  prefs.setInteger(1, forKey:"ISLOGGEDIN")
                 prefs.synchronize()
                 
-                
-                CarUpdate().downloadCar(self.presentingViewController as MapViewController)
+                //var father = self
+                //CarUpdate().downloadCar(self.parentViewController as MapViewController)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
                     
                 })
             }
-            else if(strData!.containsString("False")){
+            else if(strData!.containsString("false")){
                 println("Wrong Code")
                 self.wrongPinPopUp()
                 

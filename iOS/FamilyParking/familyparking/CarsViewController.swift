@@ -58,7 +58,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             let person = people[indexPath.row]
             cell.textLabel.text = person.valueForKey("name") as String?
-            cell.detailTextLabel?.text = "hi"
+            cell.detailTextLabel?.text = person.valueForKey("lastPark") as String?
             return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){

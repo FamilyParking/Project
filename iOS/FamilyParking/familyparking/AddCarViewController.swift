@@ -103,7 +103,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
                 if((json!["flag"] as Bool) == true){
                             self.BackButt.enabled = true
                             self.ConfButt.enabled = true
-                            CarUpdate().addACarToLocalDatabase((json!["object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"")
+                    CarUpdate().addACarToLocalDatabase((json!["object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never")
                             self.dismissViewControllerAnimated(true, completion: nil)
                     }
                     else{

@@ -46,7 +46,7 @@ class CarUpdate{
                     self.removeAllCar()
                     self.removeAllUsers()
                     for carz in cars{
-                        self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String)
+                        self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String,lastPark:carz["Time"] as String)
                         
                             let users = carz["Users"] as NSArray
                             for user in users{
@@ -69,7 +69,7 @@ class CarUpdate{
             
         }
     
-    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String){
+    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String,lastPark:String){
         
             var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
             println("Ora aggiungo l'auto \(code)")
@@ -87,7 +87,7 @@ class CarUpdate{
             person.setValue(lat, forKey:"lat")
             person.setValue(long, forKey:"long")
             person.setValue(brand, forKey:"brand")
-            
+            person.setValue(lastPark, forKey: "lastPark")
             var error: NSError?
             if !managedContext.save(&error) {
                 println("Could not save \(error), \(error?.userInfo)")
@@ -258,6 +258,7 @@ class CarUpdate{
         person.setValue(Lat, forKey:"lat")
         person.setValue(Log, forKey:"long")
         person.setValue(carToUpdate.valueForKey("brand"), forKey:"brand")
+        person.setValue("now", forKey:"lastPark")
         
         
         if !managedContext.save(&error) {

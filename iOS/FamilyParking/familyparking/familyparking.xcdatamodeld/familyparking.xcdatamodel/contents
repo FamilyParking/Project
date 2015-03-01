@@ -4,6 +4,7 @@
         <attribute name="brand" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isParked" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastPark" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="long" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,7 +20,7 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Car" positionX="-63" positionY="-18" width="128" height="148"/>
+        <element name="Car" positionX="-63" positionY="-18" width="128" height="165"/>
         <element name="Group" positionX="135" positionY="-18" width="128" height="73"/>
         <element name="Users" positionX="36" positionY="36" width="128" height="88"/>
     </elements>
