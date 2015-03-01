@@ -183,8 +183,9 @@ class getCars(webapp2.RequestHandler):
 			for id_user in tempUser:
 				cars = User_car.getCarFromUser(id_user.key.id())
 			if (cars.count() == 0): 
-				error = StatusReturn(6, "getAllCars_fromEmail")
-				self.response.write(error.print_general_error())
+				allcars = []
+				right = StatusReturn(3, "getAllCars_fromEmail", allcars)
+				self.response.write(right.print_result())
 			else:
 				allcars = []
 				for id_carTemp in cars:
@@ -193,12 +194,69 @@ class getCars(webapp2.RequestHandler):
 				right = StatusReturn(3, "getCars", allcars)
 				self.response.write(right.print_result())
 				
-				
+class deleteCar(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("deleteCar", self) >= 0:
+			dati = json.loads(self.request.body)
+			user_data = dati["User"]
+			car_data = dati["Car"]
+			tempUser = User.static_querySearch_email(user_data["Email"])
+			for user in tempUser:
+				id_user = user.key.id()
+			User_car.deleteCarUser(id_user, car_data["ID_car"])
+			right = StatusReturn(7,"deleteCar")
+			self.response.write(right.print_result())
+			
+class updatePosition(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("updatePosition", self) >= 0:
+			dati = json.loads(self.request.body)
+			user_data = dati["User"]
+			car_data = dati["Car"]
+			Car.update_position_ID(car_data["ID_car"], car_data["latitude"], car_data["longitude"])
+			list_user = User_car.getUserFromCar(car_data["ID_car"])
+			for user in list_user:
+				temp_user = User.get_user_by_id(user.id_user)
+				if temp_user.is_user == 0:
+					Send_email.send_position(temp_user.email, latitude, longitude)
+			right = StatusReturn(5, "updatePosition")
+			self.response.write(right.print_result())
+			
+class insertContactCar(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("insertContactCar", self) >= 0:
+			dati = json.loads(self.request.body)
+			user_data = dati["User"]
+			car_data = dati["Car"]
+			for user in car_data["Users"]:
+				user_key = User.is_user_check(user)
+				if user_key == 0:
+					new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)
+					temp_user_key = new_user.put()
+					user_key = temp_user_key.id()
+				if User_car.check_user_exist(user_key, int(car_data["ID_car"])) > 0:
+					new_contact_car = User_car(id_user=user_key, id_car=int(car_data["ID_car"]))
+					new_contact_car.put()
+			right = StatusReturn(10, "insertContactCar")
+			self.response.write(right.print_result())
+
+class removeContactCar(webapp2.RequestHandler):
+	def post(self):
+		if User_tool.check_before_start("removeContactCar", self) >= 0:
+			dari = json.loads(self.request.body)
+			user_data = dati["User"]
+			car_data = dati["Car"]
+			for user in car_data["Users"]:
+				tempUser = User.static_querySearch_email(user)
+				for id_user in tempUser:
+					user_key = id_user.key.id()
+				User_car.deleteCarUser(user_key, car_data["ID_car"])
+			right = StatusReturn(18, "removeContactCar")
+			self.response.write(right.print_result())
+
 
 			
-			
-			
-			
+
 
 
 application = webapp2.WSGIApplication([
@@ -209,8 +267,9 @@ application = webapp2.WSGIApplication([
 										  ('/createCar', createCar),
 										  ('/confirmCode', confirmCode),
 										  ('/getAllCars', getCars),
-										  #('/deleteCar', deleteCar),
-										 # ('/updatePosition',updatePosition),
-										  # ('/insertContactCar', insertContactCar)
+										  ('/deleteCar', deleteCar),
+										  ('/updatePosition',updatePosition),
+										  ('/insertContactCar', insertContactCar),
+										  ('/removeContactCar', removeContactCar)
 									   ], debug=True)
 		

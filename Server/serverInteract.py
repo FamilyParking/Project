@@ -303,7 +303,6 @@ class insertContactGroup(webapp2.RequestHandler):
             list_user = data["List_email"]
             logging.debug(list_user)
             for user in list_user:
-
                 user_key = User.is_user_check(user)
                 if user_key == 0:
                     new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)

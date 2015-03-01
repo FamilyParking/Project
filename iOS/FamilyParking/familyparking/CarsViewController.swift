@@ -58,7 +58,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             let person = people[indexPath.row]
             cell.textLabel.text = person.valueForKey("name") as String?
-            cell.detailTextLabel?.text = person.valueForKey("brand") as String?
+            cell.detailTextLabel?.text = "hi"
             return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
@@ -230,7 +230,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             message: mail,
             preferredStyle: .Alert)
         
-        let findAction = UIAlertAction(title: "Find",
+        let saveAction = UIAlertAction(title: "Find",
             style: .Default) { (action: UIAlertAction!) -> Void in
             }
         
@@ -249,14 +249,23 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
                 self.selectedCar = self.people[index.row]
+                
+                // Create an instance of PlayerTableViewController and pass the variable
+                
+                
+               // let destinationVC = SingleCarUsersViewController()
+               // destinationVC.carID = selectedCar.valueForKey("id")?.description
+                
+                // Let's assume that the segue name is called playerSegue
+                // This will perform the segue and pre-load the variable for you to use
+              //  destinationVC.performSegueWithIdentifier("user_group", sender: self)
                 self.performSegueWithIdentifier("user_group", sender: self)
         }
         
-        alert.addAction(findAction)
-        alert.addAction(editAction)
-        
-        alert.addAction(deleteAction)
+        alert.addAction(saveAction)
         alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        alert.addAction(editAction)
         presentViewController(alert,
             animated: true,
             completion: nil)

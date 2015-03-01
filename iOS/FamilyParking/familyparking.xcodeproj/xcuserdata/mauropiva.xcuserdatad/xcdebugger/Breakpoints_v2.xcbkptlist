@@ -190,7 +190,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "familyparking/MapViewController.swift"
@@ -203,6 +203,7 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
+<<<<<<< HEAD
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
@@ -297,5 +298,7 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+=======
+>>>>>>> FETCH_HEAD
    </Breakpoints>
 </Bucket>

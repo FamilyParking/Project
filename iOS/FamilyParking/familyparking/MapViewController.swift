@@ -145,12 +145,15 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
            println(" // TODO mappa non caricata")
         }
     }
+<<<<<<< HEAD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         println("Showing Map")
         updateCars()
     }
+=======
+>>>>>>> FETCH_HEAD
 
     @IBAction func ParkButtonClick() {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()

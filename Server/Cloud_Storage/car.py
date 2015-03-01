@@ -6,6 +6,9 @@ __author__ = 'Nazzareno'
 from Class.position import Position
 
 import logging
+import time
+import datetime
+
 from Cloud_Storage.user_car import User_car
 from Cloud_Storage.user import User
 
@@ -30,6 +33,9 @@ class Car(ndb.Model):
 	def updatePosition(self, latitude, longitude):
 		self.latitude = latitude
 		self.longitude = longitude
+		ts = time.time()
+		st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+		self.timestamp = st
 		self.put()
 		return 0
 
@@ -57,7 +63,7 @@ class Car(ndb.Model):
 		#logging.debug({"ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name), "Latitude": str(self.latitude),
 		#		"Longitude":str(self.longitude), "Users": carusers})
 		return {"ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name), "Latitude": str(self.latitude),
-				"Longitude":str(self.longitude),"Users": carusers}
+				"Longitude":str(self.longitude),"Users": carusers, "Time": str(self.timestamp)}
 
 	def update(self, bluetooth_MAC, bluetooth_name, brand, email, latitude, longitude, name):
 		self.latitude = latitude

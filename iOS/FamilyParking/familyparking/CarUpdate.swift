@@ -14,7 +14,7 @@ class CarUpdate{
     
     func downloadCar(mvc:MapViewController){
         
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars_fromEmail")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
