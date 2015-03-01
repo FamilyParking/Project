@@ -154,6 +154,30 @@ class CarUpdate{
         }
     }
     
+    func countCar() ->Int {
+        
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName:"Car")
+        
+        var error: NSError?
+        var people = [NSManagedObject]()
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as [NSManagedObject]?
+        
+        if let results = fetchedResults {
+            people = results
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
+        return people.count
+    }
+
+    
+    
     func removeAllUsers() {
         
         let appDelegate =

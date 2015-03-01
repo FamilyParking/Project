@@ -170,6 +170,11 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     }
 
     @IBAction func ParkButtonClick() {
+        
+        if (CarUpdate().countCar()==0){
+            self.performSegueWithIdentifier("create_car", sender: self)
+        }
+        
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if(gmaps.myLocation != nil){

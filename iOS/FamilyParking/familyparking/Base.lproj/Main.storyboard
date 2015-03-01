@@ -212,6 +212,7 @@
                     <connections>
                         <segue destination="sqW-gV-Gf2" kind="modal" identifier="registration_1" id="VLS-Wf-g8Y"/>
                         <segue destination="ta2-7k-jNf" kind="push" identifier="park_action" id="Pqy-fX-8L8"/>
+                        <segue destination="UMO-cu-gwX" kind="push" identifier="create_car" id="os5-nP-kpf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zG7-LF-fxp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -233,7 +234,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11J-Hw-der" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-246" y="-119"/>
+            <point key="canvasLocation" x="-1098" y="589"/>
         </scene>
         <!--Groups-->
         <scene sceneID="NTN-zW-xNF">
@@ -265,7 +266,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zL0-Dn-fDq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="188" y="-119"/>
+            <point key="canvasLocation" x="-664" y="589"/>
         </scene>
         <!--Add Group View Controller-->
         <scene sceneID="suH-nf-WQZ">
@@ -324,7 +325,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SF3-CP-ACG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="606" y="-119"/>
+            <point key="canvasLocation" x="-246" y="589"/>
         </scene>
         <!--Which Car?-->
         <scene sceneID="LKh-we-fgq">
@@ -360,7 +361,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0nt-ys-qJC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-246" y="611"/>
+            <point key="canvasLocation" x="-244" y="-119"/>
         </scene>
         <!--Cars-->
         <scene sceneID="Fo5-ae-B73">
@@ -384,7 +385,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="UMO-cu-gwX" kind="modal" id="TFs-jk-wHQ"/>
+                                    <segue destination="UMO-cu-gwX" kind="push" id="TFs-jk-wHQ"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -395,7 +396,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vpo-9j-J0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="188" y="611"/>
+            <point key="canvasLocation" x="190" y="-119"/>
         </scene>
         <!--Single Car Users View Controller-->
         <scene sceneID="73y-M8-k4x">
@@ -427,7 +428,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sYn-Pb-675" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="188" y="1313"/>
+            <point key="canvasLocation" x="190" y="583"/>
         </scene>
         <!--Add Car View Controller-->
         <scene sceneID="IOr-9X-Xx9">
@@ -486,7 +487,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jks-Em-j2U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="618" y="611"/>
+            <point key="canvasLocation" x="644" y="-119"/>
         </scene>
     </scenes>
     <resources>
@@ -497,4 +498,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="os5-nP-kpf"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -209,6 +209,37 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 completion: nil)
         }
     
+    func wrongMailPopUp(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "Wrong Mail"
+        alertView.message = "Please check your Email"
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
+    }
+    
+    func savingErrorPopUp(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "Server Error"
+        alertView.message = "Please try later"
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
+    }
+   
+    
+    
+    func isValidEmail(testStr:String) -> Bool {
+        println("validate calendar: \(testStr)")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        
+        var emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let result = emailTest!.evaluateWithObject(testStr)
+        return result
+    }
+    
+    
+    
     @IBAction func AddUser(sender: AnyObject) {
         
         var alert = UIAlertController(title: "One Car",
@@ -219,11 +250,11 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
                 let textField = alert.textFields![0] as UITextField
-                
-                self.addUserToServer(textField.text)
-                self.saveName(textField.text)
-                //self.names.append(textField.text)
-                self.tableView.reloadData()
+                if(self.isValidEmail(textField.text)){
+                    self.addUserToServer(textField.text)
+                  }else{
+                        self.wrongMailPopUp()
+                }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel",
@@ -302,9 +333,18 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 println("Body: \(strData!)")
                 var err: NSError?
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
-                
-                println(json);
-                
+                if(err==nil){
+                    println(json);
+                    if((json!["flag"]as Bool)==true){
+                        self.saveName(text)
+                        self.tableView.reloadData()
+                        
+                    }else{
+                        self.savingErrorPopUp()
+                    }
+                }else{
+                    self.savingErrorPopUp()
+                }
             })
             task.resume()
             
