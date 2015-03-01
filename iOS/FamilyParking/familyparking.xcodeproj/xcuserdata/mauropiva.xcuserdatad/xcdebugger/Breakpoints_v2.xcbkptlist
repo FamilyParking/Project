@@ -146,12 +146,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "familyparking/CarUpdate.swift"
-            timestampString = "446324526.128494"
+            timestampString = "446907736.926847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "downloadCar()"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "downloadCar(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -167,7 +167,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
             endingLineNumber = "40"
-            landmarkName = "downloadCar()"
+            landmarkName = "downloadCar(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -183,7 +183,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
             endingLineNumber = "45"
-            landmarkName = "downloadCar()"
+            landmarkName = "downloadCar(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -194,11 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "familyparking/MapViewController.swift"
-            timestampString = "446409942.116841"
+            timestampString = "446909227.267592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "updateCars()"
             landmarkType = "5">
          </BreakpointContent>
@@ -233,6 +233,68 @@
             endingLineNumber = "128"
             landmarkName = "addCarToServer()"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "familyparking/CarsViewController.swift"
+            timestampString = "446839226.162934"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "removeCarFromServer(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "familyparking/MapViewController.swift"
+            timestampString = "446909363.295388"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "updateCars()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "familyparking.MapViewController.updateCars (familyparking.MapViewController)() -&gt; ()"
+                  moduleName = "familyparking"
+                  urlString = "file:///Users/mauropiva/Documents/FamilyParkingGit/Family%20Parking/iOS/FamilyParking/familyparking/MapViewController.swift"
+                  timestampString = "446909363.370594"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "4538">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "familyparking.MapViewController.(updateCars (familyparking.MapViewController) -&gt; () -&gt; ()).(closure #1) with unmangled suffix &quot;_promote0&quot;"
+                  moduleName = "familyparking"
+                  urlString = "file:///Users/mauropiva/Documents/FamilyParkingGit/Family%20Parking/iOS/FamilyParking/familyparking/MapViewController.swift"
+                  timestampString = "446909363.370901"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "118"
+                  endingLineNumber = "118"
+                  offsetFromSymbolStart = "30">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

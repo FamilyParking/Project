@@ -12,7 +12,7 @@ import CoreData
 
 class CarUpdate{
     
-    func downloadCar(){
+    func downloadCar(mvc:MapViewController){
         
             var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars")!)
             var session = NSURLSession.sharedSession()
@@ -44,12 +44,20 @@ class CarUpdate{
             
                 if var cars:NSArray = json?["object"]! as? NSArray{
                     self.removeAllCar()
+                    self.removeAllUsers()
                     for carz in cars{
                         self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String)
+                        
+                            let users = carz["Users"] as NSArray
+                            for user in users{
+                                self.addUserToLocalDatabase(user["Email"]as String, name: user["Nome"] as String, car: carz["ID_car"] as String)
+                                println(user)
+                            }
+                        
                     }
                 }
-                MapViewController().updateCars()
-                
+        //        MapViewController().updateCars()
+                mvc.updateCars()
                 //[0] as NSDictionary
                 //println(car["Brand"])
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
@@ -90,6 +98,27 @@ class CarUpdate{
             }
     }
     
+    func addUserToLocalDatabase(email:String,name:String,car:String){
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let entity =  NSEntityDescription.entityForName("Users",
+            inManagedObjectContext:
+            managedContext)
+        let person = NSManagedObject(entity: entity!,
+            insertIntoManagedObjectContext:managedContext)
+        
+        person.setValue(car, forKey: "carId")
+        person.setValue(email, forKey:"email")
+        person.setValue(name, forKey:"username")
+        
+        var error: NSError?
+        if !managedContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
+        }
+    }
+    
+    
     func removeCarByNSObj(name: NSManagedObject) {
         
         let appDelegate =
@@ -128,6 +157,33 @@ class CarUpdate{
             managedContext.deleteObject(man)
         }
     }
+    
+    func removeAllUsers() {
+        
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName:"Users")
+        
+        var error: NSError?
+        var people = [NSManagedObject]()
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as [NSManagedObject]?
+        
+        if let results = fetchedResults {
+            people = results
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
+        
+        for man in people {
+            managedContext.deleteObject(man)
+        }
+    }
+    
+    
     
     func removeCarByCode(id:String){
         

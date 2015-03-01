@@ -118,8 +118,8 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                                 "latitude":lat,
                                 "longiude":lon]  as Dictionary<String, NSObject>
                     */
-                    var car = ["Longitude":lon,
-                        "Latitude":lat,
+                    var car = ["longitude":lon,
+                        "latitude":lat,
                         "ID_car":idCar] as Dictionary<String,NSObject>
             
                     var params = ["User":user,
@@ -137,30 +137,27 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                         var err: NSError?
                         var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                         
-                        // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
-                        if(err != nil) {
-                            println(err!.localizedDescription)
-                            let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                            println("Error could not parse JSON: '\(jsonStr)'")
-                        }
-                        else {
-                            // The JSONObjectWithData constructor didn't return an error. But, we should still
-                            // check and make sure that json has a value using optional binding.
-                            if let parseJSON = json {
-                                // Okay, the parsedJSON is here, let's get the value for 'success' out of it
-                                var success = parseJSON["success"] as? Int
-                                println("Succes: \(success)")
-                            }
+                        if(err == nil){
+                        
+                            if((json!["flag"] as Bool) == true){
+                                println("in")
+                              //      self.navigationController!.popViewControllerAnimated(true)
+                                self.navigationController!.popToRootViewControllerAnimated(true)
+                              //  self.showViewController(self.parentViewController!, sender: self)
+                                }
                             else {
-                                // Woa, okay the json object was nil, something went worng. Maybe the server isn't running?
-                                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                                println("Error could not parse JSON: \(jsonStr)")
+                                //TODO
+                        
                             }
+                        }else
+                        {
+                            //TODO
                         }
+                        
                     })
                     
                     task.resume()
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                   // self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 
                 

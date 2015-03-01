@@ -123,13 +123,76 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         if !managedContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
         }
+    }
         
+        
+    func removeCarFromServer(name: NSManagedObject) {
+        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/deleteCar")!)
+        var session = NSURLSession.sharedSession()
+        request.HTTPMethod = "POST"
+        
+        
+        var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let code = prefs.objectForKey("PIN") as String
+        let mail = prefs.objectForKey("EMAIL") as String
+        println(code)
+        var user = ["Code":code,
+            "Email":mail] as Dictionary<String, NSObject>
+        
+        var Car = ["ID_car":name.valueForKey("id")!.description as String,
+                ] as Dictionary<String, NSObject>
+        
+        
+        var params = ["User":user,
+            "Car":Car] as Dictionary<String, NSObject>
+        
+        var err: NSError?
+        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            println("Response: \(response)")
+            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+            println("Body: \(strData)")
+            
+            var err: NSError?
+            
+            var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
+        //   println(json!["flag"] as Bool)
+            if((json!["flag"] as Bool) == true){
+                println(json!["flag"] as Bool)
+
+                self.removeName(name)
+                self.tableView.reloadData()
+            }
+            
+            println(json)
+            
+            //[0] as NSDictionary
+            //println(car["Brand"])
+            // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
+            if(err != nil) {
+                println(err!.localizedDescription)
+                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
+                println("Error could not parse JSON: '\(jsonStr)'")
+            }
+            
+        })
+        
+        task.resume()
         
     }
+        
+        
+        
+    
     
     override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
+        
+        super.viewWillAppear(animated)
+        println("Carico view auto")
         //1
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         let managedContext = appDelegate.managedObjectContext!
@@ -175,8 +238,9 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
                 let toRem = self.people.removeAtIndex(index.item)
-                self.removeName(toRem)
-                self.tableView.reloadData()
+                self.removeCarFromServer(toRem)
+                //self.removeName(toRem)
+                //self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in

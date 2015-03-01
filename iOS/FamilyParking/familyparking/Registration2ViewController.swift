@@ -52,7 +52,7 @@ class Registration2ViewController: UIViewController {
                 prefs.synchronize()
                 
                 
-                CarUpdate().downloadCar()
+                CarUpdate().downloadCar(self.presentingViewController as MapViewController)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
                     

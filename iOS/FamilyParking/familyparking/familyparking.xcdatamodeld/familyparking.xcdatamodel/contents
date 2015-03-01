@@ -19,7 +19,7 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Car" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="Car" positionX="-63" positionY="-18" width="128" height="148"/>
         <element name="Group" positionX="135" positionY="-18" width="128" height="73"/>
         <element name="Users" positionX="36" positionY="36" width="128" height="88"/>
     </elements>

@@ -57,9 +57,19 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 let cell =
                 tableView.dequeueReusableCellWithIdentifier("myCell")
                     as UITableViewCell
+                var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                let pin:String = prefs.objectForKey("PIN") as String
+                let localMail:String = prefs.objectForKey("EMAIL") as String
                 
                 let person = people[indexPath.row]
-                cell.textLabel.text = person.valueForKey("username") as String?
+                var mail = person.valueForKey("email") as String?
+                var showingName = person.valueForKey("username") as String?
+                if( mail == localMail){
+                    cell.textLabel.text = showingName! + " (You)"
+                }
+                else{
+                    cell.textLabel.text = person.valueForKey("username") as String?
+                }
                 cell.detailTextLabel?.text = person.valueForKey("email") as String?
                 return cell
         }
@@ -170,10 +180,10 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         
         @IBAction func RemoveConfirmation(index: NSIndexPath) {
             
-            var mail = self.people[index.item].valueForKey("username")?.description
+            var name = self.people[index.item].valueForKey("username")?.description
             
             var alert = UIAlertController(title: "What to do?",
-                message: mail,
+                message: name,
                 preferredStyle: .Alert)
             
             
@@ -181,8 +191,11 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 style: .Default) { (action: UIAlertAction!) -> Void in
                     
                     let toRem = self.people.removeAtIndex(index.item)
-                    self.removeName(toRem)
-                    self.tableView.reloadData()
+                    let email = self.people[index.item].valueForKey("username")?.description
+
+                    self.removeUserFromServer(email!)
+                   // self.removeName(toRem)
+                   // self.tableView.reloadData()
             }
             let cancelAction = UIAlertAction(title: "Cancel",
                 style: .Default) { (action: UIAlertAction!) -> Void in
@@ -204,6 +217,8 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
                 let textField = alert.textFields![0] as UITextField
+                
+                self.addUserToServer(textField.text)
                 self.saveName(textField.text)
                 //self.names.append(textField.text)
                 self.tableView.reloadData()
@@ -225,6 +240,147 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             completion: nil)
     }
     
+    func addUserToServer(text:String){
+       
+        //car?.valueForKey("id"), forKey: "carId"
+        
+        if(text.isEmpty){
+            println("Ciao")
+            var alert = UIAlertController(title: "UserName",message:"No Name, No Car",
+                preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "Cancel",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+                    return
+            }
+            alert.addAction(cancelAction)
+            presentViewController(alert,
+                animated: true,
+                completion: nil)
+        }
+        else{
+            println("ServerCAraar")
+            
+            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/insertContactCar")!)
+            var session = NSURLSession.sharedSession()
+            request.HTTPMethod = "POST"
+            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            let pin:String = prefs.objectForKey("PIN") as String
+            let mail:String = prefs.objectForKey("EMAIL") as String
+            
+            var otherUsers = ["Code":pin,
+                "Email":mail] as Dictionary<String, NSObject>
+            
+            var usersMail = [text]
+            var idcar:String = car?.valueForKey("id") as String
+            var carToServer = [
+                "Users":usersMail,
+                "ID_car":idcar
+                ] as Dictionary<String, NSObject>
+            
+            
+            
+            var user = ["Code":pin,
+                "Email":mail] as Dictionary<String, NSObject>
+            
+            var param = [  "User":user,
+                "Car":carToServer] as Dictionary<String, NSObject>
+            
+            
+            var err: NSError?
+            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(param, options: nil, error: &err)
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                println("Response: \(response)")
+                
+                
+                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                
+                println("Body: \(strData!)")
+                var err: NSError?
+                var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
+                
+                println(json);
+                
+            })
+            task.resume()
+            
+        }
+        
+        
+    }
     
+    func removeUserFromServer(text:String){
+        
+        //car?.valueForKey("id"), forKey: "carId"
+        
+        if(text.isEmpty){
+            var alert = UIAlertController(title: "UserName",message:"No Name, No Car",
+                preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "Cancel",
+                style: .Default) { (action: UIAlertAction!) -> Void in
+                    return
+            }
+            alert.addAction(cancelAction)
+            presentViewController(alert,
+                animated: true,
+                completion: nil)
+        }
+        else{
+            println("ServerCAraar")
+            
+            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/removeContactCar")!)
+            var session = NSURLSession.sharedSession()
+            request.HTTPMethod = "POST"
+            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            let pin:String = prefs.objectForKey("PIN") as String
+            let mail:String = prefs.objectForKey("EMAIL") as String
+            
+            var otherUsers = ["Code":pin,
+                "Email":mail] as Dictionary<String, NSObject>
+            
+            var usersMail = [text]
+            var idcar:String = car?.valueForKey("id") as String
+            var carToServer = [
+                "Users":usersMail,
+                "ID_car":idcar
+                ] as Dictionary<String, NSObject>
+            
+            
+            
+            var user = ["Code":pin,
+                "Email":mail] as Dictionary<String, NSObject>
+            
+            var param = [  "User":user,
+                "Car":carToServer] as Dictionary<String, NSObject>
+            
+            
+            var err: NSError?
+            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(param, options: nil, error: &err)
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                println("Response: \(response)")
+                
+                
+                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                
+                println("Body: \(strData!)")
+                var err: NSError?
+                var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
+                
+                println(json);
+                
+            })
+            task.resume()
+            
+        }
+        
+        
+    }
 
+    
+    
 }

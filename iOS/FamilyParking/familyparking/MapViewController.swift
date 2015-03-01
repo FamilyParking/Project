@@ -31,7 +31,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             println("Apro la scheda registrazione")
             self.performSegueWithIdentifier("registration_1", sender: self)
         } else {
-            CarUpdate().downloadCar()
+            CarUpdate().downloadCar(self)
           //  GroupUpdate().downloadGroup()
         }
         
@@ -67,6 +67,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             self.view.insertSubview(gmaps, atIndex: 2)
             self.view.sendSubviewToBack(gmaps)
             mapLoaded = true
+            println("Map Loaded")
             self.updateCars()
         }
         else{
@@ -90,8 +91,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     }
     
     func updateCars(){
-        if (mapLoaded){
-        gmaps.clear()
+        if (mapLoaded||true){
         var people = [NSManagedObject]()
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         let managedContext = appDelegate.managedObjectContext!
@@ -112,38 +112,44 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             println("Could not fetch \(error), \(error!.userInfo)")
         }
         
-        for man in people {
-            println("Inserisco")
-            println(man.valueForKey("name")?.description)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                var latDouble = (man.valueForKey("lat")!.description as NSString).doubleValue
-                var longDouble = (man.valueForKey("long")!.description as NSString).doubleValue
+                self.gmaps.clear()
                 
-                var position = CLLocationCoordinate2DMake(latDouble, longDouble)
-                var london = GMSMarker(position: position)
-                london.title = man.valueForKey("name")?.description
-                london.snippet = man.valueForKey("brand")?.description
-                
-                london.infoWindowAnchor = CGPointMake(0.5, 0.5)
-                london.userData = man.valueForKey("id")?.description
-                london.icon = UIImage(named: "audi")
-                london.map = self.gmaps
-                var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
-                
-                self.gmaps.camera = camera
-                //   self.Title.title = name
+                for man in people {
+                    println("Inserisco")
+                    println(man.valueForKey("name")?.description)
+                    if(man.valueForKey("name")?.description != nil){
+                        var latDouble = (man.valueForKey("lat")!.description as NSString).doubleValue
+                        var longDouble = (man.valueForKey("long")!.description as NSString).doubleValue
+                        
+                        var position = CLLocationCoordinate2DMake(latDouble, longDouble)
+                        var london = GMSMarker(position: position)
+                        london.title = man.valueForKey("name")?.description
+                        london.snippet = man.valueForKey("brand")?.description
+                        
+                        london.infoWindowAnchor = CGPointMake(0.5, 0.5)
+                        london.userData = man.valueForKey("id")?.description
+                        //  london.icon = UIImage(named: "audi")
+                        london.map = self.gmaps
+                        var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
+                        
+                        self.gmaps.camera = camera
+                        //   self.Title.title = name
+                    }
+                }
             })
 
-        }
+        
         }
         else{
-            // TODO mappa non caricata
+           println(" // TODO mappa non caricata")
         }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         println("Showing Map")
+        updateCars()
     }
 
     @IBAction func ParkButtonClick() {
