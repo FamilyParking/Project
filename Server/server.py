@@ -243,7 +243,7 @@ class insertContactCar(webapp2.RequestHandler):
 class removeContactCar(webapp2.RequestHandler):
 	def post(self):
 		if User_tool.check_before_start("removeContactCar", self) >= 0:
-			dari = json.loads(self.request.body)
+			dati = json.loads(self.request.body)
 			user_data = dati["User"]
 			car_data = dati["Car"]
 			for user in car_data["Users"]:
