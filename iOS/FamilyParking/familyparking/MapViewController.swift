@@ -140,11 +140,6 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             // TODO mappa non caricata
         }
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        println("Showing Map")
-    }
 
     @IBAction func ParkButtonClick() {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
