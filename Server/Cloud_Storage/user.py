@@ -17,9 +17,11 @@ class User(ndb.Model):
 	id_gcm = ndb.IntegerProperty()
 
 	def toString_JSON(self):
-		nomeString = "'Nome':"+self.nickname
-		emailString = "'Email':"+self.email
-		return {"Nome": str(self.nickname), "Email": str(self.email)}
+		if (self.nickname != None):
+			result = {"Nome": str(self.nickname), "Email": str(self.email)}
+		else:
+			result = {"Nome" : "", "Email": str(self.email)}
+		return result
 	  
 		
 	def querySearch_id_android(self):
