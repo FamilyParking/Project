@@ -140,10 +140,16 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                         if(err == nil){
                         
                             if((json!["flag"] as Bool) == true){
-                                println("in")
-                              //      self.navigationController!.popViewControllerAnimated(true)
-                                self.navigationController!.popToRootViewControllerAnimated(true)
-                              //  self.showViewController(self.parentViewController!, sender: self)
+                                
+                                
+                                
+                                
+                                dispatch_async(dispatch_get_main_queue(),{() -> Void in
+                                   println("")
+                                    self.navigationController!.popViewControllerAnimated(true)
+                                })
+                                
+                                
                                 }
                             else {
                                 //TODO

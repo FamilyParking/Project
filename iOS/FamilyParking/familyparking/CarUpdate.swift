@@ -14,7 +14,7 @@ class CarUpdate{
     
     func downloadCar(mvc:MapViewController){
         
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars_fromEmail")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
@@ -56,11 +56,7 @@ class CarUpdate{
                         
                     }
                 }
-        //        MapViewController().updateCars()
                 mvc.updateCars()
-                //[0] as NSDictionary
-                //println(car["Brand"])
-                // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
                     println(err!.localizedDescription)
                     let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
@@ -216,6 +212,59 @@ class CarUpdate{
                 removeCarByNSObj(man)
             }
         }
+    }
+    
+    func updateCarPosition(Id_car:String,Lat:String,Log:String){
+        
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext!
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName:"Car")
+        
+        //3
+        var error: NSError?
+        var people = [NSManagedObject]()
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as [NSManagedObject]?
+        
+        if let results = fetchedResults {
+            people = results
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
+        var carToUpdate:NSManagedObject = NSManagedObject()
+        for man in people {
+            println(man.valueForKey("id")?.description)
+            
+            if(man.valueForKey("id")?.description==Id_car){
+                    carToUpdate=man
+            }
+        }
+        removeCarByNSObj(carToUpdate)
+        //take infos from carToUpdate
+        
+        let entity =  NSEntityDescription.entityForName("Car",
+            inManagedObjectContext:
+            managedContext)
+        let person = NSManagedObject(entity: entity!,
+            insertIntoManagedObjectContext:managedContext)
+        
+        person.setValue(carToUpdate.valueForKey("name"), forKey: "name")
+        person.setValue(carToUpdate.valueForKey("id"), forKey:"id")
+        person.setValue(Lat, forKey:"lat")
+        person.setValue(Log, forKey:"long")
+        person.setValue(carToUpdate.valueForKey("brand"), forKey:"brand")
+        
+        
+        if !managedContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
+        }
+        
+        
     }
 
 

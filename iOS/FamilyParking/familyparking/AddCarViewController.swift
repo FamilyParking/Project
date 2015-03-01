@@ -99,36 +99,12 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             println("Body: \(strData!)")
             var err: NSError?
             var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
-            
-            // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
-            if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON because there is an error: '\(jsonStr)'")
-                var stringa:NSString = "" + jsonStr!
-                
-                if(stringa.length>3){
-                    var array = stringa.componentsSeparatedByString(",")
-                    if(array.count==3){
-                        var fl = array[0].componentsSeparatedByString(":")
-                        var fla = fl[1].componentsSeparatedByString("'")
-                        var flag = fla[0].stringByReplacingOccurrencesOfString(" ", withString: "")
-                        println(flag)
-                        
-                        var id = array[1].componentsSeparatedByString(":")
-                        var idCar: String = id[1].stringByReplacingOccurrencesOfString(" ", withString: "") as String;
-                        println(idCar)
-                        var desc = array[2].componentsSeparatedByString(":")
-                        var descri = desc[1].componentsSeparatedByString("'")
-                        var description: AnyObject=descri[1]
-                        println(description)
-                        
-                        if(flag=="True"){
+            if(err==nil){
+                if((json!["flag"] as Bool) == true){
                             self.BackButt.enabled = true
                             self.ConfButt.enabled = true
-                            CarUpdate().addACarToLocalDatabase(idCar, name: self.CarName.text, lat: "0", long: "0",brand:"")
+                            CarUpdate().addACarToLocalDatabase((json!["object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"")
                             self.dismissViewControllerAnimated(true, completion: nil)
-                        }
                     }
                     else{
                         self.BackButt.enabled = true
@@ -139,7 +115,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
                     self.BackButt.enabled = true
                     self.ConfButt.enabled = true
                 }
-            }
+            
             
             
         })

@@ -121,25 +121,32 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
                     if(man.valueForKey("name")?.description != nil){
                         var latDouble = (man.valueForKey("lat")!.description as NSString).doubleValue
                         var longDouble = (man.valueForKey("long")!.description as NSString).doubleValue
-                        
-                        var position = CLLocationCoordinate2DMake(latDouble, longDouble)
-                        var london = GMSMarker(position: position)
-                        london.title = man.valueForKey("name")?.description
-                        london.snippet = man.valueForKey("brand")?.description
-                        
-                        london.infoWindowAnchor = CGPointMake(0.5, 0.5)
-                        london.userData = man.valueForKey("id")?.description
-                        //  london.icon = UIImage(named: "audi")
-                        london.map = self.gmaps
-                        var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
-                        
-                        self.gmaps.camera = camera
-                        //   self.Title.title = name
+                        if(latDouble != 0){
+                            var position = CLLocationCoordinate2DMake(latDouble, longDouble)
+                            var london = GMSMarker(position: position)
+                            london.title = man.valueForKey("name")?.description
+                            london.snippet = man.valueForKey("brand")?.description
+                            london.infoWindowAnchor = CGPointMake(0.5, 0.5)
+                            london.userData = man.valueForKey("id")?.description
+                            //  london.icon = UIImage(named: "audi")
+                            london.map = self.gmaps
+                            var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
+                             self.gmaps.camera = camera
+                        }
                     }
                 }
+           //     var markers = //some array;
+                //var bounds =  google.maps.LatLngBounds();
+                self.gmaps.sizeToFit()
+                //for(i=0;i<markers.length;i++) {
+                  //  bounds.extend(markers[i].getPosition());
+                //}
+                
+                //map.fitBounds(bounds);
+
+                
             })
 
-        
         }
         else{
            println(" // TODO mappa non caricata")

@@ -190,9 +190,11 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             let deleteAction = UIAlertAction(title: "Delete",
                 style: .Default) { (action: UIAlertAction!) -> Void in
                     
-                    let toRem = self.people.removeAtIndex(index.item)
+                    
                     let email = self.people[index.item].valueForKey("username")?.description
 
+                    let toRem = self.people.removeAtIndex(index.item)
+                    
                     self.removeUserFromServer(email!)
                    // self.removeName(toRem)
                    // self.tableView.reloadData()
