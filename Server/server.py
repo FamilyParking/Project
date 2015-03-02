@@ -218,7 +218,7 @@ class updatePosition(webapp2.RequestHandler):
 			for user in list_user:
 				temp_user = User.get_user_by_id(user.id_user)
 				if temp_user.is_user == 0:
-					Send_email.send_position(temp_user.email, latitude, longitude)
+					Send_email.send_position(temp_user.email, car_data["latitude"], car_data["longitude"])
 			right = StatusReturn(5, "updatePosition")
 			self.response.write(right.print_result())
 			
