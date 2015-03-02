@@ -102,7 +102,8 @@ class updateGoogleCode(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updateGoogleCode", self) >= 0:
             data = json.loads(self.request.body)
-            User.update_google_code(data["Email"], data["ID"])
+            user_data = data["User"]
+            User.update_google_code(user_data["Email"], data["ID"])
             right = StatusReturn(14, "updateGoogleCode")
             self.response.write(right.print_result())
 
@@ -118,8 +119,9 @@ class getIDGroups(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("getIDGroups", self) >= 0:
             data = json.loads(self.request.body)
+            user_class = data["User"]
             try:
-                id_groups = User_tool.return_groups(data["Email"])
+                id_groups = User_tool.return_groups(user_class["Email"])
                 if (id_groups > 0):
                     all_id_group = "["
                     for key in id_groups:
@@ -166,8 +168,10 @@ class getAllCars(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("getAllCars", self) >= 0:
             data = json.loads(self.request.body)
+            user_class = data["User"]
+
             try:
-                id_groups = User_tool.return_groups(data["Email"])
+                id_groups = User_tool.return_groups(user_class["Email"])
                 result = []
                 if (id_groups > 0):
                     for key in id_groups:
@@ -189,12 +193,13 @@ class getAllCars_fromEmail(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("getAllCars_fromEmail", self) >= 0:
             data = json.loads(self.request.body)
+            user_class = data["User"]
             try:
                 # id_groups = User_tool.return_groups(data["Email"])
                 result = []
                 # if(id_groups>0):
                 # for key in id_groups:
-                id_car_by_email = Car.get_all_cars(data["Email"])
+                id_car_by_email = Car.get_all_cars(user_class["Email"])
 
                 for carTemp in id_car_by_email:
                     result.append(carTemp.toString_JSON())
@@ -211,15 +216,27 @@ class createCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("createCar", self) >= 0:
             data = json.loads(self.request.body)
+            user_data = data["User"]
+            car_json = data["Car"]
             if "Bluetooth_MAC" in data:
-                new_car = Car(name=data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
-                              email=data["Email"], bluetooth_MAC=data["Bluetooth_MAC"],
-                              bluetooth_name=data["Bluetooth_name"], brand=data["Brand"])
+                new_car = Car(name=car_json["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
+                              email=user_data["Email"], bluetooth_MAC=car_json["Bluetooth_MAC"],
+                              bluetooth_name=car_json["Bluetooth_name"], brand=car_json["Brand"])
             else:
-                new_car = Car(name=data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
-                              email=data["Email"], brand=data["Brand"])
+                new_car = Car(name=car_json["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
+                              email=user_data["Email"], brand=car_json["Brand"])
 
             new_car.put()
+
+            new_group = Group(name=car_json["Name"], timestamp=str(datetime.datetime.now()))
+            new_group.put()
+
+            new_user_group = User_group(id_user=long(User_tool.return_ID_from_email(str(user_data["Email"]))),
+                                        id_group=long(new_group.key.id()))
+            new_user_group.put()
+
+            temp_car_group = Car_group(id_car=long(new_car.key.id()), id_group=long(new_group.key.id()))
+            temp_car_group.put()
 
             right = StatusReturn(4, "createCar", new_car.key.id())
             self.response.write(right.print_result())
@@ -296,7 +313,7 @@ class deleteGroup(webapp2.RequestHandler):
             self.response.write(right.print_result())
 
 
-class insertContactGroup(webapp2.RequestHandler):
+class insertContactCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("insertContactGroup", self) >= 0:
             data = json.loads(self.request.body)
@@ -491,7 +508,7 @@ application = webapp2.WSGIApplication([
                                           ('/updatePosition', updatePosition),
                                           ('/getPositionCar', getPositionCar),
                                           ('/confirmCode', confirmCode),
-                                          ('/insertContactGroup', insertContactGroup),
+                                          ('/insertContactGroup', insertContactCar),
                                           ('/removeContactGroup', removeContactGroup),
                                           ('/editCar', editCar),
                                           ('/editGroup', editGroup)

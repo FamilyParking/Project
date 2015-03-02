@@ -42,10 +42,10 @@ class User_tool():
     def check_before_start(method_name, result):
         try:
             data = json.loads(result.request.body)
-            data = data["User"]
-            code = int(data["Code"])
+            user_class = data["User"]
+            code = int(user_class["Code"])
             try:
-                result_check_code = User_tool.check_code(data["Email"], code)
+                result_check_code = User_tool.check_code(user_class["Email"], code)
 
                 if result_check_code == -2:
                     result.error(500)
