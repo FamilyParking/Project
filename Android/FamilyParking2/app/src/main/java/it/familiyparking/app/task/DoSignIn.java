@@ -5,8 +5,8 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
@@ -19,26 +19,35 @@ public class DoSignIn implements Runnable {
 
     private String name;
     private String email;
-    private MainActivity activity;
+    private SignIn fragment;
 
-    public DoSignIn(MainActivity activity, String name, String email) {
+    public DoSignIn(SignIn fragment, String name, String email) {
         this.name = name;
         this.email = email;
-        this.activity = activity;
+        this.fragment = fragment;
     }
 
     @Override
     public void run() {
         Looper.prepare();
 
-        User user = new User(name,email, Tools.getUniqueDeviceId(activity));
+        User user = new User(name,email);
+
         final Result result = ServerCall.signIn(user);
 
+        final MainActivity activity = (MainActivity)fragment.getActivity();
+
         if(result.isFlag()) {
-            DataBaseHelper databaseHelper = new DataBaseHelper(activity.getApplicationContext());
-            final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+            SQLiteDatabase db = Tools.getDB_Writable(activity);
+
+            String photoID = Tools.getPhotoID_byEmail(activity,user.getEmail());
+            if(photoID != null){
+                user.setHas_photo(true);
+                user.setPhoto_ID(photoID);
+            }
 
             UserTable.insertUser(db,user);
+            activity.setUser(user);
 
             db.close();
 
@@ -46,7 +55,7 @@ public class DoSignIn implements Runnable {
                 @Override
                 public void run() {
                     Tools.createToast(activity,"Confirmation code sent to your email!", Toast.LENGTH_SHORT);
-                    activity.callToEndSignIn();
+                    fragment.endSignIn(false);
                 }
             });
         }
@@ -55,7 +64,7 @@ public class DoSignIn implements Runnable {
                 @Override
                 public void run() {
                     Tools.createToast(activity,result.getDescription(), Toast.LENGTH_SHORT);
-                    activity.callToEndSignInError();
+                    fragment.endSignIn(true);
                 }
             });
         }

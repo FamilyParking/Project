@@ -12,11 +12,11 @@ public class UserTable {
     public static final String CODE = "CODE";
     public static final String NAME = "NAME";
     public static final String EMAIL = "EMAIL";
-    public static final String DEVICE_ID = "DEVICE_ID";
+    public static final String GCM_ID = "GCM_ID";
     public static final String HAS_PHOTO = "HAS_PHOTO";
     public static final String PHOTO_ID = "PHOTO_ID";
     public static final String GHOST_MODE = "GHOST_MODE";
-	public static final String[] COLUMNS = new String[]{CODE,NAME,EMAIL,DEVICE_ID,HAS_PHOTO,PHOTO_ID,GHOST_MODE};
+	public static final String[] COLUMNS = new String[]{CODE,NAME,EMAIL,GCM_ID,HAS_PHOTO,PHOTO_ID,GHOST_MODE};
 
     public static final String TABLE = "user_table";
 
@@ -85,7 +85,7 @@ public class UserTable {
 
     public static int updateDeviceID(SQLiteDatabase db, String deviceID){
         ContentValues values = new ContentValues();
-        values.put(DEVICE_ID,deviceID);
+        values.put(GCM_ID,deviceID);
 
         return db.update(TABLE, values, null, null);
     }

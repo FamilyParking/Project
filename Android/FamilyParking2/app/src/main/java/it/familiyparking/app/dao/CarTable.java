@@ -14,21 +14,25 @@ public class CarTable {
     public static final String CAR_ID = "CAR_ID";
     public static final String NAME = "NAME";
     public static final String BRAND = "BRAND";
+    public static final String REGISTER = "REGISTER";
+    public static final String LATITUDE = "LATITUDE";
+    public static final String LONGITUDE = "LONGITUDE";
+    public static final String IS_PARKED = "ISPARKED";
+    public static final String TIMESTAMP = "TIMESTAMP";
+    public static final String LAST_DRIVER = "LAST_DRIVER";
     public static final String BLUETOOTH_NAME = "BLUETOOTH_NAME";
     public static final String BLUETOOTH_MAC = "BLUETOOTH_MAC";
-    public static final String TIMESTAMP = "TIMESTAMP";
-	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,BLUETOOTH_MAC,BLUETOOTH_NAME,TIMESTAMP};
+	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,REGISTER,LATITUDE,LONGITUDE,IS_PARKED,TIMESTAMP,LAST_DRIVER,BLUETOOTH_MAC,BLUETOOTH_NAME};
 
     public static final String TABLE = "car_table";
 
-    public static void insertCar(SQLiteDatabase db, Car car, String timestamp){
+    public static void insertCar(SQLiteDatabase db, Car car){
         String[] data = car.getArray();
 
         ContentValues v = new ContentValues();
         for(int i=0;i<data.length;i++){
             v.put(COLUMNS[i], data[i]);
         }
-        v.put(COLUMNS[COLUMNS.length-1], timestamp);
 
         db.insert(TABLE, null, v);
     }
@@ -40,7 +44,7 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
-                car = new Car(c.getString(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4));
+                car = new Car();
         }
 
         c.close();
@@ -55,7 +59,7 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext())
-                car.add(new Car(c.getString(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4)));
+                car.add(new Car());
         }
 
         c.close();
@@ -70,7 +74,7 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext())
-                car.add(new Car(c.getString(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4)));
+                car.add(new Car());
         }
 
         c.close();
@@ -86,18 +90,15 @@ public class CarTable {
         return db.delete(TABLE, null, null) > 0;
     }
 
-    public static int updateNameCar(SQLiteDatabase db, String carID, String newName){
-        ContentValues values = new ContentValues();
-        values.put(NAME, newName);
+    public static int updateCar(SQLiteDatabase db, Car car){
+        String[] data = car.getArray();
 
-        return db.update(TABLE, values, CAR_ID + " = ?", new String[] { carID });
-    }
+        ContentValues v = new ContentValues();
+        for(int i=0;i<data.length;i++){
+            v.put(COLUMNS[i], data[i]);
+        }
 
-    public static int updateNameBrand(SQLiteDatabase db, String carID, String newBrand){
-        ContentValues values = new ContentValues();
-        values.put(BRAND, newBrand);
-
-        return db.update(TABLE, values, CAR_ID + " = ?", new String[] { carID });
+        return db.update(TABLE, v, CAR_ID + " = ?", new String[] { car.getId() });
     }
 
     public static int updateBluetooth(SQLiteDatabase db, Car car){

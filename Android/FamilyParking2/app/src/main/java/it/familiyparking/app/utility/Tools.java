@@ -6,11 +6,13 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,10 +37,12 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,18 +51,18 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
-import it.familiyparking.app.fragment.ManageCar;
+import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.Contact;
-import it.familiyparking.app.serverClass.Group;
+import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
 
 
 /**
@@ -268,6 +272,16 @@ public class Tools {
         }
     }
 
+    public static void setTitleActionBar(ActionBarActivity activity,int id){
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            android.app.ActionBar actionBar = activity.getActionBar();
+            actionBar.setTitle(id);
+        } else{
+            android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setTitle(id);
+        }
+    }
+
     public static Tracker activeAnalytic(Context context){
         GoogleAnalytics ga = GoogleAnalytics.getInstance(context);
         Tracker tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
@@ -324,15 +338,15 @@ public class Tools {
         return hash;
     }
 
-    public static void setImageForGroup(Activity activity, TextView group_image, Group group){
+    /*public static void setImageForGroup(Activity activity, TextView group_image, Group group){
         Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
         drawable.setColorFilter(new PorterDuffColorFilter(activity.getResources().getColor(R.color.green),PorterDuff.Mode.SCREEN));
         group_image.setBackgroundDrawable(drawable);
         String initial = ""+group.getName().charAt(0)+"";
         group_image.setText(initial.toUpperCase());
-    }
+    }*/
 
-    public static void setImageForContact(Activity activity, TextView group_image, Contact contact){
+    public static void setImageForContact(Activity activity, TextView group_image, User contact){
         Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
         drawable.setColorFilter(new PorterDuffColorFilter(getColor(activity,contact.getName()),PorterDuff.Mode.SCREEN));
         group_image.setBackgroundDrawable(drawable);
@@ -413,12 +427,11 @@ public class Tools {
         UserTable.deleteUser(db);
         GroupTable.deleteGroupTable(db);
         CarTable.deleteCarTable(db);
-        CarGroupRelationTable.deleteCarGroupRelationTable(db);
 
         db.close();
     }
 
-    public static void showAlertBluetoothJoin(final Context context, final ManageCar fragment, final String bluetooth_name, final String bluetooth_mac, final Car car, final Button button) {
+    public static void showAlertBluetoothJoin(final Context context, final EditCar fragment, final String bluetooth_name, final String bluetooth_mac, final Car car, final Button button) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setCancelable(false);
@@ -433,13 +446,7 @@ public class Tools {
         alertDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        car.setBluetoothName(bluetooth_name);
-                        car.setBluetoothMac(bluetooth_mac);
-
-                        button.setText(context.getResources().getString(R.string.remove_bluetooth));
-
-                        fragment.setBluetoothUpdate();
-
+                        fragment.linkBluetoothDevice(bluetooth_name, bluetooth_mac);
                         dialog.cancel();
                     }
                 });
@@ -454,25 +461,19 @@ public class Tools {
         alertDialog.show();
     }
 
-    public static void showAlertBluetoothRemove(final Context context, final ManageCar fragment, final Car car, final Button button) {
+    public static void showAlertBluetoothRemove(final Context context, final EditCar fragment, final Car car) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setCancelable(false);
 
-        alertDialog.setTitle("Join bluetooth device");
+        alertDialog.setTitle("Disconnect bluetooth device");
 
         alertDialog.setMessage("Do you want unlink \n "+car.getBluetoothName()+" ("+car.getBluetoothMac()+") \n from "+car.getName()+"?");
 
         alertDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        car.setBluetoothName(null);
-                        car.setBluetoothMac(null);
-
-                        button.setText(context.getResources().getString(R.string.add_bluetooth));
-
-                        fragment.setBluetoothUpdate();
-
+                        fragment.unlinkBluetoothDevice();
                         dialog.cancel();
                     }
                 });
@@ -552,5 +553,52 @@ public class Tools {
             notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
             mNotificationManager.notify(0, notificationBuilder.build());
+    }
+
+    public static SQLiteDatabase getDB_Readable(Context context){
+        DataBaseHelper databaseHelper = new DataBaseHelper(context);
+         return databaseHelper.getReadableDatabase();
+    }
+
+    public static SQLiteDatabase getDB_Writable(Context context){
+        DataBaseHelper databaseHelper = new DataBaseHelper(context);
+        return databaseHelper.getWritableDatabase();
+    }
+
+    public static String getPhotoID_byEmail(Context context, String email){
+        ContentResolver resolver = context.getContentResolver();
+        Cursor c = resolver.query(ContactsContract.Data.CONTENT_URI, new String[]{ContactsContract.Contacts.PHOTO_ID}, ContactsContract.CommonDataKinds.Email.DATA + "= ?", new String[]{email}, null);
+
+        if(c.moveToNext())
+            return c.getString(0);
+
+        return null;
+    }
+
+    public static void manageServerError(final Result result, final MainActivity activity){
+        Double temp = (Double)result.getObject();
+
+        if(temp.doubleValue() == 3){
+
+            activity.resetAppDB();
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.resetProgressDialogCircular(false);
+                    Tools.createToast(activity, "Your account is invalid, please signIn!", Toast.LENGTH_SHORT);
+                    activity.resetAppGraphic();
+                }
+            });
+        }
+        else{
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.resetProgressDialogCircular(false);
+                    Tools.createToast(activity,result.getDescription(), Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 }

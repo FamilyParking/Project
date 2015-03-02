@@ -7,9 +7,9 @@
     <string name="parking">P</string>
     <string name="add">+</string>
     <string name="find_contact">Write name or email</string>
-    <string name="add_contact">Add contact to group ...</string>
-    <string name="add_bluetooth">Add bluetooth device ...</string>
-    <string name="remove_bluetooth">Remove bluetooth device ...</string>
+    <string name="add_contact">Add contact to group</string>
+    <string name="add_bluetooth">Add bluetooth device</string>
+    <string name="remove_bluetooth">Remove bluetooth device</string>
     <string name="add_car">Create new car ...</string>
     <string name="back">BACK</string>
     <string name="code">Insert the code received by email</string>
@@ -25,12 +25,20 @@
     <string name="name_surname">Name and Surname</string>
     <string name="email">Email</string>
     <string name="name_group">Insert group\'s name</string>
-    <string name="car_model">Insert car\'s name and brand</string>
     <string name="group_empty">No group is available!</string>
     <string name="car_empty">No car is available!</string>
     <string name="save">SAVE</string>
     <string name="discard">DISCARD</string>
     <string name="info_ghostmode">If you enable ghostmode the automatic behaviour of the app will be disable</string>
+    <string name="create_car">Create car</string>
+    <string name="edit_car">Edit car</string>
+    <string name="car_name">Insert name</string>
+    <string name="car_register">Insert register</string>
+    <string name="car_details">DETAILS</string>
+    <string name="car_contacts">CONTACTS</string>
+    <string name="car_finder">Add: </string>
+    <string name="car_finder_rules">Using name or email</string>
+    <string name="bluetooth">BLUETOOTH</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

@@ -7,15 +7,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.adapter.CustomAdapterCar;
+import it.familiyparking.app.adapter.CustomHorizontalAdapter_4CarEdit;
+import it.familiyparking.app.adapter.CustomHorizontalAdapter_4CarItem;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -24,9 +30,8 @@ import it.familiyparking.app.utility.Tools;
  */
 public class CarFragment extends Fragment{
 
-    private ListView car_list;
-    private ArrayList<Car> cars;
-    private CustomAdapterCar customAdapterCar;
+    private User user;
+    private ArrayList<Car> carArrayList;
 
     public CarFragment() {}
 
@@ -34,27 +39,20 @@ public class CarFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_car, container, false);
 
-        Tools.setUpButtonActionBar((ActionBarActivity)getActivity());
 
-        DataBaseHelper databaseHelper = new DataBaseHelper(getActivity());
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        cars = CarTable.getAllCar(db);
-        db.close();
-
-        car_list = (ListView) rootView.findViewById(R.id.car_lv);
-        customAdapterCar = new CustomAdapterCar(this,getActivity(),cars,getActivity());
-        car_list.setAdapter(customAdapterCar);
-
-        customAdapterCar.notifyDataSetChanged();
 
         return rootView;
     }
 
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        this.carArrayList = args.getParcelableArrayList("cars");
+        this.user = args.getParcelable("user");
+    }
+
     public void updateAdapter(ArrayList<Car> newCarList){
-        cars = newCarList;
-        customAdapterCar = new CustomAdapterCar(this,getActivity(),newCarList,getActivity());
-        car_list.setAdapter(customAdapterCar);
-        customAdapterCar.notifyDataSetChanged();
+
     }
 
 }

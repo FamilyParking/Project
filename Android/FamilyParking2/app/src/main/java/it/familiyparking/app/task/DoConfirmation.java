@@ -1,5 +1,6 @@
 package it.familiyparking.app.task;
 
+import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
@@ -18,26 +20,28 @@ import it.familiyparking.app.utility.Tools;
 public class DoConfirmation implements Runnable {
 
     private String code;
-    private MainActivity activity;
+    private User user;
+    private Confirmation fragment;
 
-    public DoConfirmation(MainActivity activity, String code) {
+    public DoConfirmation(Confirmation fragment, User user, String code) {
         this.code = code;
-        this.activity = activity;
+        this.user = user;
+        this.fragment = fragment;
     }
 
     @Override
     public void run() {
         Looper.prepare();
 
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity.getApplicationContext());
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        User user = UserTable.getUser(db);
         user.setCode(code);
 
         final Result result = ServerCall.confirmation(user);
 
+        final MainActivity activity = (MainActivity) fragment.getActivity();
+
         if(result.isFlag()) {
+
+            SQLiteDatabase db = Tools.getDB_Writable(activity);
 
             UserTable.updateUser(db,user);
 
@@ -47,23 +51,12 @@ public class DoConfirmation implements Runnable {
                 @Override
                 public void run() {
                     Tools.createToast(activity,"Account confirmed!", Toast.LENGTH_SHORT);
-                    activity.callToEndConfirmation();
+                    fragment.endConfirmation(false);
                 }
             });
         }
         else{
-
-            UserTable.deleteUser(db);
-
-            db.close();
-
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Tools.createToast(activity,result.getDescription(), Toast.LENGTH_SHORT);
-                    activity.callToEndConfirmationInError();
-                }
-            });
+            Tools.manageServerError(result,activity);
         }
     }
 }

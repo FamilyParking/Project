@@ -83,13 +83,11 @@ public class ServiceBluetooth extends Service{
 
                         car.setLatitude(Double.toString(position[0]));
                         car.setLongitude(Double.toString(position[1]));
-                        car.setCode(user.getCode());
-                        car.setEmail(user.getEmail());
 
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                ServerCall.updatePosition(car);
+                                //ServerCall.updatePosition(car);
                                 Intent intent = new Intent(Code.INTENT_TAG);
                                 intent.putExtra("car", car);
                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);

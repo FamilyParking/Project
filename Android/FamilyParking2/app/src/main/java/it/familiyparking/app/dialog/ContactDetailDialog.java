@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -20,7 +20,8 @@ import it.familiyparking.app.utility.Tools;
  */
 public class ContactDetailDialog extends Fragment{
 
-    private Contact contact;
+    private User contact;
+    private User user;
 
     public ContactDetailDialog() {}
 
@@ -41,14 +42,37 @@ public class ContactDetailDialog extends Fragment{
         ((TextView) rootView.findViewById(R.id.contact_name_tv_detail)).setText(contact.getName());
 
 
-        Tools.addThumbnail(getActivity().getApplicationContext(), ((ImageView) rootView.findViewById(R.id.contact_image_iv_detail)), contact.getPhoto_Id());
+        Tools.addThumbnail(getActivity().getApplicationContext(), ((ImageView) rootView.findViewById(R.id.contact_image_iv_detail)), Integer.getInteger(contact.getPhoto_ID()));
 
-        (rootView.findViewById(R.id.back_rl)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeDialog();
-            }
-        });
+        if(contact.equals(user)) {
+            rootView.findViewById(R.id.button_rl_detail_all).setVisibility(View.GONE);
+            rootView.findViewById(R.id.button_rl_detail_only_view).setVisibility(View.VISIBLE);
+
+            (rootView.findViewById(R.id.back_rl)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeDialog();
+                }
+            });
+        }
+        else {
+            rootView.findViewById(R.id.button_rl_detail_all).setVisibility(View.VISIBLE);
+            rootView.findViewById(R.id.button_rl_detail_only_view).setVisibility(View.GONE);
+
+            (rootView.findViewById(R.id.back_all_rl)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeDialog();
+                }
+            });
+
+            (rootView.findViewById(R.id.delete_rl)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteContact();
+                }
+            });
+        }
 
         return rootView;
     }
@@ -56,6 +80,7 @@ public class ContactDetailDialog extends Fragment{
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
+        this.user = args.getParcelable("user");
         this.contact = args.getParcelable("contact");
     }
 
@@ -64,6 +89,17 @@ public class ContactDetailDialog extends Fragment{
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                activity.resetContactDetailDialog();
+            }
+        });
+    }
+
+    public void deleteContact(){
+        final MainActivity activity = (MainActivity) getActivity();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.removeContact(contact);
                 activity.resetContactDetailDialog();
             }
         });

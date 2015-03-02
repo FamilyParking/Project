@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.widget.Button;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.fragment.ManageCar;
+import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.utility.Tools;
 
@@ -19,9 +19,9 @@ public class DoBluetoothJoin implements Runnable {
     private MainActivity activity;
     private Car car;
     private Button button;
-    private ManageCar fragment;
+    private EditCar fragment;
 
-    public DoBluetoothJoin(Activity activity, Car car, Button button, ManageCar fragment) {
+    public DoBluetoothJoin(Activity activity, Car car, Button button, EditCar fragment) {
         this.activity = (MainActivity)activity;
         this.car = car;
         this.button = button;

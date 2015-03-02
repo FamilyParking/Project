@@ -5,10 +5,11 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_groups"
-        android:title="@string/action_groups"
+        android:id="@+id/action_position"
+        android:title=""
+        android:icon="@android:drawable/ic_menu_mylocation"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_cars"

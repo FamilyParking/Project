@@ -13,43 +13,37 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import it.familiyparking.app.R;
-import it.familiyparking.app.serverClass.Contact;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
  */
-public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
+public class CustomHorizontalAdapter_4CarItem extends ArrayAdapter<User> {
 
-    private HashSet<String> set;
     private Activity activity;
 
-    public CustomHorizontalAdapter(Activity activity, ArrayList<Contact> contacts) {
+    public CustomHorizontalAdapter_4CarItem(Activity activity, ArrayList<User> contacts) {
         super(activity.getApplicationContext(), 0, contacts);
-
         this.activity = activity;
-
-        set = new HashSet<>();
-        for(Contact contact : contacts)
-            set.add(contact.getEmail());
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Contact contact = getItem(position);
+        User contact = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_group_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_4car_item, parent, false);
         }
 
         ImageView photo = (ImageView) convertView.findViewById(R.id.group_contact_image_iv);
         TextView textView = (TextView) convertView.findViewById(R.id.group_contact_image_tv);
 
-        if(contact.hasPhoto()) {
+        if(contact.has_photo()) {
             photo.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
-            Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_Id()));
+            Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
         }
         else {
             photo.setVisibility(View.GONE);
@@ -58,25 +52,5 @@ public class CustomHorizontalAdapter extends ArrayAdapter<Contact> {
         }
 
         return convertView;
-    }
-
-    public void add(Contact contact,boolean flag_toast) {
-        if(!set.contains(contact.getEmail())) {
-            set.add(contact.getEmail());
-            super.add(contact);
-
-            if(flag_toast)
-                Tools.createToast(getContext(),"Contact added to group!", Toast.LENGTH_SHORT);
-        }
-        else{
-            if(flag_toast)
-                Tools.createToast(getContext(),"Contact already in the group!", Toast.LENGTH_LONG);
-        }
-    }
-
-    @Override
-    public void remove(Contact contact) {
-        super.remove(contact);
-        set.remove(contact.getEmail());
     }
 }

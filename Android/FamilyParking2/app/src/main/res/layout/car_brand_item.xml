@@ -4,12 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/car_logo_item_iv"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="2dp"
-        />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">
+
+        <ImageView
+            android:id="@+id/car_logo_item_iv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/alfa_romeo"
+            />
+
+        <TextView
+            android:id="@+id/car_logo_item_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alfaromeo"
+            android:textColor="@color/ligth_gray"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/car_logo_item_iv"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

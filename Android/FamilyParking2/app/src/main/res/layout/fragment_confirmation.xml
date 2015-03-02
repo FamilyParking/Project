@@ -21,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginBottom="5dp"
             android:padding="5dp"
-            android:background="@drawable/rectangle_signin">
+            android:background="@drawable/rectangle_green">
             <EditText
                 android:id="@+id/confirmation_et"
                 android:layout_width="match_parent"
@@ -46,8 +46,7 @@
             android:layout_below="@id/confirmation_r"
             android:layout_centerHorizontal="true"
             android:background="@drawable/arrow_blue_up"
-            android:clickable="false"
-            android:onClick="onClick_Confirmation"/>
+            android:clickable="false"/>
 
         <com.pnikosis.materialishprogress.ProgressWheel
             android:id="@+id/progress_confirmation"

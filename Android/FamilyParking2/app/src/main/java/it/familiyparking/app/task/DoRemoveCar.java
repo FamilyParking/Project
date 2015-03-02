@@ -9,9 +9,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.dao.CarGroupRelationTable;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.serverClass.Car;
@@ -26,56 +26,42 @@ import it.familiyparking.app.utility.Tools;
 public class DoRemoveCar implements Runnable {
 
     private MainActivity activity;
-    private CarFragment carFragment;
-    private String carID;
+    private Car car;
+    private User user;
 
-    public DoRemoveCar(FragmentActivity activity, Fragment fragment, String carID) {
+    public DoRemoveCar(FragmentActivity activity, Car car, User user) {
         this.activity = (MainActivity)activity;
-        this.carID = carID;
-        this.carFragment = (CarFragment) fragment;
+        this.car = car;
+        this.user = user;
     }
 
     @Override
     public void run() {
         Looper.prepare();
 
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity);
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-
-        User user = UserTable.getUser(db);
-
-        final Result result = ServerCall.deleteCar(new Car(carID, user.getEmail(), user.getCode()));
+        final Result result = ServerCall.removeCar(user,car);
 
         if(result.isFlag()) {
-            CarTable.deleteCar(db, carID);
-            CarGroupRelationTable.deleteCar(db, carID);
 
-            final ArrayList<Car> cars = CarTable.getAllCar(db);
-            boolean emptyCar = cars.isEmpty();
+            SQLiteDatabase db = Tools.getDB_Writable(activity);
+
+            CarTable.deleteCar(db,car.getId());
+
+            GroupTable.deleteGroup(db, car.getId());
+
+            db.close();
 
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    carFragment.updateAdapter(cars);
-                    activity.resetProgressDialogCircular(true);
-                    Tools.createToast(activity, "Car removed!", Toast.LENGTH_SHORT);
+                    activity.resetProgressDialogCircular(false);
+                    activity.closeModifyCar();
+                    Tools.createToast(activity, "Car deleted!", Toast.LENGTH_SHORT);
                 }
             });
-
-            if (emptyCar)
-                activity.removeCarFragment(emptyCar);
         }
         else{
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.removeCarFragment(false);
-                    activity.resetProgressDialogCircular(true);
-                    Tools.createToast(activity, result.getDescription(), Toast.LENGTH_SHORT);
-                }
-            });
+            Tools.manageServerError(result,activity);
         }
-
-        db.close();
     }
 }

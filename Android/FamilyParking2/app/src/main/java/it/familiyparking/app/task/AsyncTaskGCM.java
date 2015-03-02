@@ -11,30 +11,26 @@ import java.io.IOException;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Code;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 18/12/14.
  */
 public class AsyncTaskGCM extends AsyncTask<Object,Void,Void> {
 
-    String regID;
-    MainActivity activity;
+    private String regID;
+    private User user;
+    private MainActivity activity;
 
     @Override
     protected Void doInBackground(Object... params) {
 
-        this.activity = (MainActivity) params[0];
+        this.user = (User) params[0];
+        this.activity = (MainActivity) params[1];
 
-        try {
-            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(activity.getApplicationContext());
-            regID = gcm.register(Code.PROJECT_NUMBER);
-
-            Log.e("GCM ID","Valuer: "+regID);
-        } catch (IOException ex) {
-            Log.e("GCM Registration",ex.getMessage());
-
-        }
+        registration();
 
         return null;
     }
@@ -43,13 +39,29 @@ public class AsyncTaskGCM extends AsyncTask<Object,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity.getApplicationContext());
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = Tools.getDB_Writable(activity);
 
         UserTable.updateDeviceID(db,regID);
+        user.setCode(regID);
 
         db.close();
 
-        new Thread(new DoUpdateGCM(activity)).start();
+        new Thread(new DoUpdateGCM(activity,user)).start();
+    }
+
+    private void registration(){
+        try {
+            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(activity.getApplicationContext());
+            regID = gcm.register(Code.PROJECT_NUMBER);
+        } catch (Exception ex) {
+            Log.e("GCM Registration",ex.getMessage());
+
+            try {
+                Thread.sleep(5000);
+            }
+            catch (Exception e){}
+
+            registration();
+        }
     }
 }

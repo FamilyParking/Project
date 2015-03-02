@@ -3,15 +3,13 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
@@ -23,73 +21,122 @@ import it.familiyparking.app.utility.Tools;
  */
 public class DoUpdateCar implements Runnable {
 
-    private String newName;
-    private String newBrand;
-    private boolean bluetooth_change;
-    private Car oldCar;
     private MainActivity activity;
+    private User user;
+    private Car newCar;
+    private Car oldCar;
 
-    public DoUpdateCar(FragmentActivity activity, String newName, String newBrand, Car oldCar, boolean bluetooth_change) {
-        this.newName = newName;
-        this.newBrand = newBrand;
-        this.oldCar = oldCar;
+    public DoUpdateCar(FragmentActivity activity, Car newCar, Car oldCar, User user) {
         this.activity = (MainActivity)activity;
-        this.bluetooth_change = bluetooth_change;
+        this.newCar = newCar;
+        this.oldCar = oldCar;
+        this.user = user;
     }
 
     @Override
     public void run() {
         Looper.prepare();
 
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity);
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-        Result result = null;
-
-        if(!newName.equals(oldCar.getName()) || !newBrand.equals(oldCar.getBrand()) || bluetooth_change){
-            oldCar.setName(newName);
-            oldCar.setName(newBrand);
-
-            User user = UserTable.getUser(db);
-            oldCar.setEmail(user.getEmail());
-            oldCar.setCode(user.getCode());
-
-            result = ServerCall.modifyCar(oldCar);
-
-            if(result.isFlag()) {
-                CarTable.updateNameCar(db, oldCar.getId(), newName);
-                CarTable.updateNameBrand(db, oldCar.getId(), newBrand);
-
-                if (bluetooth_change) {
-                    CarTable.updateBluetooth(db, oldCar);
-                    Log.e("UpdateBluetooth", oldCar.toString());
-                }
-
-                final ArrayList<Car> cars = CarTable.getAllCar(db);
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.updateCarAdapter(cars);
-                    }
-                });
-            }
-        }
+        if(updateCar(db))
+            if(addUsers(db))
+                if(removeUsers(db))
+                    success();
 
         db.close();
+    }
 
-        final Result resultTemp = result;
+    private boolean updateCar(SQLiteDatabase db){
+        final Result result = ServerCall.updateCar(user, newCar);
+
+        if(result.isFlag()) {
+            CarTable.updateCar(db, newCar);
+        }
+        else{
+            Tools.manageServerError(result,activity);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean addUsers(SQLiteDatabase db){
+        ArrayList<User> toAdd = new ArrayList<>();
+
+        for(User newContact : newCar.getUsers()){
+            boolean add = true;
+            for(User oldContact : oldCar.getUsers()){
+                if(newContact.equals(oldContact)){
+                    add = false;
+                    break;
+                }
+            }
+            if(add)
+                toAdd.add(newContact);
+        }
+
+        if(toAdd.isEmpty())
+            return true;
+
+        final Result result = ServerCall.addCarUsers(user, oldCar.getId(), toAdd);
+
+        if(result.isFlag()) {
+            for(User contact : toAdd)
+                GroupTable.insertContact(db,oldCar.getId(),contact);
+        }
+        else{
+            Tools.manageServerError(result,activity);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean removeUsers(SQLiteDatabase db){
+        ArrayList<User> toRemove = new ArrayList<>();
+
+        for(User oldContact : oldCar.getUsers()){
+            boolean remove = true;
+            for(User newContact : newCar.getUsers()){
+                if(oldContact.equals(newContact)){
+                    remove = false;
+                    break;
+                }
+            }
+
+            if(remove)
+                toRemove.add(oldContact);
+        }
+
+        if(toRemove.isEmpty())
+            return true;
+
+        final Result result = ServerCall.removeCarUsers(user, oldCar.getId(), toRemove);
+
+        if(result.isFlag()) {
+            for(User contact : toRemove)
+                GroupTable.deleteContact(db,contact.getEmail(),oldCar.getId());
+        }
+        else{
+            Tools.manageServerError(result,activity);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private void success(){
         activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.resetProgressDialogCircular(false);
-                    activity.closeModifyCar();
-
-                    if((resultTemp == null) || resultTemp.isFlag())
-                        Tools.createToast(activity, "Car updated!", Toast.LENGTH_SHORT);
-                    else
-                        Tools.createToast(activity, resultTemp.getDescription(), Toast.LENGTH_SHORT);
-        }          });
-
+            @Override
+            public void run() {
+                activity.resetProgressDialogCircular(false);
+                activity.closeModifyCar();
+                Tools.createToast(activity, "Car updated!", Toast.LENGTH_SHORT);
+            }
+        });
     }
 }

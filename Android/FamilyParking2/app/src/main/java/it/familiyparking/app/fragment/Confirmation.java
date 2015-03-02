@@ -13,17 +13,21 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.task.AsyncTaskChangeButton;
+import it.familiyparking.app.task.DoConfirmation;
+import it.familiyparking.app.utility.Tools;
 
 
 /**
  * Created by francesco on 15/01/15.
  */
-public class Confirmation extends Fragment implements TextWatcher{
+public class Confirmation extends Fragment implements TextWatcher,View.OnClickListener{
 
     private EditText code;
     private Button confirmation;
+    private View progressCircle;
     private boolean correctInput;
     private boolean isRotated;
 
@@ -42,6 +46,9 @@ public class Confirmation extends Fragment implements TextWatcher{
         isRotated = false;
 
         confirmation = (Button)rootView.findViewById(R.id.confirmation_b);
+        confirmation.setOnClickListener(this);
+
+        progressCircle = rootView.findViewById(R.id.progress_confirmation);
 
         return rootView;
     }
@@ -79,5 +86,32 @@ public class Confirmation extends Fragment implements TextWatcher{
 
     public void resetEditText(){
         code.setText("");
+    }
+
+    public void onClick(View v){
+        MainActivity activity = (MainActivity) getActivity();
+
+        Tools.closeKeyboard(v,activity);
+
+        confirmation.setVisibility(View.GONE);
+        progressCircle.setVisibility(View.VISIBLE);
+
+        code.setKeyListener(null);
+
+        new Thread(new DoConfirmation(this,activity.getUser(),code.getText().toString())).start();
+    }
+
+    public void endConfirmation(boolean error){
+
+        if(error){
+            confirmation.setVisibility(View.VISIBLE);
+            progressCircle.setVisibility(View.GONE);
+
+            resetEditText();
+        }
+        else{
+            MainActivity activity = (MainActivity) getActivity();
+            activity.endConfirmation();
+        }
     }
 }

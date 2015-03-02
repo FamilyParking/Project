@@ -1,14 +1,13 @@
 package it.familiyparking.app.task;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.util.Log;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Result;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -16,27 +15,24 @@ import it.familiyparking.app.utility.ServerCall;
 public class DoUpdateGCM implements Runnable {
 
     private MainActivity activity;
+    private User user;
 
-    public DoUpdateGCM(MainActivity activity) {
+    public DoUpdateGCM(MainActivity activity, User user) {
         this.activity = activity;
+        this.user = user;
     }
 
     @Override
     public void run() {
         Looper.prepare();
 
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity.getApplicationContext());
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        final Result result = ServerCall.updateGoogleCode(UserTable.getUser(db));
-
-        db.close();
+        final Result result = ServerCall.updateGoogleCode(user);
 
         if(result.isFlag()) {
             Log.e("UpdateGMC","OK");
         }
         else{
-            Log.e("UpdateGMC", "KO");
+            Tools.manageServerError(result, activity);
         }
     }
 }

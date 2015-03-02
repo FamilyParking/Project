@@ -10,16 +10,17 @@ import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.ServerCall;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoGetAllCarFromEmail implements Runnable {
+public class DoGetAllCar implements Runnable {
 
     private User user;
     private MainActivity activity;
 
-    public DoGetAllCarFromEmail(MainActivity activity, User user) {
+    public DoGetAllCar(MainActivity activity, User user) {
         this.user = user;
         this.activity = activity;
     }
@@ -28,7 +29,7 @@ public class DoGetAllCarFromEmail implements Runnable {
     public void run() {
         Looper.prepare();
 
-        final Result result = ServerCall.getAllCarCreatedByMe(user);
+        final Result result = ServerCall.getAllCar(user);
 
         if(result.isFlag()){
             ArrayList<Car> cars = (ArrayList<Car>) result.getObject();
@@ -44,7 +45,7 @@ public class DoGetAllCarFromEmail implements Runnable {
             }
         }
         else{
-            Log.e("DoGetAllCarFromEmail",result.getDescription());
+            Tools.manageServerError(result, activity);
         }
     }
 }

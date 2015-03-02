@@ -1,18 +1,23 @@
 package it.familiyparking.app.fragment;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import it.familiyparking.app.R;
@@ -73,6 +78,7 @@ public class Map extends Fragment{
         if (googleMap == null) {
             googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
         }
     }
 
@@ -90,6 +96,7 @@ public class Map extends Fragment{
             }
 
             googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
 
             if(p_button)
@@ -105,6 +112,11 @@ public class Map extends Fragment{
         toPark.setVisibility(View.VISIBLE);
     }
 
+    public void resetPbutton(){
+        toPark.setClickable(false);
+        toPark.setVisibility(View.GONE);
+    }
+
     public String getLatitude(){
         return Double.toString(googleMap.getMyLocation().getLatitude());
     }
@@ -116,5 +128,17 @@ public class Map extends Fragment{
     public void parkCar(Car car){
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()))).title(car.getName()));
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                resetPbutton();
+                return false;
+            }
+        });
+    }
+
+    public void updatePosition(){
+        Location location = googleMap.getMyLocation();
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
     }
 }

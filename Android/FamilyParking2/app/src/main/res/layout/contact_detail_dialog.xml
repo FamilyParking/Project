@@ -65,10 +65,11 @@
             android:layout_below="@id/contact_rl_detail"/>
 
         <RelativeLayout
-            android:id="@+id/button_rl_detail"
+            android:id="@+id/button_rl_detail_only_view"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
+            android:visibility="visible"
             android:layout_below="@id/line">
 
 
@@ -97,6 +98,77 @@
                     android:layout_toRightOf="@id/image_back"
                     android:layout_centerVertical="true"
                     android:text="@string/back"
+                    android:textSize="15sp"
+                    android:textColor="@color/gray"
+                    android:background="@color/transparent"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/button_rl_detail_all"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:layout_below="@id/line">
+
+
+            <RelativeLayout
+                android:id="@+id/back_all_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/image_back_all"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@android:drawable/ic_menu_revert"
+                    android:backgroundTint="@color/gray"/>
+
+                <TextView
+                    android:id="@+id/back_detail_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/image_back_all"
+                    android:layout_centerVertical="true"
+                    android:text="@string/back"
+                    android:textSize="15sp"
+                    android:textColor="@color/gray"
+                    android:background="@color/transparent"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/delete_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/image_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:background="@android:drawable/ic_menu_delete"
+                    android:backgroundTint="@color/gray"/>
+
+                <TextView
+                    android:id="@+id/delete_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/image_delete"
+                    android:text="@string/delete"
                     android:textSize="15sp"
                     android:textColor="@color/gray"
                     android:background="@color/transparent"/>

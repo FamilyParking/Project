@@ -13,19 +13,22 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.task.AsyncTaskChangeButton;
+import it.familiyparking.app.task.DoSignIn;
 import it.familiyparking.app.utility.Tools;
 
 
 /**
  * Created by francesco on 15/01/15.
  */
-public class SignIn extends Fragment implements TextWatcher{
+public class SignIn extends Fragment implements TextWatcher,View.OnClickListener{
 
     private EditText name_surname;
     private EditText email;
     private Button signIn;
+    private View progressCircle;
     private boolean correctInput;
     private boolean isRotated;
 
@@ -47,6 +50,9 @@ public class SignIn extends Fragment implements TextWatcher{
         isRotated = false;
 
         signIn = (Button)rootView.findViewById(R.id.signIn_b);
+        signIn.setOnClickListener(this);
+
+        progressCircle = rootView.findViewById(R.id.progress_signIn);
 
         return rootView;
     }
@@ -81,4 +87,35 @@ public class SignIn extends Fragment implements TextWatcher{
             correctInput = false;
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        Tools.closeKeyboard(v,getActivity());
+
+        signIn.setVisibility(View.GONE);
+        progressCircle.setVisibility(View.VISIBLE);
+
+        name_surname.setKeyListener(null);
+        email.setKeyListener(null);
+
+        new Thread(new DoSignIn(this,name_surname.getText().toString(),email.getText().toString())).start();
+    }
+
+    public void endSignIn(boolean error){
+        if(error){
+            signIn.setVisibility(View.VISIBLE);
+            progressCircle.setVisibility(View.GONE);
+
+            resetEditText();
+        }
+        else{
+            ((MainActivity) getActivity()).endSignIn();
+        }
+    }
+
+    private void resetEditText(){
+        name_surname.setText("");
+        email.setText("");
+    }
+
 }
