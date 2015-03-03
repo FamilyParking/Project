@@ -26,8 +26,3 @@ class Car_group(ndb.Model):
     def delete_car_ID(id_car, id_group):
         app_key = Car_group.getCarGroup(id_car, id_group)
         app_key.get().key.delete()
-
-    @staticmethod
-    def delete_from_ID_car(id_car):
-        temp_group_ID = Car_group.getGroupFromCar(id_car)
-        Car_group.delete_car_ID(id_car,temp_group_ID.get().id_group)

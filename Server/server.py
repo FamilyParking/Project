@@ -147,11 +147,11 @@ class createCar(webapp2.RequestHandler):
 			car_data = dati["Car"]
 			user_data = dati["User"]
 			if "Bluetooth_MAC" in car_data:
-				new_car = Car(name=car_data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
+				new_car = Car(name=car_data["Name_car"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
 							  email=user_data["Email"], bluetooth_MAC=car_data["Bluetooth_MAC"],
 							  bluetooth_name=car_data["Bluetooth_name"], brand=car_data["Brand"])
 			else:
-				new_car = Car(name=car_data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
+				new_car = Car(name=car_data["Name_car"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
 							  email=car_data["Email"], brand=car_data["Brand"])
 
 			new_car.put()
@@ -204,6 +204,9 @@ class deleteCar(webapp2.RequestHandler):
 			for user in tempUser:
 				id_user = user.key.id()
 			User_car.deleteCarUser(id_user, car_data["ID_car"])
+			user_car = User_car.getUserFromCar(car_data["ID_car"])
+			if (user_car.count() == 0):
+				Car.delete_car_ID(car_data["ID_car"])
 			right = StatusReturn(7,"deleteCar")
 			self.response.write(right.print_result())
 			
@@ -235,6 +238,8 @@ class insertContactCar(webapp2.RequestHandler):
 					temp_user_key = new_user.put()
 					user_key = temp_user_key.id()
 				if User_car.check_user_exist(user_key, int(car_data["ID_car"])) > 0:
+					# user_car = User_car.query(User_car.id_car == long(car_data["ID_car"]) and User_car.id_user == long(user_key))
+					# if user_car.count() == 0:
 					new_contact_car = User_car(id_user=user_key, id_car=int(car_data["ID_car"]))
 					new_contact_car.put()
 			right = StatusReturn(10, "insertContactCar")
@@ -251,6 +256,9 @@ class removeContactCar(webapp2.RequestHandler):
 				for id_user in tempUser:
 					user_key = id_user.key.id()
 				User_car.deleteCarUser(user_key, car_data["ID_car"])
+			# user_car = User_car.getUserFromCar(car_data["ID_car"])
+			# if (user_car.count() == 0):
+				# Car.delete_car_ID(car_data["ID_car"])
 			right = StatusReturn(18, "removeContactCar")
 			self.response.write(right.print_result())
 

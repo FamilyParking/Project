@@ -119,4 +119,3 @@ class Car(ndb.Model):
 			logging.debug(sys.exc_info())
 		return cars
 
-

@@ -1,4 +1,3 @@
-import json
 import logging
 import sys
 import json
@@ -18,50 +17,50 @@ class StatusReturn:
         error_data = {}
         if self.number == 1:
             logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json "+ str(sys.exc_info()))
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "Can't load json"
             error_data["object"] = 1
 
         elif self.number == 2:
             logging.debug("[" + str(self.function) + "] Error 2 --> User not found ")
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "User not found"
             error_data["object"] = 2
 
         elif self.number == 3:
             logging.debug("[" + str(self.function) + "] Error 3 --> Code not valid")
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "Code not valid"
             error_data["object"] = 3
 
         elif self.number == 4:
             logging.debug("[" + str(self.function) + "] Error 4 --> Check code problem")
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "Check code problem"
             error_data["object"] = 4
         elif self.number == 5:
             logging.debug("[" + str(self.function) + "] Error 5 --> Return value not match")
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "Return value not match"
             error_data["object"] = 5
         elif self.number == 6:
             logging.debug("[" + str(self.function) + "] Error 6 --> Generic error "+ str(sys.exc_info()))
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "Generic error"
             error_data["object"] = 6
         elif self.number == 7:
             logging.debug("[" + str(self.function) + "] Error 7 --> ERROR ID_group")
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "ERROR ID_group"
             error_data["object"] = 7
         elif self.number == 8:
             logging.debug("[" + str(self.function) + "] Error 8 --> SysError = " + self.object_result)
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "Sys ERROR"
             error_data["object"] = 8
         else:
             logging.debug("[" + str(self.function) + "]: -----ERROR---- ")
-            error_data["flag"] = "False"
+            error_data["flag"] = False
             error_data["description"] = "ERROR"
             error_data["object"] = None
 
@@ -71,19 +70,19 @@ class StatusReturn:
         error_data = {}
         if self.number == 1:
             logging.debug("[" + str(self.function) + "] OK 1 --> ID groups ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " ID groups"
             error_data["object"] = self.object_result
 
         elif self.number == 2:
             logging.debug("[" + str(self.function) + "] OK 2 --> CAR by id group ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Car by id group"
             error_data["object"] = self.object_result
 
         elif self.number == 3:
             logging.debug("[" + str(self.function) + "] OK 3 --> All Car ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " All Car"
             error_data["object"] = self.object_result
 
@@ -95,85 +94,85 @@ class StatusReturn:
 
         elif self.number == 5:
             logging.debug("[" + str(self.function) + "] OK 5 --> updateCar ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Car updated with success"
             error_data["object"] = self.object_result
 
         elif self.number == 6:
             logging.debug("[" + str(self.function) + "] OK 6 --> createCar ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Group created with success"
             error_data["object"] = self.object_result
 
         elif self.number == 7:
             logging.debug("[" + str(self.function) + "] OK 7 --> deleteCar ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Car removed with success"
             error_data["object"] = self.object_result
 
         elif self.number == 8:
             logging.debug("[" + str(self.function) + "] OK 8 --> deleteGroup ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Group removed with success"
             error_data["object"] = self.object_result
 
         elif self.number == 9:
             logging.debug("[" + str(self.function) + "] OK 9 --> Position of the car ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = "Position of the car"
             error_data["object"] = self.object_result
 
         elif self.number == 10:
             logging.debug("[" + str(self.function) + "] OK 10 --> Insert contacts in the group ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = "Contacts inserted with success"
             error_data["object"] = self.object_result
 
         elif self.number == 11:
             logging.debug("[" + str(self.function) + "] OK 11 --> Confirm code")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = "Code right"
             error_data["object"] = self.object_result
 
         elif self.number == 12:
             logging.debug("[" + str(self.function) + "] OK 2 --> CAR by email ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Car by email"
             error_data["object"] = self.object_result
 
         elif self.number == 13:
             logging.debug("[" + str(self.function) + "] OK 13 --> Car connect with group")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Car connect with group"
             error_data["object"] = self.object_result
 
         elif self.number == 14:
-            logging.debug("[" + str(self.function) + "] OK 14 --> Update google code")
-            error_data["flag"] = "True"
-            error_data["description"] = " Update google code"
+            logging.debug("[" + str(self.function) + "] OK 13 --> Delete car connect with group")
+            error_data["flag"] = True
+            error_data["description"] = " Delete car"
             error_data["object"] = self.object_result
 
         elif self.number == 15:
             logging.debug("[" + str(self.function) + "] OK 15 --> Update google code")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Update google code"
             error_data["object"] = self.object_result
 
         elif self.number == 16:
             logging.debug("[" + str(self.function) + "] OK 16 --> Update car")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Update car"
             error_data["object"] = self.object_result
 
         elif self.number == 17:
             logging.debug("[" + str(self.function) + "] OK 17 --> Update group")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = " Update group"
             error_data["object"] = self.object_result
 
         elif self.number == 18:
             logging.debug("[" + str(self.function) + "] OK 10 --> Delete contacts in the group ")
-            error_data["flag"] = "True"
+            error_data["flag"] = True
             error_data["description"] = "Contacts deleted with success"
             error_data["object"] = self.object_result
         logging.debug(error_data)
