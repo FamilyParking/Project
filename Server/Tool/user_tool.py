@@ -41,6 +41,7 @@ class User_tool():
     @staticmethod
     def check_before_start(method_name, result):
         try:
+            logging.debug("Test_before nome del metodo: "+str(method_name))
             data = json.loads(result.request.body)
             user_class = data["User"]
             code = int(user_class["Code"])

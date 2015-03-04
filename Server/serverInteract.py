@@ -13,7 +13,6 @@ from Cloud_Storage.car import Car
 from Cloud_Storage.group import Group
 from Cloud_Storage.user_copy import User_copy
 from Cloud_Storage.user_group import User_group
-
 from google.appengine.api import mail
 from Tool.push_notification import push_class
 
@@ -258,30 +257,33 @@ class deleteCar(webapp2.RequestHandler):
             try:
                 data_car = data["Car"]
                 data_user = data["User"]
+                try:
+                    #Return group from car
+                    temp_group = Car_group.getGroupFromCar(long(data_car["ID_car"]))
 
-                #Return group from car
-                temp_group = Car_group.getGroupFromCar(data_car["ID_car"])
+                    #Delete the contact from the group
+                    temp_user = User.static_querySearch_email(data_user["Email"])
 
-                #Delete the contact from the group
-                temp_user = User.static_querySearch_email(data_user["Email"])
+                    User_group.delete_contact_group(temp_user.get().key.id(), temp_group.get().id_group)
 
-                User_group.delete_contact_group(temp_user.get().key.id(), temp_group.get().id_group)
+                    logging.debug("ID_user da eliminare: "+str(temp_user.get().key.id()) +" ID gruppo da eliminare: "+str(temp_group.get().id_group))
 
-                logging.debug("ID_user da eliminare: "+str(temp_user.get().key.id()) +" ID gruppo da eliminare: "+str(temp_group.get().id_group))
+                    count_user = User_group.getUserFromGroup(temp_group.get().id_group)
 
-                count_user = User_group.getUserFromGroup(temp_group.get().id_group)
+                    #If the group is empty delete the car and the group
+                    if list.count(count_user) == 0:
+                        Group.delete_group_ID(temp_group.get().id_group)
+                        Car.delete_car_ID(data_car["ID_car"])
 
-                #If the group is empty delete the car and the group
-                if list.count(count_user) == 0:
-                    Group.delete_group_ID(temp_group.get().id_group)
-                    Car.delete_car_ID(data_car["ID_car"])
+                    right = StatusReturn(7, "deleteCar", "Delete " + str(data_car["ID_car"]))
+                    self.response.write(right.print_result())
 
-                right = StatusReturn(7, "deleteCar", "Delete " + str(data_car["ID_car"]))
-                self.response.write(right.print_result())
+                except:
+                    self.error(500)
+                    self.response.write(sys.exc_info())
             except:
                 self.error(500)
                 self.response.write("Errore")
-
 
 
 class getPositionCar(webapp2.RequestHandler):

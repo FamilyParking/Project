@@ -11,6 +11,7 @@ class User_car(ndb.Model):
 	def getUser(self):
 		user = User.static_querySearch_email(self.id_user)
 		return user
+
 	@staticmethod
 	def getUserFromCar(id_car):
 		result_group = User_car.query(User_car.id_car == long(id_car))
