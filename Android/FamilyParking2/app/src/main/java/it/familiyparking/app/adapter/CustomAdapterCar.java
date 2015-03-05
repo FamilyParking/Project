@@ -1,10 +1,10 @@
 package it.familiyparking.app.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
@@ -38,7 +36,7 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
         Car car = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_4car_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_item, parent, false);
         }
 
         setBrand(convertView,car);
@@ -68,11 +66,14 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
     }
 
     private void setBluetooth(View convertView, Car car) {
-        ImageView bluetooth = (ImageView) convertView.findViewById(R.id.car_bluetooth_iv);
-        if(car.getBluetoothMac() != null)
-            bluetooth.setVisibility(View.VISIBLE);
-        else
-            bluetooth.setVisibility(View.GONE);
+        if(car.getBluetoothMac() != null) {
+            convertView.findViewById(R.id.bluetooth_circle_ok).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.bluetooth_circle_ko).setVisibility(View.GONE);
+        }
+        else {
+            convertView.findViewById(R.id.bluetooth_circle_ok).setVisibility(View.GONE);
+            convertView.findViewById(R.id.bluetooth_circle_ko).setVisibility(View.VISIBLE);
+        }
     }
 
     private void setContactList(View convertView, Car car) {
@@ -81,12 +82,12 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
         contact_list.setAdapter(customHorizontalAdapter);
     }
 
-    private void setDetailButton(View convertView, Car car){
+    private void setDetailButton(View convertView, final Car car){
         Button details_button = (Button) convertView.findViewById(R.id.car_arrow_iv);
         details_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Go to car details
+                activity.setCarDetail(car);
             }
         });
     }

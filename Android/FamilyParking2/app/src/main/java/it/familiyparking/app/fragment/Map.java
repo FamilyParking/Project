@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -20,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
@@ -33,9 +32,7 @@ public class Map extends Fragment{
 
     private GoogleMap googleMap;
     private Button toPark;
-    private Button toCreate;
     private boolean afterPositionSettings;
-    private Context context;
     private boolean setGraphic;
 
     public Map() {}
@@ -49,7 +46,6 @@ public class Map extends Fragment{
         setUpMap();
 
         toPark = (Button)rootView.findViewById(R.id.toPark);
-        toCreate = (Button)rootView.findViewById(R.id.toCreate);
 
         return rootView;
     }
@@ -101,9 +97,6 @@ public class Map extends Fragment{
 
             if(p_button)
                 setPbutton();
-
-            toCreate.setClickable(true);
-            toCreate.setVisibility(View.VISIBLE);
         }
     }
 

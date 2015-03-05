@@ -22,4 +22,8 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <style name="normalText">
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

@@ -6,10 +6,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import java.io.IOException;
-
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Code;
@@ -41,8 +38,8 @@ public class AsyncTaskGCM extends AsyncTask<Object,Void,Void> {
 
         SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-        UserTable.updateDeviceID(db,regID);
-        user.setCode(regID);
+        UserTable.updateGCM_ID(db, regID);
+        user.setGoogle_cloud_messaging(regID);
 
         db.close();
 

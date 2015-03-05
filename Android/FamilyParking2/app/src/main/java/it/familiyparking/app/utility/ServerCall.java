@@ -10,8 +10,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -19,6 +17,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.Container;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 
@@ -31,10 +30,12 @@ public class ServerCall {
 
     public static Result signIn(User user){
 
+        return debug();
+
         /*try {
             HttpClient httpclient = new DefaultHttpClient();
 
-            HttpPost httpPost = new HttpPost(service_add+"registration");
+            HttpPost httpPost = new HttpPost(server_address+"registration");
 
             Gson gson = new Gson();
             String json = gson.toJson(user);
@@ -59,20 +60,21 @@ public class ServerCall {
         }
 
         return null;*/
-
-        sleep();
-        return new Result(true,"DEBUG","Debug");
     }
 
     public static Result confirmation(User user){
 
+        return debug();
+
         /*try {
             HttpClient httpclient = new DefaultHttpClient();
 
-            HttpPost httpPost = new HttpPost(service_add+"confirmCode");
+            HttpPost httpPost = new HttpPost(server_address+"confirmCode");
+
+            Container container = new Container(user);
 
             Gson gson = new Gson();
-            String json = gson.toJson(user);
+            String json = gson.toJson(container);
 
             StringEntity se = new StringEntity(json);
 
@@ -94,20 +96,21 @@ public class ServerCall {
         }
 
         return null;*/
-
-        sleep();
-        return new Result(true,"DEBUG","Debug");
     }
 
     public static Result updateGoogleCode(User user){
 
+        return debug();
+
         /*try {
             HttpClient httpclient = new DefaultHttpClient();
 
-            HttpPost httpPost = new HttpPost(service_add+"updateGoogleCode");
+            HttpPost httpPost = new HttpPost(server_address+"updateGoogleCode");
+
+            Container container = new Container(user);
 
             Gson gson = new Gson();
-            String json = gson.toJson(user);
+            String json = gson.toJson(container);
 
             StringEntity se = new StringEntity(json);
 
@@ -129,9 +132,6 @@ public class ServerCall {
         }
 
         return null;*/
-
-        sleep();
-        return new Result(true,"DEBUG","Debug");
     }
 
     public static Result getAllCar(User user){
@@ -317,6 +317,11 @@ public class ServerCall {
 
         return null;*/
 
+        sleep();
+        return new Result(true,"DEBUG","Debug");
+    }
+
+    private static Result debug(){
         sleep();
         return new Result(true,"DEBUG","Debug");
     }

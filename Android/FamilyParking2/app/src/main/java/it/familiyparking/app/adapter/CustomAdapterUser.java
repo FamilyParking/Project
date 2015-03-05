@@ -1,29 +1,36 @@
 package it.familiyparking.app.adapter;
 
 import android.app.Activity;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 02/01/15.
  */
-public class CustomHorizontalAdapter_4CarItem extends ArrayAdapter<User> {
+public class CustomAdapterUser extends ArrayAdapter<User> {
 
-    private Activity activity;
+    private MainActivity activity;
 
-    public CustomHorizontalAdapter_4CarItem(Activity activity, ArrayList<User> contacts) {
-        super(activity.getApplicationContext(), 0, contacts);
-        this.activity = activity;
+    public CustomAdapterUser(Activity activity, ArrayList<User> list) {
+        super(activity.getApplicationContext(), 0, list);
+        this.activity = (MainActivity) activity;
     }
 
     @Override
@@ -32,11 +39,14 @@ public class CustomHorizontalAdapter_4CarItem extends ArrayAdapter<User> {
         User contact = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_4car_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_item, parent, false);
         }
 
-        ImageView photo = (ImageView) convertView.findViewById(R.id.group_contact_image_iv);
-        TextView textView = (TextView) convertView.findViewById(R.id.group_contact_image_tv);
+        ((TextView) convertView.findViewById(R.id.contact_name_tv)).setText(contact.getName());
+        ((TextView) convertView.findViewById(R.id.contact_email_tv)).setText(contact.getEmail());
+
+        ImageView photo = (ImageView) convertView.findViewById(R.id.contact_image_iv);
+        TextView textView = (TextView) convertView.findViewById(R.id.contact_image_tv);
 
         if(contact.has_photo()) {
             photo.setVisibility(View.VISIBLE);
@@ -51,4 +61,5 @@ public class CustomHorizontalAdapter_4CarItem extends ArrayAdapter<User> {
 
         return convertView;
     }
+
 }

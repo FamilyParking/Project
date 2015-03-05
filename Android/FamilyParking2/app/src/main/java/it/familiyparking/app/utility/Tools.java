@@ -1,5 +1,6 @@
 package it.familiyparking.app.utility;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -12,7 +13,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,12 +37,10 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,8 +48,12 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
 import java.sql.Timestamp;
-import java.util.Objects;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -142,6 +144,52 @@ public class Tools {
 
     public static boolean isCursorEmpty(Cursor cursor){
         return !(cursor.moveToNext());
+    }
+
+    public static void addThumbnail(Context context,ImageView image, TextView text, User contact) {
+
+        boolean setText = true;
+
+        if (contact.has_photo()) {
+            final Bitmap thumbnail = fetchThumbnail(context,Integer.valueOf(contact.getPhoto_ID()));
+
+            if (thumbnail != null) {
+                image.setImageBitmap(thumbnail);
+                image.setVisibility(View.VISIBLE);
+                text.setVisibility(View.GONE);
+                setText = false;
+            }
+        }
+
+        if(setText){
+            Tools.setImageForContact(context,text,contact.getName());
+            image.setVisibility(View.GONE);
+            text.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public static void addThumbnail(Context context,ImageView image, TextView text, String name, Integer photo_id) {
+
+        boolean setText = true;
+
+        if (photo_id != null) {
+            final Bitmap thumbnail = fetchThumbnail(context,photo_id);
+
+            if (thumbnail != null) {
+                image.setImageBitmap(thumbnail);
+                image.setVisibility(View.VISIBLE);
+                text.setVisibility(View.GONE);
+                setText = false;
+            }
+        }
+
+        if(setText){
+            Tools.setImageForContact(context,text,name);
+            image.setVisibility(View.GONE);
+            text.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public static void addThumbnail(Context context,ImageView photo_iv,Integer photo_id) {
@@ -252,6 +300,16 @@ public class Tools {
         }
     }
 
+    public static void resetTabActionBar(ActionBarActivity activity){
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            android.app.ActionBar actionBar = activity.getActionBar();
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        } else{
+            android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        }
+    }
+
     public static void setUpButtonActionBar(ActionBarActivity activity){
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
             android.app.ActionBar actionBar = activity.getActionBar();
@@ -282,6 +340,16 @@ public class Tools {
         }
     }
 
+    public static void setTitleActionBar(ActionBarActivity activity,String title){
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
+            android.app.ActionBar actionBar = activity.getActionBar();
+            actionBar.setTitle(title);
+        } else{
+            android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setTitle(title);
+        }
+    }
+
     public static Tracker activeAnalytic(Context context){
         GoogleAnalytics ga = GoogleAnalytics.getInstance(context);
         Tracker tr = ga.newTracker(Code.GOOGLE_ANALYTICS);
@@ -307,23 +375,23 @@ public class Tools {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static int getColor(Activity activity, String name){
+    public static int getColor(Context context, String name){
         int color =  hashFunction(name) % 4;
         switch (color){
             case 0:
-                color = activity.getResources().getColor(R.color.purple);
+                color = context.getResources().getColor(R.color.purple);
                 break;
             case 1:
-                color = activity.getResources().getColor(R.color.dark_red);
+                color = context.getResources().getColor(R.color.dark_red);
                 break;
             case 2:
-                color = activity.getResources().getColor(R.color.orange);
+                color = context.getResources().getColor(R.color.orange);
                 break;
             case 3:
-                color = activity.getResources().getColor(R.color.dark_yellow);
+                color = context.getResources().getColor(R.color.dark_yellow);
                 break;
             default:
-                color = activity.getResources().getColor(R.color.sapienza);
+                color = context.getResources().getColor(R.color.sapienza);
         }
         return color;
     }
@@ -351,6 +419,18 @@ public class Tools {
         drawable.setColorFilter(new PorterDuffColorFilter(getColor(activity,contact.getName()),PorterDuff.Mode.SCREEN));
         group_image.setBackgroundDrawable(drawable);
         String initial = getInitial(contact.getName());
+        group_image.setText(initial.toUpperCase());
+    }
+
+    public static void setImageForContact(Context context, TextView group_image, String name){
+        Drawable drawable = context.getResources().getDrawable(R.drawable.circle);
+        drawable.setColorFilter(new PorterDuffColorFilter(getColor(context,name),PorterDuff.Mode.SCREEN));
+        group_image.setBackgroundDrawable(drawable);
+        String initial = getInitial(name);
+
+        if(initial.length() > 2)
+            group_image.setTextSize(20.0f);
+
         group_image.setText(initial.toUpperCase());
     }
 
@@ -468,7 +548,10 @@ public class Tools {
 
         alertDialog.setTitle("Disconnect bluetooth device");
 
-        alertDialog.setMessage("Do you want unlink \n "+car.getBluetoothName()+" ("+car.getBluetoothMac()+") \n from "+car.getName()+"?");
+        if(car.getName() != null)
+            alertDialog.setMessage("Do you want unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")\n"+"from "+car.getName()+"?");
+        else
+            alertDialog.setMessage("Do you want unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")?");
 
         alertDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
@@ -601,4 +684,49 @@ public class Tools {
             });
         }
     }
+
+    public static String getIntervalDataServer(String data){
+
+        String[] mex = data.split(" ");
+        String[] first = mex[0].split("-");
+        String[] second = mex[1].split(":");
+        String third = second[2].substring(0,second.length-1);
+
+        DateTime myBirthDate = new DateTime(Integer.parseInt(first[0]), Integer.parseInt(first[1]), Integer.parseInt(first[2]), Integer.parseInt(second[0]), Integer.parseInt(second[1]), Integer.parseInt(third), 0);
+        DateTime now = new DateTime();
+        Period period = new Period(myBirthDate, now);
+
+        PeriodFormatter formatter = new PeriodFormatterBuilder().appendYears().appendSuffix("years").printZeroNever().toFormatter();
+        String temp = formatter.print(period);
+        if(temp==""){
+            formatter = new PeriodFormatterBuilder().appendMonths().appendSuffix("months").printZeroNever().toFormatter();
+            temp = formatter.print(period);
+            if(temp==""){
+                formatter = new PeriodFormatterBuilder().appendWeeks().appendSuffix("weeks").printZeroNever().toFormatter();
+                temp = formatter.print(period);
+                if(temp==""){
+                    formatter = new PeriodFormatterBuilder().appendDays().appendSuffix("days").printZeroNever().toFormatter();
+                    temp = formatter.print(period);
+                    if(temp==""){
+                        formatter = new PeriodFormatterBuilder().appendHours().appendSuffix("hours").printZeroNever().toFormatter();
+                        temp = formatter.print(period);
+                        if(temp==""){
+                            formatter = new PeriodFormatterBuilder().appendMinutes().appendSuffix("min").printZeroNever().toFormatter();
+                            temp = formatter.print(period);
+                            if(temp==""){
+                                formatter = new PeriodFormatterBuilder().appendSeconds().appendSuffix("sec").printZeroNever().toFormatter();
+                                temp = formatter.print(period);
+                                if(temp==""){
+                                    temp = "Now";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return temp;
+    }
+
 }

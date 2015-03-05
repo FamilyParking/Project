@@ -3,16 +3,11 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
@@ -58,7 +53,7 @@ public class DoSaveCar implements Runnable {
                 @Override
                 public void run() {
                     activity.resetProgressDialogCircular(false);
-                    activity.closeCreateCar();
+                    activity.selectCarListTab();
                     Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
                 }
             });

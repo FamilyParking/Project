@@ -1,12 +1,10 @@
 package it.familiyparking.app.task;
 
-import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.serverClass.Result;

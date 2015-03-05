@@ -54,6 +54,19 @@ public class Car implements Parcelable {
 
     public Car(){}
 
+    public Car(String id, String name, String brand, String register, String latitude, String longitude, boolean isParked, String timestamp, String bluetoothName, String bluetoothMac){
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.register = register;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.isParked = isParked;
+        this.timestamp = timestamp;
+        this.bluetoothName = bluetoothName;
+        this.bluetoothMac = bluetoothMac;
+    }
+
     private Car(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
@@ -70,7 +83,10 @@ public class Car implements Parcelable {
     }
 
     public String[] getArray(){
-        return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,last_driver.getEmail(),bluetoothName,bluetoothMac};
+        if(last_driver == null)
+            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,null,bluetoothName,bluetoothMac};
+        else
+            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,last_driver.getEmail(),bluetoothName,bluetoothMac};
     }
 
     @Override

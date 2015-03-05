@@ -8,10 +8,11 @@
     <ListView
         android:id="@+id/car_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:divider="@null"/>
+        android:background="@drawable/card_layout"
+        android:divider="@drawable/divider"/>
 
 </RelativeLayout>
 

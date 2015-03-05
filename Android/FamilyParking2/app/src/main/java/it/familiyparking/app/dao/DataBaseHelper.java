@@ -23,14 +23,14 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     CarTable.CAR_ID+" TEXT NOT NULL, "+
                     CarTable.NAME+" TEXT NOT NULL, "+
                     CarTable.BRAND+" TEXT NOT NULL, "+
-                    CarTable.REGISTER+" TEXT NOT NULL, "+
-                    CarTable.LATITUDE+" TEXT NOT NULL, "+
-                    CarTable.LONGITUDE+" TEXT NOT NULL, "+
+                    CarTable.REGISTER+" TEXT, "+
+                    CarTable.LATITUDE+" TEXT, "+
+                    CarTable.LONGITUDE+" TEXT, "+
                     CarTable.IS_PARKED+" TEXT NOT NULL, "+
-                    CarTable.TIMESTAMP+" TEXT NOT NULL, "+
-                    CarTable.LAST_DRIVER+" TEXT NOT NULL, "+
-                    CarTable.BLUETOOTH_NAME+" TEXT , "+
-                    CarTable.BLUETOOTH_MAC+" TEXT , "+
+                    CarTable.TIMESTAMP+" TEXT, "+
+                    CarTable.LAST_DRIVER+" TEXT, "+
+                    CarTable.BLUETOOTH_NAME+" TEXT, "+
+                    CarTable.BLUETOOTH_MAC+" TEXT, "+
                     "PRIMARY KEY ( "+CarTable.CAR_ID+" )"+" ) ; ";
 
     public static final String CREATE_TABLE_USER =

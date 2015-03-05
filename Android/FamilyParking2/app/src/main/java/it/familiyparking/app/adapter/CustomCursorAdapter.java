@@ -51,10 +51,14 @@ public class CustomCursorAdapter extends CursorAdapter {
             int index_name = c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY);
             int index_email = c.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA);
 
-            ((TextView) v.findViewById(R.id.contact_name_tv)).setText(c.getString(index_name).trim());
+            String name = c.getString(index_name).trim();
+            ((TextView) v.findViewById(R.id.contact_name_tv)).setText(name);
             ((TextView) v.findViewById(R.id.contact_email_tv)).setText(c.getString(index_email).trim());
 
-            Tools.addThumbnail(context, ((ImageView) v.findViewById(R.id.contact_image_iv)), new Integer(c.getInt(c.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID))));
+            ImageView photo = (ImageView) v.findViewById(R.id.contact_image_iv);
+            TextView textView = (TextView) v.findViewById(R.id.contact_image_tv);
+
+            Tools.addThumbnail(context, photo, textView, name, new Integer(c.getInt(c.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID))));
         }
         else{
             relativeContact.setVisibility(View.GONE);

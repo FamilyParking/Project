@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 
 public class GroupTable {
@@ -33,22 +34,32 @@ public class GroupTable {
         db.insert(TABLE, null, v);
     }
 
-    public static ArrayList<User> getUserByCarID(SQLiteDatabase db,String carID) throws SQLException{
-        ArrayList<User> list = new ArrayList<>();
+    public static User getContact_ByEmail(SQLiteDatabase db, String Email) throws SQLException{
+        Cursor c = db.query(true, TABLE, COLUMNS, EMAIL+" == ?",new String[]{Email}, null, null, null, null);
 
-        Cursor c = db.query(true, TABLE, COLUMNS, CAR_ID+" = ? ", new String[]{carID}, null, null, null, null);
+        User user = null;
 
-        if((c != null) && (c.getCount() > 0)){
-
-            while(c.moveToNext()){
-                User contact = new User();
-                list.add(contact);
-            }
-        }
+        if((c != null) && (c.getCount() > 0))
+            while(c.moveToNext())
+                user = new User(c.getString(1),c.getString(2),Boolean.parseBoolean(c.getString(3)),c.getString(4));
 
         c.close();
 
-        return list;
+        return user;
+    }
+
+    public static ArrayList<User> getContact_ByCarID(SQLiteDatabase db, String carID) throws SQLException{
+        Cursor c = db.query(true, TABLE, COLUMNS, CAR_ID+" == ?",new String[]{carID}, null, null, null, null);
+
+        ArrayList<User> userArrayList = new ArrayList<>();
+
+        if((c != null) && (c.getCount() > 0))
+            while(c.moveToNext())
+                userArrayList.add(new User(c.getString(1),c.getString(2),Boolean.parseBoolean(c.getString(3)),c.getString(4)));
+
+        c.close();
+
+        return userArrayList;
     }
 
     public static boolean deleteGroup(SQLiteDatabase db,String carID){

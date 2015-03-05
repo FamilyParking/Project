@@ -2,18 +2,12 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.dao.UserTable;
-import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;

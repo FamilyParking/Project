@@ -7,7 +7,7 @@
     <item
         android:id="@+id/action_position"
         android:title=""
-        android:icon="@android:drawable/ic_menu_mylocation"
+        android:icon="@drawable/gps"
         android:orderInCategory="100"
         app:showAsAction="always" />
 

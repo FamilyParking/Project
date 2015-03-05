@@ -22,7 +22,7 @@ public class CarTable {
     public static final String LAST_DRIVER = "LAST_DRIVER";
     public static final String BLUETOOTH_NAME = "BLUETOOTH_NAME";
     public static final String BLUETOOTH_MAC = "BLUETOOTH_MAC";
-	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,REGISTER,LATITUDE,LONGITUDE,IS_PARKED,TIMESTAMP,LAST_DRIVER,BLUETOOTH_MAC,BLUETOOTH_NAME};
+	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,REGISTER,LATITUDE,LONGITUDE,IS_PARKED,TIMESTAMP,LAST_DRIVER,BLUETOOTH_NAME,BLUETOOTH_MAC};
 
     public static final String TABLE = "car_table";
 
@@ -37,34 +37,28 @@ public class CarTable {
         db.insert(TABLE, null, v);
     }
 
-    public static Car getCar(SQLiteDatabase db,String carID) throws SQLException{
-        Car car = null;
-
-        Cursor c = db.query(true, TABLE, COLUMNS, CAR_ID+" = ? ", new String[]{carID}, null, null, null, null);
-
-        if((c != null) && (c.getCount() > 0)){
-            if(c.moveToNext())
-                car = new Car();
-        }
-
-        c.close();
-
-        return car;
-    }
-
     public static ArrayList<Car> getAllCar(SQLiteDatabase db) throws SQLException{
-        ArrayList<Car> car = new ArrayList<>();
+        ArrayList<Car> car_list = new ArrayList<>();
 
         Cursor c = db.query(true, TABLE, COLUMNS, null, null, null, null, null, null);
 
         if((c != null) && (c.getCount() > 0)){
-            while(c.moveToNext())
-                car.add(new Car());
+            while(c.moveToNext()) {
+                Car car = new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10));
+
+                String last_driver = c.getString(8);
+                if(last_driver != null)
+                    car.setLast_driver(GroupTable.getContact_ByEmail(db,last_driver));
+
+                car.setUsers(GroupTable.getContact_ByCarID(db,car.getId()));
+
+                car_list.add(car);
+            }
         }
 
         c.close();
 
-        return car;
+        return car_list;
     }
 
     public static ArrayList<Car> getAllCarForBluetoothMAC(SQLiteDatabase db,String bluetoothMAC) throws SQLException{

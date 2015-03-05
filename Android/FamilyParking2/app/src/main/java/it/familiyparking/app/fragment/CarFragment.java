@@ -1,25 +1,19 @@
 package it.familiyparking.app.fragment;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.app.ActionBar;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-
-import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.adapter.CustomHorizontalAdapter_4CarEdit;
-import it.familiyparking.app.adapter.CustomHorizontalAdapter_4CarItem;
-import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
+import it.familiyparking.app.adapter.CustomAdapterCar;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
@@ -32,6 +26,8 @@ public class CarFragment extends Fragment{
 
     private User user;
     private ArrayList<Car> carArrayList;
+    private CustomAdapterCar customAdapterCar;
+    private ListView listView;
 
     public CarFragment() {}
 
@@ -39,7 +35,11 @@ public class CarFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_car, container, false);
 
+        Tools.setTitleActionBar((MainActivity) getActivity(), R.string.list_car);
 
+        listView = (ListView) rootView.findViewById(R.id.car_lv);
+        customAdapterCar = new CustomAdapterCar(getActivity(),carArrayList);
+        listView.setAdapter(customAdapterCar);
 
         return rootView;
     }
@@ -52,7 +52,10 @@ public class CarFragment extends Fragment{
     }
 
     public void updateAdapter(ArrayList<Car> newCarList){
-
+        carArrayList = newCarList;
+        customAdapterCar = new CustomAdapterCar(getActivity(),carArrayList);
+        listView.setAdapter(customAdapterCar);
+        customAdapterCar.notifyDataSetChanged();
     }
 
 }

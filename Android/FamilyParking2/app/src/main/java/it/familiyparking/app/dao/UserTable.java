@@ -83,7 +83,7 @@ public class UserTable {
         return db.update(TABLE, values, null, null);
     }
 
-    public static int updateDeviceID(SQLiteDatabase db, String deviceID){
+    public static int updateGCM_ID(SQLiteDatabase db, String deviceID){
         ContentValues values = new ContentValues();
         values.put(GCM_ID,deviceID);
 

@@ -31,6 +31,7 @@
     <string name="discard">DISCARD</string>
     <string name="info_ghostmode">If you enable ghostmode the automatic behaviour of the app will be disable</string>
     <string name="create_car">Create car</string>
+    <string name="list_car">Cars</string>
     <string name="edit_car">Edit car</string>
     <string name="car_name">Insert name</string>
     <string name="car_register">Insert register</string>
@@ -39,6 +40,8 @@
     <string name="car_finder">Add: </string>
     <string name="car_finder_rules">Using name or email</string>
     <string name="bluetooth">BLUETOOTH</string>
+    <string name="tab_car">CARS</string>
+    <string name="tab_create">CREATE</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

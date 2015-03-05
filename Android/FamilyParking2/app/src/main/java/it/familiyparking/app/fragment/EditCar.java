@@ -13,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,6 +87,8 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     private Car oldCar;
 
+    private boolean findBluetooth;
+
     public EditCar() {}
 
     @Override
@@ -93,8 +96,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         rootView = inflater.inflate(R.layout.fragment_edit_car, container, false);
 
         contactListAdapter = new ArrayList<>();
-
-        Tools.setUpButtonActionBar((MainActivity)getActivity());
 
         setSpinner();
         setEditText();
@@ -155,6 +156,11 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         if(relativeResultFinder.isShown()) {
             relativeResultFinder.setVisibility(View.GONE);
         }
+
+        if(findBluetooth && Tools.isBluetoothEnable()){
+            findBluetooth = false;
+            searchBluetoothDevice();
+        }
     }
 
     @Override
@@ -167,14 +173,16 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             data = extendedCursor;
         }
 
-        customCursorAdapter.swapCursor(data);
+        if(customCursorAdapter != null)
+            customCursorAdapter.swapCursor(data);
 
-        if(!relativeResultFinder.isShown() && !Tools.isCursorEmpty(data)) {
-            relativeResultFinder.setVisibility(View.VISIBLE);
-            relativeResultFinder.requestFocus();
-        }
-        else if(Tools.isCursorEmpty(data)) {
-            relativeResultFinder.setVisibility(View.GONE);
+        if(relativeResultFinder != null) {
+            if (!relativeResultFinder.isShown() && !Tools.isCursorEmpty(data)) {
+                relativeResultFinder.setVisibility(View.VISIBLE);
+                relativeResultFinder.requestFocus();
+            } else if (Tools.isCursorEmpty(data)) {
+                relativeResultFinder.setVisibility(View.GONE);
+            }
         }
 
     }
@@ -202,7 +210,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         while((searchString.length() > 0) && (searchString.charAt(searchString.length()-1) == ' '))
             searchString = searchString.substring(0,searchString.length()-1);
 
-        if(!lastSearchString.equals(searchString)) {
+        if((!lastSearchString.equals(searchString)) && (!searchString.isEmpty())){
 
             lastSearchString = searchString;
 
@@ -306,23 +314,29 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     private void setBluetooth(){
+        findBluetooth = false;
         bluetooth_button = (Button) rootView.findViewById(R.id.car_bluetooth_b);
 
-        if(!isCreation)
-            bluetooth_button.setText(car.getBluetoothName()+"("+car.getBluetoothMac()+")");
+        final String removeString = getActivity().getResources().getString(R.string.remove_bluetooth);
+
+        if((!isCreation) && (car.getBluetoothMac()!=null))
+            bluetooth_button.setText(removeString);
 
         final EditCar fragment = this;
         bluetooth_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCreation){
-                    if (Tools.isBluetoothEnable())
-                        searchBluetoothDevice();
-                    else
-                        Tools.showAlertBluetooth(getActivity());
+                if(bluetooth_button.getText().toString().equals(removeString)){
+                    Tools.showAlertBluetoothRemove(getActivity(),fragment,car);
                 }
                 else{
-                    Tools.showAlertBluetoothRemove(getActivity(),fragment,car);
+                    if (Tools.isBluetoothEnable()) {
+                        searchBluetoothDevice();
+                    }
+                    else {
+                        Tools.showAlertBluetooth(getActivity());
+                        findBluetooth = true;
+                    }
                 }
             }
         });
@@ -381,7 +395,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
                     car.setBrand(Tools.getBrand(brand_spinner,getActivity()));
                     car.setUsers(contactListAdapter);
 
-
                     Runnable runnable;
                     if(isCreation)
                         runnable = new DoSaveCar(getActivity(),car,user);
@@ -415,5 +428,11 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     private void setEditText(){
         car_name = (EditText) rootView.findViewById(R.id.car_name_et);
         car_register = (EditText) rootView.findViewById(R.id.car_register_et);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Tools.setTitleActionBar((MainActivity)getActivity(), R.string.app_name);
     }
 }

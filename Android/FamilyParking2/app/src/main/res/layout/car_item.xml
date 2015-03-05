@@ -4,6 +4,15 @@
     android:background="@color/transparent"
     android:padding="5dp">
 
+    <Button
+        android:id="@+id/car_arrow_iv"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/arrow"
+        android:backgroundTint="@color/blue"/>
+
     <RelativeLayout
         android:id="@+id/car_item_rl"
         android:layout_width="wrap_content"
@@ -16,24 +25,53 @@
             android:id="@+id/car_info_rl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_alignParentTop="true">
 
             <ImageView
                 android:id="@+id/car_brand_iv"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="3dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/add_car"/>
 
-            <ImageView
-                android:id="@+id/car_bluetooth_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+            <RelativeLayout
+                android:id="@+id/bluetooth_circle_ok"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@android:drawable/stat_sys_data_bluetooth"
-                android:backgroundTint="@color/blue"/>
+                android:background="@drawable/circle_blue">
+
+                <ImageView
+                    android:id="@+id/bluetooth_iv_ok"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@android:drawable/stat_sys_data_bluetooth"
+                    android:backgroundTint="@color/white"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bluetooth_circle_ko"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/circle_grey">
+
+                <ImageView
+                    android:id="@+id/bluetooth_iv_ko"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@android:drawable/stat_sys_data_bluetooth"
+                    android:backgroundTint="@color/ligth_gray"/>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/car_string_rl"
@@ -42,15 +80,16 @@
                 android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/car_brand_iv"
-                android:layout_toLeftOf="@id/car_bluetooth_iv">
+                android:layout_toLeftOf="@id/bluetooth_circle_ko">
 
                 <TextView
                     android:id="@+id/car_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
                     android:text="Giulietta"
                     android:textStyle="bold"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
@@ -60,7 +99,7 @@
                     android:layout_below="@id/car_name_tv"
                     android:text="AB123CD"
                     android:textColor="@color/gray"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -71,10 +110,9 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/group_list"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/car_info_rl"
-            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
             style="@style/TwoWayView"
@@ -82,15 +120,6 @@
             tools:context=".Car"/>
 
     </RelativeLayout>
-
-    <Button
-        android:id="@+id/car_arrow_iv"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/arrow"
-        android:backgroundTint="@color/blue"/>
 
 </RelativeLayout>
 

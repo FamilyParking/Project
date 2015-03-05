@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
@@ -28,18 +25,18 @@ import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
+import it.familiyparking.app.fragment.CarDetailFragment;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
+import it.familiyparking.app.fragment.TabFragment;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskGCM;
-import it.familiyparking.app.task.DoConfirmation;
 import it.familiyparking.app.task.DoGetAllCar;
-import it.familiyparking.app.task.DoSignIn;
 import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.ServiceBluetooth;
 import it.familiyparking.app.utility.Tools;
@@ -50,11 +47,13 @@ public class MainActivity extends ActionBarActivity {
     private User user;
     private Map map;
     private CarFragment carFragment;
+    private TabFragment tabFragment;
     private GhostMode ghostMode;
     private SignIn signIn;
     private Confirmation confirmation;
     private EditCar createCar;
     private EditCar modifyCar;
+    private CarDetailFragment carDetail;
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private Tracker tracker;
@@ -139,21 +138,9 @@ public class MainActivity extends ActionBarActivity {
                 return true;
 
             case R.id.action_cars:
-                if(carFragment == null) {
-
-                    SQLiteDatabase db = Tools.getDB_Readable(this);
-
-                    ArrayList<Car> cars = CarTable.getAllCar(db);
-                    db.close();
-
-                    if (cars.isEmpty()) {
-                        Tools.createToast(this, getResources().getText(R.string.car_empty), Toast.LENGTH_SHORT);
-                    } else {
-                        carFragment = new CarFragment();
-                        replaceFragment(carFragment);
-
-                        return true;
-                    }
+                if(tabFragment == null) {
+                    tabFragment = new TabFragment();
+                    replaceFragment(tabFragment);
                 }
                 return false;
 
@@ -243,13 +230,14 @@ public class MainActivity extends ActionBarActivity {
 
     /***************************************** FRAGMENT MANAGER ***************************************/
     private void replaceFragment(Fragment avoid){
-        if((createCar != null)&&(createCar != avoid)){
-            getSupportFragmentManager().beginTransaction().remove(createCar).commit();
-            createCar = null;
+        boolean resetUpButton = true;
+
+        if((carDetail != null)&&(carDetail != avoid)){
+            resetCarDetail();
+            resetUpButton = false;
         }
-        else if((carFragment != null)&&(carFragment != avoid)){
-            getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
-            carFragment = null;
+        else if((tabFragment != null)&&(tabFragment != avoid)){
+            resetTabFragment();
         }
         else if((ghostMode != null)&&(ghostMode != avoid)){
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
@@ -257,7 +245,7 @@ public class MainActivity extends ActionBarActivity {
         }
         if(avoid != null)
             getSupportFragmentManager().beginTransaction().add(R.id.container, avoid).commit();
-        else
+        else if(resetUpButton)
             Tools.resetUpButtonActionBar(this);
     }
 
@@ -266,9 +254,16 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(map).commit();
             map = null;
         }
+        if(tabFragment != null){
+            resetTabFragment();
+        }
         if(carFragment != null){
             getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
             carFragment = null;
+        }
+        if(carDetail != null){
+            getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
+            carDetail = null;
         }
         if(ghostMode != null){
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
@@ -309,8 +304,14 @@ public class MainActivity extends ActionBarActivity {
         if(progressDialogCircular != null){
             //Do nop
         }
+        else if(carDetail != null){
+            resetCarDetail();
+        }
         else if(modifyCar != null){
             resetModifyCar();
+        }
+        else if(tabFragment != null){
+            resetTabFragment();
         }
         else if(contactDetailDialog != null){
             resetContactDetailDialog();
@@ -347,15 +348,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /****************************************** MANAGE BUTTON ****************************************/
-    public void onClick_Plus(View v) {
-        findViewById(R.id.toCreate).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise));
-        createCar = new EditCar();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("user",user);
-        createCar.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
-    }
-
     public void onClick_Parking(View v) {
 
     }
@@ -368,6 +360,58 @@ public class MainActivity extends ActionBarActivity {
     private void setSignIn(){
         signIn = new SignIn();
         getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
+    }
+
+    public void setCarDetail(Car car){
+        carDetail = new CarDetailFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user",user);
+        bundle.putParcelable("car",car);
+        carDetail.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container, carDetail).commit();
+    }
+
+    public void setCar(){
+
+        resetCarDetail();
+
+        carFragment = new CarFragment();
+
+        SQLiteDatabase db = Tools.getDB_Readable(this);
+        ArrayList<Car> cars = CarTable.getAllCar(db);
+        db.close();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("cars",cars);
+        bundle.putParcelable("user",user);
+        carFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_tab, carFragment).commit();
+    }
+
+    public void resetCar(){
+        getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
+        carFragment = null;
+    }
+
+    public void setCreateCar(){
+
+        resetCarDetail();
+
+        createCar = new EditCar();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user",user);
+        createCar.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_tab, createCar).commit();
+    }
+
+    public void resetCreateCar(){
+        getSupportFragmentManager().beginTransaction().remove(createCar).commit();
+        carFragment = null;
     }
 
     private void setMap(){
@@ -405,6 +449,28 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void resetCarDetail(){
+        if(carDetail != null){
+            getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
+            carDetail = null;
+
+            Tools.setTitleActionBar(this, R.string.list_car);
+        }
+    }
+
+    private void resetTabFragment(){
+
+        resetCarDetail();
+
+        tabFragment.removeTab();
+
+        Tools.resetTabActionBar(this);
+        Tools.resetUpButtonActionBar(this);
+
+        getSupportFragmentManager().beginTransaction().remove(tabFragment).commit();
+        tabFragment = null;
+    }
+
     public void removeContact(User contact){
         if(modifyCar != null)
             modifyCar.removeContact(contact);
@@ -412,6 +478,16 @@ public class MainActivity extends ActionBarActivity {
             createCar.removeContact(contact);
     }
 
+    /*********************************************** TAB *********************************************/
+    public void selectCarListTab(){
+        if(tabFragment != null)
+            tabFragment.selectCarFragment();
+    }
+
+    public void selectCarCreateTab(){
+        if(tabFragment != null)
+            tabFragment.selectCreateFragment();
+    }
     /***************************************** MANAGE END CALL ***************************************/
     public void endSignIn(){
         getSupportFragmentManager().beginTransaction().remove(signIn).commit();
@@ -433,13 +509,6 @@ public class MainActivity extends ActionBarActivity {
 
         if(flagMessage)
             Tools.createToast(this, getResources().getText(R.string.car_empty), Toast.LENGTH_SHORT);
-    }
-
-    public void closeCreateCar(){
-        setMenu();
-        Tools.resetUpButtonActionBar(this);
-        getSupportFragmentManager().beginTransaction().remove(createCar).commit();
-        createCar = null;
     }
 
     public void closeModifyCar(){

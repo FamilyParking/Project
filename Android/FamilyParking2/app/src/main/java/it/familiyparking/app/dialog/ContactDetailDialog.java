@@ -1,6 +1,7 @@
 package it.familiyparking.app.dialog;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -41,8 +42,10 @@ public class ContactDetailDialog extends Fragment{
 
         ((TextView) rootView.findViewById(R.id.contact_name_tv_detail)).setText(contact.getName());
 
+        ImageView photo = (ImageView) rootView.findViewById(R.id.contact_image_iv_detail);
+        TextView textView = (TextView) rootView.findViewById(R.id.contact_image_tv_detail);
 
-        Tools.addThumbnail(getActivity().getApplicationContext(), ((ImageView) rootView.findViewById(R.id.contact_image_iv_detail)), Integer.getInteger(contact.getPhoto_ID()));
+        Tools.addThumbnail(getActivity(), photo, textView, contact);
 
         if(contact.equals(user)) {
             rootView.findViewById(R.id.button_rl_detail_all).setVisibility(View.GONE);
