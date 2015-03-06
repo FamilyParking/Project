@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +36,7 @@ import it.familiyparking.app.utility.Tools;
 public class CarDetailFragment extends Fragment{
 
     private MainActivity activity;
+    private View rootView;
     private User user;
     private Car car;
     private GoogleMap googleMap;
@@ -43,17 +45,13 @@ public class CarDetailFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_car_detail, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_detail, container, false);
 
         activity = (MainActivity) getActivity();
 
         Tools.setTitleActionBar(activity,car.getName());
 
-        setMap();
-        setCarInfo(rootView);
-        setParking(rootView);
-        setConatcts(rootView);
-        setBluetooth(rootView);
+        setData();
 
         return rootView;
     }
@@ -63,6 +61,16 @@ public class CarDetailFragment extends Fragment{
         super.setArguments(args);
         this.user = args.getParcelable("user");
         this.car = args.getParcelable("car");
+    }
+
+    private void setData(){
+        setMap();
+        setCarInfo(rootView);
+        setParking(rootView);
+        setConatcts(rootView);
+        setBluetooth(rootView);
+        setEditCar(rootView);
+        setParkCar(rootView);
     }
 
     private void setMap(){
@@ -76,9 +84,9 @@ public class CarDetailFragment extends Fragment{
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         if(car.isParked()){
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()))).title(car.getName()));
-            Location location = googleMap.getMyLocation();
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18.0f));
+            LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()));
+            googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(carPosition.latitude,carPosition.longitude), 18.0f));
         }
         else{
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
@@ -133,6 +141,30 @@ public class CarDetailFragment extends Fragment{
             ((TextView) rootView.findViewById(R.id.bluetooth_name_tv)).setText(car.getBluetoothName());
             ((TextView) rootView.findViewById(R.id.bluetooth_address_tv)).setText(car.getBluetoothMac());
         }
+    }
+
+    private void setEditCar(View rootView){
+        rootView.findViewById(R.id.edit_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setModifyCar(car);
+            }
+        });
+    }
+
+    private void setParkCar(View rootView){
+        rootView.findViewById(R.id.toPark_detail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("CarDetailFragment","parkCar");
+                //Remember there is a method in main activity to put car inside the map
+            }
+        });
+    }
+
+    public void updateCar(Car car){
+        this.car = car;
+        setData();
     }
 
 }

@@ -45,6 +45,7 @@ public class NewTabListener implements android.support.v7.app.ActionBar.TabListe
 
     @Override
     public void onTabReselected(android.support.v7.app.ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
-
+        if(type.equals(tab_car))
+            activity.carAlreadyPressed();
     }
 }

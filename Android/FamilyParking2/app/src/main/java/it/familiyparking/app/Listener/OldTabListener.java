@@ -46,6 +46,7 @@ public class OldTabListener implements ActionBar.TabListener {
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
+        if(type.equals(tab_car))
+            activity.carAlreadyPressed();
     }
 }

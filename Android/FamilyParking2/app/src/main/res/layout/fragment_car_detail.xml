@@ -44,7 +44,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/add_car"/>
+                        android:background="@drawable/add_car"/>
 
                     <RelativeLayout
                         android:id="@+id/car_string_rl"
@@ -78,6 +78,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/edit_rl"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
@@ -251,6 +252,16 @@
         </RelativeLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/toPark_detail"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/park"/>
 
 </RelativeLayout>
 

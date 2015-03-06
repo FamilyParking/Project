@@ -232,7 +232,11 @@ public class MainActivity extends ActionBarActivity {
     private void replaceFragment(Fragment avoid){
         boolean resetUpButton = true;
 
-        if((carDetail != null)&&(carDetail != avoid)){
+        if((modifyCar != null)&&(modifyCar != avoid)){
+            resetModifyCar();
+            resetUpButton = false;
+        }
+        else if((carDetail != null)&&(carDetail != avoid)){
             resetCarDetail();
             resetUpButton = false;
         }
@@ -253,6 +257,9 @@ public class MainActivity extends ActionBarActivity {
         if(map != null){
             getSupportFragmentManager().beginTransaction().remove(map).commit();
             map = null;
+        }
+        if(modifyCar != null){
+            resetModifyCar();
         }
         if(tabFragment != null){
             resetTabFragment();
@@ -304,11 +311,11 @@ public class MainActivity extends ActionBarActivity {
         if(progressDialogCircular != null){
             //Do nop
         }
-        else if(carDetail != null){
-            resetCarDetail();
-        }
         else if(modifyCar != null){
             resetModifyCar();
+        }
+        else if(carDetail != null){
+            resetCarDetail();
         }
         else if(tabFragment != null){
             resetTabFragment();
@@ -374,9 +381,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setCar(){
-
-        resetCarDetail();
-
         carFragment = new CarFragment();
 
         SQLiteDatabase db = Tools.getDB_Readable(this);
@@ -397,7 +401,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setCreateCar(){
-
+        resetModifyCar();
         resetCarDetail();
 
         createCar = new EditCar();
@@ -435,15 +439,20 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void setModifyCar(EditCar fragment){
-        resetMenu();
+    public void setModifyCar(Car car){
+        EditCar fragment = new EditCar();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user",user);
+        bundle.putParcelable("car",car);
+        fragment.setArguments(bundle);
+
         modifyCar = fragment;
+        getSupportFragmentManager().beginTransaction().add(R.id.container, modifyCar).commit();
     }
 
     public void resetModifyCar(){
         if(modifyCar != null) {
-            Tools.setUpButtonActionBar(this);
-            setMenu();
             getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
             modifyCar = null;
         }
@@ -469,6 +478,16 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportFragmentManager().beginTransaction().remove(tabFragment).commit();
         tabFragment = null;
+    }
+
+    public void carAlreadyPressed(){
+        if(modifyCar != null) {
+            resetModifyCar();
+            resetCarDetail();
+        }
+        else if(carDetail != null){
+            resetCarDetail();
+        }
     }
 
     public void removeContact(User contact){
@@ -499,6 +518,19 @@ public class MainActivity extends ActionBarActivity {
     public void endConfirmation(){
         init();
         resetConfirmation();
+    }
+
+    public void endUpdateCar(Car car){
+        if(carDetail != null) {
+            carDetail.updateCar(car);
+        }
+        
+        if(carFragment != null){
+            SQLiteDatabase db = Tools.getDB_Readable(this);
+            ArrayList<Car> cars = CarTable.getAllCar(db);
+            db.close();
+            updateCarAdapter(cars);
+        }
     }
     /***************************************** CLOSE FRAGMENT *****************************************/
     public void closeCarFragment(boolean flagMessage){

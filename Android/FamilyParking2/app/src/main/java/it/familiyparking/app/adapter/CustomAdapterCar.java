@@ -83,12 +83,16 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
     }
 
     private void setDetailButton(View convertView, final Car car){
-        Button details_button = (Button) convertView.findViewById(R.id.car_arrow_iv);
-        details_button.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.setCarDetail(car);
             }
-        });
+        };
+
+        Button details_button = (Button) convertView.findViewById(R.id.car_arrow_iv);
+        details_button.setOnClickListener(listener);
+
+        convertView.findViewById(R.id.car_item_root).setOnClickListener(listener);
     }
 }

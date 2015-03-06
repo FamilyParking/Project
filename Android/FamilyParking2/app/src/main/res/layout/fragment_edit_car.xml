@@ -351,19 +351,11 @@
 
         </RelativeLayout>
 
-        <View
-            android:id="@+id/car_delete_v"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_below="@id/car_save_relative"
-            android:visibility="gone"
-            android:background="@color/soft_gray_transparent"/>
-
         <RelativeLayout
             android:id="@+id/car_delete_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/car_delete_v"
+            android:layout_below="@id/car_save_relative"
             android:visibility="gone">
 
             <Button

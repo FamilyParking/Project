@@ -67,9 +67,6 @@ public class TabFragment extends Fragment{
         tabListOld = actionBarOld.newTab().setText(tab_car);
         tabCreateOld = actionBarOld.newTab().setText(tab_create);
 
-        tabListOld.setIcon(activity.getResources().getDrawable(R.drawable.tab_indicator));
-        tabCreateOld.setIcon(activity.getResources().getDrawable(R.drawable.tab_indicator));
-
         tabListOld.setTabListener(new OldTabListener(activity, tab_car));
         tabCreateOld.setTabListener(new OldTabListener(activity, tab_create));
 
@@ -84,8 +81,6 @@ public class TabFragment extends Fragment{
         tabListNew = actionBarNew.newTab().setText(tab_car);
         tabCreateNew = actionBarNew.newTab().setText(tab_create);
 
-        tabListNew.setIcon(activity.getResources().getDrawable(R.drawable.tab_indicator));
-        tabCreateNew.setIcon(activity.getResources().getDrawable(R.drawable.tab_indicator));
 
         tabListNew.setTabListener(new NewTabListener(activity, tab_car));
         tabCreateNew.setTabListener(new NewTabListener(activity, tab_create));
@@ -110,13 +105,16 @@ public class TabFragment extends Fragment{
 
     public void removeTab(){
         if(actionBarNew != null) {
+            actionBarNew.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBarNew.removeTab(tabListNew);
             actionBarNew.removeTab(tabCreateNew);
         }
         else if(actionBarOld != null) {
+            actionBarOld.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBarOld.removeTab(tabListOld);
             actionBarOld.removeTab(tabCreateOld);
         }
     }
+
 }
 

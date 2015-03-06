@@ -50,6 +50,8 @@ import it.familiyparking.app.utility.Tools;
  */
 public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, AdapterView.OnItemClickListener {
 
+    MainActivity activity;
+
     private View rootView;
     private User user;
     private Car car;
@@ -95,6 +97,8 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_edit_car, container, false);
 
+        activity = (MainActivity)getActivity();
+
         contactListAdapter = new ArrayList<>();
 
         setSpinner();
@@ -102,14 +106,21 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         setSaveButton();
 
         if(isCreation){
-            Tools.setTitleActionBar((MainActivity)getActivity(),R.string.create_car);
+            Tools.setTitleActionBar(activity,R.string.create_car);
             contactListAdapter.add(user);
         }
         else{
-            Tools.setTitleActionBar((MainActivity)getActivity(),R.string.edit_car);
+            Tools.setTitleActionBar(activity,R.string.edit_car);
             setRemoveButton();
             oldCar = car.clone();
             contactListAdapter = car.getUsers();
+
+            brand_spinner.setSelection(Tools.getBrandIndex(car.getBrand(),activity));
+
+            car_name.setText(car.getName());
+
+            if(car.getRegister() != null)
+                car_register.setText(car.getRegister());
         }
 
         setHorizontalList();
@@ -146,7 +157,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
 
         final String SORT = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
-        return new CursorLoader(getActivity(),ContactsContract.Data.CONTENT_URI,PROJECTION,SELECTION,selectionArgs,SORT);
+        return new CursorLoader(activity,ContactsContract.Data.CONTENT_URI,PROJECTION,SELECTION,selectionArgs,SORT);
     }
 
     @Override
@@ -249,25 +260,25 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     private void setSpinner(){
         brand_spinner = (Spinner) rootView.findViewById(R.id.brand_s);
-        adapterCarBrand = new CustomAdapterCarBrand(getActivity());
+        adapterCarBrand = new CustomAdapterCarBrand(activity);
         brand_spinner.setAdapter(adapterCarBrand);
     }
 
     private void setHorizontalList(){
-        customHorizontalAdapter = new CustomHorizontalAdapter_4CarEdit(getActivity(),contactListAdapter);
+        customHorizontalAdapter = new CustomHorizontalAdapter_4CarEdit(activity,contactListAdapter);
         listGroup = ((TwoWayView)rootView.findViewById(R.id.group_list));
         listGroup.setAdapter(customHorizontalAdapter);
 
         listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainActivity)getActivity()).setContactDetailDialog(contactListAdapter.get(position));
+                activity.setContactDetailDialog(contactListAdapter.get(position));
             }
         });
     }
 
     private void setLoader(){
-        loaderManager = getActivity().getSupportLoaderManager();
+        loaderManager = activity.getSupportLoaderManager();
         loaderManager.initLoader(0, null, this);
     }
 
@@ -288,7 +299,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             }
         };
 
-        customCursorAdapter = new CustomCursorAdapter(getActivity(),null,0,listener);
+        customCursorAdapter = new CustomCursorAdapter(activity,null,0,listener);
         listResultFinder.setAdapter(customCursorAdapter);
         listResultFinder.setOnItemClickListener(this);
 
@@ -317,7 +328,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         findBluetooth = false;
         bluetooth_button = (Button) rootView.findViewById(R.id.car_bluetooth_b);
 
-        final String removeString = getActivity().getResources().getString(R.string.remove_bluetooth);
+        final String removeString = activity.getResources().getString(R.string.remove_bluetooth);
 
         if((!isCreation) && (car.getBluetoothMac()!=null))
             bluetooth_button.setText(removeString);
@@ -327,14 +338,14 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             @Override
             public void onClick(View v) {
                 if(bluetooth_button.getText().toString().equals(removeString)){
-                    Tools.showAlertBluetoothRemove(getActivity(),fragment,car);
+                    Tools.showAlertBluetoothRemove(activity,fragment,car);
                 }
                 else{
                     if (Tools.isBluetoothEnable()) {
                         searchBluetoothDevice();
                     }
                     else {
-                        Tools.showAlertBluetooth(getActivity());
+                        Tools.showAlertBluetooth(activity);
                         findBluetooth = true;
                     }
                 }
@@ -346,26 +357,26 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         car.setBluetoothName(null);
         car.setBluetoothMac(null);
 
-        SQLiteDatabase db = Tools.getDB_Writable(getActivity());
+        SQLiteDatabase db = Tools.getDB_Writable(activity);
         CarTable.updateBluetooth(db, car);
 
-        bluetooth_button.setText(getActivity().getResources().getString(R.string.add_bluetooth));
+        bluetooth_button.setText(activity.getResources().getString(R.string.add_bluetooth));
     }
 
     public void linkBluetoothDevice(String bluetooth_name, String bluetooth_mac){
         car.setBluetoothName(bluetooth_name);
         car.setBluetoothMac(bluetooth_mac);
 
-        bluetooth_button.setText(getActivity().getResources().getString(R.string.remove_bluetooth));
+        bluetooth_button.setText(activity.getResources().getString(R.string.remove_bluetooth));
     }
 
     private void searchBluetoothDevice(){
-        ((MainActivity)getActivity()).setProgressDialogCircular("Looking for bluetooth device ...");
+        activity.setProgressDialogCircular("Looking for bluetooth device ...");
 
         if(isCreation)
             car = new Car();
 
-        new Thread(new DoBluetoothJoin(getActivity(),car,bluetooth_button,this)).start();
+        new Thread(new DoBluetoothJoin(activity,car,bluetooth_button,this)).start();
     }
 
     private void setSaveButton(){
@@ -377,29 +388,29 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
                 if((car_name.getText().toString() == null)||(car_name.getText().toString().equals(""))){
                     car_name.requestFocus();
                     car_name.setHint("Name is mandatory");
-                    car_name.setHintTextColor(getActivity().getResources().getColor(R.color.red));
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    car_name.setHintTextColor(activity.getResources().getColor(R.color.red));
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(car_name, InputMethodManager.SHOW_IMPLICIT);
                 }
                 else{
                     if(isCreation)
-                        ((MainActivity)getActivity()).setProgressDialogCircular("Creating car ...");
+                        activity.setProgressDialogCircular("Creating car ...");
                     else
-                        ((MainActivity)getActivity()).setProgressDialogCircular("Updating  car ...");
+                        activity.setProgressDialogCircular("Updating  car ...");
 
                     if(car == null)
                         car = new Car();
 
                     car.setName(car_name.getText().toString());
                     car.setRegister(car_register.getText().toString());
-                    car.setBrand(Tools.getBrand(brand_spinner,getActivity()));
+                    car.setBrand(Tools.getBrand(brand_spinner,activity));
                     car.setUsers(contactListAdapter);
 
                     Runnable runnable;
                     if(isCreation)
-                        runnable = new DoSaveCar(getActivity(),car,user);
+                        runnable = new DoSaveCar(activity,car,user);
                     else
-                        runnable = new DoUpdateCar(getActivity(),car,oldCar,user);
+                        runnable = new DoUpdateCar(activity,car,oldCar,user);
 
                     new Thread(runnable).start();
                 }
@@ -408,19 +419,18 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     private void setRemoveButton(){
-        rootView.findViewById(R.id.car_delete_v).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.car_delete_relative).setVisibility(View.VISIBLE);
 
-        save_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.rectangle_green));
+        save_button.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.rectangle_green));
 
         remove_button = (Button) rootView.findViewById(R.id.car_delete_b);
         remove_button.setVisibility(View.VISIBLE);
         remove_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).setProgressDialogCircular("Remove car ...");
+                activity.setProgressDialogCircular("Remove car ...");
 
-                new Thread(new DoRemoveCar(getActivity(),car,user));
+                new Thread(new DoRemoveCar(activity,car,user));
             }
         });
     }
@@ -433,6 +443,10 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Tools.setTitleActionBar((MainActivity)getActivity(), R.string.app_name);
+
+        if(isCreation)
+            Tools.setTitleActionBar(activity, R.string.app_name);
+        else
+            Tools.setTitleActionBar(activity, car.getName());
     }
 }
