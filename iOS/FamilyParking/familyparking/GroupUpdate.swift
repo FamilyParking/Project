@@ -14,7 +14,7 @@ class GroupUpdate{
     
     func downloadGroup(){
         
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getIDGroups")!)
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "getIDGroups")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
@@ -37,28 +37,6 @@ class GroupUpdate{
             println("Response: \(response)")
             var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
             println("Body: \(strData)")
-        //    if(strData!.length>3){
-        //        println("Check 1 Complete")
-        //        var array = strData!.componentsSeparatedByString("[")
-        //        if(array.count==2){
-         //           var fl = array[1].componentsSeparatedByString("]")
-          //          var test:String = fl[0] as String
-               //     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                 //       if(!test.isEmpty){
-                   //         var cars = test.componentsSeparatedByString("\",\"")
-                      //      self.removeAllCar()
-                       //     for name:String in cars{
-                          //      if(!name.isEmpty){
-                                //    var name2 = name.componentsSeparatedByString("'")
-                                  //  self.addACarToLocalDatabase(name2[19], name: name2[15], lat: name2[3], long: name2[11])
-                //                }
-               // //            }
-//}
-               //     })
-                    
-           //     }
-         //   }
-         
             
         })
         

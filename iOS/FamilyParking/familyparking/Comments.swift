@@ -36,3 +36,9 @@ show groups names
 
 */
 
+class Comments {
+    
+    let serverPath = "http://ios01.first-vision-798.appspot.com/"
+    
+}
+

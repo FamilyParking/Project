@@ -24,29 +24,20 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "app_launched",label:"launch",value:nil).build())
         
         // check registration
-        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
-        println(isLoggedIn)
-        if (isLoggedIn != 1) {
-            println("Apro la scheda registrazione")
-            self.performSegueWithIdentifier("registration_1", sender: self)
-        } else {
-            CarUpdate().downloadCar(self)
-          //  GroupUpdate().downloadGroup()
-        }
-        
-        
-        
-        
-        
+            checkRegistration()
+//        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//        var isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
+//        println(isLoggedIn)
+//        if (isLoggedIn != 1) {
+//            println("Apro la scheda registrazione")
+//            self.performSegueWithIdentifier("registration_1", sender: self)
+//        } else {
+//            CarUpdate().downloadCar(self)
+//        }
         self.locationManager.requestWhenInUseAuthorization()
-        
-        
         var target: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 2.6, longitude: 13.2)
         var camera: GMSCameraPosition = GMSCameraPosition(target: target, zoom: 6, bearing: 0, viewingAngle: 0)
-       
         var barHeight:CGFloat = tabBarController!.tabBar.frame.height
-        
         gmaps = GMSMapView(frame: CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height-barHeight))
         
         if let map = gmaps {
@@ -74,6 +65,19 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             // TODO MAP NOT LOADED
         }
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func checkRegistration(){
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
+        println(isLoggedIn)
+        if (isLoggedIn != 1) {
+            println("Apro la scheda registrazione")
+            self.performSegueWithIdentifier("registration_1", sender: self)
+        } else {
+         //   CarUpdate().downloadCar(self)
+            //  GroupUpdate().downloadGroup()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -158,13 +162,20 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         super.viewWillAppear(animated)
         
         println("Showing Map")
-        CarUpdate().downloadCar(self as MapViewController)
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var finding:Bool = prefs.boolForKey("findingCar")
         if (finding){
             var lat:String = prefs.valueForKey("goLat") as String
             var long:String = prefs.valueForKey("goLong") as String
+            var camera = GMSCameraPosition.cameraWithLatitude((lat as NSString).doubleValue, longitude: (long as NSString).doubleValue, zoom: 16)
+            self.gmaps.camera = camera
+            
+        }else{
+            CarUpdate().downloadCar(self as MapViewController)
+            
         }
+        prefs.setBool(false, forKey: "findingCar")
+        prefs.synchronize()
         
         //updateCars()
     }
@@ -178,12 +189,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if(gmaps.myLocation != nil){
-        
-            
             prefs.setObject(self.gmaps.myLocation.coordinate.latitude.description, forKey:"LAT")
-            
             prefs.setObject(self.gmaps.myLocation.coordinate.longitude.description, forKey:"LON")
-           prefs.synchronize()
+            prefs.synchronize()
             self.performSegueWithIdentifier("park_action", sender: self)
         }
         else{

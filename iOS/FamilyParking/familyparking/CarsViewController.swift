@@ -126,8 +126,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
         
         
-    func removeCarFromServer(name: NSManagedObject) {
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/deleteCar")!)
+    func removeCarFromServer(name: NSManagedObject, index:Int) {
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "deleteCar")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
@@ -157,31 +157,35 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             println("Body: \(strData)")
             
             var err: NSError?
-            
-            var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
-        //   println(json!["flag"] as Bool)
-            if((json!["flag"] as Bool) == true){
-                println(json!["flag"] as Bool)
-
-                self.removeName(name)
-                self.tableView.reloadData()
+            if(response != nil){
+                var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
+                    
+                    if((json!["flag"] as Bool) == true){
+                        
+                            self.people.removeAtIndex(index)
+                            self.removeName(name)
+                        
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.tableView.reloadData()
+                            })
+                }
             }
-            
-            println(json)
-            
-            //[0] as NSDictionary
-            //println(car["Brand"])
-            // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
-            if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+            else{
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.noInternetPopUp()
+                })
+                
             }
-            
         })
-        
         task.resume()
-        
+    }
+    func noInternetPopUp(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "No Internet"
+        alertView.message = "We can't remove your car"
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
     }
         
         
@@ -238,8 +242,9 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let deleteAction = UIAlertAction(title: "Delete",
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
-                let toRem = self.people.removeAtIndex(index.item)
-                self.removeCarFromServer(toRem)
+                //let toRem = self.people.removeAtIndex(index.item)
+                let toRem = self.people[index.item]
+                self.removeCarFromServer(toRem,index: index.item)
                 //self.removeName(toRem)
                 //self.tableView.reloadData()
         }

@@ -107,7 +107,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             let lat = prefs.objectForKey("LAT") as String
             let lon = prefs.objectForKey("LON") as String
             let idCar : String = carN.valueForKey("id")!.description
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/updatePosition")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "updatePosition")!)
             var session = NSURLSession.sharedSession()
                     request.HTTPMethod = "POST"
                     
@@ -120,6 +120,8 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                     */
                     var car = ["longitude":lon,
                         "latitude":lat,
+                        "Longitude":lon,
+                        "Latitude":lat,
                         "ID_car":idCar] as Dictionary<String,NSObject>
             
                     var params = ["User":user,
@@ -137,27 +139,20 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                         var err: NSError?
                         var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                         
-                        if(err == nil){
+                        if(err == nil&&(!(response==nil))){
                         
                             if((json!["flag"] as Bool) == true){
-                                
-                                
-                                
-                                
-                                dispatch_async(dispatch_get_main_queue(),{() -> Void in
+                                 dispatch_async(dispatch_get_main_queue(),{() -> Void in
                                    println("")
                                     self.navigationController!.popViewControllerAnimated(true)
                                 })
-                                
-                                
-                                }
+                            }
                             else {
-                                //TODO
-                        
+                                self.noInternetPopUp()
                             }
                         }else
                         {
-                            //TODO
+                            self.noInternetPopUp()
                         }
                         
                     })
@@ -166,8 +161,16 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                    // self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 
-                
-                
-            }
+    func noInternetPopUp(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "No internet"
+        alertView.message = "Please check your internet connection"
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
+    }
     
+    
+    }
+
 

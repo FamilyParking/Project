@@ -59,7 +59,7 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
     }
     
     func addGroupToServer(){
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/createGroup")!)
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "createGroup")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()

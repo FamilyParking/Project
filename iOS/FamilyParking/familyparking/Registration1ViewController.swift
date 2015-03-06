@@ -37,7 +37,7 @@ class Registration1ViewController: UIViewController {
     }
     
     func requestPin(){
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/registration")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "registration")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             var params = ["ID":UIDevice.currentDevice().identifierForVendor.UUIDString,
@@ -64,9 +64,10 @@ class Registration1ViewController: UIViewController {
                     })
                 }
                 else{
-                    self.NextButton.enabled = true
-                    self.noInternetPopUp()
-                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.NextButton.enabled = true
+                        self.noInternetPopUp()
+                    })
                 }
             })
             task.resume()

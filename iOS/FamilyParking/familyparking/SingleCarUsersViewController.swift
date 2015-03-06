@@ -293,7 +293,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         else{
             println("ServerCAraar")
             
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/insertContactCar")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "insertContactCar")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -327,7 +327,9 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                 println("Response: \(response)")
                 
-                
+                if(response == nil){
+                    self.savingErrorPopUp()
+                }
                 var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                 
                 println("Body: \(strData!)")
@@ -372,7 +374,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         else{
             println("ServerCAraar")
             
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/removeContactCar")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "removeContactCar")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()

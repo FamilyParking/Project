@@ -14,16 +14,20 @@ class CarUpdate{
     
     func downloadCar(mvc:MapViewController){
         
-            var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/getAllCars")!)
+            var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "getAllCars")!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
             
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let code = prefs.objectForKey("PIN") as String
+            let code = prefs.objectForKey("PIN") as String?
+        if (code? == nil){
+            return
+        }
             let mail = prefs.objectForKey("EMAIL") as String
+            let logged = prefs.integerForKey("ISLOGGEDIN")
             println(code)
-            var user = ["Code":code,
+            var user = ["Code":code!,
                         "Email":mail] as Dictionary<String, NSObject>
             var params = ["User":user,
             ] as Dictionary<String, NSObject>
@@ -39,34 +43,37 @@ class CarUpdate{
                 println("Body: \(strData)")
                
                 var err: NSError?
-                
-                var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
-            
-                if var cars:NSArray = json?["object"]! as? NSArray{
-                    self.removeAllCar()
-                    self.removeAllUsers()
-                    for carz in cars{
-                        self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String,lastPark:carz["Time"] as String)
-                        
-                            let users = carz["Users"] as NSArray
-                            for user in users{
-                                self.addUserToLocalDatabase(user["Email"]as String, name: user["Nome"] as String, car: carz["ID_car"] as String)
-                                println(user)
+                println(error)
+                if(error?==nil){
+                    var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
+                    if(json?["flag"] as Bool){
+                        if var cars:NSArray = json?["object"]! as? NSArray{
+                            self.removeAllCar()
+                            self.removeAllUsers()
+                            for carz in cars{
+                                self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String,lastPark:carz["Time"] as String)
+                                
+                                let users = carz["Users"] as NSArray
+                                for user in users{
+                                    self.addUserToLocalDatabase(user["Email"]as String, name: user["Nome"] as String, car: carz["ID_car"] as String)
+                                    println(user)
+                                }
+                                
                             }
-                        
+                        }
+                        mvc.updateCars()
+                    } else {
+                        if((json?["object"] as NSInteger) == 3) {self.resetSystem();}
                     }
-                }
-                mvc.updateCars()
-                if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                }else{
+                    println("Generic Error")
+                    
                 }
                 
             })
-            
-            task.resume()
-            
+            if(logged==1){
+                task.resume()
+            }
         }
     
     func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String,lastPark:String){
@@ -291,7 +298,13 @@ class CarUpdate{
         
         
     }
-
-
-    
+    func resetSystem(){
+        removeAllCar()
+        removeAllUsers()
+      
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        prefs.setInteger(0, forKey: "ISLOGGEDIN")
+        prefs.synchronize()
+        exit(0)
+        }
 }

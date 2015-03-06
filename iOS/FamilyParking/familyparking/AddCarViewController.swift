@@ -18,7 +18,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
  //   @IBOuRIFAREtlet weak var ConfirmButton: UIButton!
     @IBOutlet weak var CarName: UITextField!
     
-    @IBOutlet weak var BackButt: UIButton!
+  //  @IBOutlet weak var BackButt: UIButton!
     @IBOutlet weak var ConfButt: UIButton!
     
     override func viewDidLoad() {
@@ -40,7 +40,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         
         var model = self.CarName.text
         if(!model.isEmpty){
-            BackButt.enabled = false
+            //BackButt.enabled = false
             ConfButt.enabled = false
             addCarToServer()
         }
@@ -60,7 +60,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
     }
     
     func addCarToServer(){
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/createCar")!)
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "createCar")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -76,7 +76,8 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         "Bluetooth_name":"",
            "Brand":"",
             "Users":"",
-        "Name":CarName.text] as Dictionary<String, NSObject>
+        "Name":CarName.text,
+            "Name_car":CarName.text] as Dictionary<String, NSObject>
         
         var user = ["Code":pin,
                     "Email":mail] as Dictionary<String, NSObject>
@@ -101,25 +102,30 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
             if(err==nil){
                 if((json!["flag"] as Bool) == true){
-                            self.BackButt.enabled = true
+                            //self.BackButt.enabled = true
                             self.ConfButt.enabled = true
                     CarUpdate().addACarToLocalDatabase((json!["object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never")
-                            self.dismissViewControllerAnimated(true, completion: nil)
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            //self.dismissViewControllerAnimated(true, completion: nil)
+                            println("")
+                            self.navigationController!.popViewControllerAnimated(true)
+                        })
                     }
                     else{
-                        self.BackButt.enabled = true
+                        //self.BackButt.enabled = true
                         self.ConfButt.enabled = true
                     }
                 }
                 else{
-                    self.BackButt.enabled = true
+                   //self.BackButt.enabled = true
                     self.ConfButt.enabled = true
                 }
             
             
             
         })
-        task.resume()
+        
+            task.resume()
         
     }
     

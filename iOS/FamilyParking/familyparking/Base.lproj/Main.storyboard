@@ -152,7 +152,7 @@
         <scene sceneID="HCI-ux-6DI">
             <objects>
                 <navigationController id="4Fv-SU-Erw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" id="G1E-ay-4uP"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="house-7" id="G1E-ay-4uP"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="SfE-MO-yjo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -178,10 +178,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZF-x0-6Kv">
-                                <rect key="frame" x="0.0" y="416" width="152" height="103"/>
+                                <rect key="frame" x="168" y="379" width="152" height="103"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XZz-5h-AuL">
-                                        <rect key="frame" x="8" y="0.0" width="60" height="60"/>
+                                        <rect key="frame" x="83" y="0.0" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="Wqs-nL-Xaq"/>
                                         </constraints>
@@ -195,7 +195,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="XZz-5h-AuL" firstAttribute="top" secondItem="dZF-x0-6Kv" secondAttribute="top" id="40u-jC-kKG"/>
-                                    <constraint firstItem="XZz-5h-AuL" firstAttribute="leading" secondItem="dZF-x0-6Kv" secondAttribute="leading" constant="8" id="9cd-UQ-G6r"/>
+                                    <constraint firstItem="XZz-5h-AuL" firstAttribute="leading" secondItem="dZF-x0-6Kv" secondAttribute="leading" constant="83" id="9cd-UQ-G6r"/>
                                     <constraint firstAttribute="height" constant="103" id="a1p-eA-TrP"/>
                                     <constraint firstAttribute="width" constant="152" id="jM0-Hp-jVf"/>
                                     <constraint firstAttribute="bottom" secondItem="XZz-5h-AuL" secondAttribute="bottom" constant="43" id="oMf-6N-aMu"/>
@@ -204,8 +204,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dZF-x0-6Kv" firstAttribute="leading" secondItem="UCK-Zp-MJZ" secondAttribute="leading" id="I87-p2-3V9"/>
-                            <constraint firstItem="Gjh-Cj-COu" firstAttribute="top" secondItem="dZF-x0-6Kv" secondAttribute="bottom" id="g3h-TV-Kvw"/>
+                            <constraint firstItem="dZF-x0-6Kv" firstAttribute="leading" secondItem="UCK-Zp-MJZ" secondAttribute="leading" constant="168" id="I87-p2-3V9"/>
+                            <constraint firstItem="Gjh-Cj-COu" firstAttribute="top" secondItem="dZF-x0-6Kv" secondAttribute="bottom" constant="37" id="g3h-TV-Kvw"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Family Parking" id="B3U-yF-ONi"/>
@@ -350,7 +350,7 @@
         <scene sceneID="fTh-q8-FcT">
             <objects>
                 <navigationController id="Az9-5y-fjg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Cars" id="eFq-yq-3w7"/>
+                    <tabBarItem key="tabBarItem" title="Cars" image="car1" id="eFq-yq-3w7"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0ec-J5-RML">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -430,7 +430,7 @@
             </objects>
             <point key="canvasLocation" x="190" y="583"/>
         </scene>
-        <!--Add Car View Controller-->
+        <!--Insert your Car Name-->
         <scene sceneID="IOr-9X-Xx9">
             <objects>
                 <viewController id="UMO-cu-gwX" customClass="AddCarViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
@@ -442,23 +442,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Insert you car Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SY-qx-cEN">
-                                <rect key="frame" x="54" y="56" width="212" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkq-6R-Wpk">
-                                <rect key="frame" x="54" y="211" width="35" height="30"/>
-                                <state key="normal" title="Back">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="Back" destination="UMO-cu-gwX" eventType="touchUpInside" id="Vtm-8F-ckX"/>
-                                    <action selector="Back:" destination="eTP-oc-OpA" eventType="touchUpInside" id="cl2-qk-5O6"/>
-                                    <action selector="Next" destination="sqW-gV-Gf2" eventType="touchUpInside" id="zyh-hf-sMK"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4F-GF-3XC">
                                 <rect key="frame" x="205" y="211" width="61" height="30"/>
                                 <state key="normal" title="Confirm">
@@ -471,16 +454,21 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QhA-0d-9rd">
-                                <rect key="frame" x="54" y="90" width="212" height="30"/>
+                                <rect key="frame" x="54" y="109" width="212" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Your car name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVf-fq-qkr">
+                                <rect key="frame" x="54" y="147" width="111" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="4gT-RE-QL5"/>
+                    <navigationItem key="navigationItem" title="Insert your Car Name" id="4gT-RE-QL5"/>
                     <connections>
-                        <outlet property="BackButt" destination="dkq-6R-Wpk" id="qey-jw-W8l"/>
                         <outlet property="CarName" destination="QhA-0d-9rd" id="5iI-oB-feM"/>
                         <outlet property="ConfButt" destination="p4F-GF-3XC" id="wGf-i8-yOe"/>
                     </connections>
@@ -491,6 +479,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="car1" width="60" height="60"/>
+        <image name="house-7" width="30" height="30"/>
         <image name="park" width="234" height="234"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -18,13 +18,10 @@ class Registration2ViewController: UIViewController {
     @IBAction func Confirm(sender: AnyObject) {
         self.BackButton.enabled = false
         self.ConfirmButton.enabled = false
-        //confirmCode —> http://first-vision-798.appspot.com/confirmCode
-        //Email
-        //Code
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let mail:String = prefs.objectForKey("EMAIL") as String
         
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://first-vision-798.appspot.com/confirmCode")!)
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "confirmCode")!)
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
@@ -50,18 +47,13 @@ class Registration2ViewController: UIViewController {
                 prefs.setObject(self.PinBox.text, forKey: "PIN")
                 prefs.setInteger(1, forKey:"ISLOGGEDIN")
                 prefs.synchronize()
-                
-                //var father = self
-                //CarUpdate().downloadCar(self.parentViewController as MapViewController)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-                    
                 })
             }
             else if(strData!.containsString("false")){
                 println("Wrong Code")
                 self.wrongPinPopUp()
-                
                 self.BackButton.enabled = true
                 self.ConfirmButton.enabled = true
             }
