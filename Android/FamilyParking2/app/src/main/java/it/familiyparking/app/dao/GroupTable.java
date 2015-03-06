@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
-import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 
 public class GroupTable {

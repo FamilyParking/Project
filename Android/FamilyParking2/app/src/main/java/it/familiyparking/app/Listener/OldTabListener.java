@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.fragment.CarFragment;
 
 /**
  * Created by francesco on 05/03/15.

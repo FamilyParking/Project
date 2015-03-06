@@ -33,33 +33,44 @@ public class DoSaveCar implements Runnable {
     public void run() {
         Looper.prepare();
 
-        final Result result = ServerCall.createCar(user,car);
+        if(Tools.isOnline(activity)) {
 
-        if(result.isFlag()) {
+            final Result result = ServerCall.createCar(user, car);
 
-            SQLiteDatabase db = Tools.getDB_Writable(activity);
+            if (result.isFlag()) {
 
-            car.setId((String)result.getObject());
+                SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-            CarTable.insertCar(db,car);
+                car.setId((String) result.getObject());
 
-            GroupTable.deleteGroup(db,car.getId());
-            for(User contact : car.getUsers())
-                GroupTable.insertContact(db,car.getId(),contact);
+                CarTable.insertCar(db, car);
 
-            db.close();
+                GroupTable.deleteGroup(db, car.getId());
+                for (User contact : car.getUsers())
+                    GroupTable.insertContact(db, car.getId(), contact);
 
+                db.close();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.resetProgressDialogCircular(false);
+                        activity.selectCarListTab();
+                        Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
+                    }
+                });
+            } else {
+                Tools.manageServerError(result, activity);
+            }
+
+        }
+        else{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    activity.resetProgressDialogCircular(false);
-                    activity.selectCarListTab();
-                    Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
+                    activity.endNoConnection();
                 }
             });
-        }
-        else{
-            Tools.manageServerError(result,activity);
         }
     }
 }

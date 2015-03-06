@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.serverClass.Result;
@@ -31,30 +32,42 @@ public class DoConfirmation implements Runnable {
     public void run() {
         Looper.prepare();
 
-        user.setCode(code);
-
-        final Result result = ServerCall.confirmation(user);
-
         final MainActivity activity = (MainActivity) fragment.getActivity();
 
-        if(result.isFlag()) {
+        if(Tools.isOnline(activity)) {
+            user.setCode(code);
 
-            SQLiteDatabase db = Tools.getDB_Writable(activity);
+            final Result result = ServerCall.confirmation(user);
 
-            UserTable.updateUser(db,user);
+            if(result.isFlag()) {
 
-            db.close();
+                SQLiteDatabase db = Tools.getDB_Writable(activity);
 
+                UserTable.updateUser(db,user);
+
+                db.close();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tools.createToast(activity,"Account confirmed!", Toast.LENGTH_SHORT);
+                        fragment.endConfirmation(false);
+                    }
+                });
+            }
+            else{
+                Tools.manageServerError(result,activity);
+                fragment.endConfirmation(true);
+            }
+        }
+        else{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Tools.createToast(activity,"Account confirmed!", Toast.LENGTH_SHORT);
-                    fragment.endConfirmation(false);
+                    Tools.createToast(activity,activity.getResources().getString(R.string.no_connection), Toast.LENGTH_LONG);
+                    fragment.endConfirmation(true);
                 }
             });
-        }
-        else{
-            Tools.manageServerError(result,activity);
         }
     }
 }

@@ -2,7 +2,6 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.util.Log;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.UserTable;
@@ -28,15 +27,19 @@ public class DoUpdateGCM implements Runnable {
     public void run() {
         Looper.prepare();
 
-        final Result result = ServerCall.updateGoogleCode(user);
+        if(Tools.isOnline(activity)) {
 
-        if(result.isFlag()) {
-            SQLiteDatabase db = Tools.getDB_Writable(activity);
-            UserTable.updateGCM_ID(db,user.getGoogle_cloud_messaging());
-            db.close();
+            final Result result = ServerCall.updateGoogleCode(user);
+
+            if (result.isFlag()) {
+                SQLiteDatabase db = Tools.getDB_Writable(activity);
+                UserTable.updateGCM_ID(db, user.getGoogle_cloud_messaging());
+                db.close();
+            } else {
+                Tools.manageServerError(result, activity);
+            }
+
         }
-        else{
-            Tools.manageServerError(result, activity);
-        }
+
     }
 }

@@ -571,7 +571,9 @@ public class Tools {
         alertDialog.show();
     }
 
-    public static double[] getPoistion(LocationService locationService){
+    public static double[] getPosition(Context context){
+        LocationService locationService = new LocationService(context);
+
         double[] position = null;
 
         while (position == null) {

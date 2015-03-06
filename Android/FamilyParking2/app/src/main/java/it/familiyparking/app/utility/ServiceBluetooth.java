@@ -74,15 +74,14 @@ public class ServiceBluetooth extends Service{
 
                     ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
 
-                    LocationService locationService = new LocationService(getApplicationContext());
-                    double[] position = Tools.getPoistion(locationService);
+
+                    double[] position = Tools.getPosition(getApplicationContext());
 
                     User user = UserTable.getUser(db);
 
                     for (final Car car : carID) {
 
-                        car.setLatitude(Double.toString(position[0]));
-                        car.setLongitude(Double.toString(position[1]));
+                        car.setPosition(position);
 
                         new Thread(new Runnable() {
                             @Override

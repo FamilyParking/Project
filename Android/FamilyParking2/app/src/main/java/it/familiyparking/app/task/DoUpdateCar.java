@@ -37,14 +37,25 @@ public class DoUpdateCar implements Runnable {
     public void run() {
         Looper.prepare();
 
-        SQLiteDatabase db = Tools.getDB_Writable(activity);
+        if(Tools.isOnline(activity)) {
 
-        if(updateCar(db))
-            if(addUsers(db))
-                if(removeUsers(db))
-                    success();
+            SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-        db.close();
+            if (updateCar(db))
+                if (addUsers(db))
+                    if (removeUsers(db))
+                        success();
+
+            db.close();
+        }
+        else{
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.endNoConnection();
+                }
+            });
+        }
     }
 
     private boolean updateCar(SQLiteDatabase db){

@@ -1,6 +1,5 @@
 package it.familiyparking.app.fragment;
 
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +14,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
@@ -118,16 +115,15 @@ public class Map extends Fragment{
         return Double.toString(googleMap.getMyLocation().getLongitude());
     }
 
-    public void parkCar(Car car){
+    public void parkCar(Car car, boolean moveCamera){
+        LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()));
+
         googleMap.clear();
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()))).title(car.getName()));
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                resetPbutton();
-                return false;
-            }
-        });
+        googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+
+        if(moveCamera){
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(carPosition));
+        }
     }
 
     public void updatePosition(){

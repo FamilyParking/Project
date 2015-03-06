@@ -260,4 +260,9 @@ public class Car implements Parcelable {
 
         return newCar;
     }
+
+    public void setPosition(double[] position){
+        setLatitude(Double.toString(position[0]));
+        setLongitude(Double.toString(position[1]));
+    }
 }

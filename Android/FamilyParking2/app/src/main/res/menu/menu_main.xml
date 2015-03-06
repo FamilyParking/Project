@@ -12,6 +12,13 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/ghostmode_active"
+        android:title=""
+        android:icon="@drawable/ghostmode"
+        android:orderInCategory="200"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_cars"
         android:title="@string/action_cars"
         android:orderInCategory="200"

@@ -10,11 +10,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
@@ -183,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Car car = intent.getParcelableExtra("car");
-                activity.park(car);
+                activity.park(car,true);
             }
         };
 
@@ -202,9 +200,9 @@ public class MainActivity extends ActionBarActivity {
         return this.user;
     }
 
-    public void park(Car car){
+    public void park(Car car,boolean moveCamera){
         if(map != null) {
-            map.parkCar(car);
+            map.parkCar(car,moveCamera);
         }
     }
 
@@ -244,8 +242,8 @@ public class MainActivity extends ActionBarActivity {
             resetTabFragment();
         }
         else if((ghostMode != null)&&(ghostMode != avoid)){
-            getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
-            ghostMode = null;
+            resetGhostmode();
+            resetUpButton = false;
         }
         if(avoid != null)
             getSupportFragmentManager().beginTransaction().add(R.id.container, avoid).commit();
@@ -334,9 +332,7 @@ public class MainActivity extends ActionBarActivity {
             carFragment = null;
         }
         else if(ghostMode != null){
-            Tools.resetUpButtonActionBar(this);
-            getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
-            ghostMode = null;
+            resetGhostmode();
         }
         else {
             if (doubleBackToExitPressedOnce)
@@ -467,7 +463,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void resetTabFragment(){
+    public void resetTabFragment(){
 
         resetCarDetail();
 
@@ -475,6 +471,10 @@ public class MainActivity extends ActionBarActivity {
 
         Tools.resetTabActionBar(this);
         Tools.resetUpButtonActionBar(this);
+
+        resetCarDetail();
+        resetCar();
+        resetCreateCar();
 
         getSupportFragmentManager().beginTransaction().remove(tabFragment).commit();
         tabFragment = null;
@@ -495,6 +495,12 @@ public class MainActivity extends ActionBarActivity {
             modifyCar.removeContact(contact);
         else if(createCar != null)
             createCar.removeContact(contact);
+    }
+
+    public void resetGhostmode(){
+        Tools.resetUpButtonActionBar(this);
+        getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
+        ghostMode = null;
     }
 
     /*********************************************** TAB *********************************************/
@@ -524,13 +530,18 @@ public class MainActivity extends ActionBarActivity {
         if(carDetail != null) {
             carDetail.updateCar(car);
         }
-        
+
         if(carFragment != null){
             SQLiteDatabase db = Tools.getDB_Readable(this);
             ArrayList<Car> cars = CarTable.getAllCar(db);
             db.close();
             updateCarAdapter(cars);
         }
+    }
+
+    public void endNoConnection(){
+        resetProgressDialogCircular(true);
+        Tools.createToast(this,getResources().getString(R.string.no_connection), Toast.LENGTH_LONG);
     }
     /***************************************** CLOSE FRAGMENT *****************************************/
     public void closeCarFragment(boolean flagMessage){

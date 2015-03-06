@@ -1,24 +1,17 @@
 package it.familiyparking.app.fragment;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 import it.familiyparking.app.Listener.NewTabListener;
 import it.familiyparking.app.Listener.OldTabListener;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.adapter.CustomAdapterCar;
-import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
 
 

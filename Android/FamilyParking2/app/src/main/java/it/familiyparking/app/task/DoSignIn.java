@@ -31,40 +31,50 @@ public class DoSignIn implements Runnable {
     public void run() {
         Looper.prepare();
 
-        User user = new User(name,email);
-
-        final Result result = ServerCall.signIn(user);
-
         final MainActivity activity = (MainActivity)fragment.getActivity();
 
-        if(result.isFlag()) {
-            SQLiteDatabase db = Tools.getDB_Writable(activity);
+        if(Tools.isOnline(activity)) {
 
-            String photoID = Tools.getPhotoID_byEmail(activity,user.getEmail());
-            if(photoID != null){
-                user.setHas_photo(true);
-                user.setPhoto_ID(photoID);
-            }
+            User user = new User(name, email);
 
-            UserTable.insertUser(db,user);
-            activity.setUser(user);
+            final Result result = ServerCall.signIn(user);
 
-            db.close();
+            if (result.isFlag()) {
+                SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Tools.createToast(activity,"Confirmation code sent to your email!", Toast.LENGTH_SHORT);
-                    fragment.endSignIn(false);
+                String photoID = Tools.getPhotoID_byEmail(activity, user.getEmail());
+                if (photoID != null) {
+                    user.setHas_photo(true);
+                    user.setPhoto_ID(photoID);
                 }
-            });
+
+                UserTable.insertUser(db, user);
+                activity.setUser(user);
+
+                db.close();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tools.createToast(activity, "Confirmation code sent to your email!", Toast.LENGTH_SHORT);
+                        fragment.endSignIn(false);
+                    }
+                });
+            } else {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tools.createToast(activity, result.getDescription(), Toast.LENGTH_SHORT);
+                        fragment.endSignIn(true);
+                    }
+                });
+            }
         }
         else{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Tools.createToast(activity,result.getDescription(), Toast.LENGTH_SHORT);
-                    fragment.endSignIn(true);
+                    activity.endNoConnection();
                 }
             });
         }

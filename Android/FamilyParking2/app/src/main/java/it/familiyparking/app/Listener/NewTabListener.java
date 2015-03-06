@@ -1,8 +1,5 @@
 package it.familiyparking.app.Listener;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
-
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 

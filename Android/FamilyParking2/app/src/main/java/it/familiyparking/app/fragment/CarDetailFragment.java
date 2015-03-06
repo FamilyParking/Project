@@ -1,11 +1,7 @@
 package it.familiyparking.app.fragment;
 
-import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,10 +19,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomAdapterUser;
-import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
+import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -156,8 +152,8 @@ public class CarDetailFragment extends Fragment{
         rootView.findViewById(R.id.toPark_detail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("CarDetailFragment","parkCar");
-                //Remember there is a method in main activity to put car inside the map
+                activity.setProgressDialogCircular(activity.getResources().getString(R.string.park_car));
+                new Thread(new DoPark(activity,user,car));
             }
         });
     }
