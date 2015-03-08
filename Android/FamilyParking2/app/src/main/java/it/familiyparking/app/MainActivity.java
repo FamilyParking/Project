@@ -313,10 +313,6 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(createCar).commit();
             createCar = null;
         }
-        if(modifyCar != null){
-            getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
-            modifyCar = null;
-        }
         if(contactDetailDialog != null){
             getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
             contactDetailDialog = null;
@@ -325,6 +321,7 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
             progressDialogCircular = null;
         }
+
         resetMenu();
         setMap();
         setSignIn();
