@@ -54,6 +54,8 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -65,6 +67,7 @@ import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.task.DoPark;
 
 
 /**
@@ -406,14 +409,6 @@ public class Tools {
         return hash;
     }
 
-    /*public static void setImageForGroup(Activity activity, TextView group_image, Group group){
-        Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
-        drawable.setColorFilter(new PorterDuffColorFilter(activity.getResources().getColor(R.color.green),PorterDuff.Mode.SCREEN));
-        group_image.setBackgroundDrawable(drawable);
-        String initial = ""+group.getName().charAt(0)+"";
-        group_image.setText(initial.toUpperCase());
-    }*/
-
     public static void setImageForContact(Activity activity, TextView group_image, User contact){
         Drawable drawable = activity.getResources().getDrawable(R.drawable.circle);
         drawable.setColorFilter(new PorterDuffColorFilter(getColor(activity,contact.getName()),PorterDuff.Mode.SCREEN));
@@ -729,6 +724,35 @@ public class Tools {
         }
 
         return temp;
+    }
+
+    public static void showAlertParking(final MainActivity activity, final ArrayList<Car> cars){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+
+        alertDialog.setCancelable(true);
+
+        alertDialog.setTitle("Pick the car");
+
+        List<String> listItems = new ArrayList<String>();
+        for(Car c : cars)
+            listItems.add(c.getName()+" ["+c.getRegister()+"]");
+
+        final CharSequence[] charSequenceItems = listItems.toArray(new CharSequence[listItems.size()]);
+
+        alertDialog.setItems(charSequenceItems, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                new Thread(new DoPark(activity,activity.getUser(),cars.get(which))).start();
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 
 }

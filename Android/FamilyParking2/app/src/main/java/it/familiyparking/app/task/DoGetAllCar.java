@@ -41,7 +41,7 @@ public class DoGetAllCar implements Runnable {
                 CarTable.deleteCarTable(db);
                 GroupTable.deleteGroupTable(db);
 
-                ArrayList<Car> cars = (ArrayList<Car>) result.getObject();
+                final ArrayList<Car> cars = (ArrayList<Car>) result.getObject();
                 for (final Car c : cars) {
 
                     for (User contact : c.getUsers()) {
@@ -57,7 +57,18 @@ public class DoGetAllCar implements Runnable {
                         });
                     }
                 }
+
+                activity.resetAllCarRunning();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.updateCarAdapter(cars);
+                    }
+                });
+
             } else {
+                activity.resetAllCarRunning();
                 Tools.manageServerError(result, activity);
             }
 

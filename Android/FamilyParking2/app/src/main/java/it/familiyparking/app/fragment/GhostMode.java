@@ -1,6 +1,5 @@
 package it.familiyparking.app.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.utility.Tools;
 
@@ -32,9 +28,11 @@ public class GhostMode extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ghostmode, container, false);
-        Tools.setUpButtonActionBar((ActionBarActivity) getActivity());
 
         activity = (MainActivity) getActivity();
+
+        Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
+        Tools.setTitleActionBar(activity,R.string.app_name);
 
         SQLiteDatabase db = Tools.getDB_Readable(activity);
         boolean isActive = UserTable.getGhostMode(db);
@@ -53,9 +51,9 @@ public class GhostMode extends Fragment{
         alertDialog.setTitle("Ghostmode");
 
         if(isActive)
-            alertDialog.setMessage("Do you want to DEACTIVATE the ghostmode function?");
+            alertDialog.setMessage("Do you want to DISABLE the ghostmode function?");
         else
-            alertDialog.setMessage("Do you want to ACTIVATE the ghostmode function?");
+            alertDialog.setMessage("Do you want to ENABLE the ghostmode function?");
 
         alertDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
@@ -63,6 +61,8 @@ public class GhostMode extends Fragment{
                         SQLiteDatabase db = Tools.getDB_Writable(activity);
                         UserTable.updateGhostmode(db,!isActive);
                         db.close();
+
+                        activity.updateActionGhostmode(!isActive);
 
                         resetGhostmodeFragment();
 

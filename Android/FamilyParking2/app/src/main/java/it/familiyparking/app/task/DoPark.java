@@ -4,6 +4,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
@@ -30,6 +31,13 @@ public class DoPark implements Runnable {
     @Override
     public void run() {
         Looper.prepare();
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.setProgressDialogCircular(activity.getResources().getString(R.string.park_car));
+            }
+        });
 
         if(Tools.isOnline(activity)) {
 

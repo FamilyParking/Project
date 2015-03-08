@@ -429,7 +429,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             public void onClick(View v) {
                 activity.setProgressDialogCircular("Remove car ...");
 
-                new Thread(new DoRemoveCar(activity,car,user));
+                new Thread(new DoRemoveCar(activity,car,user)).start();
             }
         });
     }

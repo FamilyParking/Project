@@ -51,7 +51,7 @@ public class DoRemoveCar implements Runnable {
                     @Override
                     public void run() {
                         activity.resetProgressDialogCircular(false);
-                        activity.closeModifyCar();
+                        activity.resetModifyCar();
                         Tools.createToast(activity, "Car deleted!", Toast.LENGTH_SHORT);
                     }
                 });

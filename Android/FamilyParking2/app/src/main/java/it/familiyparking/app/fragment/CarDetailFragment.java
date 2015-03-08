@@ -152,8 +152,7 @@ public class CarDetailFragment extends Fragment{
         rootView.findViewById(R.id.toPark_detail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.setProgressDialogCircular(activity.getResources().getString(R.string.park_car));
-                new Thread(new DoPark(activity,user,car));
+                new Thread(new DoPark(activity,user,car)).start();
             }
         });
     }
