@@ -41,7 +41,7 @@ public class DoSaveCar implements Runnable {
 
                 SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-                car.setId((String) result.getObject());
+                car.setId(((Double) result.getObject()).toString());
 
                 CarTable.insertCar(db, car);
 

@@ -53,8 +53,9 @@ public class Signal extends IntentService {
 
                 if (!(best.charAt(t + 21) == ']')) value += best.charAt(t + 21);
 
-                notifying("You parked!");
-                SamplesTable.insertSamples(this,"Dumping Intent " + type + " " + value);
+                //notifying("You parked!");
+
+                SamplesTable.insertSamples(this,best);
 
             }else{
                 last=type;

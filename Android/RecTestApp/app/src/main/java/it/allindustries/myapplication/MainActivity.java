@@ -73,57 +73,64 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     private void addMarker(final Sample sample,final Context context){
 
-        if(sample.getCorrect() == -1)
+        if(sample.getCorrect() == -1) {
             googleMap.addMarker(new MarkerOptions()
                     .position(sample.getPosition())
                     .title(sample.getTimestamp())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-        else if(sample.getCorrect() == 0)
+        }
+        else if(sample.getCorrect() == 0) {
             googleMap.addMarker(new MarkerOptions()
                     .position(sample.getPosition())
                     .title(sample.getTimestamp())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        else if(sample.getCorrect() == 1)
+
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(final Marker marker) {
+
+                    if(sample.getCorrect() == -1) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+                        alertDialog.setCancelable(true);
+
+                        alertDialog.setTitle("Is it correct?");
+
+                        alertDialog.setMessage("[" + sample.getTimestamp() + "] \n " + sample.getInfo());
+
+                        alertDialog.setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        updateInfo(sample.getId(), true);
+                                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        alertDialog.setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        updateInfo(sample.getId(), false);
+                                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        alertDialog.show();
+
+                        return true;
+                    }
+
+                    return false;
+                }
+            });
+        }
+        else if(sample.getCorrect() == 1) {
             googleMap.addMarker(new MarkerOptions()
                     .position(sample.getPosition())
                     .title(sample.getTimestamp())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(final Marker marker) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-
-                alertDialog.setCancelable(true);
-
-                alertDialog.setTitle("Is it correct?");
-
-                alertDialog.setMessage("[" + sample.getTimestamp() + "] \n " + sample.getInfo());
-
-                alertDialog.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                updateInfo(sample.getId(),true);
-                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                                dialog.cancel();
-                            }
-                        });
-
-                alertDialog.setNegativeButton("No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                updateInfo(sample.getId(),false);
-                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                                dialog.cancel();
-                            }
-                        });
-
-                alertDialog.show();
-
-                return true;
-            }
-        });
+        }
     }
 
     private void updateInfo(String id, boolean flag){
