@@ -2,6 +2,7 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,12 @@ public class CarFragment extends Fragment{
                 infoTv.setText(activity.getResources().getString(R.string.update_car_list));
             }
             else{
+
+                if(activity.getLunchWithEmptyList() == 1){
+                    activity.incLunchWithEmptyList();
+                    activity.selectCreateCarTab();
+                }
+
                 logoIv.setVisibility(View.VISIBLE);
                 progess.setVisibility(View.GONE);
                 infoTv.setText(activity.getResources().getString(R.string.no_car));

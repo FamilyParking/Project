@@ -33,6 +33,8 @@ public class DoGetAllCar implements Runnable {
 
         if(Tools.isOnline(activity)) {
 
+            activity.setAllCarRunning();
+
             final Result result = ServerCall.getAllCar(user);
 
             if (result.isFlag()) {
@@ -58,8 +60,6 @@ public class DoGetAllCar implements Runnable {
                     }
                 }
 
-                activity.resetAllCarRunning();
-
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -67,10 +67,12 @@ public class DoGetAllCar implements Runnable {
                     }
                 });
 
-            } else {
-                activity.resetAllCarRunning();
+            }
+            else {
                 Tools.manageServerError(result, activity);
             }
+
+            activity.resetAllCarRunning();
 
         }
     }

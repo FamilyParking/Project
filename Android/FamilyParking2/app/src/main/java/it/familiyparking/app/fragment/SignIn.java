@@ -51,6 +51,7 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
 
         signIn = (Button)rootView.findViewById(R.id.signIn_b);
         signIn.setOnClickListener(this);
+        signIn.setClickable(false);
 
         progressCircle = rootView.findViewById(R.id.progress_signIn);
 
@@ -80,10 +81,17 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
             if(correctInput) {
                 Animation rotate_clockwise = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_counterclockwise);
                 signIn.startAnimation(rotate_clockwise);
+
+                signIn.setClickable(true);
+
                 isRotated = false;
 
                 new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration()-1,signIn,getActivity(),R.drawable.arrow_blue_up,false);
             }
+            else{
+                signIn.setClickable(false);
+            }
+
             correctInput = false;
         }
     }

@@ -16,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
@@ -27,6 +28,7 @@ import it.familiyparking.app.utility.Tools;
  */
 public class Map extends Fragment{
 
+    private MainActivity activity;
     private GoogleMap googleMap;
     private Button toPark;
     private boolean afterPositionSettings;
@@ -38,7 +40,9 @@ public class Map extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
+        this.activity = (MainActivity) getActivity();
+
+        Tools.resetUpButtonActionBar(activity);
 
         setUpMap();
 

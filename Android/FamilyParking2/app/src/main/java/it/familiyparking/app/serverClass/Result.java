@@ -8,13 +8,13 @@ import java.util.ArrayList;
  * Created by francesco on 03/01/15.
  */
 public class Result {
-    @SerializedName("Flag")
+    @SerializedName("flag")
     private boolean flag;
 
-    @SerializedName("Object")
+    @SerializedName("object")
     private Object object;
 
-    @SerializedName("Description")
+    @SerializedName("description")
     private String description;
 
     public Result(){}
@@ -53,7 +53,18 @@ public class Result {
         this.description = description;
     }
 
-    public String toString(){
-        return Boolean.toString(flag)+"-"+description+"-"+object.toString();
+    @Override
+    public String toString() {
+        if(object != null)
+            return "Result{" +
+                "flag=" + flag +
+                ", object=" + object +
+                ", description='" + description + '\'' +
+                '}';
+        else
+            return "Result{" +
+                    "flag=" + flag +
+                    ", description='" + description + '\'' +
+                    '}';
     }
 }

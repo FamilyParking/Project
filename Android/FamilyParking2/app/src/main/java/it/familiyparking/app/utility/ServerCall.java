@@ -52,6 +52,7 @@ public class ServerCall {
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
+            Log.e("SignIn",result.toString());
 
             return result;
 
@@ -200,8 +201,6 @@ public class ServerCall {
 
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
-
-            Log.e("createCar",json);
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 

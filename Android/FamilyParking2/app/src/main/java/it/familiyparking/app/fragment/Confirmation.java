@@ -25,6 +25,7 @@ import it.familiyparking.app.utility.Tools;
  */
 public class Confirmation extends Fragment implements TextWatcher,View.OnClickListener{
 
+    MainActivity activity;
     private EditText code;
     private Button confirmation;
     private View progressCircle;
@@ -37,7 +38,9 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_confirmation, container, false);
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        this.activity = (MainActivity) getActivity();
+
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         code = (EditText)rootView.findViewById(R.id.confirmation_et);
         code.addTextChangedListener(this);
@@ -65,20 +68,20 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
             correctInput = true;
 
             if(!isRotated) {
-                Animation rotate_clockwise = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_clockwise);
+                Animation rotate_clockwise = AnimationUtils.loadAnimation(activity, R.anim.rotate_clockwise);
                 confirmation.startAnimation(rotate_clockwise);
                 isRotated = true;
 
-                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration() - 10, confirmation, getActivity(), R.drawable.arrow_blue_right, true);
+                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration() - 10, confirmation, activity, R.drawable.arrow_blue_right, true);
             }
         }
         else {
             if(correctInput) {
-                Animation rotate_clockwise = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_counterclockwise);
+                Animation rotate_clockwise = AnimationUtils.loadAnimation(activity, R.anim.rotate_counterclockwise);
                 confirmation.startAnimation(rotate_clockwise);
                 isRotated = false;
 
-                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration()-1,confirmation,getActivity(),R.drawable.arrow_blue_up,false);
+                new AsyncTaskChangeButton().execute(rotate_clockwise.getDuration()-1,confirmation,activity,R.drawable.arrow_blue_up,false);
             }
             correctInput = false;
         }
@@ -89,8 +92,6 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
     }
 
     public void onClick(View v){
-        MainActivity activity = (MainActivity) getActivity();
-
         Tools.closeKeyboard(v,activity);
 
         confirmation.setVisibility(View.GONE);
@@ -104,14 +105,23 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
     public void endConfirmation(boolean error){
 
         if(error){
-            confirmation.setVisibility(View.VISIBLE);
-            progressCircle.setVisibility(View.GONE);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    confirmation.setVisibility(View.VISIBLE);
+                    progressCircle.setVisibility(View.GONE);
 
-            resetEditText();
+                    resetEditText();
+                }
+            });
         }
         else{
-            MainActivity activity = (MainActivity) getActivity();
-            activity.endConfirmation();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.endConfirmation();
+                }
+            });
         }
     }
 }

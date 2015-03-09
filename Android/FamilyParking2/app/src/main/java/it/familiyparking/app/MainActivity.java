@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
     private boolean visibleActionPosition;
     private boolean visibleActionGhostmode;
     private boolean flagAllCarRunning;
+    private int lunchWithEmptyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +71,7 @@ public class MainActivity extends ActionBarActivity {
 
         startService();
 
-        inflateMenu = false;
-        doubleBackToExitPressedOnce = false;
-        visibleActionPosition = false;
-
-        setAllCarRunning();
+        initBool();
 
         tracker = Tools.activeAnalytic(this);
 
@@ -106,12 +104,29 @@ public class MainActivity extends ActionBarActivity {
         visibleActionPosition = true;
 
         SQLiteDatabase db = Tools.getDB_Readable(this);
+
         visibleActionGhostmode = UserTable.getGhostMode(db);
+
+        ArrayList<Car> cars = CarTable.getAllCar(db);
+
         db.close();
+
+        if((cars == null) || (cars.isEmpty())){
+            lunchWithEmptyList = 1;
+            setTabFragment();
+        }
 
         setMenu();
 
         new AsyncTaskGCM().execute(user,this);
+    }
+
+    private void initBool(){
+        inflateMenu = false;
+        doubleBackToExitPressedOnce = false;
+        visibleActionPosition = false;
+        flagAllCarRunning = false;
+        lunchWithEmptyList = 0;
     }
 
     /***************************************** MENU MANAGMENT *****************************************/
@@ -140,6 +155,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if(lunchWithEmptyList > 0){
+            Tools.createToast(this,"You need to create a car to use the application",Toast.LENGTH_LONG);
+            return true;
+        }
 
         switch (id){
             case android.R.id.home:
@@ -217,6 +237,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateCarAdapter(ArrayList<Car> cars){
+        if(cars.isEmpty())
+            lunchWithEmptyList = 1;
+        else
+            resetLunchWithEmptyList();
+
         if(carFragment != null)
             carFragment.updateAdapter(cars);
     }
@@ -251,6 +276,18 @@ public class MainActivity extends ActionBarActivity {
 
     public boolean getAllCarRunning(){
         return this.flagAllCarRunning;
+    }
+
+    public int getLunchWithEmptyList(){
+        return this.lunchWithEmptyList;
+    }
+
+    public void resetLunchWithEmptyList(){
+        this.lunchWithEmptyList = 0;
+    }
+
+    public void incLunchWithEmptyList(){
+        this.lunchWithEmptyList++;
     }
 
     /***************************************** FRAGMENT MANAGER ***************************************/
@@ -323,6 +360,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         resetMenu();
+        initBool();
         setMap();
         setSignIn();
     }
@@ -340,7 +378,13 @@ public class MainActivity extends ActionBarActivity {
             resetCarDetail();
         }
         else if(tabFragment != null){
-            resetTabFragment();
+
+            if(lunchWithEmptyList == 0) {
+                resetTabFragment();
+            }
+            else{
+                Tools.createToast(this,"You need to create a car to use the application",Toast.LENGTH_LONG);
+            }
         }
         else if(contactDetailDialog != null){
             resetContactDetailDialog();
@@ -412,6 +456,7 @@ public class MainActivity extends ActionBarActivity {
     public void setTabFragment(){
         if(tabFragment == null) {
             hideMyPosition();
+
             tabFragment = new TabFragment();
             replaceFragment(tabFragment);
         }
@@ -566,6 +611,10 @@ public class MainActivity extends ActionBarActivity {
             tabFragment.selectCarFragment();
     }
 
+    public void selectCreateCarTab(){
+        if(tabFragment != null)
+            tabFragment.selectCreateFragment();
+    }
     /***************************************** MANAGE END CALL ***************************************/
     public void endSignIn(){
         getSupportFragmentManager().beginTransaction().remove(signIn).commit();
