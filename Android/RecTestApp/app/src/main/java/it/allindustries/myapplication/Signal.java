@@ -11,9 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.io.FileOutputStream;
-import java.util.Iterator;
-import java.util.Set;
+import com.google.android.gms.location.ActivityRecognitionResult;
+import com.google.android.gms.location.DetectedActivity;
 
 /**
  * Created by mauropiva on 06/03/15.
@@ -21,68 +20,33 @@ import java.util.Set;
 public class Signal extends IntentService {
 
     private static int counter = 0;
-    private static String last = "1";
+    private static int lastActivity = DetectedActivity.STILL;
 
     protected void onHandleIntent(Intent intent) {
-
-       // System.out.println(intent.getDataString());
-       // dumpIntent(intent);
-
-        Log.e("Signal","Something Appened " + counter++);
+        //Log.e("Signal","Something Appened " + counter++);
 
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
 
-            String best = bundle.get("com.google.android.location.internal.EXTRA_ACTIVITY_RESULT").toString();
-            Log.e("LOG_TAG", best);
+            ActivityRecognitionResult activityRecognitionResult = bundle.getParcelable("com.google.android.location.internal.EXTRA_ACTIVITY_RESULT");
+            //Log.e("Signal", activityRecognitionResult.toString());
 
-            int t = best.indexOf("type=");
+            DetectedActivity detectedActivity = activityRecognitionResult.getMostProbableActivity();
 
-            String type = "" + best.charAt(t + 5);
-
-            Log.e("Signal", last + "   " + type);
-
-            if(type.equals("4")||type.equals("5")) return;
-
-            if(last.equals("3") && type.equals("2")){
-                //notifying("You are walking!");
+            if(detectedActivity.getType() == DetectedActivity.IN_VEHICLE) {
+                lastActivity = DetectedActivity.IN_VEHICLE;
+            }
+            else if((detectedActivity.getType() == DetectedActivity.ON_FOOT) || (detectedActivity.getType() == DetectedActivity.RUNNING) || (detectedActivity.getType() == DetectedActivity.WALKING)){
+                if(lastActivity == DetectedActivity.IN_VEHICLE){
+                    SamplesTable.insertSamples(this,activityRecognitionResult.toString());
+                }
             }
 
-            if (last.equals("0") && !type.equals("0")) {
-                String value = "" + best.charAt(t + 19) + best.charAt(t + 20);
-
-                if (!(best.charAt(t + 21) == ']')) value += best.charAt(t + 21);
-
-                //notifying("You parked!");
-
-                SamplesTable.insertSamples(this,best);
-
-            }else{
-                last=type;
-            }
         }
     }
 
     public Signal(){
-        super("Segnale");
-    }
-
-    public static void dumpIntent(Intent i){
-
-        Bundle bundle = i.getExtras();
-        if (bundle != null) {
-            Set<String> keys = bundle.keySet();
-            Iterator<String> it = keys.iterator();
-
-            Log.e("LOG_TAG", "Dumping Intent start");
-
-            while (it.hasNext()) {
-                String key = it.next();
-                Log.e("LOG_TAG","[" + key + "=" + bundle.get(key)+"]");
-            }
-
-            Log.e("LOG_TAG","Dumping Intent end");
-        }
+        super("Signal");
     }
 
     public void notifying(String note){
