@@ -1,86 +1,149 @@
 package it.allindustries.myapplication;
 
-import android.app.Notification;
-import android.app.NotificationManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.location.Location;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityRecognitionApi;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity
-        implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
 
-    private GoogleApiClient gap;
+    private GoogleApiClient googleApiClient;
+    private GoogleMap googleMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("ACTIVITY OK");
-         gap = new GoogleApiClient.Builder(this)
+
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+        final Tracker t = analytics.newTracker("UA-58079755-2");
+
+        setUpGoogleApi();
+        setUpMap();
+        setMarker();
+    }
+
+    private void setUpGoogleApi(){
+        googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(ActivityRecognition.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        gap.connect();
 
-
-
-
+        googleApiClient.connect();
     }
 
+    private void setUpMap(){
+        if (googleMap == null) {
+            googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            googleMap.setMyLocationEnabled(true);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            new AsyncTaskLocationMap().execute(googleMap, this);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void setMarker(){
+        ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
+
+        for(Sample sample : samples)
+            addMarker(sample,this);
+    }
+
+    private void addMarker(final Sample sample,final Context context){
+
+        if(sample.getCorrect() == -1)
+            googleMap.addMarker(new MarkerOptions()
+                    .position(sample.getPosition())
+                    .title(sample.getTimestamp())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        else if(sample.getCorrect() == 0)
+            googleMap.addMarker(new MarkerOptions()
+                    .position(sample.getPosition())
+                    .title(sample.getTimestamp())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        else if(sample.getCorrect() == 1)
+            googleMap.addMarker(new MarkerOptions()
+                    .position(sample.getPosition())
+                    .title(sample.getTimestamp())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final Marker marker) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+                alertDialog.setCancelable(true);
+
+                alertDialog.setTitle("Is it correct?");
+
+                alertDialog.setMessage("[" + sample.getTimestamp() + "] \n " + sample.getInfo());
+
+                alertDialog.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                updateInfo(sample.getId(),true);
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                updateInfo(sample.getId(),false);
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog.show();
+
+                return true;
+            }
+        });
+    }
+
+    private void updateInfo(String id, boolean flag){
+        if(flag)
+            SamplesTable.updateSample(this,id,1);
+        else
+            SamplesTable.updateSample(this,id,0);
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        System.out.println("ACTIVITY GAP OK");
+        Toast toast = Toast.makeText(this, "Google api connected", Toast.LENGTH_LONG);
+        toast.show();
 
-
-        Intent intent = new Intent(this, Segnale.class);
+        Intent intent = new Intent(this, Signal.class);
 
         PendingIntent i = PendingIntent.getService(this, 579, intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
         //   ActivityRecognitionApi().requestActivityUpdates (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent);
-        ActivityRecognition.ActivityRecognitionApi.
-                requestActivityUpdates(gap, 100,i);
-
-
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 100, i);
     }
 
     @Override

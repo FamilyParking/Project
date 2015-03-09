@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/Nazzareno/AndroidStudioProjects/Sample%20ActivityRecognition/app/src/main/res/values-v11/styles.xml -->
+    <!-- From: file:/Users/francesco/FamilyParking/Project/Android/Sample_ActivityRecognition/app/src/main/res/values-v11/styles.xml -->
     <eat-comment/>
     <style name="Theme.Base" parent="android:Theme.Holo.Light"/>
 </resources>

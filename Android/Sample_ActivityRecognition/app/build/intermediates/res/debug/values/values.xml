@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/Nazzareno/AndroidStudioProjects/Sample%20ActivityRecognition/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/francesco/FamilyParking/Project/Android/Sample_ActivityRecognition/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="margin_huge">64dp</dimen>
     <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_tiny">4dp</dimen>
-    <!-- From: file:/Users/Nazzareno/AndroidStudioProjects/Sample%20ActivityRecognition/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/francesco/FamilyParking/Project/Android/Sample_ActivityRecognition/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="activity_recognition_error_detail">
         Activity recognition error, code %1$d message %2$s.
@@ -18,7 +18,7 @@
     <string name="app_description">Demonstrates activity recognition</string>
     <string name="app_name">Activity Recognition</string>
     <string name="connected">Connected to Location Services</string>
-    <!-- From: file:/Users/Nazzareno/AndroidStudioProjects/Sample%20ActivityRecognition/app/src/main/res/values/lib_strings.xml -->
+    <!-- From: file:/Users/francesco/FamilyParking/Project/Android/Sample_ActivityRecognition/app/src/main/res/values/lib_strings.xml -->
     <eat-comment/>
     <string name="connection_error_code">Connection failure error code: %1$d</string>
     <string name="connection_error_disabled">Google Play services is disabled</string>
@@ -38,7 +38,7 @@
     <string name="connection_error_outdated">Google Play services is out of date</string>
     <string name="connection_error_sign_in_required">The user is not signed in</string>
     <string name="connection_error_unknown">An unknown error occurred</string>
-    <!-- From: file:/Users/Nazzareno/AndroidStudioProjects/Sample%20ActivityRecognition/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/francesco/FamilyParking/Project/Android/Sample_ActivityRecognition/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="connection_failed">Connection to service failed: error code %1$d</string>
     <string name="date_format_error">Internal error: date formatting exception.</string>
@@ -65,7 +65,7 @@
     <string name="unknown_activity_request_code">
         Received an unknown activity request code %1$d in onActivityResult.
     </string>
-    <!-- From: file:/Users/Nazzareno/AndroidStudioProjects/Sample%20ActivityRecognition/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/Users/francesco/FamilyParking/Project/Android/Sample_ActivityRecognition/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="Theme.Base" parent="android:Theme.Light"/>
     <style name="Theme.Sample" parent="Theme.Base"/>

@@ -75,7 +75,6 @@ public class Map extends Fragment{
         if (googleMap == null) {
             googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
         }
     }
 
