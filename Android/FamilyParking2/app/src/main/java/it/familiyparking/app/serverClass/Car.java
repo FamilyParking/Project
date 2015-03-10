@@ -19,7 +19,7 @@ public class Car implements Parcelable {
     @SerializedName("ID_car")
     private String id;
 
-    @SerializedName("Name_car")
+    @SerializedName("Name")
     private String name;
 
     @SerializedName("Brand")

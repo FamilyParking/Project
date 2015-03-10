@@ -13,18 +13,19 @@ public class SamplesTable {
     public static final String ID = "ID";
     public static final String LATITUDE = "LATITUDE";
     public static final String LONGITUDE = "LONGITUDE";
+    public static final String TYPE = "TYPE";
     public static final String INFO = "INFO";
     public static final String CORRECT = "CORRECT";
     public static final String TIMESTAMP = "TIMESTAMP";
-	public static final String[] COLUMNS = new String[]{ID,LATITUDE,LONGITUDE,INFO,CORRECT,TIMESTAMP};
+	public static final String[] COLUMNS = new String[]{ID,LATITUDE,LONGITUDE,TYPE,INFO,CORRECT,TIMESTAMP};
 
     public static final String TABLE = "samples_table";
 
-    public static void insertSamples(Context context,String info){
+    public static void insertSamples(Context context,int type, String info){
         DataBaseHelper databaseHelper = new DataBaseHelper(context);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        String[] value = (new Sample(context,info)).getArray();
+        String[] value = (new Sample(context,type,info)).getArray();
 
         ContentValues v = new ContentValues();
         for(int i=0; i<value.length; i++)
@@ -45,7 +46,7 @@ public class SamplesTable {
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext())
-                samples.add(new Sample(c.getString(0),c.getDouble(1),c.getDouble(2),c.getString(3),c.getInt(4),c.getString(5)));
+                samples.add(new Sample(c.getString(0),c.getDouble(1),c.getDouble(2),c.getInt(3),c.getString(4),c.getInt(5),c.getString(6)));
         }
 
         c.close();
@@ -53,6 +54,44 @@ public class SamplesTable {
         db.close();
 
         return samples;
+    }
+
+    public static ArrayList<Sample> getAllSamplesParked(Context context) throws SQLException{
+        DataBaseHelper databaseHelper = new DataBaseHelper(context);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        ArrayList<Sample> samples= new ArrayList<>();
+
+        Cursor c = db.query(true, TABLE, COLUMNS, TYPE + " = " + Sample.PARKED, null, null, null, null, null);
+
+        if((c != null) && (c.getCount() > 0)){
+            while(c.moveToNext())
+                samples.add(new Sample(c.getString(0),c.getDouble(1),c.getDouble(2),c.getInt(3),c.getString(4),c.getInt(5),c.getString(6)));
+        }
+
+        c.close();
+
+        db.close();
+
+        return samples;
+    }
+
+    public static Sample getSample_ByID(Context context,String sampleID) throws SQLException{
+        DataBaseHelper databaseHelper = new DataBaseHelper(context);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        Cursor c = db.query(true, TABLE, COLUMNS, ID + " = ?", new String[]{ sampleID }, null, null, null, null);
+
+        if((c != null) && (c.getCount() > 0)){
+            if(c.moveToNext())
+                return new Sample(c.getString(0),c.getDouble(1),c.getDouble(2),c.getInt(3),c.getString(4),c.getInt(5),c.getString(6));
+        }
+
+        c.close();
+
+        db.close();
+
+        return null;
     }
 
     public static int updateSample(Context context, String sampleID, int flag){

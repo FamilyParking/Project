@@ -15,26 +15,37 @@ public class Sample {
     private String id;
     private double latitude;
     private double longitude;
+    private int type;
     private String info;
     private int correct;
     private String timestamp;
 
-    public Sample(Context context,String info) {
+    public Sample(Context context,int type,String info) {
         double[] position = getPosition(context);
         this.latitude = position[0];
         this.longitude = position[1];
+        this.type = type;
         this.info = info;
         this.correct = -1;
         this.setTimestamp();
     }
 
-    public Sample(String id, double latitude, double longitude, String info, int correct, String timestamp) {
+    public Sample(String id, double latitude, double longitude, int type, String info, int correct, String timestamp) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.type = type;
         this.info = info;
         this.correct = correct;
         this.timestamp = timestamp;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getId() {
@@ -82,10 +93,10 @@ public class Sample {
     }
 
     public String[] getArray(){
-        return new String[]{Double.toString(this.latitude),Double.toString(this.longitude),this.info,Integer.toString(this.correct),this.timestamp};
+        return new String[]{Double.toString(this.latitude),Double.toString(this.longitude),Integer.toString(this.type),this.info,Integer.toString(this.correct),this.timestamp};
     }
 
-    private static double[] getPosition(Context context){
+    private double[] getPosition(Context context){
         LocationService locationService = new LocationService(context);
 
         double[] position = null;
@@ -101,7 +112,7 @@ public class Sample {
         return position;
     }
 
-    private static double[] getLocationGPS(LocationService locationService){
+    private double[] getLocationGPS(LocationService locationService){
         Location gpsLocation = locationService.getLocation(LocationManager.GPS_PROVIDER);
 
         if (gpsLocation != null) {
@@ -113,7 +124,7 @@ public class Sample {
         return null;
     }
 
-    private static double[] getLocationNetwork(LocationService locationService){
+    private double[] getLocationNetwork(LocationService locationService){
         Location nwLocation = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
 
         if (nwLocation != null) {
@@ -124,4 +135,15 @@ public class Sample {
 
         return null;
     }
+
+    //DetectedActivity.IN_VEHICLE   -->     0
+    //DetectedActivity.ON_FOOT      -->     2
+    //DetectedActivity.STILL        -->     3
+    //DetectedActivity.UNKNOWN      -->     4
+    //DetectedActivity.TILTING      -->     5
+    //DetectedActivity.WALKING      -->     7
+
+    public static int PARKED = 10;
+
+
 }

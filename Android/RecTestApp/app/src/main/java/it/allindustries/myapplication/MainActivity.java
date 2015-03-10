@@ -60,36 +60,15 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             googleMap.setMyLocationEnabled(true);
 
-            new AsyncTaskLocationMap().execute(googleMap, this);
-        }
-    }
-
-    private void setMarker(){
-        ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
-
-        for(Sample sample : samples)
-            addMarker(sample,this);
-    }
-
-    private void addMarker(final Sample sample,final Context context){
-
-        if(sample.getCorrect() == -1) {
-            googleMap.addMarker(new MarkerOptions()
-                    .position(sample.getPosition())
-                    .title(sample.getTimestamp())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-        }
-        else if(sample.getCorrect() == 0) {
-            googleMap.addMarker(new MarkerOptions()
-                    .position(sample.getPosition())
-                    .title(sample.getTimestamp())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            final Context context = this;
 
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(final Marker marker) {
 
-                    if(sample.getCorrect() == -1) {
+                    final Sample sample = SamplesTable.getSample_ByID(context,marker.getSnippet());
+
+                    if((sample != null) && (sample.getCorrect() == -1)) {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
                         alertDialog.setCancelable(true);
@@ -124,13 +103,32 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                     return false;
                 }
             });
+
+            new AsyncTaskLocationMap().execute(googleMap, this);
         }
-        else if(sample.getCorrect() == 1) {
-            googleMap.addMarker(new MarkerOptions()
-                    .position(sample.getPosition())
-                    .title(sample.getTimestamp())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        }
+    }
+
+    private void setMarker(){
+        ArrayList<Sample> samples = SamplesTable.getAllSamplesParked(this);
+
+        for(Sample sample : samples)
+            addMarker(sample,this);
+    }
+
+    private void addMarker(final Sample sample,final Context context){
+
+        float color = BitmapDescriptorFactory.HUE_YELLOW;
+
+        if(sample.getCorrect() == 0)
+            color = BitmapDescriptorFactory.HUE_RED;
+        else if(sample.getCorrect() == 1)
+            color = BitmapDescriptorFactory.HUE_GREEN;
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(sample.getPosition())
+                .title(sample.getTimestamp())
+                .snippet(sample.getId())
+                .icon(BitmapDescriptorFactory.defaultMarker(color)));
     }
 
     private void updateInfo(String id, boolean flag){
@@ -142,15 +140,11 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnected(Bundle bundle) {
-        Toast toast = Toast.makeText(this, "Google api connected", Toast.LENGTH_LONG);
-        toast.show();
-
         Intent intent = new Intent(this, Signal.class);
 
-        PendingIntent i = PendingIntent.getService(this, 579, intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 579, intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
-        //   ActivityRecognitionApi().requestActivityUpdates (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent);
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 100, i);
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 1000, pendingIntent);
     }
 
     @Override

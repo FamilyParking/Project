@@ -47,7 +47,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()), 18.0f));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()), 17.0f));
             }
         });
     }

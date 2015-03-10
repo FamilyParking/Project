@@ -14,6 +14,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     SamplesTable.ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     SamplesTable.LATITUDE+" REAL NOT NULL, "+
                     SamplesTable.LONGITUDE+" REAL NOT NULL, "+
+                    SamplesTable.TYPE+" INTEGER NOT NULL, "+
                     SamplesTable.INFO+" TEXT NOT NULL, "+
                     SamplesTable.CORRECT+" INTEGER NOT NULL, "+
                     SamplesTable.TIMESTAMP+" TEXT NOT NULL ) ; ";
