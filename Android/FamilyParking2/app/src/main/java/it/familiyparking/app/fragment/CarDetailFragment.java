@@ -14,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import it.familiyparking.app.MainActivity;
@@ -83,6 +84,12 @@ public class CarDetailFragment extends Fragment{
             LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()));
             googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(carPosition.latitude,carPosition.longitude), 18.0f));
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    return true;
+                }
+            });
         }
         else{
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
