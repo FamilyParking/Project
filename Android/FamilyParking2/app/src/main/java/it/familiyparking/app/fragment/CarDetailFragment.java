@@ -101,7 +101,7 @@ public class CarDetailFragment extends Fragment{
         TextView nameDriver = (TextView) rootView.findViewById(R.id.last_driver_name_tv);
 
         if(car.isParked()){
-            nameDriver.setText(car.getLast_driver().getName());
+            nameDriver.setText(car.getLastDriverUser().getName());
             ((TextView)rootView.findViewById(R.id.last_driver_time_tv)).setText(car.getTimestamp());
             ((TextView)rootView.findViewById(R.id.last_driver_interval_tv)).setText(Tools.getIntervalDataServer(car.getTimestamp()));
         }

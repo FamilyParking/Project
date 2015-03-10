@@ -52,6 +52,10 @@ public class CarFragment extends Fragment{
 
         Tools.setTitleActionBar((MainActivity) getActivity(), R.string.list_car);
 
+        if(activity.getLunchWithEmptyList()){
+            activity.selectCreateCarTab();
+        }
+
         listView = (ListView) rootView.findViewById(R.id.car_lv);
 
         relativeNoCar = (RelativeLayout) rootView.findViewById(R.id.car_rl);
@@ -82,12 +86,6 @@ public class CarFragment extends Fragment{
                 infoTv.setText(activity.getResources().getString(R.string.update_car_list));
             }
             else{
-
-                if(activity.getLunchWithEmptyList() == 1){
-                    activity.incLunchWithEmptyList();
-                    activity.selectCreateCarTab();
-                }
-
                 logoIv.setVisibility(View.VISIBLE);
                 progess.setVisibility(View.GONE);
                 infoTv.setText(activity.getResources().getString(R.string.no_car));

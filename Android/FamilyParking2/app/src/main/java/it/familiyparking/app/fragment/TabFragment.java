@@ -74,7 +74,6 @@ public class TabFragment extends Fragment{
         tabListNew = actionBarNew.newTab().setText(tab_car);
         tabCreateNew = actionBarNew.newTab().setText(tab_create);
 
-
         tabListNew.setTabListener(new NewTabListener(activity, tab_car));
         tabCreateNew.setTabListener(new NewTabListener(activity, tab_create));
 

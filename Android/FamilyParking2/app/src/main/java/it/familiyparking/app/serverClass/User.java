@@ -15,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User  implements Parcelable {
 
-    @SerializedName("Nickname")
+    @SerializedName("Name")
     private String name;
 
     @SerializedName("Email")

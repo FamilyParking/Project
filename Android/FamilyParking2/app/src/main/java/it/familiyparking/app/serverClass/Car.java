@@ -41,7 +41,7 @@ public class Car implements Parcelable {
     private String timestamp;
 
     @SerializedName("Last_driver")
-    private User last_driver;
+    private String last_driver_email;
 
     @SerializedName("Bluetooth_name")
     private String bluetoothName;
@@ -76,17 +76,17 @@ public class Car implements Parcelable {
         this.longitude = in.readString();
         this.isParked = Boolean.parseBoolean(in.readString());
         this.timestamp = in.readString();
-        this.last_driver = in.readParcelable(User.class.getClassLoader());
+        this.last_driver_email = in.readString();
         this.bluetoothName = in.readString();
         this.bluetoothMac = in.readString();
         in.readTypedList(this.users, User.CREATOR);
     }
 
     public String[] getArray(){
-        if(last_driver == null)
+        if((last_driver_email == null) || last_driver_email.equals("none"))
             return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,null,bluetoothName,bluetoothMac};
         else
-            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,last_driver.getEmail(),bluetoothName,bluetoothMac};
+            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,last_driver_email,bluetoothName,bluetoothMac};
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Car implements Parcelable {
         out.writeString(this.longitude);
         out.writeString(Boolean.toString(this.isParked));
         out.writeString(this.timestamp);
-        out.writeParcelable(this.last_driver,flags);
+        out.writeString(this.last_driver_email);
         out.writeString(this.bluetoothName);
         out.writeString(this.bluetoothMac);
         out.writeTypedList(this.users);
@@ -129,7 +129,7 @@ public class Car implements Parcelable {
                 "users=" + users +
                 ", bluetoothMac='" + bluetoothMac + '\'' +
                 ", bluetoothName='" + bluetoothName + '\'' +
-                ", last_driver=" + last_driver +
+                ", last_driver_email=" + last_driver_email +
                 ", timestamp='" + timestamp + '\'' +
                 ", isParked=" + isParked +
                 ", longitude='" + longitude + '\'' +
@@ -229,12 +229,12 @@ public class Car implements Parcelable {
         this.users = users;
     }
 
-    public User getLast_driver() {
-        return last_driver;
+    public String getLast_driver() {
+        return last_driver_email;
     }
 
-    public void setLast_driver(User last_driver) {
-        this.last_driver = last_driver;
+    public void setLast_driver(String last_driver_email) {
+        this.last_driver_email = last_driver_email;
     }
 
     public Car clone(){
@@ -265,4 +265,14 @@ public class Car implements Parcelable {
         setLatitude(Double.toString(position[0]));
         setLongitude(Double.toString(position[1]));
     }
+
+    public User getLastDriverUser(){
+        for(User u : this.users){
+            if(u.getEmail().equals(this.last_driver_email))
+                return u;
+        }
+
+        return  null;
+    }
+
 }

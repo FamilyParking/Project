@@ -2,10 +2,12 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
@@ -46,11 +48,20 @@ public class DoGetAllCar implements Runnable {
                 final ArrayList<Car> cars = (ArrayList<Car>) result.getObject();
                 for (final Car c : cars) {
 
+                    CarTable.insertCar(db,c);
+
                     for (User contact : c.getUsers()) {
+
+                        String photo_ID = Tools.getPhotoID_byEmail(activity,contact.getEmail());
+                        if(photo_ID != null) {
+                            contact.setPhoto_ID(photo_ID);
+                            contact.setHas_photo(true);
+                        }
+
                         GroupTable.insertContact(db,c.getId(),contact);
                     }
 
-                    if ((!c.getLatitude().equals("0")) || (!c.getLongitude().equals("0"))) {
+                    if (c.isParked()) {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -73,6 +84,15 @@ public class DoGetAllCar implements Runnable {
             }
 
             activity.resetAllCarRunning();
+
+            if(activity.getLunchWithEmptyList()) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.resetProgressDialogCircular(true);
+                    }
+                });
+            }
 
         }
     }

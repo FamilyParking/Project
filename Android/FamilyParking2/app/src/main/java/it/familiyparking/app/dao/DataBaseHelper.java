@@ -15,7 +15,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     GroupTable.CONTACT_NAME+" TEXT NOT NULL, "+
                     GroupTable.EMAIL+" TEXT NOT NULL, "+
                     GroupTable.HAS_PHOTO+" INTEGER DEFAULT 0, "+
-                    GroupTable.PHOTO_ID+" TEXT NOT NULL, "+
+                    GroupTable.PHOTO_ID+" TEXT , "+
                     "PRIMARY KEY ( "+GroupTable.CAR_ID+" , "+GroupTable.EMAIL+" )"+" ) ; ";
 
     public static final String CREATE_TABLE_CAR =

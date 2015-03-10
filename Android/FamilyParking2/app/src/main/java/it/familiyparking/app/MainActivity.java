@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
     private boolean visibleActionPosition;
     private boolean visibleActionGhostmode;
     private boolean flagAllCarRunning;
-    private int lunchWithEmptyList;
+    private boolean lunchWithEmptyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,6 @@ public class MainActivity extends ActionBarActivity {
                 setConfirmation();
             }
             else{
-                getAllCar();
                 init();
             }
 
@@ -111,12 +110,12 @@ public class MainActivity extends ActionBarActivity {
 
         db.close();
 
-        if((cars == null) || (cars.isEmpty())){
-            lunchWithEmptyList = 1;
-            setTabFragment();
-        }
+        if(cars.isEmpty())
+            lunchWithEmptyList = true;
 
         setMenu();
+
+        getAllCar();
 
         new AsyncTaskGCM().execute(user,this);
     }
@@ -126,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
         doubleBackToExitPressedOnce = false;
         visibleActionPosition = false;
         flagAllCarRunning = false;
-        lunchWithEmptyList = 0;
+        lunchWithEmptyList = false;
     }
 
     /***************************************** MENU MANAGMENT *****************************************/
@@ -156,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(lunchWithEmptyList > 0){
+        if(lunchWithEmptyList){
             Tools.createToast(this,"You need to create a car to use the application",Toast.LENGTH_LONG);
             return true;
         }
@@ -237,10 +236,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateCarAdapter(ArrayList<Car> cars){
-        if(cars.isEmpty())
-            lunchWithEmptyList = 1;
-        else
+        if(cars.isEmpty()) {
+            setLunchWithEmptyList();
+            setTabFragment();
+        }
+        else {
             resetLunchWithEmptyList();
+        }
 
         if(carFragment != null)
             carFragment.updateAdapter(cars);
@@ -263,6 +265,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void getAllCar(){
+        if(getLunchWithEmptyList()) {
+            setProgressDialogCircular(getResources().getString(R.string.update_car_list));
+        }
+
         new Thread(new DoGetAllCar(this,user)).start();
     }
 
@@ -278,16 +284,16 @@ public class MainActivity extends ActionBarActivity {
         return this.flagAllCarRunning;
     }
 
-    public int getLunchWithEmptyList(){
+    public boolean getLunchWithEmptyList(){
         return this.lunchWithEmptyList;
     }
 
     public void resetLunchWithEmptyList(){
-        this.lunchWithEmptyList = 0;
+        this.lunchWithEmptyList = false;
     }
 
-    public void incLunchWithEmptyList(){
-        this.lunchWithEmptyList++;
+    public void setLunchWithEmptyList(){
+        this.lunchWithEmptyList = true;
     }
 
     /***************************************** FRAGMENT MANAGER ***************************************/
@@ -377,14 +383,8 @@ public class MainActivity extends ActionBarActivity {
         else if(carDetail != null){
             resetCarDetail();
         }
-        else if(tabFragment != null){
-
-            if(lunchWithEmptyList == 0) {
-                resetTabFragment();
-            }
-            else{
-                Tools.createToast(this,"You need to create a car to use the application",Toast.LENGTH_LONG);
-            }
+        else if((tabFragment != null) && (!lunchWithEmptyList)){
+            resetTabFragment();
         }
         else if(contactDetailDialog != null){
             resetContactDetailDialog();
@@ -425,7 +425,10 @@ public class MainActivity extends ActionBarActivity {
         final ArrayList<Car> cars = CarTable.getAllCar(db);
         db.close();
 
-        if(cars.size() > 1){
+        if(cars.isEmpty()){
+            Tools.createToast(this,"No car is vailable",Toast.LENGTH_LONG);
+        }
+        else if(cars.size() > 1){
             Tools.showAlertParking(this,cars);
         }
         else{

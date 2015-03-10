@@ -39,7 +39,7 @@ public class Signal extends IntentService {
         if (bundle != null) {
 
             ActivityRecognitionResult activityRecognitionResult = bundle.getParcelable("com.google.android.location.internal.EXTRA_ACTIVITY_RESULT");
-            Log.e("Signal", activityRecognitionResult.toString());
+            //Log.e("Signal", activityRecognitionResult.toString());
 
             DetectedActivity detectedActivity = activityRecognitionResult.getMostProbableActivity();
 
@@ -81,8 +81,8 @@ public class Signal extends IntentService {
                 }
             }
 
-            Log.e("Signal", "dataConcistence="+Boolean.toString(dataConcistence)+"{[counter="+counter+"], [counter_consecutive_vehicle="+counter_consecutive_vehicle+"], [counter_consecutive_walking="+counter_consecutive_walking+"]}");
-            Log.e("Signal","--------------------------");
+            //Log.e("Signal", "dataConcistence="+Boolean.toString(dataConcistence)+"{[counter="+counter+"], [counter_consecutive_vehicle="+counter_consecutive_vehicle+"], [counter_consecutive_walking="+counter_consecutive_walking+"]}");
+            //Log.e("Signal","--------------------------");
         }
     }
 

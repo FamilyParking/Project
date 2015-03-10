@@ -8,13 +8,13 @@ import java.util.ArrayList;
  * Created by francesco on 03/01/15.
  */
 public class Result {
-    @SerializedName("flag")
+    @SerializedName("Flag")
     private boolean flag;
 
-    @SerializedName("object")
+    @SerializedName("Object")
     private Object object;
 
-    @SerializedName("description")
+    @SerializedName("Description")
     private String description;
 
     public Result(){}

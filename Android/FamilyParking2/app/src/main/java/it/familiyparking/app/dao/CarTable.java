@@ -48,7 +48,7 @@ public class CarTable {
 
                 String last_driver = c.getString(8);
                 if(last_driver != null)
-                    car.setLast_driver(GroupTable.getContact_ByEmail(db,last_driver));
+                    car.setLast_driver(last_driver);
 
                 car.setUsers(GroupTable.getContact_ByCarID(db,car.getId()));
 
