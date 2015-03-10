@@ -5,6 +5,7 @@ package it.familiyparking.app.serverClass;
  */
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -275,4 +276,26 @@ public class Car implements Parcelable {
         return  null;
     }
 
+    public boolean equal(Car car) {
+        if ((bluetoothMac == null) && (car.bluetoothMac != null)) return false;
+        if ((bluetoothMac != null) && (car.bluetoothMac == null)) return false;
+        if ((bluetoothMac != null) && (car.bluetoothMac != null) && (!bluetoothMac.equals(car.bluetoothMac))) return false;
+
+        if ((bluetoothName == null) && (car.bluetoothName != null)) return false;
+        if ((bluetoothName != null) && (car.bluetoothName == null)) return false;
+        if ((bluetoothName != null) && (car.bluetoothName != null) && (!bluetoothName.equals(car.bluetoothName))) return false;
+
+        if ((brand == null) && (car.brand != null)) return false;
+        if ((brand != null) && (car.brand == null)) return false;
+        if ((brand != null) && (car.brand != null) && (!brand.equals(car.brand))) return false;
+
+        if (!id.equals(car.id)) return false;
+        if (!name.equals(car.name)) return false;
+
+        if ((register == null) && (car.register != null)) return false;
+        if ((register != null) && (car.register == null)) return false;
+        if ((register != null) && (car.register != null) && (!register.equals(car.register))) return false;
+
+        return true;
+    }
 }

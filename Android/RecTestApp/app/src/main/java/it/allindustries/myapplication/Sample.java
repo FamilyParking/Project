@@ -145,5 +145,12 @@ public class Sample {
 
     public static int PARKED = 10;
 
-
+    @Override
+    public String toString() {
+        return "Sample{" +
+                "type=" + type +
+                ", info='" + info + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
 }

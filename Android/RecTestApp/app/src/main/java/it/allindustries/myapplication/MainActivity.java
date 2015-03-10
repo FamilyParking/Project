@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -42,6 +43,10 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         setUpGoogleApi();
         setUpMap();
         setMarker();
+
+        ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
+        for(Sample sample : samples)
+            Log.e("Sample",sample.toString());
     }
 
     private void setUpGoogleApi(){

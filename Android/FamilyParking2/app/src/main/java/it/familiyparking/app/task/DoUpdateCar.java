@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -59,15 +60,16 @@ public class DoUpdateCar implements Runnable {
     }
 
     private boolean updateCar(SQLiteDatabase db){
-        final Result result = ServerCall.updateCar(user, newCar);
+        if(!newCar.equal(oldCar)) {
+            Result result = ServerCall.updateCar(user, newCar);
 
-        if(result.isFlag()) {
-            CarTable.updateCar(db, newCar);
-        }
-        else{
-            Tools.manageServerError(result,activity);
+            if (result.isFlag()) {
+                CarTable.updateCar(db, newCar);
+            } else {
+                Tools.manageServerError(result, activity);
 
-            return false;
+                return false;
+            }
         }
 
         return true;
@@ -91,7 +93,7 @@ public class DoUpdateCar implements Runnable {
         if(toAdd.isEmpty())
             return true;
 
-        final Result result = ServerCall.addCarUsers(user, oldCar.getId(), toAdd);
+        Result result = ServerCall.addCarUsers(user, oldCar.getId(), toAdd);
 
         if(result.isFlag()) {
             for(User contact : toAdd)
@@ -125,7 +127,7 @@ public class DoUpdateCar implements Runnable {
         if(toRemove.isEmpty())
             return true;
 
-        final Result result = ServerCall.removeCarUsers(user, oldCar.getId(), toRemove);
+        Result result = ServerCall.removeCarUsers(user, oldCar.getId(), toRemove);
 
         if(result.isFlag()) {
             for(User contact : toRemove)

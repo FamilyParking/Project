@@ -54,8 +54,10 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.sql.Timestamp;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -753,6 +755,14 @@ public class Tools {
                 });
 
         alertDialog.show();
+    }
+
+    public static String getFormatedData(String allInfo){
+        String[] starter = allInfo.split(" ");
+        String[] hour = starter[1].split(":");
+        String[] day = starter[0].split("-");
+
+        return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
     }
 
 }

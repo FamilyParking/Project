@@ -75,10 +75,8 @@ public class CarDetailFragment extends Fragment{
             googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_car)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             googleMap.getUiSettings().setAllGesturesEnabled(false);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
-
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         if(car.isParked()){
             LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()));
@@ -92,6 +90,7 @@ public class CarDetailFragment extends Fragment{
             });
         }
         else{
+            googleMap.setMyLocationEnabled(true);
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
         }
     }
@@ -109,7 +108,8 @@ public class CarDetailFragment extends Fragment{
 
         if(car.isParked()){
             nameDriver.setText(car.getLastDriverUser().getName());
-            ((TextView)rootView.findViewById(R.id.last_driver_time_tv)).setText(car.getTimestamp());
+
+            ((TextView)rootView.findViewById(R.id.last_driver_time_tv)).setText(Tools.getFormatedData(car.getTimestamp()));
             ((TextView)rootView.findViewById(R.id.last_driver_interval_tv)).setText(Tools.getIntervalDataServer(car.getTimestamp()));
         }
         else{
