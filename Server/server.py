@@ -41,7 +41,7 @@ class SendEmail(webapp2.RequestHandler):
 		logging.debug("Received from user: " + str(self.request.body))
 		try:
 			data = json.loads(self.request.body)
-			new_contact = User_copy(id_android=data["ID"], counter=1, latitude=data["latitude"],
+			new_contact = User_copy(counter=1, latitude=data["latitude"],
 									longitude=data["longitude"], last_time=str(datetime.datetime.now()))
 			new_car = Car(brand="testBrand", latitude=data["latitude"],
 						  longitude=data["longitude"], timestamp=str(datetime.datetime.now()))
@@ -100,8 +100,8 @@ class registrationForm(webapp2.RequestHandler):
 
 			try:
 				code = random.randint(100000, 999999)
-				new_user = User(id_android=data["ID"], code=code, temp_code=code, email=data["Email"],
-								nickname=data["Nickname"], is_user=1)
+				new_user = User(code=code, temp_code=code, email=data["Email"],
+								nickname=data["Name"], is_user=1)
 
 				try:
 					contact_key = new_user.querySearch_email()
@@ -146,41 +146,45 @@ class createCar(webapp2.RequestHandler):
 			dati = json.loads(self.request.body)
 			car_data = dati["Car"]
 			user_data = dati["User"]
+			bluetooth_MAC = ""
+			bluetooth_name = ""
+			register = ""
 			if "Bluetooth_MAC" in car_data:
-				new_car = Car(name=car_data["Name_car"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
-							  email=user_data["Email"], bluetooth_MAC=car_data["Bluetooth_MAC"],
-							  bluetooth_name=car_data["Bluetooth_name"], brand=car_data["Brand"])
-			else:
-				new_car = Car(name=car_data["Name_car"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
-							  email=car_data["Email"], brand=car_data["Brand"])
-
-			new_car.put()
+				bluetooth_MAC = car_data["Bluetooth_MAC"]
+			if "Bluetooth_Name" in car_data:
+				bluetooth_name = car_data["Bluetooth_Name"]
+			if "Register" in car_data:
+				register = car_data["Register"]
+			new_car = Car(name=car_data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()), email=user_data["Email"], bluetooth_MAC=bluetooth_MAC, bluetooth_name=bluetooth_name, brand=car_data["Brand"], register=register, isParked=False, lastdriver=user_data["Email"])
+			new_car = new_car.put()
 			list_user = car_data["Users"]
 			searchuser = User.static_querySearch_email(user_data["Email"])
 			for user in searchuser:
-				new_contact_car = User_car(id_user=user.key.id(), id_car=int(new_car.key.id()))
+				logging.debug(user.key.id())
+				new_contact_car = User_car(id_user=user.key.id(), id_car=(new_car.id()))
 				new_contact_car.put()
 			for user in list_user:
-				user_key = User.is_user_check(user)
+				userEmail = user["Email"]
+				user_key = User.is_user_check(userEmail)
 				if user_key == 0:
-					new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)
+					new_user = User(id_android=None, code=0, temp_code=0, email=userEmail, nickname=None, is_user=0)
 					temp_user_key = new_user.put()
 					user_key = temp_user_key.id()
-
-				if User_car.check_user_exist(user_key, int(new_car.key.id())) > 0:
-					new_contact_car = User_car(id_user=user_key.key.id(), id_car=int(new_car.key.id()))
+				if User_car.check_user_exist(user_key, new_car.id()) > 0:
+					new_contact_car = User_car(id_user=user_key, id_car=new_car.id())
 					new_contact_car.put()
-
-			right = StatusReturn(4, "createCar", new_car.key.id())
+			right = StatusReturn(4, "createCar", new_car.id())
 			self.response.write(right.print_result())
 			
 class getCars(webapp2.RequestHandler):
 	def post(self):
 		if User_tool.check_before_start("getCars", self) >= 0:
 			dati = json.loads(self.request.body)
+			logging.debug(dati)
 			user_data = dati["User"]
 			tempUser = User.static_querySearch_email(user_data["Email"])
 			for id_user in tempUser:
+				logging.debug(id_user.key.id())
 				cars = User_car.getCarFromUser(id_user.key.id())
 			if (cars.count() == 0): 
 				allcars = []
@@ -216,12 +220,12 @@ class updatePosition(webapp2.RequestHandler):
 			dati = json.loads(self.request.body)
 			user_data = dati["User"]
 			car_data = dati["Car"]
-			Car.update_position_ID(car_data["ID_car"], car_data["latitude"], car_data["longitude"])
+			Car.update_position_ID(car_data["ID_car"], car_data["Latitude"], car_data["Longitude"], user_data["Email"])
 			list_user = User_car.getUserFromCar(car_data["ID_car"])
 			for user in list_user:
 				temp_user = User.get_user_by_id(user.id_user)
 				if temp_user.is_user == 0:
-					Send_email.send_position(temp_user.email, car_data["latitude"], car_data["longitude"])
+					Send_email.send_position(temp_user.email, car_data["Latitude"], car_data["Longitude"])
 			right = StatusReturn(5, "updatePosition")
 			self.response.write(right.print_result())
 			
@@ -231,27 +235,37 @@ class insertContactCar(webapp2.RequestHandler):
 			dati = json.loads(self.request.body)
 			user_data = dati["User"]
 			car_data = dati["Car"]
-			for user in car_data["Users"]:
+			for userClass in car_data["Users"]:
+				user = userClass["Email"]
 				user_key = User.is_user_check(user)
 				if user_key == 0:
-					new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=None, is_user=0)
+					new_user = User(id_android=None, code=0, temp_code=0, email=user, nickname=user, is_user=0)
 					temp_user_key = new_user.put()
 					user_key = temp_user_key.id()
 				if User_car.check_user_exist(user_key, int(car_data["ID_car"])) > 0:
-					# user_car = User_car.query(User_car.id_car == long(car_data["ID_car"]) and User_car.id_user == long(user_key))
-					# if user_car.count() == 0:
 					new_contact_car = User_car(id_user=user_key, id_car=int(car_data["ID_car"]))
 					new_contact_car.put()
 			right = StatusReturn(10, "insertContactCar")
 			self.response.write(right.print_result())
 
+class updateGCM(webapp2.RequestHandler) :
+	def post(self):
+		if User_tool.check_before_start("updateGCM", self) >= 0:
+			dati = json.loads(self.request.body)
+			user_data = dati["User"]
+			User.update_google_code(user_data["Email"], user_data["ID_gcm"])
+			right = StatusReturn(15, "updateGCM")
+			sel.response.write(right.print_result())
+			
+			
 class removeContactCar(webapp2.RequestHandler):
 	def post(self):
 		if User_tool.check_before_start("removeContactCar", self) >= 0:
 			dati = json.loads(self.request.body)
 			user_data = dati["User"]
 			car_data = dati["Car"]
-			for user in car_data["Users"]:
+			for userClass in car_data["Users"]:
+				user = userClass["Email]
 				tempUser = User.static_querySearch_email(user)
 				for id_user in tempUser:
 					user_key = id_user.key.id()

@@ -18,9 +18,9 @@ class User(ndb.Model):
 
 	def toString_JSON(self):
 		if (self.nickname != None):
-			result = {"Nome": str(self.nickname), "Email": str(self.email)}
+			result = {"Name": str(self.nickname), "Email": str(self.email)}
 		else:
-			result = {"Nome" : "", "Email": str(self.email)}
+			result = {"Name" : str(self.email), "Email": str(self.email)}
 		return result
 	  
 		
