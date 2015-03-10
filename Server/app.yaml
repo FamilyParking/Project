@@ -1,5 +1,5 @@
 application: first-vision-798
-version: 6
+version: ios01
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -26,4 +26,4 @@ handlers:
   script: short.application
   
 - url: /.*
-  script: serverInteract.application
+  script: server.application

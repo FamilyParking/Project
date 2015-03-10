@@ -30,10 +30,8 @@ class User_group(ndb.Model):
                     return -1
         return 1
 
-
     @staticmethod
     def delete_contact_group(id_user, id_group):
-        #Delete the contact from the group
         delete_entry = User_group.getGroupFromUser(id_user)
         for group in delete_entry:
             #logging.debug("ID del gruppo da controllare: "+str(group.id_group)+" id del gruppo da eliminare: "+str(id_group))

@@ -24,18 +24,22 @@ class Car(ndb.Model):
 	bluetooth_name = ndb.StringProperty()
 	name = ndb.StringProperty()
 	email = ndb.StringProperty()
-	register = ndb.IntegerProperty()
+	register = ndb.StringProperty()
+	lastdriver = ndb.StringProperty()
+	isParked = ndb.BooleanProperty()
 
 	def getPositionFromID(self):
 		result = Position(self.latitude, self.longitude)
 		return result
 
-	def updatePosition(self, latitude, longitude):
+	def updatePosition(self, latitude, longitude, lastdriver):
 		self.latitude = latitude
 		self.longitude = longitude
+		self.lastdriver = lastdriver
 		ts = time.time()
 		st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 		self.timestamp = st
+		self.isParked = True
 		self.put()
 		return 0
 
@@ -59,11 +63,8 @@ class Car(ndb.Model):
 		for id_user in id_users:
 			user = User.get_user_by_id(id_user.id_user)
 			carusers.append(user.toString_JSON())
-		#car_json=json.dumps(carusers);
-		#logging.debug({"ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name), "Latitude": str(self.latitude),
-		#		"Longitude":str(self.longitude), "Users": carusers})
 		return {"ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name), "Latitude": str(self.latitude),
-				"Longitude":str(self.longitude),"Users": carusers, "Time": str(self.timestamp)}
+				"Longitude":str(self.longitude),"Users": carusers, "Timestamp": str(self.timestamp), "Register": str(self.register), "Last_driver": str(self.lastdriver), "isParked": self.isParked}
 
 	def update(self, bluetooth_MAC, bluetooth_name, brand, email, latitude, longitude, name):
 		self.latitude = latitude
@@ -82,9 +83,9 @@ class Car(ndb.Model):
 		return app_key
 
 	@staticmethod
-	def update_position_ID(id, latitude, longitude):
+	def update_position_ID(id, latitude, longitude, lastdriver):
 		temp_car = Car.getCarbyID(id)
-		return temp_car.updatePosition(latitude, longitude)
+		return temp_car.updatePosition(latitude, longitude, lastdriver)
 
 	@staticmethod
 	def update_car(id, bluetooth_MAC, bluetooth_name, brand, email, name):
@@ -118,5 +119,4 @@ class Car(ndb.Model):
 		except:
 			logging.debug(sys.exc_info())
 		return cars
-
 
