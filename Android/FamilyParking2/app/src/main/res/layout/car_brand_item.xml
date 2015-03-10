@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Alfaromeo"
-            android:textColor="@color/ligth_gray"
+            android:textColor="@color/light_gray"
             android:textSize="16sp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"

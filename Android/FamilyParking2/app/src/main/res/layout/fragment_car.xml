@@ -13,8 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:background="@drawable/card_layout"
-        android:divider="@drawable/divider"/>
+        android:background="@color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0dp"/>
 
     <RelativeLayout
         android:id="@+id/car_rl"

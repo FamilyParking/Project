@@ -12,7 +12,9 @@
     <color name="sapienza">#7F2632</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="ligth_gray">#C2C2C2</color>
+    <color name="black_strong_transparent">#01000000</color>
+    <color name="black_light_transparent">#25000000</color>
+    <color name="light_gray">#C2C2C2</color>
     <color name="gray">@android:color/darker_gray</color>
     <color name="soft_gray">#EEEEEE</color>
     <color name="soft_gray_transparent">#AAEEEEEE</color>

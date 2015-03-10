@@ -2,7 +2,7 @@
     android:id="@+id/car_item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
+    android:background="@drawable/card_layout"
     android:clickable="true"
     android:padding="5dp">
 
@@ -71,7 +71,7 @@
                     android:layout_height="20dp"
                     android:layout_centerInParent="true"
                     android:src="@android:drawable/stat_sys_data_bluetooth"
-                    android:backgroundTint="@color/ligth_gray"/>
+                    android:backgroundTint="@color/light_gray"/>
 
             </RelativeLayout>
 

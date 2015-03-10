@@ -154,14 +154,19 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            //printReturn(new InputStreamReader(httpResponse.getEntity().getContent()));
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
+
+            Log.e("Result",result.toString());
 
             if(result.isFlag()){
                 ArrayList<Car> list = new ArrayList<>();
 
                 JSONArray jsonArray = new JSONArray(gson.toJson(result.getObject()));
+
                 for(int i=0; i < jsonArray.length(); i++){
                     list.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), Car.class));
                 }

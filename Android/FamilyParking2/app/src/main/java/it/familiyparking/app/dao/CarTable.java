@@ -40,7 +40,7 @@ public class CarTable {
     public static ArrayList<Car> getAllCar(SQLiteDatabase db) throws SQLException{
         ArrayList<Car> car_list = new ArrayList<>();
 
-        Cursor c = db.query(true, TABLE, COLUMNS, null, null, null, null, null, null);
+        Cursor c = db.query(true, TABLE, COLUMNS, null, null, null, null, NAME, null);
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext()) {

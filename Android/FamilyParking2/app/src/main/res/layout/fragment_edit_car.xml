@@ -76,7 +76,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="18dp"
                 android:background="@drawable/car"
-                android:backgroundTint="@color/ligth_gray"/>
+                android:backgroundTint="@color/light_gray"/>
 
             <EditText
                 android:id="@+id/car_name_et"
@@ -91,7 +91,7 @@
                 android:hint="@string/car_name"
                 android:textSize="16dp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/ligth_gray"
+                android:textColorHint="@color/light_gray"
                 android:layout_toRightOf="@id/car_name_iv"
                 android:layout_marginLeft="22dp"/>
 
@@ -117,7 +117,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="18dp"
                 android:background="@drawable/register"
-                android:backgroundTint="@color/ligth_gray"/>
+                android:backgroundTint="@color/light_gray"/>
 
             <EditText
                 android:id="@+id/car_register_et"
@@ -131,7 +131,7 @@
                 android:background="@color/transparent"
                 android:hint="@string/car_register"
                 android:textColor="@color/black"
-                android:textColorHint="@color/ligth_gray"
+                android:textColorHint="@color/light_gray"
                 android:textSize="16dp"
                 android:layout_toRightOf="@id/car_register_iv"
                 android:layout_marginLeft="22dp"/>
@@ -241,7 +241,7 @@
                 android:background="@color/transparent"
                 android:hint="@string/car_finder_rules"
                 android:textColor="@color/black"
-                android:textColorHint="@color/ligth_gray"
+                android:textColorHint="@color/light_gray"
                 android:textSize="16dp"
                 android:layout_toRightOf="@id/car_finder_tv"
                 android:layout_marginLeft="20dp"/>
