@@ -265,7 +265,7 @@ class removeContactCar(webapp2.RequestHandler):
 			user_data = dati["User"]
 			car_data = dati["Car"]
 			for userClass in car_data["Users"]:
-				user = userClass["Email]
+				user = userClass["Email"]
 				tempUser = User.static_querySearch_email(user)
 				for id_user in tempUser:
 					user_key = id_user.key.id()
