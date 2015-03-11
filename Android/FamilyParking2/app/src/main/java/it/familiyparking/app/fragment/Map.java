@@ -25,6 +25,7 @@ import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
 import it.familiyparking.app.utility.Tools;
 
@@ -159,14 +160,21 @@ public class Map extends Fragment{
     }
 
     public void updatePosition(){
-        Location location = googleMap.getMyLocation();
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
+        if(googleMap != null) {
+            Location location = googleMap.getMyLocation();
+
+            while(location == null)
+                location = googleMap.getMyLocation();
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+        }
     }
 
     public void updateGhostmodeLable(){
-        if(activity.getUser().isGhostmode())
-            ghostmodeLable.setVisibility(View.VISIBLE);
-        else
+        User user = activity.getUser();
+        if((user == null) || (!user.isGhostmode()))
             ghostmodeLable.setVisibility(View.GONE);
+        else
+            ghostmodeLable.setVisibility(View.VISIBLE);
     }
 }

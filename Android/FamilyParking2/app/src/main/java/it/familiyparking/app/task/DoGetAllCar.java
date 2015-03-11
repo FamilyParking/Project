@@ -37,6 +37,8 @@ public class DoGetAllCar implements Runnable {
 
             activity.setAllCarRunning();
 
+            boolean flag_dialog = activity.getLunchWithEmptyList();
+
             final Result result = ServerCall.getAllCar(user);
 
             if (result.isFlag()) {
@@ -46,6 +48,7 @@ public class DoGetAllCar implements Runnable {
                 GroupTable.deleteGroupTable(db);
 
                 final ArrayList<Car> cars = (ArrayList<Car>) result.getObject();
+
                 for (final Car c : cars) {
 
                     CarTable.insertCar(db,c);
@@ -75,9 +78,7 @@ public class DoGetAllCar implements Runnable {
                 Tools.manageServerError(result, activity);
             }
 
-            activity.resetAllCarRunning();
-
-            if(activity.getLunchWithEmptyList()) {
+            if(flag_dialog) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

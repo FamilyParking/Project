@@ -220,21 +220,18 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         while((searchString.length() > 0) && (searchString.charAt(searchString.length()-1) == ' '))
             searchString = searchString.substring(0,searchString.length()-1);
 
-        if((!lastSearchString.equals(searchString)) && (!searchString.isEmpty())){
-
+        if(searchString.isEmpty()) {
+            relativeResultFinder.setVisibility(View.GONE);
+        }
+        else if(!lastSearchString.equals(searchString)){
             lastSearchString = searchString;
 
-            if (searchString.equals("")) {
-                relativeResultFinder.setVisibility(View.GONE);
-            }
-            else {
-                loaderManager.restartLoader(0, null, this);
+            loaderManager.restartLoader(0, null, this);
 
-                if (searchString.contains("@"))
-                    addButton = true;
-                else
-                    addButton = false;
-            }
+            if (searchString.contains("@"))
+                addButton = true;
+            else
+                addButton = false;
         }
     }
 

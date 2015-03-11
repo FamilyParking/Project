@@ -540,8 +540,6 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
             confirmation = null;
 
-            getAllCar();
-
             new AsyncTaskGCM().execute(user, this);
         }
     }
@@ -715,12 +713,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetDialogParking(){
         if(dialogParking != null){
-            dialogParking.cancel();
+            dialogParking.dismiss();
             dialogParking = null;
-            Log.e("resetDialogParking","OK");
-        }
-        else{
-            Log.e("resetDialogParking","KO");
         }
     }
 }

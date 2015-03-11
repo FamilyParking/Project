@@ -752,7 +752,7 @@ public class Tools {
 
         AlertDialog alertDialogClass = alertDialog.create();
 
-        alertDialog.show();
+        alertDialogClass.show();
 
         return alertDialogClass;
     }
