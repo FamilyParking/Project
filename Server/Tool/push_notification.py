@@ -6,15 +6,16 @@ __author__ = 'Nazzareno'
 import json
 
 
-class push_class:
+class Push_notification():
+
     @staticmethod
     def send_push_park(regId,name_car):
         json_data = {
             "data": {
-                "name": name_car,
+                "name": str(name_car),
                 "type": "park",
             },
-            "registration_ids": regId,
+            "registration_ids": [regId],
         }
         url = 'https://android.googleapis.com/gcm/send'
         apiKey = "AIzaSyAN2KZpzIpWmPQidczGiyo3ZlV4j1ERe2U"

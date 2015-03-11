@@ -20,3 +20,11 @@ class Send_email():
         message.body = "Your car is parked here: http://www.google.com/maps/place/" + latitude + "," + longitude
         message.to = "<" + email + ">"
         message.send()
+
+    @staticmethod
+    def send_adding_group(email, nome, car):
+        message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
+                                                        subject="Shared car with you")
+        message.body = nome + " shared "+car+" with you"
+        message.to = "<" + email + ">"
+        message.send()
