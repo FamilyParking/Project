@@ -1,14 +1,17 @@
 package it.familiyparking.app.fragment;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,8 +19,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
+import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
 import it.familiyparking.app.utility.Tools;
@@ -31,6 +37,7 @@ public class Map extends Fragment{
     private MainActivity activity;
     private GoogleMap googleMap;
     private Button toPark;
+    private RelativeLayout ghostmodeLable;
     private boolean afterPositionSettings;
     private boolean setGraphic;
 
@@ -47,6 +54,9 @@ public class Map extends Fragment{
         setUpMap();
 
         toPark = (Button)rootView.findViewById(R.id.toPark);
+
+        ghostmodeLable = (RelativeLayout)rootView.findViewById(R.id.ghostmode_lable);
+        updateGhostmodeLable();
 
         return rootView;
     }
@@ -105,11 +115,6 @@ public class Map extends Fragment{
         toPark.setVisibility(View.VISIBLE);
     }
 
-    public void resetPbutton(){
-        toPark.setClickable(false);
-        toPark.setVisibility(View.GONE);
-    }
-
     public String getLatitude(){
         return Double.toString(googleMap.getMyLocation().getLatitude());
     }
@@ -118,19 +123,50 @@ public class Map extends Fragment{
         return Double.toString(googleMap.getMyLocation().getLongitude());
     }
 
-    public void parkCar(Car car, boolean moveCamera){
-        LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()));
-
+    public void parkCar(Car toPark, boolean moveCamera){
         googleMap.clear();
-        googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
 
-        if(moveCamera){
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(carPosition));
+        SQLiteDatabase db = Tools.getDB_Readable(activity);
+        ArrayList<Car> cars = CarTable.getAllCar(db);
+        db.close();
+
+        for(Car car : cars) {
+            if(car.isParked()) {
+                LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()));
+
+                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+
+                if ((moveCamera) && (toPark.equals(car))) {
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(carPosition));
+                }
+            }
         }
+    }
+
+    public void parkCar(ArrayList<Car> cars){
+        googleMap.clear();
+
+        for(Car car : cars){
+            if(car.isParked()) {
+                LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()));
+                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+            }
+        }
+    }
+
+    public void moveCamera(LatLng position){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
     }
 
     public void updatePosition(){
         Location location = googleMap.getMyLocation();
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
+    }
+
+    public void updateGhostmodeLable(){
+        if(activity.getUser().isGhostmode())
+            ghostmodeLable.setVisibility(View.VISIBLE);
+        else
+            ghostmodeLable.setVisibility(View.GONE);
     }
 }

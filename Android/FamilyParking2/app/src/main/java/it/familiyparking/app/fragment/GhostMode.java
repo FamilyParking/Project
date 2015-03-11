@@ -32,7 +32,7 @@ public class GhostMode extends Fragment{
         activity = (MainActivity) getActivity();
 
         Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
-        Tools.setTitleActionBar(activity,R.string.app_name);
+        Tools.setTitleActionBar(activity,"Ghosmode");
 
         SQLiteDatabase db = Tools.getDB_Readable(activity);
         boolean isActive = UserTable.getGhostMode(db);
@@ -62,7 +62,7 @@ public class GhostMode extends Fragment{
                         UserTable.updateGhostmode(db,!isActive);
                         db.close();
 
-                        activity.updateActionGhostmode(!isActive);
+                        activity.getUser().setGhostmode(!isActive);
 
                         resetGhostmodeFragment();
 

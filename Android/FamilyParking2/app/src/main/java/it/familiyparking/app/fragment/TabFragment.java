@@ -97,14 +97,14 @@ public class TabFragment extends Fragment{
 
     public void removeTab(){
         if(actionBarNew != null) {
-            actionBarNew.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBarNew.removeTab(tabListNew);
             actionBarNew.removeTab(tabCreateNew);
+            actionBarNew.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
         else if(actionBarOld != null) {
-            actionBarOld.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBarOld.removeTab(tabListOld);
             actionBarOld.removeTab(tabCreateOld);
+            actionBarOld.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
     }
 

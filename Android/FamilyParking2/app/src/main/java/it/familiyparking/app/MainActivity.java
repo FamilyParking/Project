@@ -1,7 +1,9 @@
 package it.familiyparking.app;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -56,11 +59,11 @@ public class MainActivity extends ActionBarActivity {
     private CarDetailFragment carDetail;
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
+    private AlertDialog dialogParking;
     private Tracker tracker;
     private boolean inflateMenu;
     private boolean doubleBackToExitPressedOnce;
     private boolean visibleActionPosition;
-    private boolean visibleActionGhostmode;
     private boolean flagAllCarRunning;
     private boolean lunchWithEmptyList;
 
@@ -104,8 +107,6 @@ public class MainActivity extends ActionBarActivity {
 
         SQLiteDatabase db = Tools.getDB_Readable(this);
 
-        visibleActionGhostmode = UserTable.getGhostMode(db);
-
         ArrayList<Car> cars = CarTable.getAllCar(db);
 
         db.close();
@@ -141,12 +142,9 @@ public class MainActivity extends ActionBarActivity {
         super.onPrepareOptionsMenu(menu);
 
         MenuItem localizer = menu.findItem(R.id.action_position);
-        if(localizer != null)
+        if(localizer != null) {
             localizer.setVisible(visibleActionPosition);
-
-        MenuItem ghostmoder = menu.findItem(R.id.ghostmode_active);
-        if(ghostmoder != null)
-            ghostmoder.setVisible(visibleActionGhostmode);
+        }
 
         return true;
     }
@@ -229,9 +227,21 @@ public class MainActivity extends ActionBarActivity {
         return this.user;
     }
 
-    public void park(Car car,boolean moveCamera){
+    public void park(ArrayList<Car> cars){
+        if(map != null) {
+            map.parkCar(cars);
+        }
+    }
+
+    public void park(Car car, boolean moveCamera){
         if(map != null) {
             map.parkCar(car,moveCamera);
+        }
+    }
+
+    public void moveCamera(LatLng position){
+        if(map != null){
+            map.moveCamera(position);
         }
     }
 
@@ -258,10 +268,6 @@ public class MainActivity extends ActionBarActivity {
 
     public String getLongitude(){
         return map.getLongitude();
-    }
-
-    public void updateActionGhostmode(boolean flag){
-        this.visibleActionGhostmode = flag;
     }
 
     private void getAllCar(){
@@ -294,6 +300,12 @@ public class MainActivity extends ActionBarActivity {
 
     public void setLunchWithEmptyList(){
         this.lunchWithEmptyList = true;
+    }
+
+    private void setGhostmodeLable(){
+        if(map != null){
+            map.updateGhostmodeLable();
+        }
     }
 
     /***************************************** FRAGMENT MANAGER ***************************************/
@@ -429,7 +441,7 @@ public class MainActivity extends ActionBarActivity {
             Tools.createToast(this,"No car is vailable",Toast.LENGTH_LONG);
         }
         else if(cars.size() > 1){
-            Tools.showAlertParking(this,cars);
+            dialogParking = Tools.showAlertParking(this,cars,user);
         }
         else{
             new Thread(new DoPark(this,this.user,cars.get(0))).start();
@@ -540,6 +552,7 @@ public class MainActivity extends ActionBarActivity {
 
             Tools.resetTabActionBar(this);
             Tools.resetUpButtonActionBar(this);
+            Tools.setTitleActionBar(this,getResources().getString(R.string.app_name));
 
             resetCarDetail();
             resetCar();
@@ -566,7 +579,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void resetCarDetail(){
+    public void resetCarDetail(){
         if(carDetail != null){
             getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
             carDetail = null;
@@ -602,6 +615,9 @@ public class MainActivity extends ActionBarActivity {
     public void resetGhostmode(){
         if(ghostMode != null) {
             setMenu();
+            Tools.setTitleActionBar(this,getResources().getString(R.string.app_name));
+
+            setGhostmodeLable();
 
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
             ghostMode = null;
@@ -662,15 +678,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetProgressDialogCircular(final boolean resetUpButton){
-        getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
-        progressDialogCircular = null;
+        if(progressDialogCircular != null) {
+            getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+            progressDialogCircular = null;
 
-        if(resetUpButton)
-            Tools.resetUpButtonActionBar(this);
-        else
-            Tools.setUpButtonActionBar(this);
+            if (resetUpButton)
+                Tools.resetUpButtonActionBar(this);
+            else
+                Tools.setUpButtonActionBar(this);
 
-        setMenu();
+            setMenu();
+        }
     }
 
     public void setContactDetailDialog(User contact){
@@ -687,9 +705,22 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetContactDetailDialog(){
-        Tools.setUpButtonActionBar(this);
-        setMenu();
-        getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
-        contactDetailDialog = null;
+        if(contactDetailDialog != null) {
+            Tools.setUpButtonActionBar(this);
+            setMenu();
+            getSupportFragmentManager().beginTransaction().remove(contactDetailDialog).commit();
+            contactDetailDialog = null;
+        }
+    }
+
+    public void resetDialogParking(){
+        if(dialogParking != null){
+            dialogParking.cancel();
+            dialogParking = null;
+            Log.e("resetDialogParking","OK");
+        }
+        else{
+            Log.e("resetDialogParking","KO");
+        }
     }
 }

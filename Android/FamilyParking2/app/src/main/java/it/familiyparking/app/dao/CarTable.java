@@ -37,6 +37,21 @@ public class CarTable {
         db.insert(TABLE, null, v);
     }
 
+    public static Car getCar_byID(SQLiteDatabase db,String carID) throws SQLException{
+        ArrayList<Car> car = new ArrayList<>();
+
+        Cursor c = db.query(true, TABLE, COLUMNS, CAR_ID+" = ? ", new String[]{carID}, null, null, null, null);
+
+        if((c != null) && (c.getCount() > 0)){
+            if(c.moveToNext())
+                return new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10));
+        }
+
+        c.close();
+
+        return null;
+    }
+
     public static ArrayList<Car> getAllCar(SQLiteDatabase db) throws SQLException{
         ArrayList<Car> car_list = new ArrayList<>();
 
@@ -68,7 +83,7 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext())
-                car.add(new Car());
+                car.add(new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10)));
         }
 
         c.close();

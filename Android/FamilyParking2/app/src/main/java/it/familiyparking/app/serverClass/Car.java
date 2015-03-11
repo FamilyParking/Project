@@ -120,10 +120,6 @@ public class Car implements Parcelable {
         }
     };
 
-    public boolean equals(Car car){
-        return this.id.equals(car.getId());
-    }
-
     @Override
     public String toString() {
         return "Car{" +
@@ -276,7 +272,7 @@ public class Car implements Parcelable {
         return  null;
     }
 
-    public boolean equal(Car car) {
+    public boolean equals(Car car) {
         if ((bluetoothMac == null) && (car.bluetoothMac != null)) return false;
         if ((bluetoothMac != null) && (car.bluetoothMac == null)) return false;
         if ((bluetoothMac != null) && (car.bluetoothMac != null) && (!bluetoothMac.equals(car.bluetoothMac))) return false;

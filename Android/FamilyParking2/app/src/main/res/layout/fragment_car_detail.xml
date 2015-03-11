@@ -87,13 +87,14 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="35dp"
                     android:clickable="true"
-                    android:background="@drawable/circle_blue">
+                    android:background="@drawable/circle_blue_shadow">
 
                     <ImageView
                         android:id="@+id/edit_iv"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="8dp"
                         android:src="@drawable/edit"/>
 
                 </RelativeLayout>
@@ -186,7 +187,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:background="@drawable/circle_blue">
+                    android:background="@drawable/circle_blue_shadow">
 
                     <ImageView
                         android:id="@+id/bluetooth_iv"

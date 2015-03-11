@@ -85,6 +85,9 @@ public class CarDetailFragment extends Fragment{
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
+                    activity.resetCarDetail();
+                    activity.resetTabFragment();
+                    activity.moveCamera(marker.getPosition());
                     return true;
                 }
             });

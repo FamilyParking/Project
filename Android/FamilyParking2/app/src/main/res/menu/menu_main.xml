@@ -7,15 +7,8 @@
     <item
         android:id="@+id/action_position"
         android:title=""
-        android:icon="@android:drawable/ic_menu_mylocation"
+        android:icon="@drawable/ic_menu_mylocation"
         android:orderInCategory="100"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/ghostmode_active"
-        android:title=""
-        android:icon="@android:drawable/ic_menu_view"
-        android:orderInCategory="200"
         app:showAsAction="always" />
 
     <item

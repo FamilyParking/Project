@@ -11,22 +11,25 @@
         android:layout_height="match_parent"/>
 
     <RelativeLayout
-        android:id="@+id/group_rl_main_activity"
-        android:layout_width="match_parent"
+        android:id="@+id/ghostmode_lable"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
-        android:visibility="gone">
-
-        <org.lucasr.twowayview.TwoWayView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/group_list_main_activity"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            style="@style/TwoWayView"
-            android:drawSelectorOnTop="false"/>
-
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="30dp"
+        android:paddingTop="6dp"
+        android:paddingLeft="6dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/rectangle_green_shadow">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:text="GHOSTMODE"
+            android:textColor="@color/white"
+            android:textSize="10dp"/>
     </RelativeLayout>
 
     <Button

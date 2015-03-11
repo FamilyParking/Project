@@ -60,20 +60,12 @@ public class DoGetAllCar implements Runnable {
 
                         GroupTable.insertContact(db,c.getId(),contact);
                     }
-
-                    if (c.isParked()) {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                activity.park(c, false);
-                            }
-                        });
-                    }
                 }
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        activity.park(cars);
                         activity.updateCarAdapter(cars);
                     }
                 });

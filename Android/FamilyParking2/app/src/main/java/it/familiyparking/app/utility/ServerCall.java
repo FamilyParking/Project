@@ -49,10 +49,13 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
-            Log.e("SignIn",result.toString());
 
             return result;
 
@@ -84,6 +87,10 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
@@ -99,9 +106,7 @@ public class ServerCall {
 
     public static Result updateGoogleCode(User user){
 
-        return debug();
-
-        /*try {
+        try {
             HttpClient httpclient = new DefaultHttpClient();
 
             HttpPost httpPost = new HttpPost(server_address+"updateGoogleCode");
@@ -120,6 +125,10 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
@@ -130,7 +139,7 @@ public class ServerCall {
             Log.e("signIn", e.toString() + " - " + e.getLocalizedMessage());
         }
 
-        return null;*/
+        return null;
     }
 
     public static Result getAllCar(User user){
@@ -154,13 +163,13 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            //printReturn(new InputStreamReader(httpResponse.getEntity().getContent()));
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
 
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
-
-            Log.e("Result",result.toString());
 
             if(result.isFlag()){
                 ArrayList<Car> list = new ArrayList<>();
@@ -209,6 +218,10 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
@@ -243,6 +256,10 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
@@ -256,17 +273,18 @@ public class ServerCall {
         return null;
     }
 
-    public static Result addCarUsers(User user,String carID, ArrayList<User> toAdd){
+    public static Result addCarUsers(User user,Car car, ArrayList<User> toAdd){
 
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(server_address+"insertContactCar");
 
-            Car car = new Car();
-            car.setId(carID);
-            car.setUsers(toAdd);
+            Car temp_car = new Car();
+            temp_car.setId(car.getId());
+            temp_car.setName(car.getName());
+            temp_car.setUsers(toAdd);
 
-            Container container = new Container(user,car);
+            Container container = new Container(user,temp_car);
             Gson gson = new Gson();
             String json = gson.toJson(container);
 
@@ -278,6 +296,10 @@ public class ServerCall {
             httpPost.setHeader("Content-type", "application/json");
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
 
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
@@ -292,17 +314,18 @@ public class ServerCall {
         return null;
     }
 
-    public static Result removeCarUsers(User user,String carID, ArrayList<User> toRemove){
+    public static Result removeCarUsers(User user,Car car, ArrayList<User> toRemove){
 
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(server_address+"removeContactCar");
 
-            Car car = new Car();
-            car.setId(carID);
-            car.setUsers(toRemove);
+            Car temp_car = new Car();
+            temp_car.setId(car.getId());
+            temp_car.setName(car.getName());
+            temp_car.setUsers(toRemove);
 
-            Container container = new Container(user,car);
+            Container container = new Container(user,temp_car);
             Gson gson = new Gson();
             String json = gson.toJson(container);
 
@@ -314,6 +337,10 @@ public class ServerCall {
             httpPost.setHeader("Content-type", "application/json");
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
 
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
@@ -347,6 +374,10 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 
             Result result = gson.fromJson(reader,Result.class);
@@ -378,6 +409,10 @@ public class ServerCall {
             httpPost.setHeader("Content-type", "application/json");
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
 
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
 

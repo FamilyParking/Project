@@ -41,6 +41,7 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
         setBrand(convertView,car);
         setName(convertView,car);
         setRegister(convertView, car);
+        setPark(convertView,car);
         setBluetooth(convertView,car);
         setContactList(convertView,car);
         setDetailButton(convertView,car);
@@ -72,6 +73,17 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
         else {
             convertView.findViewById(R.id.bluetooth_circle_ok).setVisibility(View.GONE);
             convertView.findViewById(R.id.bluetooth_circle_ko).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setPark(View convertView, Car car) {
+        if(car.isParked()) {
+            convertView.findViewById(R.id.park_circle_ko).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.park_circle_ko).setVisibility(View.GONE);
+        }
+        else {
+            convertView.findViewById(R.id.park_circle_ok).setVisibility(View.GONE);
+            convertView.findViewById(R.id.park_circle_ko).setVisibility(View.VISIBLE);
         }
     }
 

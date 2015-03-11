@@ -37,8 +37,10 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -61,6 +63,7 @@ import java.util.Locale;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
+import it.familiyparking.app.adapter.CustomAdapterCarDialog;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
@@ -651,8 +654,11 @@ public class Tools {
         ContentResolver resolver = context.getContentResolver();
         Cursor c = resolver.query(ContactsContract.Data.CONTENT_URI, new String[]{ContactsContract.Contacts.PHOTO_ID}, ContactsContract.CommonDataKinds.Email.DATA + "= ?", new String[]{email}, null);
 
-        if(c.moveToNext())
-            return c.getString(0);
+        while(c.moveToNext()) {
+            String id = c.getString(0);
+            if(id != null)
+                return id;
+        }
 
         return null;
     }
@@ -728,24 +734,14 @@ public class Tools {
         return temp;
     }
 
-    public static void showAlertParking(final MainActivity activity, final ArrayList<Car> cars){
+    public static AlertDialog showAlertParking(final MainActivity activity, ArrayList<Car> cars, User user){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
 
-        alertDialog.setCancelable(true);
+        alertDialog.setCancelable(false);
 
         alertDialog.setTitle("Pick the car");
 
-        List<String> listItems = new ArrayList<String>();
-        for(Car c : cars)
-            listItems.add(c.getName()+" ["+c.getRegister()+"]");
-
-        final CharSequence[] charSequenceItems = listItems.toArray(new CharSequence[listItems.size()]);
-
-        alertDialog.setItems(charSequenceItems, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                new Thread(new DoPark(activity,activity.getUser(),cars.get(which))).start();
-            }
-        });
+        alertDialog.setAdapter(new CustomAdapterCarDialog(activity,cars,user),null);
 
         alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -754,7 +750,11 @@ public class Tools {
                     }
                 });
 
+        AlertDialog alertDialogClass = alertDialog.create();
+
         alertDialog.show();
+
+        return alertDialogClass;
     }
 
     public static String getFormatedData(String allInfo){
