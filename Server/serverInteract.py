@@ -11,10 +11,9 @@ from Cloud_Storage.car_group import Car_group
 from Cloud_Storage.user import User
 from Cloud_Storage.car import Car
 from Cloud_Storage.group import Group
-from Cloud_Storage.user_copy import User_copy
 from Cloud_Storage.user_group import User_group
+from Tool.google_api_request import Google_api_request
 
-from google.appengine.api import mail
 from Tool.push_notification import push_class
 
 from Tool.send_email import Send_email
@@ -35,68 +34,6 @@ class HowToUsePage(webapp2.RequestHandler):
         MAIN_PAGE_HTML = in_file.read()
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
-
-
-class SendEmail(webapp2.RequestHandler):
-    def post(self):
-        logging.debug("Received from user: " + str(self.request.body))
-        try:
-            data = json.loads(self.request.body)
-            new_contact = User_copy(id_android=data["ID"], counter=1, latitude=data["latitude"],
-                                    longitude=data["longitude"], last_time=str(datetime.datetime.now()))
-            new_car = Car(brand="testBrand", latitude=data["latitude"],
-                          longitude=data["longitude"], timestamp=str(datetime.datetime.now()))
-            # logging.debug(new_car)
-            try:
-                contact_key = new_contact.querySearch()
-            # logging.debug(contact_key.get())
-            except:
-                logging.debug(sys.exc_info())
-
-            try:
-                if contact_key.count() == 0:
-                    add_db_contact = new_contact.put()
-                else:
-                    temp_contact = contact_key.get()
-                    # logging.debug(new_car.getPositionFromID())
-
-                    if bool(temp_contact.update_contact(data["latitude"], data["longitude"])):
-                        try:
-                            message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
-                                                        subject="Position of car")
-                            message.body = "Your car is parked here: http://www.google.com/maps/place/" + data[
-                                "latitude"] + "," + \
-                                           data["longitude"]
-                            receiver_mail = data["email"]
-                            i = 0
-                            for value in receiver_mail:
-                                try:
-                                    message.to = "<" + value + ">"
-                                    message.send()
-                                    i += 1
-                                except:
-                                    self.error(500)
-                                    error = StatusReturn(3, i)
-                                    self.response.write(error.toJSON())
-                            right = StatusReturn(0, 0)
-                            self.response.write(right.toJSON())
-                        except:
-                            self.error(500)
-                            error = StatusReturn(2, 0)
-                            self.response.write(error.toJSON())
-                    else:
-                        self.error(500)
-                        error = StatusReturn(4, 0)
-                        self.response.write(error.toJSON())
-                new_car.put()
-            except:
-                logging.debug(sys.exc_info())
-
-        except:
-            self.error(500)
-            error = StatusReturn(1, 0)
-            self.response.write(error.toJSON())
-
 
 class updateGoogleCode(webapp2.RequestHandler):
     def post(self):
@@ -475,7 +412,6 @@ class registrationForm(webapp2.RequestHandler):
 application = webapp2.WSGIApplication([
                                           ('/', MainPage),
                                           ('/howtouse', HowToUsePage),
-                                          ('/sign', SendEmail),
                                           ('/updateGoogleCode', updateGoogleCode),
                                           ('/requestPositionCar', getPositionCar),
                                           ('/registration', registrationForm),

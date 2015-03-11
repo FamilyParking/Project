@@ -7,15 +7,12 @@ import random
 
 from Class.statusReturn import StatusReturn
 
-from Cloud_Storage.car_group import Car_group
 from Cloud_Storage.user import User
 from Cloud_Storage.car import Car
-from Cloud_Storage.group import Group
-from Cloud_Storage.user_copy import User_copy
-from Cloud_Storage.user_group import User_group
 from Cloud_Storage.user_car import User_car
 
 from google.appengine.api import mail
+from Tool.google_api_request import Google_api_request
 
 from Tool.push_notification import Push_notification
 from Tool.send_email import Send_email
@@ -26,6 +23,9 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         in_file = open("website/index.html", "r")
         MAIN_PAGE_HTML = in_file.read()
+
+        #Google_api_request.request_place("41.9135029","12.5212144")
+
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
 

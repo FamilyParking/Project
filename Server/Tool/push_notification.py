@@ -34,7 +34,7 @@ class Push_notification():
         if response['failure'] == 0:
             reply['error'] = '0'
         else:
-            response['error'] = '1'
+            reply['error'] = '1'
 
     @staticmethod
     def send_push_add_group(regId):
@@ -60,4 +60,4 @@ class Push_notification():
         if response['failure'] == 0:
             reply['error'] = '0'
         else:
-            response['error'] = '1'
+            reply['error'] = '1'
