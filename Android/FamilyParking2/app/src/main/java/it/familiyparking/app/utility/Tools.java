@@ -654,13 +654,32 @@ public class Tools {
         ContentResolver resolver = context.getContentResolver();
         Cursor c = resolver.query(ContactsContract.Data.CONTENT_URI, new String[]{ContactsContract.Contacts.PHOTO_ID}, ContactsContract.CommonDataKinds.Email.DATA + "= ?", new String[]{email}, null);
 
+        String id = null;
         while(c.moveToNext()) {
-            String id = c.getString(0);
+            id = c.getString(0);
             if(id != null)
-                return id;
+                break;
         }
 
-        return null;
+        c.close();
+
+        return id;
+    }
+
+    public static String getName_byEmail(Context context, String email){
+        ContentResolver resolver = context.getContentResolver();
+        Cursor c = resolver.query(ContactsContract.Data.CONTENT_URI, new String[]{ContactsContract.Contacts.DISPLAY_NAME}, ContactsContract.CommonDataKinds.Email.DATA + "= ?", new String[]{email}, null);
+
+        String name = null;
+        while(c.moveToNext()) {
+            name = c.getString(0);
+            if((name != null) && (!name.contains("@")))
+                break;
+        }
+
+        c.close();
+
+        return name;
     }
 
     public static void manageServerError(final Result result, final MainActivity activity){

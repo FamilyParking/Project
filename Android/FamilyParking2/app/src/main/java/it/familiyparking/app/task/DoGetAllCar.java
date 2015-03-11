@@ -55,6 +55,13 @@ public class DoGetAllCar implements Runnable {
 
                     for (User contact : c.getUsers()) {
 
+                        if(contact.getName().contains("@")) {
+                            String name = Tools.getName_byEmail(activity, contact.getEmail());
+                            if (name != null) {
+                                contact.setName(name);
+                            }
+                        }
+
                         String photo_ID = Tools.getPhotoID_byEmail(activity,contact.getEmail());
                         if(photo_ID != null) {
                             contact.setPhoto_ID(photo_ID);
