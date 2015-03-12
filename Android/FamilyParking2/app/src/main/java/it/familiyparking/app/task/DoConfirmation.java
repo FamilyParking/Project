@@ -57,8 +57,13 @@ public class DoConfirmation implements Runnable {
                 });
             }
             else{
-                Tools.manageServerError(result,activity);
-                fragment.endConfirmation(true);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tools.createToast(activity,"Wrong code. Try again.", Toast.LENGTH_LONG);
+                        fragment.endConfirmation(true);
+                    }
+                });
             }
         }
         else{

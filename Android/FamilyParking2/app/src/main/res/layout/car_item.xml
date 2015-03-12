@@ -77,8 +77,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/bluetooth_circle_ko"
+                android:layout_marginRight="40dp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/circle_blue">
                 <ImageView
                     android:id="@+id/park_iv_ok"
@@ -95,8 +95,8 @@
                 android:layout_height="30dp"
                 android:visibility="gone"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/bluetooth_circle_ko"
+                android:layout_marginRight="40dp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/circle_grey">
 
                 <ImageView

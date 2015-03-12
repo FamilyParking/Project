@@ -97,7 +97,8 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
         confirmation.setVisibility(View.GONE);
         progressCircle.setVisibility(View.VISIBLE);
 
-        code.setKeyListener(null);
+        code.clearFocus();
+        code.setClickable(false);
 
         new Thread(new DoConfirmation(this,activity.getUser(),code.getText().toString())).start();
     }
@@ -108,6 +109,8 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    code.setClickable(true);
+
                     confirmation.setVisibility(View.VISIBLE);
                     progressCircle.setVisibility(View.GONE);
 

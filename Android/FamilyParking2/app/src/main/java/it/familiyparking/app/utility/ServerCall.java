@@ -49,7 +49,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -87,7 +87,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -125,7 +125,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -163,7 +163,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -218,7 +218,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -256,7 +256,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200) {
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -297,7 +297,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200) {
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -338,7 +338,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -374,7 +374,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
@@ -410,7 +410,7 @@ public class ServerCall {
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            if ((httpResponse.getStatusLine().getStatusCode() == 404) || (httpResponse.getStatusLine().getStatusCode() == 404)){
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
                 return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
             }
 
