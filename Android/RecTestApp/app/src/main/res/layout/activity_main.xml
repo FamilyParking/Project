@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:maxLines = "15"
+        android:scrollbars = "vertical"
+        android:layout_alignParentBottom="true"/>
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height ="match_parent"
+        android:layout_above="@id/text"/>
 
 </RelativeLayout>

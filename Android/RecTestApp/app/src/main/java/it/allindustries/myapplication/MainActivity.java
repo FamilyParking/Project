@@ -5,10 +5,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -31,6 +34,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     private GoogleApiClient googleApiClient;
     private GoogleMap googleMap;
+    private Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +48,47 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         setUpMap();
         setMarker();
 
-        ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
+
+        /*ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
         for(Sample sample : samples)
-            Log.e("Sample",sample.toString());
+            Log.e("Sample",sample.toString());*/
+
+        final TextView textView = (TextView) findViewById(R.id.text);
+        textView.setMovementMethod(new ScrollingMovementMethod());
+        final Context context = this;
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    String text = "";
+                    ArrayList<Sample> samples = SamplesTable.getAllSamples(context);
+                    for(int i = 1; i<21; i++){
+                        text = text + samples.get(samples.size()-i).toStringSpecial() + "\n";
+                    }
+
+                    final String ret = text;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView.setText(ret);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(5000);
+                    }
+                    catch (Exception e){};
+
+                }
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        thread.destroy();
     }
 
     private void setUpGoogleApi(){
@@ -149,7 +191,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
         PendingIntent pendingIntent = PendingIntent.getService(this, 579, intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 1000, pendingIntent);
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 500, pendingIntent);
     }
 
     @Override

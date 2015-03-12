@@ -3,6 +3,7 @@ package it.allindustries.myapplication;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -152,5 +153,15 @@ public class Sample {
                 ", info='" + info + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
+    }
+
+    public String toStringSpecial() {
+        String infoFormated = info.substring(18,info.length()-1);
+        int size = infoFormated.length();
+
+        if(infoFormated.substring(size - 3,size).equals("100"))
+            return "\t" + infoFormated + "      " + timestamp.split(" ")[1];
+        else
+            return "\t" + infoFormated + "        " + timestamp.split(" ")[1];
     }
 }
