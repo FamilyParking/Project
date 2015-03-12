@@ -334,9 +334,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void resetAppGraphic(){
+        if(signIn != null){
+            getSupportFragmentManager().beginTransaction().remove(signIn).commit();
+            signIn = null;
+        }
         if(map != null){
             getSupportFragmentManager().beginTransaction().remove(map).commit();
             map = null;
+        }
+        if(confirmation != null){
+            getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
+            confirmation = null;
         }
         if(modifyCar != null){
             resetModifyCar();
@@ -352,13 +360,13 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
             carDetail = null;
         }
+        if(modifyCar != null){
+            getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
+            modifyCar = null;
+        }
         if(ghostMode != null){
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
             ghostMode = null;
-        }
-        if(signIn != null){
-            getSupportFragmentManager().beginTransaction().remove(signIn).commit();
-            signIn = null;
         }
         if(confirmation != null){
             getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
@@ -375,6 +383,10 @@ public class MainActivity extends ActionBarActivity {
         if(progressDialogCircular != null){
             getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
             progressDialogCircular = null;
+        }
+        if(dialogParking != null){
+            dialogParking.dismiss();
+            dialogParking = null;
         }
 
         resetMenu();

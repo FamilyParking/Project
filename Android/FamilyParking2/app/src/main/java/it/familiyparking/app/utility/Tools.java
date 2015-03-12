@@ -302,59 +302,71 @@ public class Tools {
             android.app.ActionBar actionBar = activity.getActionBar();
         } else{
             android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setLogo(R.drawable.logo_actionbar);
-            actionBar.setDisplayUseLogoEnabled(true);
+            if(actionBar != null) {
+                actionBar.setDisplayShowHomeEnabled(true);
+                actionBar.setLogo(R.drawable.logo_actionbar);
+                actionBar.setDisplayUseLogoEnabled(true);
+            }
         }
     }
 
     public static void resetTabActionBar(ActionBarActivity activity){
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
             android.app.ActionBar actionBar = activity.getActionBar();
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            if(actionBar != null)
+                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         } else{
             android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            if(actionBar != null)
+                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
     }
 
     public static void setUpButtonActionBar(ActionBarActivity activity){
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
             android.app.ActionBar actionBar = activity.getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if(actionBar != null)
+                actionBar.setDisplayHomeAsUpEnabled(true);
         } else{
             android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if(actionBar != null)
+                actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
     public static void resetUpButtonActionBar(ActionBarActivity activity){
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
             android.app.ActionBar actionBar = activity.getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(false);
+            if(actionBar != null)
+                actionBar.setDisplayHomeAsUpEnabled(false);
         } else{
             android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(false);
+            if(actionBar != null)
+                actionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
 
     public static void setTitleActionBar(ActionBarActivity activity,int id){
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
             android.app.ActionBar actionBar = activity.getActionBar();
-            actionBar.setTitle(id);
+            if(actionBar != null)
+                actionBar.setTitle(id);
         } else{
             android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setTitle(id);
+            if(actionBar != null)
+                actionBar.setTitle(id);
         }
     }
 
     public static void setTitleActionBar(ActionBarActivity activity,String title){
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1){
             android.app.ActionBar actionBar = activity.getActionBar();
-            actionBar.setTitle(title);
+            if(actionBar != null)
+                actionBar.setTitle(title);
         } else{
             android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setTitle(title);
+            if(actionBar != null)
+                actionBar.setTitle(title);
         }
     }
 

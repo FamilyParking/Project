@@ -6,6 +6,11 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/dark_blue</item>
         <item name="colorAccent">@color/blue</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Example</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Example" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_green</item>
     </style>
 
     <style name="AppTransparentTheme" parent="Theme.AppCompat.Light.DarkActionBar">
