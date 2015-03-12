@@ -41,7 +41,7 @@ class Registration1ViewController: UIViewController {
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             var params = ["ID":UIDevice.currentDevice().identifierForVendor.UUIDString,
-                "Nickname":Name.text,
+                "Name":Name.text,
                 "Email":Email.text] as Dictionary<String, NSObject>
             var err: NSError?
             request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)

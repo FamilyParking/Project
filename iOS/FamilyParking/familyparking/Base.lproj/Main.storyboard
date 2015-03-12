@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q4D-Jx-ms8">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Tab Bar Controller-->
@@ -83,7 +84,69 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vav-Pb-gU4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644" y="-1469"/>
+            <point key="canvasLocation" x="1024" y="-1469"/>
+        </scene>
+        <!--Informations-->
+        <scene sceneID="ESa-Rt-EPH">
+            <objects>
+                <viewController id="Ig5-EC-2LH" customClass="AppInfosViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Cte-dC-tuF"/>
+                        <viewControllerLayoutGuide type="bottom" id="GFP-5r-RaN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6iw-sc-vxU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ils-E8-eVe">
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="car" translatesAutoresizingMaskIntoConstraints="NO" id="orK-ai-tZn">
+                                <rect key="frame" x="50" y="320" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="bDD-ec-5b3"/>
+                                    <constraint firstAttribute="height" constant="128" id="ed8-F7-kNO"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8WO-uy-NNp">
+                                <rect key="frame" x="25" y="89" width="253" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <state key="normal" title="www.FamilyParking.it">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="WebSiteLinkButton:" destination="Ig5-EC-2LH" eventType="touchUpInside" id="bgC-tG-qwr"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwW-Yz-V12">
+                                <rect key="frame" x="37" y="132" width="228" height="156"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="156" id="CDt-9g-ixP"/>
+                                    <constraint firstAttribute="width" constant="228" id="P7T-Ps-1w6"/>
+                                </constraints>
+                                <string key="text">Family Parking is an amazing project created for the Google Workshop for Web Tecnologies, Rome 2015. You can find our contacts on our website.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ils-E8-eVe" firstAttribute="top" secondItem="Cte-dC-tuF" secondAttribute="bottom" constant="40" id="CyY-iC-rXP"/>
+                            <constraint firstAttribute="centerX" secondItem="fwW-Yz-V12" secondAttribute="centerX" constant="9" id="DSv-Iw-soW"/>
+                            <constraint firstItem="fwW-Yz-V12" firstAttribute="top" secondItem="ils-E8-eVe" secondAttribute="bottom" constant="28" id="Gzp-E1-buD"/>
+                            <constraint firstItem="orK-ai-tZn" firstAttribute="centerX" secondItem="fwW-Yz-V12" secondAttribute="centerX" constant="19" id="Txb-VY-wr2"/>
+                            <constraint firstItem="orK-ai-tZn" firstAttribute="top" secondItem="fwW-Yz-V12" secondAttribute="bottom" constant="32" id="pQO-Gx-sYn"/>
+                            <constraint firstItem="ils-E8-eVe" firstAttribute="centerX" secondItem="6iw-sc-vxU" secondAttribute="centerX" constant="-1.5" id="z18-p4-WJE"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Informations" id="30b-wz-jms"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vMv-S2-Bku" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="178" y="-1443"/>
         </scene>
         <!--Registration1 View Controller-->
         <scene sceneID="5SZ-6T-z4U">
@@ -146,7 +209,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dpr-8E-i4Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="206" y="-1469"/>
+            <point key="canvasLocation" x="644" y="-1469"/>
         </scene>
         <!--Map-->
         <scene sceneID="HCI-ux-6DI">
@@ -208,7 +271,21 @@
                             <constraint firstItem="Gjh-Cj-COu" firstAttribute="top" secondItem="dZF-x0-6Kv" secondAttribute="bottom" constant="37" id="g3h-TV-Kvw"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Family Parking" id="B3U-yF-ONi"/>
+                    <navigationItem key="navigationItem" title="Family Parking" id="B3U-yF-ONi">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="LSd-Qz-DdL">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DsI-sz-8PK">
+                                <rect key="frame" x="-23" y="-15" width="71" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="i">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Ig5-EC-2LH" kind="push" id="lJ7-eK-1gw"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="sqW-gV-Gf2" kind="modal" identifier="registration_1" id="VLS-Wf-g8Y"/>
                         <segue destination="ta2-7k-jNf" kind="push" identifier="park_action" id="Pqy-fX-8L8"/>
@@ -344,7 +421,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WER-9l-6tM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644" y="-777"/>
+            <point key="canvasLocation" x="1024" y="-777"/>
         </scene>
         <!--Cars-->
         <scene sceneID="fTh-q8-FcT">
@@ -381,9 +458,8 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6vd-AH-hUt">
                                 <rect key="frame" x="-23" y="-15" width="71" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
+                                <state key="normal" title="+"/>
                                 <connections>
                                     <segue destination="UMO-cu-gwX" kind="push" id="TFs-jk-wHQ"/>
                                 </connections>
@@ -464,8 +540,20 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="carGreen" translatesAutoresizingMaskIntoConstraints="NO" id="Wf0-xo-5qZ">
+                                <rect key="frame" x="54" y="361" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="0qM-Ok-fom"/>
+                                    <constraint firstAttribute="height" constant="128" id="rQ9-ZZ-FL0"/>
+                                    <constraint firstAttribute="width" constant="240" id="tyD-kH-7ys"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Wf0-xo-5qZ" firstAttribute="leading" secondItem="PN1-O6-g2i" secondAttribute="leadingMargin" constant="38" id="55q-VC-gdf"/>
+                            <constraint firstItem="HEI-Bf-wYL" firstAttribute="top" secondItem="Wf0-xo-5qZ" secondAttribute="bottom" constant="30" id="b9p-ag-U43"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Insert your Car Name" id="4gT-RE-QL5"/>
                     <connections>
@@ -479,7 +567,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="car" width="367" height="178"/>
         <image name="car1" width="60" height="60"/>
+        <image name="carGreen" width="367" height="178"/>
         <image name="house-7" width="30" height="30"/>
         <image name="park" width="234" height="234"/>
     </resources>

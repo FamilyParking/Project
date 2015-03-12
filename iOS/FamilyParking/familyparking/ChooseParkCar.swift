@@ -59,7 +59,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                 
                 let person = people[indexPath.row]
                 cell.textLabel.text = person.valueForKey("name") as String?
-                cell.detailTextLabel?.text = "hi"
+               // cell.detailTextLabel?.text = "hi"
                 return cell
         }
         func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
@@ -107,6 +107,8 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             let lat = prefs.objectForKey("LAT") as String
             let lon = prefs.objectForKey("LON") as String
             let idCar : String = carN.valueForKey("id")!.description
+            let nameCar : String = carN.valueForKey("name")!.description
+            
             var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "updatePosition")!)
             var session = NSURLSession.sharedSession()
                     request.HTTPMethod = "POST"
@@ -118,10 +120,9 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                                 "latitude":lat,
                                 "longiude":lon]  as Dictionary<String, NSObject>
                     */
-                    var car = ["longitude":lon,
-                        "latitude":lat,
-                        "Longitude":lon,
+                    var car = ["Longitude":lon,
                         "Latitude":lat,
+                        "Name":nameCar,
                         "ID_car":idCar] as Dictionary<String,NSObject>
             
                     var params = ["User":user,
@@ -134,6 +135,24 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                     
                     var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                         println("Response: \(response)")
+                        
+                        var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+                        println(castato.statusCode)
+                        if(castato.statusCode==500){
+                            
+                            
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                var alertView:UIAlertView = UIAlertView()
+                                alertView.title = "Server Error"
+                                alertView.message = "Our Monkeys are working! Try in minutes!"
+                                alertView.delegate = self
+                                alertView.addButtonWithTitle("OK")
+                                alertView.show()
+                            })
+                            
+                            return
+                        }
+                        
                         var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                         println("Body: \(strData)")
                         var err: NSError?
@@ -141,7 +160,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                         
                         if(err == nil&&(!(response==nil))){
                         
-                            if((json!["flag"] as Bool) == true){
+                            if((json!["Flag"] as Bool) == true){
                                  dispatch_async(dispatch_get_main_queue(),{() -> Void in
                                    println("")
                                     self.navigationController!.popViewControllerAnimated(true)

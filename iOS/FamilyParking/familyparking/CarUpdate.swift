@@ -39,23 +39,40 @@ class CarUpdate{
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                 println("Response: \(response)")
+                
                 var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                 println("Body: \(strData)")
-               
+                var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+                println(castato.statusCode)
+                if(castato.statusCode==500){
+                   
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        var alertView:UIAlertView = UIAlertView()
+                        alertView.title = "Server Error"
+                        alertView.message = "Our Monkeys are working! Try in minutes!"
+                        alertView.delegate = self
+                        alertView.addButtonWithTitle("OK")
+                        alertView.show()
+                        })
+                    
+                    return
+                }
                 var err: NSError?
                 println(error)
-                if(error?==nil){
+
+                if(error==nil){
                     var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
-                    if(json?["flag"] as Bool){
-                        if var cars:NSArray = json?["object"]! as? NSArray{
+                    if(err==nil&&json?["Flag"] as Bool){
+                        if var cars:NSArray = json?["Object"]! as? NSArray{
                             self.removeAllCar()
                             self.removeAllUsers()
                             for carz in cars{
-                                self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String,lastPark:carz["Time"] as String)
+                                self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String,lastPark:carz["Timestamp"] as String,isParked:carz["isParked"] as Bool)
                                 
                                 let users = carz["Users"] as NSArray
                                 for user in users{
-                                    self.addUserToLocalDatabase(user["Email"]as String, name: user["Nome"] as String, car: carz["ID_car"] as String)
+                                    self.addUserToLocalDatabase(user["Email"]as String, name: user["Name"] as String, car: carz["ID_car"] as String)
                                     println(user)
                                 }
                                 
@@ -63,7 +80,7 @@ class CarUpdate{
                         }
                         mvc.updateCars()
                     } else {
-                        if((json?["object"] as NSInteger) == 3) {self.resetSystem();}
+                        if((json?["Object"] as NSInteger) == 3) {self.resetSystem();}
                     }
                 }else{
                     println("Generic Error")
@@ -76,7 +93,7 @@ class CarUpdate{
             }
         }
     
-    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String,lastPark:String){
+    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String,lastPark:String,isParked:Bool){
         
             var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
             println("Ora aggiungo l'auto \(code)")
@@ -95,6 +112,7 @@ class CarUpdate{
             person.setValue(long, forKey:"long")
             person.setValue(brand, forKey:"brand")
             person.setValue(lastPark, forKey: "lastPark")
+            person.setValue(isParked.description, forKey: "isParked")
             var error: NSError?
             if !managedContext.save(&error) {
                 println("Could not save \(error), \(error?.userInfo)")
@@ -297,7 +315,19 @@ class CarUpdate{
         }
         
         
+        
+        
     }
+    
+    func serverErrorPopUp(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "Server Error"
+        alertView.message = "Our Monkeys are working! Try in minutes!"
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
+    }
+    
     func resetSystem(){
         removeAllCar()
         removeAllUsers()

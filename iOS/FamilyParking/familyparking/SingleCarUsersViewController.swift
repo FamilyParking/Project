@@ -120,6 +120,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             //5
             people.append(person)
             
+            //updateClassUsersList()
         }
         
         func removeName(name: NSManagedObject) {
@@ -145,39 +146,47 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             super.viewWillAppear(animated)
             
             //1
-            let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-            let managedContext = appDelegate.managedObjectContext!
-            
-            //2
-            let fetchRequest = NSFetchRequest(entityName:"Users")
-            
-            //3
-            var error: NSError?
-            
-            let fetchedResults =
-            managedContext.executeFetchRequest(fetchRequest,
-                error: &error) as [NSManagedObject]?
-            
-            if let results = fetchedResults {
-                people = results
-            } else {
-                println("Could not fetch \(error), \(error!.userInfo)")
-            }
-            
-            var tmp = [NSManagedObject]()
-            
-            for man in people {
-                
-                if(man.valueForKey("carId")?.description==car?.valueForKey("id")?.description){
-                    tmp.append(man)
-                }
-            }
-            people = tmp
-            
+            updateClassUsersList()
+        }
+    
+    
+    func updateClassUsersList(){
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName:"Users")
+        
+        //3
+        var error: NSError?
+        
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as [NSManagedObject]?
+        
+        if let results = fetchedResults {
+            people = results
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
         }
         
-        // var selectedCar : NSObject
+        var tmp = [NSManagedObject]()
+        if(car?.valueForKey("id")?.description==nil){
+            self.navigationController?.popViewControllerAnimated(true)
+            //      self.dismissViewControllerAnimated(true, completion: nil)
+        }
         
+        for man in people {
+            
+            if(man.valueForKey("carId")?.description==car?.valueForKey("id")?.description){
+                tmp.append(man)
+            }
+        }
+        people = tmp
+        
+    }
+        // var selectedCar : NSObject
+    
         @IBAction func RemoveConfirmation(index: NSIndexPath) {
             
             var name = self.people[index.item].valueForKey("username")?.description
@@ -242,16 +251,16 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
     
     @IBAction func AddUser(sender: AnyObject) {
         
-        var alert = UIAlertController(title: "One Car",
-            message: "Right now, only one car is admitted",
+        var alert = UIAlertController(title: "New Car Mate",
+            message: "Insert the email of your carmate",
             preferredStyle: .Alert)
         
         let saveAction = UIAlertAction(title: "Save",
             style: .Default) { (action: UIAlertAction!) -> Void in
                 
-                let textField = alert.textFields![0] as UITextField
-                if(self.isValidEmail(textField.text)){
-                    self.addUserToServer(textField.text)
+                let textFieldEx = alert.textFields![0] as UITextField
+                if(self.isValidEmail(textFieldEx.text)){
+                    self.addUserToServer(textFieldEx.text)
                   }else{
                         self.wrongMailPopUp()
                 }
@@ -299,21 +308,32 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let pin:String = prefs.objectForKey("PIN") as String
             let mail:String = prefs.objectForKey("EMAIL") as String
+            let userName:String = prefs.objectForKey("USERNAME") as String
             
             var otherUsers = ["Code":pin,
                 "Email":mail] as Dictionary<String, NSObject>
             
-            var usersMail = [text]
-            var idcar:String = car?.valueForKey("id") as String
-            var carToServer = [
-                "Users":usersMail,
-                "ID_car":idcar
+            var usersMail = [
+                "Name":text,
+                "Email":text
                 ] as Dictionary<String, NSObject>
             
             
             
+           // [text]
+            var idcar:String = car?.valueForKey("id") as String
+            var carName:String = car?.valueForKey("name") as String
+            
+            var carToServer = [
+                "Users":[usersMail],
+                "ID_car":idcar,
+                "Name":carName,
+                ] as Dictionary<String, NSObject>
+            
             var user = ["Code":pin,
-                "Email":mail] as Dictionary<String, NSObject>
+                "Email":mail,
+                "Name":userName
+                ] as Dictionary<String, NSObject>
             
             var param = [  "User":user,
                 "Car":carToServer] as Dictionary<String, NSObject>
@@ -337,15 +357,22 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
                 if(err==nil){
                     println(json);
-                    if((json!["flag"]as Bool)==true){
+                    if((json!["Flag"]as Bool)==true){
+                    //    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        println("")
                         self.saveName(text)
                         self.tableView.reloadData()
+                    //    })
                         
                     }else{
-                        self.savingErrorPopUp()
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.savingErrorPopUp()
+                        })
                     }
                 }else{
-                    self.savingErrorPopUp()
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.savingErrorPopUp()
+                    })
                 }
             })
             task.resume()
@@ -384,7 +411,12 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             var otherUsers = ["Code":pin,
                 "Email":mail] as Dictionary<String, NSObject>
             
-            var usersMail = [text]
+            //var usersMail = [text]
+            var usersMail = [
+                "Name":text,
+                "Email":text
+                ] as Dictionary<String, NSObject>
+            // [text]
             var idcar:String = car?.valueForKey("id") as String
             var carToServer = [
                 "Users":usersMail,

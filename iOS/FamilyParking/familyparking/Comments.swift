@@ -9,15 +9,7 @@
 import Foundation
 
 /**
-ciao, sono mauro
 
-let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
-if (isLoggedIn != 1) {
-self.performSegueWithIdentifier("goto_login", sender: self)
-} else {
-getGroups()
-}
 
 ISLOGGEDIN is   0 if user is NOT logged in
                 1 otherwise
@@ -38,7 +30,17 @@ show groups names
 
 class Comments {
     
-    let serverPath = "http://ios01.first-vision-798.appspot.com/"
-    
+    let serverPath = "http://ios02.first-vision-798.appspot.com/"
+
+}
+/*USEFUL CODE
+func noInternetPopUp(){
+var alertView:UIAlertView = UIAlertView()
+alertView.title = "No internet"
+alertView.message = "Please check your internet connection"
+alertView.delegate = self
+alertView.addButtonWithTitle("OK")
+alertView.show()
 }
 
+*/

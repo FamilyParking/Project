@@ -184,6 +184,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         
         if (CarUpdate().countCar()==0){
             self.performSegueWithIdentifier("create_car", sender: self)
+            return;
+           //TODO se crei una sola macchina da park, la parki anche
         }
         
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()

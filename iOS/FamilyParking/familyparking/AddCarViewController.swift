@@ -74,9 +74,11 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         var car = [
         "Bluetooth_MAC":"",
         "Bluetooth_name":"",
-           "Brand":"",
-            "Users":"",
+        "Brand":"",
+        "Users":"",
         "Name":CarName.text,
+        "Register":"",
+        "Latitude":"",
             "Name_car":CarName.text] as Dictionary<String, NSObject>
         
         var user = ["Code":pin,
@@ -101,10 +103,10 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             var err: NSError?
             var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
             if(err==nil){
-                if((json!["flag"] as Bool) == true){
+                if((json!["Flag"] as Bool) == true){
                             //self.BackButt.enabled = true
                             self.ConfButt.enabled = true
-                    CarUpdate().addACarToLocalDatabase((json!["object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never")
+                    CarUpdate().addACarToLocalDatabase((json!["Object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false)
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             //self.dismissViewControllerAnimated(true, completion: nil)
                             println("")

@@ -58,7 +58,11 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             let person = people[indexPath.row]
             cell.textLabel.text = person.valueForKey("name") as String?
-            cell.detailTextLabel?.text = person.valueForKey("lastPark") as String?
+            if((person.valueForKey("isParked") as String) == "true"){
+                cell.detailTextLabel?.text = person.valueForKey("lastPark") as String?
+            }else{
+                
+            }
             return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
@@ -160,7 +164,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if(response != nil){
                 var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
                     
-                    if((json!["flag"] as Bool) == true){
+                    if((json!["Flag"] as Bool) == true){
                         
                             self.people.removeAtIndex(index)
                             self.removeName(name)
@@ -193,20 +197,13 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     override func viewWillAppear(animated: Bool) {
-        
-        
         super.viewWillAppear(animated)
         println("Carico view auto")
         //1
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         let managedContext = appDelegate.managedObjectContext!
-        
-        //2
         let fetchRequest = NSFetchRequest(entityName:"Car")
-        
-        //3
         var error: NSError?
-        
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
             error: &error) as [NSManagedObject]?
@@ -216,11 +213,10 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         } else {
             println("Could not fetch \(error), \(error!.userInfo)")
         }
-        
+        self.tableView.reloadData()
+
         for man in people {
-            
-            println(man.valueForKey("name")?.description)
-            
+            println(man)
         }
     }
     
@@ -251,20 +247,9 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
-        let editAction = UIAlertAction(title: "Edit",
+        let editAction = UIAlertAction(title: "Edit Users",
             style: .Default) { (action: UIAlertAction!) -> Void in
-                
                 self.selectedCar = self.people[index.row]
-                
-                // Create an instance of PlayerTableViewController and pass the variable
-                
-                
-               // let destinationVC = SingleCarUsersViewController()
-               // destinationVC.carID = selectedCar.valueForKey("id")?.description
-                
-                // Let's assume that the segue name is called playerSegue
-                // This will perform the segue and pre-load the variable for you to use
-              //  destinationVC.performSegueWithIdentifier("user_group", sender: self)
                 self.performSegueWithIdentifier("user_group", sender: self)
         }
         
@@ -290,8 +275,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         var lat = car.valueForKey("lat")?.description
         var long = car.valueForKey("long")?.description
         if(lat! == "0"){
-            println("//TODO Car Never Parked")
-        }
+            noPositionAlert();
+            }
         else{
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             prefs.setBool(true, forKey: "findingCar")
@@ -302,6 +287,14 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
         }
         
+    }
+    func noPositionAlert(){
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "No Parking informations"
+            alertView.message = "We don't know where you car has been parked"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
     }
 
 }
