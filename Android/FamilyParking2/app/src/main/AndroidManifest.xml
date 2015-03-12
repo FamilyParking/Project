@@ -47,6 +47,8 @@
         
         <service android:name=".utility.ServiceBluetooth"/>
 
+        <service android:name=".utility.ServiceStatistic"/>
+
         <receiver
             android:name=".utility.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >

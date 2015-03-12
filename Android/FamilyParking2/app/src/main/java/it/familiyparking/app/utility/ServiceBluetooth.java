@@ -23,8 +23,9 @@ import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 
 /**
- * Created by mauropiva on 13/02/15.
+ * Created by francesco on 13/02/15.
  */
+
 public class ServiceBluetooth extends Service{
 
     private MainActivity activity;
@@ -87,7 +88,7 @@ public class ServiceBluetooth extends Service{
                             @Override
                             public void run() {
                                 //ServerCall.updatePosition(car);
-                                Intent intent = new Intent(Code.INTENT_TAG);
+                                Intent intent = new Intent(Code.ACTION_BLUETOOTH);
                                 intent.putExtra("car", car);
                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                             }

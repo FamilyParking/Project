@@ -2,6 +2,7 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -144,6 +145,7 @@ public class CarDetailFragment extends Fragment{
             rootView.findViewById(R.id.bluetooth_relative).setVisibility(View.GONE);
         }
         else {
+            rootView.findViewById(R.id.bluetooth_relative).setVisibility(View.VISIBLE);
             ((TextView) rootView.findViewById(R.id.bluetooth_name_tv)).setText(car.getBluetoothName());
             ((TextView) rootView.findViewById(R.id.bluetooth_address_tv)).setText(car.getBluetoothMac());
         }

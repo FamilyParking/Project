@@ -35,6 +35,7 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -642,7 +643,6 @@ public class Tools {
             notificationBuilder.setTicker(note);
             notificationBuilder.setWhen(System.currentTimeMillis());
             notificationBuilder.setSmallIcon(R.drawable.ic_notification);
-            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.logo));
 
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
             notificationBuilder.setContentIntent(contentIntent);
@@ -650,6 +650,44 @@ public class Tools {
             notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
             mNotificationManager.notify(0, notificationBuilder.build());
+    }
+
+    public static void sendNotificationForStatics(Context context){
+        String message = "Are you parked the car?";
+
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+
+        notificationBuilder.setContentTitle(getAppName(context));
+        notificationBuilder.setContentText(message);
+
+        notificationBuilder.setWhen(System.currentTimeMillis());
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setColor(context.getResources().getColor(R.color.green));
+
+        int notification_ID = 0;
+
+        Intent dismissIntent = new Intent(context, ServiceStatistic.class);
+        dismissIntent.setAction(Code.ACTION_DISCARD);
+        dismissIntent.putExtra("notification_ID",notification_ID);
+        PendingIntent discardPending = PendingIntent.getService(context, 0, dismissIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Intent acceptIntent = new Intent(context, ServiceStatistic.class);
+        acceptIntent.setAction(Code.ACTION_SAVE);
+        acceptIntent.putExtra("notification_ID",notification_ID);
+        PendingIntent savePending = PendingIntent.getService(context, 0, acceptIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle()
+                .bigText(message))
+                .addAction (R.drawable.ic_cancel, "Discard", discardPending)
+                .addAction (R.drawable.ic_check, "Accept", savePending);
+
+        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+
+        Notification notification = notificationBuilder.build();
+        notification.flags = Notification.FLAG_ONGOING_EVENT;
+
+        mNotificationManager.notify(notification_ID, notification);
     }
 
     public static SQLiteDatabase getDB_Readable(Context context){

@@ -34,36 +34,36 @@ public class CustomAdapterCarBrand extends ArrayAdapter<String> {
     public View getCustomView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_brand_item, parent, false);
-        }
 
-        String brand = getItem(position);
+            String brand = getItem(position);
 
-        ImageView brand_icon = (ImageView) convertView.findViewById(R.id.car_logo_item_iv);
-        brand_icon.setBackgroundDrawable(activity.getResources().getDrawable(activity.getResources().getIdentifier(brand,"drawable",activity.getPackageName())));
+            ImageView brand_icon = (ImageView) convertView.findViewById(R.id.car_logo_item_iv);
+            brand_icon.setBackgroundDrawable(activity.getResources().getDrawable(activity.getResources().getIdentifier(brand,"drawable",activity.getPackageName())));
 
-        TextView textView = (TextView) convertView.findViewById(R.id.car_logo_item_tv);
-        if(position == 0) {
-            textView.setTextColor(activity.getResources().getColor(R.color.light_gray));
-            textView.setText("Select a brand");
-        }
-        else {
-            char[] array = brand.toCharArray();
-            array[0] = Character.toUpperCase(array[0]);
-
-            boolean flag = false;
-            for(int i=1; i<array.length; i++){
-                if(array[i]=='_'){
-                    array[i] = ' ';
-                    flag = true;
-                }
-                else if(flag){
-                    flag = false;
-                    array[i] = Character.toUpperCase(array[i]);
-                }
+            TextView textView = (TextView) convertView.findViewById(R.id.car_logo_item_tv);
+            if(position == 0) {
+                textView.setTextColor(activity.getResources().getColor(R.color.light_gray));
+                textView.setText("Select a brand");
             }
+            else {
+                char[] array = brand.toCharArray();
+                array[0] = Character.toUpperCase(array[0]);
 
-            textView.setTextColor(activity.getResources().getColor(R.color.black));
-            textView.setText(String.valueOf(array));
+                boolean flag = false;
+                for(int i=1; i<array.length; i++){
+                    if(array[i]=='_'){
+                        array[i] = ' ';
+                        flag = true;
+                    }
+                    else if(flag){
+                        flag = false;
+                        array[i] = Character.toUpperCase(array[i]);
+                    }
+                }
+
+                textView.setTextColor(activity.getResources().getColor(R.color.black));
+                textView.setText(String.valueOf(array));
+            }
         }
 
         return convertView;

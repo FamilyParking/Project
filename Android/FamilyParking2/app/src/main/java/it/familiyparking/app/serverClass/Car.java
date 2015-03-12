@@ -44,7 +44,7 @@ public class Car implements Parcelable {
     @SerializedName("Last_driver")
     private String last_driver_email;
 
-    @SerializedName("Bluetooth_name")
+    @SerializedName("Bluetooth_Name")
     private String bluetoothName;
 
     @SerializedName("Bluetooth_MAC")
@@ -163,6 +163,9 @@ public class Car implements Parcelable {
     }
 
     public String getRegister() {
+        if((register == null) || (register.equals("")))
+            return null;
+
         return register;
     }
 
@@ -203,6 +206,9 @@ public class Car implements Parcelable {
     }
 
     public String getBluetoothName() {
+        if((bluetoothName == null) || (bluetoothName.equals("")))
+            return null;
+
         return bluetoothName;
     }
 
@@ -211,6 +217,9 @@ public class Car implements Parcelable {
     }
 
     public String getBluetoothMac() {
+        if((bluetoothMac == null) || (bluetoothMac.equals("")))
+            return null;
+
         return bluetoothMac;
     }
 

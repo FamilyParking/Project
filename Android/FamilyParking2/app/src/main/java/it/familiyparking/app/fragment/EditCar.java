@@ -445,4 +445,8 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         else
             Tools.setTitleActionBar(activity, car.getName());
     }
+
+    public EditText getEditTextFinder(){
+        return editTextFinder;
+    }
 }

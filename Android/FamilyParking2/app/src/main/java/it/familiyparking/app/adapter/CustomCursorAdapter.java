@@ -42,7 +42,6 @@ public class CustomCursorAdapter extends CursorAdapter {
         Button buttonAdd = ((Button) v.findViewById(R.id.add_contact_button_item));
         RelativeLayout relativeContact = ((RelativeLayout) v.findViewById(R.id.contact_rl_item));
 
-
         if(c.getInt(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)) != -1){
 
             relativeContact.setVisibility(View.VISIBLE);

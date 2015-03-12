@@ -3,7 +3,6 @@ package it.familiyparking.app;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.Tracker;
@@ -72,6 +72,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Tools.sendNotificationForStatics(this);
+
+        setBroadcastReceiver();
         startService();
 
         initBool();
@@ -202,20 +205,26 @@ public class MainActivity extends ActionBarActivity {
 
     /********************************************* SERVICE ********************************************/
     private void startService(){
+        Intent serviceIntent = new Intent(this, ServiceBluetooth.class);
+        this.startService(serviceIntent);
+    }
+
+    private void setBroadcastReceiver(){
         final MainActivity activity = this;
 
         BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Car car = intent.getParcelableExtra("car");
-                activity.park(car,true);
+
+                if(intent.getAction().equals(Code.ACTION_BLUETOOTH)) {
+                    Car car = intent.getParcelableExtra("car");
+                    activity.park(car, true);
+                }
+
             }
         };
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,new IntentFilter(Code.INTENT_TAG));
-
-        Intent serviceIntent = new Intent(this, ServiceBluetooth.class);
-        this.startService(serviceIntent);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,new IntentFilter(Code.ACTION_BLUETOOTH));
     }
 
     /*********************************************** DATA *********************************************/
@@ -584,6 +593,11 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetCreateCar(){
         if(createCar != null) {
+            EditText editTextFinder = createCar.getEditTextFinder();
+            if( editTextFinder != null){
+                Tools.closeKeyboard(editTextFinder,this);
+            }
+
             getSupportFragmentManager().beginTransaction().remove(createCar).commit();
             carFragment = null;
         }
@@ -600,6 +614,11 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetModifyCar(){
         if(modifyCar != null) {
+            EditText editTextFinder = createCar.getEditTextFinder();
+            if( editTextFinder != null){
+                Tools.closeKeyboard(editTextFinder,this);
+            }
+
             getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
             modifyCar = null;
         }
@@ -644,6 +663,7 @@ public class MainActivity extends ActionBarActivity {
         if(tabFragment != null)
             tabFragment.selectCreateFragment();
     }
+
     /***************************************** MANAGE END CALL ***************************************/
     public void endSignIn(){
         getSupportFragmentManager().beginTransaction().remove(signIn).commit();

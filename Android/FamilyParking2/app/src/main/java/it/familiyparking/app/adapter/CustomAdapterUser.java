@@ -30,27 +30,27 @@ public class CustomAdapterUser extends ArrayAdapter<User> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        User contact = getItem(position);
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_item, parent, false);
-        }
 
-        ((TextView) convertView.findViewById(R.id.contact_name_tv)).setText(contact.getName());
-        ((TextView) convertView.findViewById(R.id.contact_email_tv)).setText(contact.getEmail());
+            User contact = getItem(position);
 
-        ImageView photo = (ImageView) convertView.findViewById(R.id.contact_image_iv);
-        TextView textView = (TextView) convertView.findViewById(R.id.contact_image_tv);
+            ((TextView) convertView.findViewById(R.id.contact_name_tv)).setText(contact.getName());
+            ((TextView) convertView.findViewById(R.id.contact_email_tv)).setText(contact.getEmail());
 
-        if(contact.has_photo()) {
-            photo.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.GONE);
-            Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
-        }
-        else {
-            photo.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            Tools.setImageForContact(activity,textView,contact);
+            ImageView photo = (ImageView) convertView.findViewById(R.id.contact_image_iv);
+            TextView textView = (TextView) convertView.findViewById(R.id.contact_image_tv);
+
+            if(contact.has_photo()) {
+                photo.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.GONE);
+                Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
+            }
+            else {
+                photo.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                Tools.setImageForContact(activity,textView,contact);
+            }
         }
 
         return convertView;

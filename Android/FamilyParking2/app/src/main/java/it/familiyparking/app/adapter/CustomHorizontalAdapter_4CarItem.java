@@ -29,24 +29,24 @@ public class CustomHorizontalAdapter_4CarItem extends ArrayAdapter<User> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        User contact = getItem(position);
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_4car_item, parent, false);
-        }
 
-        ImageView photo = (ImageView) convertView.findViewById(R.id.group_contact_image_iv);
-        TextView textView = (TextView) convertView.findViewById(R.id.group_contact_image_tv);
+            User contact = getItem(position);
 
-        if(contact.has_photo()) {
-            photo.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.GONE);
-            Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
-        }
-        else {
-            photo.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            Tools.setImageForContact(activity,textView,contact);
+            ImageView photo = (ImageView) convertView.findViewById(R.id.group_contact_image_iv);
+            TextView textView = (TextView) convertView.findViewById(R.id.group_contact_image_tv);
+
+            if(contact.has_photo()) {
+                photo.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.GONE);
+                Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
+            }
+            else {
+                photo.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                Tools.setImageForContact(activity,textView,contact);
+            }
         }
 
         return convertView;
