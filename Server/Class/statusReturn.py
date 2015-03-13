@@ -7,16 +7,16 @@ class StatusReturn:
     number = ""
     index = ""
 
-    def __init__(self, numb, function, Object_result=0, Description=0):
+    def __init__(self, numb, function, object_result=0, description=0):
         self.number = numb
         self.function = function
-        self.Object_result = Object_result
-        self.Description = Description
+        self.Object_result = object_result
+        self.Description = description
 
     def print_general_error(self):
         error_data = {}
         if self.number == 1:
-            logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json "+ str(sys.exc_info()))
+            logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json "+str(sys.exc_info()))
             error_data["Flag"] = False
             error_data["Description"] = "Can't load json"
             error_data["Object"] = 1
@@ -38,26 +38,31 @@ class StatusReturn:
             error_data["Flag"] = False
             error_data["Description"] = "Check code problem"
             error_data["Object"] = 4
+
         elif self.number == 5:
             logging.debug("[" + str(self.function) + "] Error 5 --> Return value not match")
             error_data["Flag"] = False
             error_data["Description"] = "Return value not match"
             error_data["Object"] = 5
+
         elif self.number == 6:
-            logging.debug("[" + str(self.function) + "] Error 6 --> Generic error "+ str(sys.exc_info()))
+            logging.debug("[" + str(self.function) + "] Error 6 --> Generic error "+str(sys.exc_info()))
             error_data["Flag"] = False
             error_data["Description"] = "Generic error"
             error_data["Object"] = 6
+
         elif self.number == 7:
             logging.debug("[" + str(self.function) + "] Error 7 --> ERROR ID_group")
             error_data["Flag"] = False
             error_data["Description"] = "ERROR ID_group"
             error_data["Object"] = 7
+
         elif self.number == 8:
             logging.debug("[" + str(self.function) + "] Error 8 --> SysError = " + self.Object_result)
             error_data["Flag"] = False
             error_data["Description"] = "Sys ERROR"
             error_data["Object"] = 8
+
         else:
             logging.debug("[" + str(self.function) + "]: -----ERROR---- ")
             error_data["Flag"] = False
@@ -180,6 +185,18 @@ class StatusReturn:
             logging.debug("[" + str(self.function) + "] OK 19 --> Edit car ")
             result_data["Flag"] = True
             result_data["Description"] = "Car edited with success"
+            result_data["Object"] = self.Object_result
+
+        elif self.number == 20:
+            logging.debug("[" + str(self.function) + "] OK 20 --> Get Notification ")
+            result_data["Flag"] = True
+            result_data["Description"] = "Get notification"
+            result_data["Object"] = self.Object_result
+
+        elif self.number == 21:
+            logging.debug("[" + str(self.function) + "] OK 20 --> Not Notification ")
+            result_data["Flag"] = True
+            result_data["Description"] = "Not Notification"
             result_data["Object"] = self.Object_result
 
         logging.debug(result_data)

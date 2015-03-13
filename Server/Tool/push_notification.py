@@ -9,13 +9,13 @@ import json
 class Push_notification():
 
     @staticmethod
-    def send_push_park(regId,name_car):
+    def send_push_park(reg_id,name_car):
         json_data = {
             "data": {
                 "name": str(name_car),
                 "type": "park",
             },
-            "registration_ids": [regId],
+            "registration_ids": [reg_id],
         }
         url = 'https://android.googleapis.com/gcm/send'
         apiKey = "AIzaSyAN2KZpzIpWmPQidczGiyo3ZlV4j1ERe2U"
@@ -29,7 +29,7 @@ class Push_notification():
         response = json.loads(f.read())
         reply = {}
 
-        logging.debug("Lista dei contatti da notificare: " + str(regId))
+        logging.debug("Lista dei contatti da notificare: " + str(reg_id))
 
         if response['failure'] == 0:
             reply['error'] = '0'

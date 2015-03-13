@@ -9,15 +9,15 @@ from Cloud_Storage.user import User
 
 
 class User_tool():
+
     @staticmethod
     def check_code(email, code):
-        temp_userKey = User.static_querySearch_email(email)
-        if temp_userKey.count() == 0:
+        temp_user_key = User.static_querySearch_email(email)
+        if temp_user_key.count() == 0:
             return -2
         else:
-            temp_user = temp_userKey.get()
+            temp_user = temp_user_key.get()
             return temp_user.check_code(code)
-
 
     @staticmethod
     def return_groups(email):
@@ -30,7 +30,7 @@ class User_tool():
             return -1
 
     @staticmethod
-    def return_ID_from_email(email):
+    def return_id_from_email(email):
         temp_key_user = User.static_querySearch_email(email)
         try:
             temp_id_user = temp_key_user.get().key.id()
@@ -42,32 +42,35 @@ class User_tool():
     def check_before_start(method_name, result):
         try:
             data = json.loads(result.request.body)
-            data = data["User"]
-            code = int(data["Code"])
+            data_user = data["User"]
+            code = int(data_user["Code"])
+
+            # Change the upper case of email
+            email_lower = data_user["Email"].lower()
+
             try:
-                result_check_code = User_tool.check_code(data["Email"], code)
+                result_check_code = User_tool.check_code(email_lower, code)
 
                 if result_check_code == -2:
-                    result.error(500)
+                    result.error(200)
                     error = StatusReturn(2, method_name)
                     result.response.write(error.print_general_error())
                 elif result_check_code == -1:
-                    result.error(500)
+                    result.error(200)
                     error = StatusReturn(3, method_name)
                     result.response.write(error.print_general_error())
                 elif result_check_code < 0:
-                    result.error(500)
+                    result.error(200)
                     error = StatusReturn(5, method_name)
                     result.response.write(error.print_general_error())
                 else:
                     return result_check_code
 
             except:
-                result.error(500)
+                result.error(200)
                 error = StatusReturn(4, method_name)
                 result.response.write(error.print_general_error())
         except:
-            result.error(500)
+            result.error(200)
             error = StatusReturn(1, method_name)
             result.response.write(error.print_general_error())
-

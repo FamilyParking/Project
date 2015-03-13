@@ -42,16 +42,18 @@ class Car(ndb.Model):
         self.put()
         return 0
 
-    def toString_JSON(self):
-        carusers = []
+    def to_string_json_car(self):
+        car_users = []
         id_users = User_car.getUserFromCar(self.key.id())
         for id_user in id_users:
             user = User.get_user_by_id(id_user.id_user)
-            carusers.append(user.toString_JSON())
+            car_users.append(user.toString_JSON())
         return {"ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name),
                 "Latitude": str(self.latitude),
-                "Longitude": str(self.longitude), "Users": carusers, "Timestamp": str(self.timestamp),
-                "Register": str(self.register), "Last_driver": str(self.lastdriver), "isParked": self.isParked}
+                "Longitude": str(self.longitude), "Users": car_users, "Timestamp": str(self.timestamp),
+                "Register": str(self.register), "Last_driver": str(self.lastdriver), "isParked": self.isParked,
+                "Bluetooth_MAC": str(self.bluetooth_MAC), "Bluetooth_Name": str(self.bluetooth_name)
+                }
 
     def update(self, bluetooth_MAC, bluetooth_name, brand, email, latitude, longitude, name):
         self.latitude = latitude
@@ -70,12 +72,17 @@ class Car(ndb.Model):
         return app_key
 
     @staticmethod
+    def get_json(id):
+        app_key = Car.get_by_id(long(id))
+        return app_key.to_string_json_car()
+
+    @staticmethod
     def update_position_ID(id, latitude, longitude, lastdriver):
         temp_car = Car.getCarbyID(id)
         return temp_car.updatePosition(latitude, longitude, lastdriver)
 
     @staticmethod
-    def update_car(id, bluetooth_MAC, bluetooth_name, brand, name,register):
+    def update_car(id, bluetooth_MAC, bluetooth_name, brand, name, register):
         temp_car = Car.getCarbyID(id)
         temp_car.bluetooth_MAC = bluetooth_MAC
         temp_car.bluetooth_name = bluetooth_name

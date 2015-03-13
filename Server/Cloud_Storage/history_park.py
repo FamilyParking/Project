@@ -1,3 +1,5 @@
+from Tool.google_api_request import Google_api_request
+
 __author__ = 'Nazzareno'
 
 from google.appengine.ext import ndb
@@ -6,20 +8,27 @@ import cmath
 
 
 class History_park(ndb.Model):
-    id_car = ndb.IntegerProperty()
+    id_user = ndb.IntegerProperty()
     latitude = ndb.StringProperty()
     longitude = ndb.StringProperty()
     parked = ndb.IntegerProperty()
+    timestamp = ndb.StringProperty()
 
     @staticmethod
-    def history_from_car(id_car):
-        result_history = History_park.query(History_park.id_car == id_car)
+    def history_from_user(id_user):
+        result_history = History_park.query(History_park.id_user == id_user)
         return result_history
 
     @staticmethod
-    def get_notification(id_car, latitude, longitude):
+    def get_notification(id_user, latitude, longitude, timestamp):
 
-        history = History_park.history_from_car(id_car)
+        # Request all the story of the car
+        history = History_park.history_from_user(id_user)
+
+        # Insert the new value
+        new_history_park = History_park(id_user=id_user, latitude=latitude, longitude=longitude, timestamp=timestamp,
+                                        parked=0)
+        new_history_park.put()
 
         if history.count() < 20:
             return 1
@@ -34,6 +43,10 @@ class History_park(ndb.Model):
 
             if counter < 20:
                 return 1
+
+            elif Google_api_request.request_place(latitude, longitude) == 1 and parked_counter > 0:
+                return 1
+
             else:
                 # If the percentage of parked counter and counter is bigger than 30% the application send notification
                 if parked_counter / counter > 0.3:
@@ -60,25 +73,3 @@ class History_park(ndb.Model):
             return True
         else:
             return False
-
-
-    @staticmethod
-    def check_user_exist(id_user, id_group):
-        temp_user = User_group.getGroupFromUser(id_user)
-        if temp_user.count() == 0:
-            return 1
-        else:
-            for group in temp_user:
-                if group.id_group == id_group:
-                    return -1
-        return 1
-
-    @staticmethod
-    def delete_contact_group(id_user, id_group):
-        delete_entry = User_group.getGroupFromUser(id_user)
-        for group in delete_entry:
-            # logging.debug("ID del gruppo da controllare: "+str(group.id_group)+" id del gruppo da eliminare: "+str(id_group))
-            if long(group.id_group) == long(id_group):
-                #l ogging.debug("Gruppo da eliminare: "+str(group))
-                group.key.delete()
-        return 0;

@@ -89,7 +89,7 @@ class getAllCars_groupID(webapp2.RequestHandler):
                 id_car_by_group = Car_group.getCarFromGroup(data["ID_group"])
 
                 for carTemp in id_car_by_group:
-                    result.append((Car.getCarbyID(carTemp.id_car)).toString_JSON())
+                    result.append((Car.getCarbyID(carTemp.id_car)).to_string_json_car())
 
                 result_json = StatusReturn(2, "getAllCars_groupID", result)
                 self.response.write(result_json.print_result())
@@ -110,7 +110,7 @@ class getAllCars(webapp2.RequestHandler):
                     for key in id_groups:
                         id_car_by_group = Car_group.getCarFromGroup(key.id_group)
                         for carTemp in id_car_by_group:
-                            return_json_value = Car.getCarbyID(carTemp.id_car).toString_JSON()
+                            return_json_value = Car.getCarbyID(carTemp.id_car).to_string_json_car()
                             result.append(return_json_value)
 
                 result_json = StatusReturn(3, "getAllCars", result)
@@ -134,7 +134,7 @@ class getAllCars_fromEmail(webapp2.RequestHandler):
                 id_car_by_email = Car.get_all_cars(data["Email"])
 
                 for carTemp in id_car_by_email:
-                    result.append(carTemp.toString_JSON())
+                    result.append(carTemp.to_string_json_car())
 
                 result_json = StatusReturn(12, "getAllCars_fromEmail", result)
                 self.response.write(result_json.print_result())
@@ -190,7 +190,7 @@ class createGroup(webapp2.RequestHandler):
             data = json.loads(self.request.body)
             new_group = Group(name=data["Name"], timestamp=str(datetime.datetime.now()))
             new_group.put()
-            new_user_group = User_group(id_user=int(User_tool.return_ID_from_email(str(data["Email"]))),
+            new_user_group = User_group(id_user=int(User_tool.return_id_from_email(str(data["Email"]))),
                                         id_group=int(new_group.key.id()))
             new_user_group.put()
 

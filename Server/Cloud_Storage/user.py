@@ -23,7 +23,6 @@ class User(ndb.Model):
             result = {"Name": str(self.email), "Email": str(self.email)}
         return result
 
-
     def querySearch_id_android(self):
         id_android = User.query(User.id_android == self.id_android)
         return id_android
@@ -59,7 +58,6 @@ class User(ndb.Model):
     def is_registered_check(id):
         temp_user = User.get_by_id(long(id))
         return temp_user.is_user
-
 
     @staticmethod
     def update_google_code(email_user, id_android):
