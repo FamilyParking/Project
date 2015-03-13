@@ -115,7 +115,7 @@ class registrationForm(webapp2.RequestHandler):
                         new_user.put()
                     else:
                         temp_user = contact_key.get()
-                        temp_user.update_contact(code)
+                        temp_user.update_contact(code, data["Name"])
                     try:
                         Send_email.send_code(code, data["Email"])
 
@@ -324,7 +324,6 @@ class editCar(webapp2.RequestHandler):
 class updateGCM(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updateGCM", self) >= 0:
-
             dati = json.loads(self.request.body)
             user_data = dati["User"]
 
@@ -364,18 +363,18 @@ class getNotification(webapp2.RequestHandler):
             longitude = dati["Longitude"]
             temp_user = User.static_querySearch_email(user_data["Email"])
             id_user = temp_user.get().key.id()
-            timestamp = dati["timestamp"]
+            timestamp = dati["Timestamp"]
 
             if History_park.get_notification(id_user, latitude, longitude, timestamp) == 1:
                 if DEBUG:
-                    logging.debug(True)
+                    logging.debug("The application has to send notification? --> "+str(True))
 
                 right = StatusReturn(20, "getNotification", True)
                 self.response.write(right.print_result())
 
             else:
                 if DEBUG:
-                    logging.debug(False)
+                    logging.debug("The application has to send notification? --> "+str(False))
 
                 right = StatusReturn(21, "getNotification", False)
                 self.response.write(right.print_result())

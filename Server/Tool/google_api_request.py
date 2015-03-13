@@ -5,6 +5,7 @@ import urllib2
 
 __author__ = 'Nazzareno'
 
+DEBUG = True
 class Google_api_request:
 
     @staticmethod
@@ -26,7 +27,11 @@ class Google_api_request:
 
         response = json.load(r1.read())
 
+        if DEBUG:
+            logging.debug("Status request google place --> "+response["status"])
         if response["status"] == "OK":
+            if DEBUG:
+                logging.debug("Station near the place")
             return 1
         else:
             return 0
