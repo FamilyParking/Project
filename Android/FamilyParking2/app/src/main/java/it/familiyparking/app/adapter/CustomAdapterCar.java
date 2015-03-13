@@ -37,6 +37,12 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_item, parent, false);
         }
 
+        setData(position,convertView);
+
+        return convertView;
+    }
+
+    private void setData(int position, View convertView){
         Car car = getItem(position);
         setBrand(convertView,car);
         setName(convertView,car);
@@ -45,8 +51,6 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
         setBluetooth(convertView,car);
         setContactList(convertView,car);
         setDetailButton(convertView,car);
-
-        return convertView;
     }
 
     private void setBrand(View convertView, Car car){
@@ -61,8 +65,13 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
 
     private void setRegister(View convertView, Car car) {
         TextView register = (TextView) convertView.findViewById(R.id.car_register_tv);
-        if(car.getRegister() != null)
+        if(car.getRegister() != null) {
             register.setText(car.getRegister());
+            register.setVisibility(View.VISIBLE);
+        }
+        else{
+            register.setVisibility(View.GONE);
+        }
     }
 
     private void setBluetooth(View convertView, Car car) {

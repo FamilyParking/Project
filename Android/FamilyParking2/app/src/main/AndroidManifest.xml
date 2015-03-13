@@ -45,9 +45,26 @@
             </intent-filter>
         </activity>
         
-        <service android:name=".utility.ServiceBluetooth"/>
+        <service
+            android:name=".utility.ServiceBluetooth"
+            android:process=":bluetooth"/>
 
-        <service android:name=".utility.ServiceStatistic"/>
+        <service
+            android:name=".utility.ServiceStatistic"
+            android:process=":statistics"/>
+
+        <service
+            android:name=".utility.ServiceAPI"
+            android:process=":api"/>
+
+        <receiver
+            android:name=".utility.FPBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter android:priority="500" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name=".utility.GcmBroadcastReceiver"

@@ -28,13 +28,14 @@ import it.familiyparking.app.serverClass.User;
 
 public class ServiceBluetooth extends Service{
 
-    private MainActivity activity;
-
     public ServiceBluetooth(){}
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.e("ServiceBluetooth","onCreate");
+
         onHandleIntent();
     }
 
@@ -115,10 +116,16 @@ public class ServiceBluetooth extends Service{
     @Override
     public IBinder onBind(Intent intent) {
         onHandleIntent();
+
+        Log.e("ServiceBluetooth","onBind");
+
         return null;
     }
 
     public int onStartCommand(Intent i, int flags, int start){
+
+        Log.e("ServiceBluetooth","onStartCommand");
+
         onHandleIntent();
         return START_STICKY;
     }

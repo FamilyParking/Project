@@ -34,15 +34,22 @@ public class ServiceStatistic extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.e("ServiceStatistic","onCreate");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e("ServiceStatistic","onBind");
+
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Log.e("ServiceStatistic","onStartCommand");
+
         if((intent != null) && (intent.getAction() != null)) {
             Log.e("ServiceStatistic", intent.getAction());
             Log.e("ServiceStatistic", Integer.toString(intent.getIntExtra("notification_ID",-1)));

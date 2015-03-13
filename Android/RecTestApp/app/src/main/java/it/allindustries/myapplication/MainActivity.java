@@ -20,6 +20,8 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.ActivityRecognitionResult;
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -32,6 +34,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.BitSet;
 
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
@@ -48,6 +51,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
         final Tracker t = analytics.newTracker("UA-58079755-2");
 
+
+        //setGraphic();
+        //createFileLog();
+
+        simulation();
+    }
+
+    private void setGraphic(){
         setUpGoogleApi();
         setUpMap();
         setMarker();
@@ -82,9 +93,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             }
         });
         thread.start();
-
-        createFileLog();
-
     }
 
     @Override
@@ -228,7 +236,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     public void onConnected(Bundle bundle) {
         Intent intent = new Intent(this, Signal.class);
 
-        PendingIntent pendingIntent = PendingIntent.getService(this, 579, intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 500, pendingIntent);
     }
@@ -242,4 +250,58 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
+    private void simulation(){
+
+        int counter = 0;
+        int currentState = DetectedActivity.STILL;
+
+        BitSet bitSet = new BitSet(60);
+
+        ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
+        for(Sample sample : samples) {
+
+            DetectedActivity detectedActivity = getDetectedActivity(sample.getInfo());
+
+            if ((detectedActivity.getType() == DetectedActivity.ON_FOOT) || (detectedActivity.getType() == DetectedActivity.RUNNING) || (detectedActivity.getType() == DetectedActivity.WALKING) || (detectedActivity.getType() == DetectedActivity.STILL)) {
+
+                if (bitSet.cardinality() == 10) {
+                    currentState = DetectedActivity.WALKING;
+
+                    counter = 0;
+                    bitSet.clear();
+
+                } else if ((currentState == DetectedActivity.IN_VEHICLE) && (detectedActivity.getConfidence() > 60)) {
+                    bitSet.set(counter);
+                }
+
+            } else if (detectedActivity.getType() == DetectedActivity.IN_VEHICLE) {
+                if (bitSet.cardinality() == 10) {
+                    currentState = DetectedActivity.IN_VEHICLE;
+
+                    counter = 0;
+                    bitSet.clear();
+                }
+                if ((currentState != DetectedActivity.IN_VEHICLE) && (detectedActivity.getConfidence() > 60)) {
+                    bitSet.set(counter);
+                }
+            }
+
+            if (counter == 59)
+                bitSet = bitSet.get(1, 60);
+            else
+                counter++;
+
+        }
+    }
+
+    private DetectedActivity getDetectedActivity(String value){
+        String type = value.substring(23,24);
+        String confidence = value.substring(37,40);
+        if(confidence.contains("]"))
+            confidence = confidence.substring(0,confidence.length()-1);
+
+        return new DetectedActivity(Integer.parseInt(type),Integer.parseInt(confidence));
+    }
+
 }

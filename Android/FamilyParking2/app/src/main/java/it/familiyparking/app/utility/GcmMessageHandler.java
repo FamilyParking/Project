@@ -14,7 +14,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmMessageHandler extends IntentService {
 
-    String mes;
     private Handler handler;
     public GcmMessageHandler() {
         super("GcmMessageHandler");
@@ -32,11 +31,20 @@ public class GcmMessageHandler extends IntentService {
 
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 
-        String messageType = gcm.getMessageType(intent);
+        String message = "";
 
-        mes = extras.getString("title");
-        Log.e("GCM", "Received : (" + messageType + ")  " + extras.getString("name") + "[" + extras.getString("type") + "]");
-        Tools.sendNotification(this, extras.getString("name"), extras.getString("type"));
+        String user = extras.getString("User");
+        String car = extras.getString("Name");
+
+        String type = extras.getString("Type");
+        if(type.equals(Code.TYPE_GROUP))
+            message = user + " added you to " + car;
+        else if(type.equals(Code.TYPE_PARK))
+            message = user + " parked the " + car;
+
+        Log.e("GCM Notification",message);
+
+        Tools.sendNotification(this, message);
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);
 

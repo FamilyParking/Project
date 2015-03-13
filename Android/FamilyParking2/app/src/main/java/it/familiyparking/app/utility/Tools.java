@@ -624,23 +624,14 @@ public class Tools {
         return null;
     }
 
-    public static void sendNotification(Context context, String name, String type){
+    public static void sendNotification(Context context, String message){
 
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
 
             notificationBuilder.setContentTitle(getAppName(context));
+            notificationBuilder.setContentText(message);
 
-            String note = "";
-            if (type == Code.TYPE_GROUP) {
-                note = "Updated group " + name;
-            } else if (type == Code.TYPE_PARK) {
-                note = name+" parked!";
-            }
-
-            notificationBuilder.setContentText(note);
-
-            notificationBuilder.setTicker(note);
             notificationBuilder.setWhen(System.currentTimeMillis());
             notificationBuilder.setSmallIcon(R.drawable.ic_notification);
             notificationBuilder.setColor(context.getResources().getColor(R.color.green));
@@ -654,7 +645,7 @@ public class Tools {
     }
 
     public static void sendNotificationForStatics(Context context){
-        String message = "Are you parked the car?";
+        String message = "Did you park the car?";
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
@@ -834,6 +825,14 @@ public class Tools {
         String[] day = starter[0].split("-");
 
         return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
+    }
+
+    public static void startService(Context context){
+        Intent serviceIntentBluetooth = new Intent(context, ServiceBluetooth.class);
+        context.startService(serviceIntentBluetooth);
+
+        Intent serviceIntentApi = new Intent(context, ServiceAPI.class);
+        context.startService(serviceIntentApi);
     }
 
 }
