@@ -95,7 +95,7 @@
                         android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="8dp"
-                        android:src="@drawable/edit"/>
+                        android:src="@drawable/ic_pencil"/>
 
                 </RelativeLayout>
 

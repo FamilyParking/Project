@@ -24,7 +24,7 @@
         android:textStyle="normal"
         android:textSize="25sp"
         android:textColor="@color/white"
-        android:background="@drawable/add_group"/>
+        android:background="@drawable/user"/>
 
 </RelativeLayout>
 

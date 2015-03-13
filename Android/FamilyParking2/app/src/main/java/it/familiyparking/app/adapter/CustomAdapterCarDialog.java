@@ -43,14 +43,14 @@ public class CustomAdapterCarDialog extends ArrayAdapter<Car> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_item_dialog, parent, false);
-
-            Car car = getItem(position);
-
-            setRoot(convertView,car);
-            setBrand(convertView,car);
-            setName(convertView,car);
-            setRegister(convertView, car);
         }
+
+        Car car = getItem(position);
+
+        setRoot(convertView,car);
+        setBrand(convertView,car);
+        setName(convertView,car);
+        setRegister(convertView, car);
 
         return convertView;
     }

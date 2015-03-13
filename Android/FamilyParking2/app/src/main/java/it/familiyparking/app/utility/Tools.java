@@ -643,6 +643,7 @@ public class Tools {
             notificationBuilder.setTicker(note);
             notificationBuilder.setWhen(System.currentTimeMillis());
             notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+            notificationBuilder.setColor(context.getResources().getColor(R.color.green));
 
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
             notificationBuilder.setContentIntent(contentIntent);
@@ -733,9 +734,10 @@ public class Tools {
     }
 
     public static void manageServerError(final Result result, final MainActivity activity){
+
         Double temp = (Double)result.getObject();
 
-        if(temp.doubleValue() == 3){
+        if((temp.doubleValue() == 3) || (temp.doubleValue() == 2)){
 
             activity.resetAppDB();
 

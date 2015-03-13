@@ -35,16 +35,16 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_item, parent, false);
-
-            Car car = getItem(position);
-            setBrand(convertView,car);
-            setName(convertView,car);
-            setRegister(convertView, car);
-            setPark(convertView,car);
-            setBluetooth(convertView,car);
-            setContactList(convertView,car);
-            setDetailButton(convertView,car);
         }
+
+        Car car = getItem(position);
+        setBrand(convertView,car);
+        setName(convertView,car);
+        setRegister(convertView, car);
+        setPark(convertView,car);
+        setBluetooth(convertView,car);
+        setContactList(convertView,car);
+        setDetailButton(convertView,car);
 
         return convertView;
     }

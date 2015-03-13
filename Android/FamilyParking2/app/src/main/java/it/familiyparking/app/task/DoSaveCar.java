@@ -56,6 +56,7 @@ public class DoSaveCar implements Runnable {
                     public void run() {
                         activity.resetProgressDialogCircular(false);
                         activity.selectCarListTab();
+                        activity.resetLunchWithEmptyList();
                         Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
                     }
                 });

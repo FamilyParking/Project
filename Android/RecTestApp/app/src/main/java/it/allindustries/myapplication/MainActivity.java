@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -27,6 +28,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 
@@ -47,11 +51,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         setUpGoogleApi();
         setUpMap();
         setMarker();
-
-
-        /*ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
-        for(Sample sample : samples)
-            Log.e("Sample",sample.toString());*/
 
         final TextView textView = (TextView) findViewById(R.id.text);
         textView.setMovementMethod(new ScrollingMovementMethod());
@@ -83,6 +82,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             }
         });
         thread.start();
+
+        createFileLog();
+
     }
 
     @Override
@@ -183,6 +185,43 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             SamplesTable.updateSample(this,id,1);
         else
             SamplesTable.updateSample(this,id,0);
+    }
+
+    private void createFileLog(){
+        String folder = "/FamilyParking/";
+        String log = "log.txt";
+
+        Log.e("createFileLog","INIT");
+
+        File direct = new File(Environment.getExternalStorageDirectory() + folder);
+        Log.e("createFileLog",direct.getAbsolutePath());
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+            Log.e("createFileLog",direct.getAbsolutePath());
+        }
+
+        File file = new File(new File(direct.getAbsolutePath()),log);
+        Log.e("createFileLog",direct.getAbsolutePath());
+        if (file.exists())
+            file.delete();
+        try{
+            FileOutputStream fos = new FileOutputStream(file);
+
+            ArrayList<Sample> samples = SamplesTable.getAllSamples(this);
+            for(Sample sample : samples) {
+                String body = sample.toString() + "\n";
+                fos.write(body.getBytes());
+            }
+
+            fos.flush();
+            fos.close();
+
+            Log.e("createFileLog","EOF");
+        }catch(Exception e){
+            Log.e("createFileLog", e.toString()+" - "+e.getMessage());
+        }
+
     }
 
     @Override

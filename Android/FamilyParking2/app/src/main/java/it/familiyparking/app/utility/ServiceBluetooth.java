@@ -71,14 +71,14 @@ public class ServiceBluetooth extends Service{
                 DataBaseHelper databaseHelper = new DataBaseHelper(getApplicationContext());
                 final SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-                if(!UserTable.getGhostMode(db)) {
+                final User user = UserTable.getUser(db);
+
+                if(!user.isGhostmode()) {
 
                     ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
 
 
                     double[] position = Tools.getPosition(getApplicationContext());
-
-                    User user = UserTable.getUser(db);
 
                     for (final Car car : carID) {
 
@@ -87,10 +87,12 @@ public class ServiceBluetooth extends Service{
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                //ServerCall.updatePosition(car);
+                                ServerCall.parkCar(user,car);
+
                                 Intent intent = new Intent(Code.ACTION_BLUETOOTH);
                                 intent.putExtra("car", car);
                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
                             }
                         }).start();
 

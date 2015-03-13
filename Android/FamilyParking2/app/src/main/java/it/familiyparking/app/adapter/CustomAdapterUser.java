@@ -32,28 +32,32 @@ public class CustomAdapterUser extends ArrayAdapter<User> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_item, parent, false);
-
-            User contact = getItem(position);
-
-            ((TextView) convertView.findViewById(R.id.contact_name_tv)).setText(contact.getName());
-            ((TextView) convertView.findViewById(R.id.contact_email_tv)).setText(contact.getEmail());
-
-            ImageView photo = (ImageView) convertView.findViewById(R.id.contact_image_iv);
-            TextView textView = (TextView) convertView.findViewById(R.id.contact_image_tv);
-
-            if(contact.has_photo()) {
-                photo.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.GONE);
-                Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
-            }
-            else {
-                photo.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
-                Tools.setImageForContact(activity,textView,contact);
-            }
         }
 
+        setData(position,convertView);
+
         return convertView;
+    }
+
+    private void setData(int position, View convertView){
+        User contact = getItem(position);
+
+        ((TextView) convertView.findViewById(R.id.contact_name_tv)).setText(contact.getName());
+        ((TextView) convertView.findViewById(R.id.contact_email_tv)).setText(contact.getEmail());
+
+        ImageView photo = (ImageView) convertView.findViewById(R.id.contact_image_iv);
+        TextView textView = (TextView) convertView.findViewById(R.id.contact_image_tv);
+
+        if(contact.has_photo()) {
+            photo.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+            Tools.addThumbnail(getContext(), photo, new Integer(contact.getPhoto_ID()));
+        }
+        else {
+            photo.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+            Tools.setImageForContact(activity,textView,contact);
+        }
     }
 
 }

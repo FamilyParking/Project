@@ -64,7 +64,8 @@ public class Signal extends IntentService {
                     changeState(DetectedActivity.IN_VEHICLE);
                 }
                 if(currentState != DetectedActivity.IN_VEHICLE){
-                    counter_consecutive_vehicle++;
+                    if(detectedActivity.getConfidence() > 60)
+                        counter_consecutive_vehicle++;
 
                     if(!dataConcistence)
                         dataConcistence = true;

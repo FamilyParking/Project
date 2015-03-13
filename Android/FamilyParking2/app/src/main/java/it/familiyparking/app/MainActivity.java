@@ -614,7 +614,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetModifyCar(){
         if(modifyCar != null) {
-            EditText editTextFinder = createCar.getEditTextFinder();
+            EditText editTextFinder = modifyCar.getEditTextFinder();
             if( editTextFinder != null){
                 Tools.closeKeyboard(editTextFinder,this);
             }

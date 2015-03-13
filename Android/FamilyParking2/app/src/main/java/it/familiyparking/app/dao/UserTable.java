@@ -21,6 +21,8 @@ public class UserTable {
     public static final String TABLE = "user_table";
 
     public static void insertUser(SQLiteDatabase db, User user){
+        user.setEmail(user.getEmail().toLowerCase());
+
         String[] data = user.getArray();
 
         ContentValues v = new ContentValues();

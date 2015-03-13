@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Container;
+import it.familiyparking.app.serverClass.IpoteticPark;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 
@@ -181,10 +182,6 @@ public class ServerCall {
                 }
 
                 result.setObject(list);
-            }
-            else {
-                JSONObject jsonObj = new JSONObject(gson.toJson(result.getObject()));
-                result.setObject(jsonObj.getString("$"));
             }
 
             return result;
@@ -400,6 +397,41 @@ public class ServerCall {
             Container container = new Container(user,car);
             Gson gson = new Gson();
             String json = gson.toJson(container);
+
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            if (httpResponse.getStatusLine().getStatusCode() != 200){
+                return new Result(false,Double.parseDouble(Integer.toString(httpResponse.getStatusLine().getStatusCode())),"Server not available");
+            }
+
+            Reader reader = new InputStreamReader(httpResponse.getEntity().getContent());
+
+            Result result = gson.fromJson(reader,Result.class);
+
+            return result;
+
+        } catch(Exception e){
+            Log.e("updatePosition", e.toString() + " - " + e.getLocalizedMessage());
+        }
+
+        return null;
+    }
+
+    public static Result isNotification(IpoteticPark ipoteticPark){
+
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(server_address+"getNotification");
+
+            Gson gson = new Gson();
+            String json = gson.toJson(ipoteticPark);
 
             StringEntity se = new StringEntity(json);
 

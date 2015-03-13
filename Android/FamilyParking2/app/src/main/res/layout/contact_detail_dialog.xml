@@ -38,7 +38,7 @@
                 android:textStyle="normal"
                 android:textSize="25sp"
                 android:textColor="@color/white"
-                android:background="@drawable/add_group"
+                android:background="@drawable/user"
                 android:layout_toRightOf="@id/contact_image_iv_detail"
                 android:layout_toEndOf="@id/contact_image_iv_detail"/>
 
@@ -145,7 +145,7 @@
                     android:layout_height="20dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:background="@android:drawable/ic_menu_revert"
+                    android:background="@drawable/ic_arrow_back"
                     android:backgroundTint="@color/gray"/>
 
                 <TextView
@@ -175,7 +175,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:background="@android:drawable/ic_menu_delete"
+                    android:background="@drawable/ic_delete"
                     android:backgroundTint="@color/gray"/>
 
                 <TextView

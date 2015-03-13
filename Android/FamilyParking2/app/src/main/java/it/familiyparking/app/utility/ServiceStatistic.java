@@ -20,6 +20,7 @@ import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.IpoteticPark;
 import it.familiyparking.app.serverClass.User;
 
 /**
@@ -45,6 +46,24 @@ public class ServiceStatistic extends Service{
         if((intent != null) && (intent.getAction() != null)) {
             Log.e("ServiceStatistic", intent.getAction());
             Log.e("ServiceStatistic", Integer.toString(intent.getIntExtra("notification_ID",-1)));
+
+            if(intent.getAction().equals(Code.ACTION_SAVE)){
+                double[] position = Tools.getPosition(getApplicationContext());
+
+                SQLiteDatabase db = Tools.getDB_Readable(this);
+                User user = UserTable.getUser(db);
+                db.close();
+
+                final IpoteticPark ipoteticPark = new IpoteticPark(user,position,Tools.getTimestamp());
+
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ServerCall.isNotification(ipoteticPark);
+                        }
+                    }).start();
+            }
+
         }
 
         return super.onStartCommand(intent, flags, startId);
