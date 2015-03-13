@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class CarUpdate{
+class CarUpdate: UIViewController{
     
     func downloadCar(mvc:MapViewController){
         
@@ -40,11 +40,23 @@ class CarUpdate{
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                 println("Response: \(response)")
                 
+                if(response == nil){
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        var alertView:UIAlertView = UIAlertView()
+                        alertView.title = "No internet connection"
+                        alertView.message = "Please, check your internet connection."
+                        alertView.delegate = self
+                        alertView.addButtonWithTitle("OK")
+                        alertView.show()
+                    })
+                    
+                }
+                
                 var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                 println("Body: \(strData)")
                 var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
                 println(castato.statusCode)
-                if(castato.statusCode==500){
+                if(!(castato.statusCode==200)){
                    
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -59,11 +71,14 @@ class CarUpdate{
                     return
                 }
                 var err: NSError?
-                println(error)
-
-                if(error==nil){
+                if var tst = err{
+                    println("NO CONNECTION RIGHT")
+                }
+                else {
                     var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
-                    if(err==nil&&json?["Flag"] as Bool){
+                    if var ex = err{
+                            println("CANT PARSE")
+                    }else if(err==nil&&json?["Flag"] as Bool){
                         if var cars:NSArray = json?["Object"]! as? NSArray{
                             self.removeAllCar()
                             self.removeAllUsers()
@@ -81,12 +96,16 @@ class CarUpdate{
                         mvc.updateCars()
                     } else {
                         if((json?["Object"] as NSInteger) == 3) {self.resetSystem();}
+                        if((json?["Object"] as NSInteger) == 2) {self.resetSystem();}
+                       // if((json?["Object"] as NSInteger) == 4) {self.resetSystem();}
+                        
                     }
-                }else{
-                    println("Generic Error")
-                    
                 }
-                
+                //else{
+                  //  println("Generic Error")
+                    
+                //}
+        
             })
             if(logged==1){
                 task.resume()
@@ -329,12 +348,12 @@ class CarUpdate{
     }
     
     func resetSystem(){
+        println("System Reset")
         removeAllCar()
         removeAllUsers()
       
-        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        prefs.setInteger(0, forKey: "ISLOGGEDIN")
-        prefs.synchronize()
         exit(0)
+        
         }
+
 }

@@ -274,8 +274,8 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                (textField: UITextField!) -> Void in
             }
         
-            alert.addAction(saveAction)
-        alert.addAction(cancelAction)
+            alert.addAction(cancelAction)
+        alert.addAction(saveAction)
         
         presentViewController(alert,
             animated: true,

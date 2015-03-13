@@ -18,7 +18,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
     }
         
         var tableView: UITableView!
-        var textField: UITextField!
+        //var textField: UITextField!
         var people = [NSManagedObject]()
         override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
             super.init(nibName:nibNameOrNil, bundle: nibBundleOrNil)
@@ -56,7 +56,8 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                 let cell =
                 tableView.dequeueReusableCellWithIdentifier("myCell")
                     as UITableViewCell
-                
+                cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
+
                 let person = people[indexPath.row]
                 cell.textLabel.text = person.valueForKey("name") as String?
                // cell.detailTextLabel?.text = "hi"
@@ -135,6 +136,19 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                     
                     var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                         println("Response: \(response)")
+                        
+                        
+                        if(response == nil){
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                var alertView:UIAlertView = UIAlertView()
+                                alertView.title = "No internet connection"
+                                alertView.message = "Please, check your internet connection."
+                                alertView.delegate = self
+                                alertView.addButtonWithTitle("OK")
+                                alertView.show()
+                            })
+                            
+                        }
                         
                         var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
                         println(castato.statusCode)

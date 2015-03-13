@@ -39,6 +39,19 @@ class Registration2ViewController: UIViewController {
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
             println("Response: \(response)")
+            
+            
+            if(response == nil){
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var alertView:UIAlertView = UIAlertView()
+                    alertView.title = "No internet connection"
+                    alertView.message = "Please, check your internet connection."
+                    alertView.delegate = self
+                    alertView.addButtonWithTitle("OK")
+                    alertView.show()
+                })
+            }
+            
             var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
             println("Body: \(strData!)")
             if(strData!.containsString("Code right")){
@@ -53,10 +66,14 @@ class Registration2ViewController: UIViewController {
             }
             else if(strData!.containsString("false")){
                 println("Wrong Code")
+                println(mail)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
                 self.wrongPinPopUp()
                 self.BackButton.enabled = true
                 self.ConfirmButton.enabled = true
-            }
+                    })
+                }
             else{
                 self.noInternetPopUp()
                 self.BackButton.enabled = true

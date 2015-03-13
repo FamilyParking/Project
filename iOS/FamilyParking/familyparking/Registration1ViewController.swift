@@ -42,7 +42,7 @@ class Registration1ViewController: UIViewController {
             request.HTTPMethod = "POST"
             var params = ["ID":UIDevice.currentDevice().identifierForVendor.UUIDString,
                 "Name":Name.text,
-                "Email":Email.text] as Dictionary<String, NSObject>
+                "Email":Email.text.lowercaseString] as Dictionary<String, NSObject>
             var err: NSError?
             request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -50,13 +50,28 @@ class Registration1ViewController: UIViewController {
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                 println("Response: \(response)")
+               
+                
+                if(response == nil){
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        var alertView:UIAlertView = UIAlertView()
+                        alertView.title = "No internet connection"
+                        alertView.message = "Please, check your internet connection."
+                        alertView.delegate = self
+                        alertView.addButtonWithTitle("OK")
+                        alertView.show()
+                    })
+                    
+                }
+                
+                
                 var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                 println("Body: \(strData!)")
                 if(strData!.containsString("Code sent")){
                     println("Code Sent")
                     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                     prefs.setObject(self.Name.text, forKey: "USERNAME")
-                    prefs.setObject(self.Email.text, forKey: "EMAIL")
+                    prefs.setObject(self.Email.text.lowercaseString, forKey: "EMAIL")
                     prefs.synchronize()
                     self.NextButton.enabled = true
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

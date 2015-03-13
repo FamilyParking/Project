@@ -74,7 +74,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         var car = [
         "Bluetooth_MAC":"",
         "Bluetooth_name":"",
-        "Brand":"",
+        "Brand":"no_brand",
         "Users":"",
         "Name":CarName.text,
         "Register":"",
@@ -97,6 +97,18 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             println("Response: \(response)")
             
             
+            
+            if(response == nil){
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var alertView:UIAlertView = UIAlertView()
+                    alertView.title = "No internet connection"
+                    alertView.message = "Please, check your internet connection."
+                    alertView.delegate = self
+                    alertView.addButtonWithTitle("OK")
+                    alertView.show()
+                })
+                
+            }
             var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
             
             println("Body: \(strData!)")
