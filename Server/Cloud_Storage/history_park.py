@@ -70,7 +70,6 @@ class History_park(ndb.Model):
 
     @staticmethod
     def right_point(latitude, longitude, lat_point, lon_point):
-
         r = static_variable.radius / 6371.0
         delta_lon = abs(cmath.asin(cmath.sin(float(r)) / cmath.cos(float(latitude))))
         delta_lat = abs(cmath.asin(cmath.sin(float(r)) / cmath.cos(float(longitude))))

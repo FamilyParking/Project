@@ -278,6 +278,7 @@ class editCar(webapp2.RequestHandler):
 class updateGCM(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updateGCM", self) >= 0:
+
             dati = json.loads(self.request.body)
             user_data = dati["User"]
 
@@ -318,7 +319,7 @@ class getNotification(webapp2.RequestHandler):
             longitude = dati["Longitude"]
             temp_user = User.static_querySearch_email(user_data["Email"])
             id_user = temp_user.get().key.id()
-            timestamp = dati["Timestamp"]
+            timestamp = dati["timestamp"]
 
             if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
                 if static_variable.DEBUG:

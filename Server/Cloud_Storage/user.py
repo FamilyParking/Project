@@ -99,7 +99,7 @@ class User(ndb.Model):
         else:
             return -1
 
-    def update_contact(self, code, name):
+    def update_contact(self, code,name):
         self.temp_code = code
         self.nickname = name
         try:
