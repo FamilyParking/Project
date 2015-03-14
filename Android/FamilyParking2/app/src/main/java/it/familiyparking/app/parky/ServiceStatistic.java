@@ -1,4 +1,4 @@
-package it.familiyparking.app.utility;
+package it.familiyparking.app.parky;
 
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
@@ -22,6 +22,9 @@ import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.IpoteticPark;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.Code;
+import it.familiyparking.app.utility.ServerCall;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 13/02/15.
@@ -48,20 +51,10 @@ public class ServiceStatistic extends Service{
             Log.e("ServiceStatistic", Integer.toString(intent.getIntExtra("notification_ID",-1)));
 
             if(intent.getAction().equals(Code.ACTION_SAVE)){
-                double[] position = Tools.getPosition(getApplicationContext());
-
-                SQLiteDatabase db = Tools.getDB_Readable(this);
-                User user = UserTable.getUser(db);
-                db.close();
-
-                final IpoteticPark ipoteticPark = new IpoteticPark(user,position,Tools.getTimestamp());
-
-                new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ServerCall.isNotification(ipoteticPark);
-                        }
-                    }).start();
+                Log.e("ServiceStatistic", "SAVE");
+            }
+            else if(intent.getAction().equals(Code.ACTION_DISCARD)){
+                Log.e("ServiceStatistic", "DISCARD");
             }
 
         }

@@ -35,13 +35,10 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -59,7 +56,6 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import java.sql.Timestamp;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import it.familiyparking.app.MainActivity;
@@ -70,10 +66,12 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.EditCar;
+import it.familiyparking.app.parky.ServiceAPI;
+import it.familiyparking.app.parky.ServiceBluetooth;
+import it.familiyparking.app.parky.ServiceStatistic;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.task.DoPark;
 
 
 /**

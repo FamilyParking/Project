@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +40,13 @@ import it.familiyparking.app.task.AsyncTaskGCM;
 import it.familiyparking.app.task.DoGetAllCar;
 import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.utility.Code;
+<<<<<<< HEAD
+=======
 import it.familiyparking.app.utility.ServiceBluetooth;
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 import it.familiyparking.app.utility.Tools;
 
 
@@ -71,8 +76,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Tools.sendNotificationForStatics(this);
 
         setBroadcastReceiver();
         startService();

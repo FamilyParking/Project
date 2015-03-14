@@ -1,4 +1,4 @@
-package it.familiyparking.app.utility;
+package it.familiyparking.app.parky;
 
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
@@ -21,6 +21,9 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.Code;
+import it.familiyparking.app.utility.ServerCall;
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 13/02/15.
@@ -68,15 +71,14 @@ public class ServiceBluetooth extends Service{
 
                 Log.e("Bluetooth","Disconnected");
 
-                DataBaseHelper databaseHelper = new DataBaseHelper(getApplicationContext());
-                final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
+                SQLiteDatabase db = Tools.getDB_Readable(context);
                 final User user = UserTable.getUser(db);
+                ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
+                db.close();
 
                 if(!user.isGhostmode()) {
 
-                    ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
-
+                    Log.e("Bluetooth","No Ghostmode");
 
                     double[] position = Tools.getPosition(getApplicationContext());
 
@@ -84,10 +86,12 @@ public class ServiceBluetooth extends Service{
 
                         car.setPosition(position);
 
+                        Log.e("Bluetooth",car.toString());
+
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                ServerCall.parkCar(user,car);
+                                ServerCall.parkCar(user, car);
 
                                 Intent intent = new Intent(Code.ACTION_BLUETOOTH);
                                 intent.putExtra("car", car);

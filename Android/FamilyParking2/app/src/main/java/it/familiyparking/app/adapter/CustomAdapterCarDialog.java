@@ -67,8 +67,13 @@ public class CustomAdapterCarDialog extends ArrayAdapter<Car> {
 
     private void setRegister(View convertView, Car car) {
         TextView register = (TextView) convertView.findViewById(R.id.car_register_tv);
-        if(car.getRegister() != null)
+        if(car.getRegister() != null) {
             register.setText(car.getRegister());
+            register.setVisibility(View.VISIBLE);
+        }
+        else {
+            register.setVisibility(View.GONE);
+        }
     }
 
     private void setRoot(View convertView, Car car) {

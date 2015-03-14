@@ -155,6 +155,9 @@ public class Car implements Parcelable {
     }
 
     public String getBrand() {
+        if(brand.equals("no_brand"))
+            return "add_car";
+
         return brand;
     }
 

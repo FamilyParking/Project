@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
 
     <permission android:name="it.familiyparking.app.permission.C2D_MESSAGE"
@@ -44,10 +45,53 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< Updated upstream
         
         <service android:name=".utility.ServiceBluetooth"/>
 
         <service android:name=".utility.ServiceStatistic"/>
+=======
+<<<<<<< HEAD
+
+        <receiver android:name=".Widget.FamilyParkingWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <service
+            android:name=".parky.ServiceBluetooth"
+            android:process=":bluetooth"/>
+
+        <service
+            android:name=".parky.ServiceStatistic"
+            android:process=":statistics"/>
+
+        <service
+            android:name=".parky.ServiceAPI"
+            android:process=":api"/>
+
+        <service
+            android:name=".parky.Sampler"
+            android:process=":sampler"/>
+
+        <receiver
+            android:name=".parky.ParkyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter android:priority="500" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+=======
+        
+        <service android:name=".utility.ServiceBluetooth"/>
+
+        <service android:name=".utility.ServiceStatistic"/>
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 
         <receiver
             android:name=".utility.GcmBroadcastReceiver"
