@@ -40,13 +40,6 @@ import it.familiyparking.app.task.AsyncTaskGCM;
 import it.familiyparking.app.task.DoGetAllCar;
 import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.utility.Code;
-<<<<<<< HEAD
-=======
-import it.familiyparking.app.utility.ServiceBluetooth;
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 import it.familiyparking.app.utility.Tools;
 
 
@@ -208,8 +201,7 @@ public class MainActivity extends ActionBarActivity {
 
     /********************************************* SERVICE ********************************************/
     private void startService(){
-        Intent serviceIntent = new Intent(this, ServiceBluetooth.class);
-        this.startService(serviceIntent);
+        Tools.startService(this);
     }
 
     private void setBroadcastReceiver(){

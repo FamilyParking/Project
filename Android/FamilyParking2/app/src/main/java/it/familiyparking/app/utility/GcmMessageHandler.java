@@ -32,18 +32,11 @@ public class GcmMessageHandler extends IntentService {
 
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 
-        String messageType = gcm.getMessageType(intent);
-
-<<<<<<< Updated upstream
-        mes = extras.getString("title");
-        Log.e("GCM", "Received : (" + messageType + ")  " + extras.getString("name") + "[" + extras.getString("type") + "]");
-        Tools.sendNotification(this, extras.getString("name"), extras.getString("type"));
-=======
-<<<<<<< HEAD
         String user = extras.getString("User");
         String car = extras.getString("Car");
-
         String type = extras.getString("Type");
+
+        String message = "";
         if(type.equals(Code.TYPE_GROUP))
             message = user + " added you to " + car;
         else if(type.equals(Code.TYPE_PARK))
@@ -51,16 +44,9 @@ public class GcmMessageHandler extends IntentService {
 
         Log.e("GCM Notification",message);
 
-        Tools.sendNotification(this, message);
-=======
-        mes = extras.getString("title");
-        Log.e("GCM", "Received : (" + messageType + ")  " + extras.getString("name") + "[" + extras.getString("type") + "]");
-        Tools.sendNotification(this, extras.getString("name"), extras.getString("type"));
->>>>>>> origin/master
->>>>>>> Stashed changes
+        Tools.sendNotification(this,message);
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);
-
     }
 
 }

@@ -622,37 +622,30 @@ public class Tools {
         return null;
     }
 
-    public static void sendNotification(Context context, String name, String type){
+    public static void sendNotification(Context context, String message){
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
 
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+        notificationBuilder.setContentTitle(getAppName(context));
+        notificationBuilder.setContentText(message);
 
-            notificationBuilder.setContentTitle(getAppName(context));
+        notificationBuilder.setContentText(message);
 
-            String note = "";
-            if (type == Code.TYPE_GROUP) {
-                note = "Updated group " + name;
-            } else if (type == Code.TYPE_PARK) {
-                note = name+" parked!";
-            }
+        notificationBuilder.setTicker(message);
+        notificationBuilder.setWhen(System.currentTimeMillis());
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setColor(context.getResources().getColor(R.color.green));
 
-            notificationBuilder.setContentText(note);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+        notificationBuilder.setContentIntent(contentIntent);
 
-            notificationBuilder.setTicker(note);
-            notificationBuilder.setWhen(System.currentTimeMillis());
-            notificationBuilder.setSmallIcon(R.drawable.ic_notification);
-            notificationBuilder.setColor(context.getResources().getColor(R.color.green));
+        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
-            notificationBuilder.setContentIntent(contentIntent);
-
-            notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-
-            mNotificationManager.notify(0, notificationBuilder.build());
+        mNotificationManager.notify(0, notificationBuilder.build());
     }
 
     public static void sendNotificationForStatics(Context context){
-        String message = "Are you parked the car?";
+        String message = "Did you park the car?";
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
@@ -833,5 +826,20 @@ public class Tools {
 
         return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
     }
+
+    public static void startService(Context context){
+        Intent serviceIntentBluetooth = new Intent(context, ServiceBluetooth.class);
+        context.startService(serviceIntentBluetooth);
+
+        Intent serviceIntentApi = new Intent(context, ServiceAPI.class);
+        context.startService(serviceIntentApi);
+    }
+
+
+
+
+
+
+    
 
 }
