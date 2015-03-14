@@ -319,7 +319,7 @@ class getNotification(webapp2.RequestHandler):
             longitude = dati["Longitude"]
             temp_user = User.static_querySearch_email(user_data["Email"])
             id_user = temp_user.get().key.id()
-            timestamp = dati["timestamp"]
+            timestamp = dati["Timestamp"]
 
             if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
                 if static_variable.DEBUG:
