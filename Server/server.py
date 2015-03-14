@@ -4,6 +4,7 @@ import sys
 import datetime
 import webapp2
 import random
+from setting import static_variable
 
 from Class.statusReturn import StatusReturn
 from Cloud_Storage.history_park import History_park
@@ -12,15 +13,9 @@ from Cloud_Storage.user import User
 from Cloud_Storage.car import Car
 from Cloud_Storage.user_car import User_car
 
-from google.appengine.api import mail
-from Tool.google_api_request import Google_api_request
-
 from Tool.push_notification import Push_notification
 from Tool.send_email import Send_email
 from Tool.user_tool import User_tool
-
-
-DEBUG = True
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -39,64 +34,6 @@ class HowToUsePage(webapp2.RequestHandler):
         MAIN_PAGE_HTML = in_file.read()
         self.response.write(MAIN_PAGE_HTML)
         in_file.close()
-
-
-class SendEmail(webapp2.RequestHandler):
-    def post(self):
-        logging.debug("Received from user: " + str(self.request.body))
-        try:
-            data = json.loads(self.request.body)
-            new_contact = User_copy(counter=1, latitude=data["latitude"],
-                                    longitude=data["longitude"], last_time=str(datetime.datetime.now()))
-            new_car = Car(brand="testBrand", latitude=data["latitude"],
-                          longitude=data["longitude"], timestamp=str(datetime.datetime.now()))
-            try:
-                contact_key = new_contact.querySearch()
-            except:
-                logging.debug(sys.exc_info())
-
-            try:
-                if contact_key.count() == 0:
-                    add_db_contact = new_contact.put()
-                else:
-                    temp_contact = contact_key.get()
-
-                    if bool(temp_contact.update_contact(data["latitude"], data["longitude"])):
-                        try:
-                            message = mail.EmailMessage(sender="Family Parking <familyparkingapp@gmail.com>",
-                                                        subject="Position of car")
-                            message.body = "Your car is parked here: http://www.google.com/maps/place/" + data[
-                                "latitude"] + "," + \
-                                           data["longitude"]
-                            receiver_mail = data["email"]
-                            i = 0
-                            for value in receiver_mail:
-                                try:
-                                    message.to = "<" + value + ">"
-                                    message.send()
-                                    i += 1
-                                except:
-                                    self.error(200)
-                                    error = StatusReturn(3, i)
-                                    self.response.write(error.toJSON())
-                            right = StatusReturn(0, 0)
-                            self.response.write(right.toJSON())
-                        except:
-                            self.error(200)
-                            error = StatusReturn(2, 0)
-                            self.response.write(error.toJSON())
-                    else:
-                        self.error(200)
-                        error = StatusReturn(4, 0)
-                        self.response.write(error.toJSON())
-                new_car.put()
-            except:
-                logging.debug(sys.exc_info())
-
-        except:
-            self.error(200)
-            error = StatusReturn(1, 0)
-            self.response.write(error.toJSON())
 
 
 class registrationForm(webapp2.RequestHandler):
@@ -170,7 +107,8 @@ class createCar(webapp2.RequestHandler):
             list_user = car_data["Users"]
             searchuser = User.static_querySearch_email(user_data["Email"])
             for user in searchuser:
-                if DEBUG:
+
+                if static_variable.DEBUG:
                     logging.debug(user.key.id())
                 new_contact_car = User_car(id_user=user.key.id(), id_car=(new_car.id()))
                 new_contact_car.put()
@@ -194,19 +132,19 @@ class getCars(webapp2.RequestHandler):
 
             dati = json.loads(self.request.body)
 
-            if DEBUG:
+            if static_variable.DEBUG:
                 logging.debug(dati)
 
             user_data = dati["User"]
             lower_email = user_data["Email"].lower()
             temp_user = User.static_querySearch_email(lower_email)
 
-            if DEBUG:
+            if static_variable.DEBUG:
                 logging.debug(temp_user)
 
             id_user = temp_user.get()
 
-            if DEBUG:
+            if static_variable.DEBUG:
                 logging.debug(id_user.key.id())
 
             cars = User_car.getCarFromUser(id_user.key.id())
@@ -218,7 +156,7 @@ class getCars(webapp2.RequestHandler):
             else:
                 allcars = []
                 for id_carTemp in cars:
-                    if DEBUG:
+                    if static_variable.DEBUG:
                         logging.debug(id_carTemp)
                     allcars.append(Car.get_json(long(id_carTemp.id_car)))
 
@@ -249,6 +187,7 @@ class updatePosition(webapp2.RequestHandler):
         if User_tool.check_before_start("updatePosition", self) >= 0:
             dati = json.loads(self.request.body)
             user_data = dati["User"]
+            temp_user = User.static_querySearch_email(user_data["Email"])
 
             car_data = dati["Car"]
             Car.update_position_ID(car_data["ID_car"], car_data["Latitude"], car_data["Longitude"], user_data["Email"])
@@ -259,11 +198,26 @@ class updatePosition(webapp2.RequestHandler):
 
                 # If the user is not registered inside the application send him an email
                 if User.is_registered_check(user.id_user) == 0:
-                    Send_email.send_position(User.get_email_user(user.id_user), car_data["Latitude"],
-                                             car_data["Longitude"])
+                    if User.get_email_user(user.id_user) != user_data["Email"]:
+                        Send_email.send_position(User.get_email_user(user.id_user), car_data["Latitude"],
+                                             car_data["Longitude"], user_data["Name"],car_data["Name"])
                 else:
                     if User.get_email_user(user.id_user) != user_data["Email"]:
-                        Push_notification.send_push_park(User.get_id_android(user.id_user), car_data["Name"])
+                        Push_notification.send_push_park(User.get_id_android(user.id_user), car_data["Name"], user_data["Name"])
+
+            if static_variable.DEBUG:
+                logging.debug("Date if car: "+car_data["Name"])
+
+            id_user = temp_user.get().key.id()
+
+            timestamp = str(datetime.datetime.utcnow() + datetime.timedelta(hours=1))
+            if "Timestamp" in car_data:
+                timestamp = car_data["Timestamp"]
+
+            if static_variable.DEBUG:
+                logging.debug(timestamp)
+
+            History_park.update_history(id_user,car_data["Latitude"],car_data["Longitude"], timestamp)
 
             right = StatusReturn(5, "updatePosition")
             self.response.write(right.print_result())
@@ -290,7 +244,7 @@ class insertContactCar(webapp2.RequestHandler):
                 if User.is_registered_check(user_key) == 0:
                     Send_email.send_adding_group(user, user_data["Name"], car_data["Name"])
                 else:
-                    Push_notification.send_push_add_group(User.get_id_android(user_key))
+                    Push_notification.send_push_add_group(User.get_id_android(user_key), user_data["Name"],car_data["Name"])
 
             right = StatusReturn(10, "insertContactCar")
             self.response.write(right.print_result())
@@ -355,6 +309,7 @@ class removeContactCar(webapp2.RequestHandler):
 class getNotification(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("removeContactCar", self) >= 0:
+
             dati = json.loads(self.request.body)
 
             user_data = dati["User"]
@@ -365,15 +320,15 @@ class getNotification(webapp2.RequestHandler):
             id_user = temp_user.get().key.id()
             timestamp = dati["Timestamp"]
 
-            if History_park.get_notification(id_user, latitude, longitude, timestamp) == 1:
-                if DEBUG:
+            if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
+                if static_variable.DEBUG:
                     logging.debug("The application has to send notification? --> "+str(True))
 
                 right = StatusReturn(20, "getNotification", True)
                 self.response.write(right.print_result())
 
             else:
-                if DEBUG:
+                if static_variable.DEBUG:
                     logging.debug("The application has to send notification? --> "+str(False))
 
                 right = StatusReturn(21, "getNotification", False)
@@ -383,7 +338,6 @@ class getNotification(webapp2.RequestHandler):
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/howtouse', HowToUsePage),
-    ('/sign', SendEmail),
     ('/registration', registrationForm),
     ('/createCar', createCar),
     ('/confirmCode', confirmCode),

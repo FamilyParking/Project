@@ -5,21 +5,22 @@ __author__ = 'Nazzareno'
 
 import json
 
+from setting import static_variable
 
 class Push_notification():
 
     @staticmethod
-    def send_push_park(reg_id,name_car):
+    def send_push_park(reg_id, name_car, user):
         json_data = {
             "data": {
-                "name": str(name_car),
-                "type": "park",
+                "User": str(user),
+                "Car": str(name_car),
+                "Type": "Park",
             },
             "registration_ids": [reg_id],
         }
         url = 'https://android.googleapis.com/gcm/send'
-        apiKey = "AIzaSyAN2KZpzIpWmPQidczGiyo3ZlV4j1ERe2U"
-        myKey = "key=" + apiKey
+        myKey = "key=" + static_variable.google_api_key
 
         data = json.dumps(json_data)
         headers = {'Content-Type': 'application/json', 'Authorization': myKey}
@@ -29,7 +30,9 @@ class Push_notification():
         response = json.loads(f.read())
         reply = {}
 
-        logging.debug("Lista dei contatti da notificare: " + str(reg_id))
+        if static_variable.DEBUG:
+            logging.debug("Name of car: "+str(name_car)+" User: "+str(user))
+            logging.debug("Lista dei contatti da notificare: " + str(reg_id))
 
         if response['failure'] == 0:
             reply['error'] = '0'
@@ -37,15 +40,15 @@ class Push_notification():
             reply['error'] = '1'
 
     @staticmethod
-    def send_push_add_group(regId):
+    def send_push_add_group(reg_id, user, car):
         json_data = {"data": {
-            "type": "group",
-            "Title": "Family Parking",
-        }, "registration_ids": [regId],
+            "Type": "Group",
+            "User": str(user),
+            "Car": str(car),
+        }, "registration_ids": [reg_id],
         }
         url = 'https://android.googleapis.com/gcm/send'
-        apiKey = "AIzaSyAN2KZpzIpWmPQidczGiyo3ZlV4j1ERe2U"
-        myKey = "key=" + apiKey
+        myKey = "key=" + static_variable.google_api_key
 
         data = json.dumps(json_data)
         headers = {'Content-Type': 'application/json', 'Authorization': myKey}
@@ -54,6 +57,9 @@ class Push_notification():
         f = urllib2.urlopen(req)
         response = json.loads(f.read())
         reply = {}
+
+        if static_variable.DEBUG:
+            logging.debug("Name of car: "+str(car)+" User: "+str(user))
 
         # logging.debug(response)
 
