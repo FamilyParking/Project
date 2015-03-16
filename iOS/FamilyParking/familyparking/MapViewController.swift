@@ -160,7 +160,6 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         println("Showing Map")
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var finding:Bool = prefs.boolForKey("findingCar")

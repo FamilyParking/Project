@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 import CoreData
+import UIKit
+
+import AddressBook
+import AddressBookUI
 
 class AddCarViewController: UIViewController, UITextFieldDelegate {
     
@@ -74,7 +78,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         var car = [
         "Bluetooth_MAC":"",
         "Bluetooth_name":"",
-        "Brand":"no_brand",
+        "Brand":"add_car",
         "Users":"",
         "Name":CarName.text,
         "Register":"",
@@ -142,6 +146,9 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             task.resume()
         
     }
+    
+
+    
     
     
 }
