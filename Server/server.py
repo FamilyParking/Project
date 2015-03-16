@@ -167,15 +167,19 @@ class getCars(webapp2.RequestHandler):
 class deleteCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("deleteCar", self) >= 0:
+
             dati = json.loads(self.request.body)
             user_data = dati["User"]
             car_data = dati["Car"]
-            tempUser = User.static_querySearch_email(user_data["Email"])
-            for user in tempUser:
-                id_user = user.key.id()
+
+            temp_user = User.static_querySearch_email(user_data["Email"])
+            user = temp_user.get()
+            id_user = user.key.id()
+
             User_car.deleteCarUser(id_user, car_data["ID_car"])
             user_car = User_car.getUserFromCar(car_data["ID_car"])
-            if (user_car.count() == 0):
+
+            if user_car.count() == 0:
                 Car.delete_car_ID(car_data["ID_car"])
 
             right = StatusReturn(7, "deleteCar")

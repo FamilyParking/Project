@@ -1,4 +1,5 @@
 import logging
+from time import strftime
 from Tool.google_api_request import Google_api_request
 
 __author__ = 'Nazzareno'
@@ -28,6 +29,12 @@ class History_park(ndb.Model):
     @staticmethod
     def parky(id_user, latitude, longitude, timestamp):
 
+        # temp_time = timestamp.strftime("%y-%m-%d %H:%M:%S")
+        #
+        # if static_variable.DEBUG:
+        #     logging.debug("timestamp iso_format: "+temp_time)
+
+
         # Request all the story of the car
         history = History_park.history_from_user(id_user)
 
@@ -44,6 +51,9 @@ class History_park(ndb.Model):
             for value in history:
                 # if DEBUG:
                 # logging.debug("Value history=lat:"+str(value.latitude)+" long:"+str(value.longitude))
+
+                if static_variable.DEBUG:
+                    logging.debug("Timestamp: "+value.timestamp)
 
                 if History_park.right_point(latitude, longitude, value.latitude, value.longitude):
                     counter += 1
@@ -95,6 +105,7 @@ class History_park(ndb.Model):
 
     @staticmethod
     def update_history(id_user, latitude, longitude, timestamp):
+
         result_query = History_park.query(
             History_park.id_user == id_user and History_park.latitude == latitude and
             History_park.longitude == longitude and History_park.timestamp == timestamp)
