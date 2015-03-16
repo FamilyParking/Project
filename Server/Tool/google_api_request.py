@@ -14,7 +14,7 @@ class Google_api_request:
         #url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
         url = '/maps/api/place/nearbysearch/json?location='
         url_place = url+latitude+","+longitude
-        url_radius = url_place+"&radius=500"
+        url_radius = url_place+"&radius="+str(static_variable.google_radius)
         url_type = url_radius+"&types=subway_station|train_station"
         my_key = "key=" + static_variable.google_api_key
 

@@ -38,32 +38,6 @@ class User_tool():
         except:
             return -1
 
-    @staticmethod
-    def compair_date(date1,date2):
-        temp_date1 = date1.split(" ")
-        temp_date2 = date2.split(" ")
-        temp_day_date1 = temp_date1[0].split("-")
-        temp_day_date2 = temp_date2[0].split("-")
-        if temp_day_date1[0]<=temp_day_date2[0]:
-            if temp_day_date1[0]<temp_day_date2[0]:
-                return 1
-            else:
-                if temp_day_date1[1]<=temp_day_date2[1]:
-                    if temp_day_date1[1]<temp_day_date2[1]:
-                        return 1
-                    else:
-                        if temp_day_date1[2]<=temp_day_date2[2]:
-                            if temp_day_date1[2]<temp_day_date2[2]:
-                                return 1
-                            else:
-                                return 0
-                        else:
-                            return 2
-                else:
-                    return 2
-        else:
-            return 2
-
 
     @staticmethod
     def check_before_start(method_name, result):

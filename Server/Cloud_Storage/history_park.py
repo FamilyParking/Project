@@ -7,6 +7,9 @@ __author__ = 'Nazzareno'
 from google.appengine.ext import ndb
 
 import cmath
+import datetime
+
+LOCAL_PRINT = False
 
 from setting import static_variable
 
@@ -34,6 +37,7 @@ class History_park(ndb.Model):
         # if static_variable.DEBUG:
         #     logging.debug("timestamp iso_format: "+temp_time)
 
+        History_park.weight_date(timestamp)
 
         # Request all the story of the car
         history = History_park.history_from_user(id_user)
@@ -52,16 +56,27 @@ class History_park(ndb.Model):
                 # if DEBUG:
                 # logging.debug("Value history=lat:"+str(value.latitude)+" long:"+str(value.longitude))
 
-                if static_variable.DEBUG:
-                    logging.debug("Timestamp: "+value.timestamp)
+#                 if static_variable.DEBUG:
+#                    logging.debug("Timestamp: "+value.timestamp)
+
 
                 if History_park.right_point(latitude, longitude, value.latitude, value.longitude):
-                    counter += 1
+                    weight_park = History_park.weight_date(value.timestamp)
+
+                    if static_variable.DEBUG and LOCAL_PRINT:
+                        logging.debug("weight of park: "+str(weight_park)+" value lat: "+str(value.latitude))
+
+                    counter += weight_park
                     if value.parked == 1:
-                        parked_counter += 1
+
+                        parked_counter += weight_park
 
             if static_variable.DEBUG:
                 logging.debug("Value counter user=" + str(counter) + " value parked_counter=" + str(parked_counter))
+
+            if static_variable.DEBUG:
+                percentage = parked_counter/counter
+                logging.debug("Percentage: "+str(percentage))
 
             if counter < static_variable.min_value:
                 return 1
@@ -85,7 +100,7 @@ class History_park(ndb.Model):
         delta_lat = abs(cmath.asin(cmath.sin(float(r)) / cmath.cos(float(longitude))))
 
         # if DEBUG:
-        # logging.debug("lat_point:"+str(lat_point)+" lon_point:"+str(lon_point))
+        #   logging.debug("lat_point:"+str(lat_point)+" lon_point:"+str(lon_point))
 
         min_lat = float(latitude) - delta_lat.real
         max_lat = float(latitude) + delta_lat.real
@@ -117,3 +132,48 @@ class History_park(ndb.Model):
         else:
             temp_history = result_query.get()
             temp_history.update_parked()
+
+    @staticmethod
+    def compair_date(date1,date2):
+        temp_date1 = date1.split(" ")
+        temp_date2 = date2.split(" ")
+        temp_day_date1 = temp_date1[0].split("-")
+        temp_day_date2 = temp_date2[0].split("-")
+        if temp_day_date1[0]<=temp_day_date2[0]:
+            if temp_day_date1[0]<temp_day_date2[0]:
+                return 1
+            else:
+                if temp_day_date1[1]<=temp_day_date2[1]:
+                    if temp_day_date1[1]<temp_day_date2[1]:
+                        return 1
+                    else:
+                        if temp_day_date1[2]<=temp_day_date2[2]:
+                            if temp_day_date1[2]<temp_day_date2[2]:
+                                return 1
+                            else:
+                                return 0
+                        else:
+                            return 2
+                else:
+                    return 2
+        else:
+            return 2
+
+    @staticmethod
+    def weight_date(date1):
+        temp_date1 = date1.split(" ")
+        temp_day_date1 = temp_date1[0].split("-")
+        if static_variable.DEBUG and LOCAL_PRINT:
+            logging.debug(str(temp_day_date1)+" value year: "+str(int(temp_day_date1[0]))+" value now year "+datetime.datetime.utcnow().strftime("%Y"))
+        if int(temp_day_date1[0]) == int(datetime.datetime.utcnow().strftime("%Y")):
+            if static_variable.DEBUG and LOCAL_PRINT:
+                logging.debug("value of month: "+str(temp_day_date1[1]))
+            if int(temp_day_date1[1]) == int(datetime.datetime.utcnow().strftime("%m")):
+                return 1.0
+            else:
+                if int(datetime.datetime.utcnow().strftime("%m"))-int(temp_day_date1[1]) <= static_variable.range_month:
+                    return 0.5
+                else:
+                    return 0.3
+        else:
+            return 0.1

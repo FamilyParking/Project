@@ -4,6 +4,7 @@ import sys
 import datetime
 import webapp2
 import random
+from Automatic.summary import Summary
 from setting import static_variable
 
 from Class.statusReturn import StatusReturn
@@ -179,6 +180,9 @@ class deleteCar(webapp2.RequestHandler):
             User_car.deleteCarUser(id_user, car_data["ID_car"])
             user_car = User_car.getUserFromCar(car_data["ID_car"])
 
+            if static_variable.DEBUG:
+                logging.debug("Number of car with this user: "+str(user_car.count()))
+
             if user_car.count() == 0:
                 Car.delete_car_ID(car_data["ID_car"])
 
@@ -340,6 +344,22 @@ class getNotification(webapp2.RequestHandler):
                 self.response.write(right.print_result())
 
 
+class automatic_summary(webapp2.RequestHandler):
+    def get(self):
+        Summary.create_statistic()
+
+class pickCar(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("updatePosition", self) >= 0:
+            dati = json.loads(self.request.body)
+
+            car_data = dati["Car"]
+            Car.pick_car(car_data["ID_car"])
+
+            right = StatusReturn(21, "getNotification", False)
+            self.response.write(right.print_result())
+
+
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/howtouse', HowToUsePage),
@@ -350,8 +370,11 @@ application = webapp2.WSGIApplication([
     ('/updateGoogleCode', updateGCM),
     ('/getAllCars', getCars),
     ('/deleteCar', deleteCar),
+    ('/pickCar', pickCar),
     ('/updatePosition', updatePosition),
     ('/insertContactCar', insertContactCar),
     ('/getNotification', getNotification),
-    ('/removeContactCar', removeContactCar)
+    ('/removeContactCar', removeContactCar),
+    ('/Automatic/summary', automatic_summary)
+
 ], debug=True)
