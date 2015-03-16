@@ -23,8 +23,9 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
         googleMap = (GoogleMap)object[0];
         activity = (MainActivity)object[1];
         flag = true;
+        int count = 100;
 
-        while(flag) {
+        while(flag && (count>0)) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -34,6 +35,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
 
             try{
                 Thread.sleep(500);
+                count--;
             }
             catch(InterruptedException e){
                 Log.e("AsyncTaskLocationMap",e.getMessage());
@@ -49,8 +51,12 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
-            activity.setPbutton();
+            try {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
+                activity.setPbutton();
+            }
+            catch (Exception e){}
+
             }
         });
     }

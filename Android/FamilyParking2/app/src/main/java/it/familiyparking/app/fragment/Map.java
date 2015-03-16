@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,6 +45,10 @@ public class Map extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if(afterPositionSettings)
+            Log.e("Map","onCreateView");
+
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         this.activity = (MainActivity) getActivity();
@@ -71,16 +74,22 @@ public class Map extends Fragment{
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
-        if(afterPositionSettings){
-            if(Tools.isPositionHardwareEnable(getActivity()))
+        Log.e("Map","onStart");
+
+        if (afterPositionSettings) {
+
+            if (Tools.isPositionHardwareEnable(getActivity())) {
                 afterPositionSettings = false;
-            else
+            } else {
                 Tools.showClosedInfoAlert(getActivity());
+            }
+
         }
     }
+
 
     private void setUpMap(){
         if (googleMap == null) {
@@ -90,12 +99,14 @@ public class Map extends Fragment{
     }
 
     public void enableGraphics(boolean p_button){
-
         if(getActivity() == null) {
             setGraphic = true;
         }
         else {
             setGraphic = false;
+
+            if(p_button)
+                setPbutton();
 
             if (!Tools.isPositionHardwareEnable(getActivity())) {
                 afterPositionSettings = true;
@@ -105,9 +116,6 @@ public class Map extends Fragment{
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
-
-            if(p_button)
-                setPbutton();
         }
     }
 

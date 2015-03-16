@@ -194,9 +194,15 @@ class StatusReturn:
             result_data["Object"] = self.Object_result
 
         elif self.number == 21:
-            logging.debug("[" + str(self.function) + "] OK 20 --> Not Notification ")
+            logging.debug("[" + str(self.function) + "] OK 21 --> Not Notification ")
             result_data["Flag"] = True
             result_data["Description"] = "Not Notification"
+            result_data["Object"] = self.Object_result
+
+        elif self.number == 22:
+            logging.debug("[" + str(self.function) + "] OK 22 --> Pick the car ")
+            result_data["Flag"] = True
+            result_data["Description"] = "Pick the car"
             result_data["Object"] = self.Object_result
 
         logging.debug(result_data)

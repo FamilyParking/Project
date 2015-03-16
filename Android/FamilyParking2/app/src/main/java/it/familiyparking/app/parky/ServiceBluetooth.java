@@ -10,18 +10,15 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
 
-import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
@@ -30,8 +27,6 @@ import it.familiyparking.app.utility.Tools;
  */
 
 public class ServiceBluetooth extends Service{
-
-    private MainActivity activity;
 
     public ServiceBluetooth(){}
 
@@ -48,7 +43,7 @@ public class ServiceBluetooth extends Service{
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, Intent intent) {
             final String action = intent.getAction();
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
@@ -61,7 +56,7 @@ public class ServiceBluetooth extends Service{
 
                 Log.e("Bluetooth","Connected");
 
-                //Log.e("Preferences",preferences.getAll().toString());
+                Log.e("Preferences",preferences.getAll().toString());
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -73,40 +68,40 @@ public class ServiceBluetooth extends Service{
 
                 SQLiteDatabase db = Tools.getDB_Readable(context);
                 final User user = UserTable.getUser(db);
-                ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
-                db.close();
 
-                if(!user.isGhostmode()) {
+                if(user != null) {
+                    ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
+                    db.close();
 
-                    Log.e("Bluetooth","No Ghostmode");
+                    if (!user.isGhostmode()) {
 
-                    double[] position = Tools.getPosition(getApplicationContext());
+                        double[] position = Tools.getPosition(getApplicationContext());
 
-                    for (final Car car : carID) {
+                        for (final Car car : carID) {
 
-                        car.setPosition(position);
+                            car.setPosition(position);
 
-                        Log.e("Bluetooth",car.toString());
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Result result = ServerCall.parkCar(user, car);
 
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ServerCall.parkCar(user, car);
+                                    if (result.isFlag()) {
+                                        SQLiteDatabase db = Tools.getDB_Writable(context);
+                                        car.setParked(true);
+                                        car.setLast_driver(user.getEmail());
+                                        CarTable.updateCar(db,car);;
+                                        db.close();
+                                    }
 
-                                Intent intent = new Intent(Code.ACTION_BLUETOOTH);
-                                intent.putExtra("car", car);
-                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                                }
+                            }).start();
 
-                            }
-                        }).start();
-
-
+                        }
                     }
                 }
 
-                db.close();
-
-                //Log.e("Preferences",preferences.getAll().toString());
+                Log.e("Preferences",preferences.getAll().toString());
             }
         }
     };

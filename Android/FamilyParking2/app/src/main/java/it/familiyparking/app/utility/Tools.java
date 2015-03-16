@@ -622,6 +622,12 @@ public class Tools {
         return null;
     }
 
+    public static int getNotificationID(){
+        Timestamp time = (new Timestamp((new java.util.Date()).getTime()));
+        return time.getNanos();
+        //return Integer.parseInt(time.getHours()+""+time.getMinutes()+""+time.getSeconds());
+    }
+
     public static void sendNotification(Context context, String message){
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
@@ -641,10 +647,10 @@ public class Tools {
 
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
-        mNotificationManager.notify(0, notificationBuilder.build());
+        mNotificationManager.notify(getNotificationID(), notificationBuilder.build());
     }
 
-    public static void sendNotificationForStatics(Context context){
+    public static void sendNotificationForStatics(Context context, int notification_ID){
         String message = "Did you park the car?";
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -656,8 +662,6 @@ public class Tools {
         notificationBuilder.setWhen(System.currentTimeMillis());
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setColor(context.getResources().getColor(R.color.green));
-
-        int notification_ID = 0;
 
         Intent dismissIntent = new Intent(context, ServiceStatistic.class);
         dismissIntent.setAction(Code.ACTION_DISCARD);
@@ -796,19 +800,22 @@ public class Tools {
         return temp;
     }
 
-    public static AlertDialog showAlertParking(final MainActivity activity, ArrayList<Car> cars, User user){
+    public static AlertDialog showAlertParking(final Activity activity, ArrayList<Car> cars, User user, final boolean destroy, String notificationID){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
 
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
 
         alertDialog.setTitle("Pick the car");
 
-        alertDialog.setAdapter(new CustomAdapterCarDialog(activity,cars,user),null);
+        alertDialog.setAdapter(new CustomAdapterCarDialog(activity,cars,user,destroy,notificationID),null);
 
         alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+
+                        if(destroy)
+                            activity.finish();
                     }
                 });
 

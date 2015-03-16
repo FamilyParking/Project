@@ -2,14 +2,11 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
@@ -19,14 +16,14 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoRemoveCar implements Runnable {
+public class DoOccupy implements Runnable {
 
     private MainActivity activity;
     private Car car;
     private User user;
 
-    public DoRemoveCar(FragmentActivity activity, Car car, User user) {
-        this.activity = (MainActivity)activity;
+    public DoOccupy(MainActivity activity, User user, Car car) {
+        this.activity = activity;
         this.car = car;
         this.user = user;
     }
@@ -37,32 +34,26 @@ public class DoRemoveCar implements Runnable {
 
         if(Tools.isOnline(activity)) {
 
-            final Result result = ServerCall.removeCar(user, car);
+            final Result result = ServerCall.occupyCar(user, car);
+
+            SQLiteDatabase db = Tools.getDB_Writable(activity);
+            car.setParked(false);
+            CarTable.updateCar(db,car);
+            db.close();
 
             if (result.isFlag()) {
-
-                SQLiteDatabase db = Tools.getDB_Writable(activity);
-
-                CarTable.deleteCar(db, car.getId());
-
-                GroupTable.deleteGroup(db, car.getId());
-
-                final ArrayList<Car> cars = CarTable.getAllCar(db);
-
-                db.close();
-
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        activity.resetProgressDialogCircular(false);
-                        activity.resetModifyCar(true);
-                        activity.updateCarAdapter(cars);
-                        Tools.createToast(activity, "Car deleted!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, "Car occupied!", Toast.LENGTH_SHORT);
+                        activity.unPark();
+                        activity.resetTabFragment();
                     }
                 });
             } else {
                 Tools.manageServerError(result, activity);
             }
+
         }
         else{
             activity.runOnUiThread(new Runnable() {
@@ -73,4 +64,5 @@ public class DoRemoveCar implements Runnable {
             });
         }
     }
+
 }

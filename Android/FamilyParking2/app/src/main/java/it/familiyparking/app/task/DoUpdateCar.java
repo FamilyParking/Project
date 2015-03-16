@@ -147,7 +147,7 @@ public class DoUpdateCar implements Runnable {
             public void run() {
                 activity.resetProgressDialogCircular(false);
                 activity.endUpdateCar(newCar);
-                activity.resetModifyCar();
+                activity.resetModifyCar(false);
                 Tools.createToast(activity, "Car updated!", Toast.LENGTH_SHORT);
             }
         });

@@ -79,8 +79,8 @@
 
                 <RelativeLayout
                     android:id="@+id/edit_rl"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
@@ -93,8 +93,8 @@
                         android:id="@+id/edit_iv"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginTop="15dp"
                         android:src="@drawable/ic_pencil"/>
 
                 </RelativeLayout>
@@ -256,13 +256,23 @@
 
     <Button
         android:id="@+id/toPark_detail"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/park"/>
+        android:background="@drawable/button_park"/>
+
+    <Button
+        android:id="@+id/toWheel_detail"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_wheel"/>
 
 </RelativeLayout>
 

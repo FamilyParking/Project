@@ -107,6 +107,8 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             let mail = prefs.objectForKey("EMAIL") as String
             let lat = prefs.objectForKey("LAT") as String
             let lon = prefs.objectForKey("LON") as String
+            let username = prefs.objectForKey("USERNAME") as String
+            
             let idCar : String = carN.valueForKey("id")!.description
             let nameCar : String = carN.valueForKey("name")!.description
             
@@ -115,6 +117,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                     request.HTTPMethod = "POST"
                     
                     var user = ["Code":code,
+                        "Name":username,
                         "Email":mail] as Dictionary<String, NSObject>
                     /*
                     var car = [ "Id_car":carN.valueForKey("id")?.description,
@@ -124,6 +127,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                     var car = ["Longitude":lon,
                         "Latitude":lat,
                         "Name":nameCar,
+                        
                         "ID_car":idCar] as Dictionary<String,NSObject>
             
                     var params = ["User":user,
@@ -147,7 +151,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                                 alertView.addButtonWithTitle("OK")
                                 alertView.show()
                             })
-                            
+                            return
                         }
                         
                         var castato:NSHTTPURLResponse = response as NSHTTPURLResponse

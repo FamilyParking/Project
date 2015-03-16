@@ -107,6 +107,11 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         if(isCreation){
             Tools.setTitleActionBar(activity,R.string.create_car);
             contactListAdapter.add(user);
+
+            if(activity.getLunchWithEmptyList()){
+                Tools.resetUpButtonActionBar(activity);
+                activity.resetMenu();
+            }
         }
         else{
             Tools.setTitleActionBar(activity,R.string.edit_car);

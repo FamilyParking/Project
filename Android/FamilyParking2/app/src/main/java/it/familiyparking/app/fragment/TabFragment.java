@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.familiyparking.app.Listener.NewTabListener;
-import it.familiyparking.app.Listener.OldTabListener;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
+import it.familiyparking.app.listener.NewTabListener;
+import it.familiyparking.app.listener.OldTabListener;
 import it.familiyparking.app.utility.Tools;
 
 

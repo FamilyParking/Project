@@ -38,6 +38,7 @@ class User_tool():
         except:
             return -1
 
+
     @staticmethod
     def check_before_start(method_name, result):
         try:

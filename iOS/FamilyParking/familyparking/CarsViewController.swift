@@ -63,6 +63,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             }else{
                 
             }
+            cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
+
             return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){

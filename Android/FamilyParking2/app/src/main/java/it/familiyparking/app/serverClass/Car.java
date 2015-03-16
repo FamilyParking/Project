@@ -3,13 +3,16 @@ package it.familiyparking.app.serverClass;
 /**
  * Created by francesco on 20/12/14.
  */
+
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+
+import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 25/03/14.
@@ -275,13 +278,24 @@ public class Car implements Parcelable {
         setLongitude(Double.toString(position[1]));
     }
 
-    public User getLastDriverUser(){
+    public User getLastDriverUser(Context context){
+        if(this.last_driver_email == null)
+            return null;
+
         for(User u : this.users){
             if(u.getEmail().equals(this.last_driver_email))
                 return u;
         }
 
-        return  null;
+        User temp = new User(Tools.getName_byEmail(context,this.last_driver_email),this.last_driver_email);
+
+        /*String photoID = Tools.getPhotoID_byEmail(context,this.last_driver_email);
+        if(photoID != null){
+            temp.setPhoto_ID(photoID);
+            temp.setHas_photo(true);
+        }*/
+
+        return  temp;
     }
 
     public boolean equals(Car car) {

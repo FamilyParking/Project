@@ -2,7 +2,6 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +24,7 @@ import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
 import it.familiyparking.app.task.DoPark;
+import it.familiyparking.app.task.DoOccupy;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -69,6 +69,7 @@ public class CarDetailFragment extends Fragment{
         setBluetooth(rootView);
         setEditCar(rootView);
         setParkCar(rootView);
+        setOccupyCar(rootView);
     }
 
     private void setMap(){
@@ -111,7 +112,7 @@ public class CarDetailFragment extends Fragment{
         TextView nameDriver = (TextView) rootView.findViewById(R.id.last_driver_name_tv);
 
         if(car.isParked()){
-            nameDriver.setText(car.getLastDriverUser().getName());
+            nameDriver.setText(car.getLastDriverUser(activity).getName());
 
             ((TextView)rootView.findViewById(R.id.last_driver_time_tv)).setText(Tools.getFormatedData(car.getTimestamp()));
             ((TextView)rootView.findViewById(R.id.last_driver_interval_tv)).setText(Tools.getIntervalDataServer(car.getTimestamp()));
@@ -165,6 +166,15 @@ public class CarDetailFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 new Thread(new DoPark(activity,user,car)).start();
+            }
+        });
+    }
+
+    private void setOccupyCar(View rootView){
+        rootView.findViewById(R.id.toWheel_detail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new DoOccupy(activity,user,car)).start();
             }
         });
     }

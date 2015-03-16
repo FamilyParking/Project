@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 import CoreData
+import AddressBook
+import AddressBookUI
 
 
-class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ABPeoplePickerNavigationControllerDelegate {
     
 
     var car : NSObject?
@@ -250,38 +252,42 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
     
     
     @IBAction func AddUser(sender: AnyObject) {
-        
-        var alert = UIAlertController(title: "New Car Mate",
-            message: "Insert the email of your carmate",
-            preferredStyle: .Alert)
-        
-        let saveAction = UIAlertAction(title: "Save",
-            style: .Default) { (action: UIAlertAction!) -> Void in
+            showPeoplePickerController()
+             }
+
+        func OldAddUser(sender: AnyObject) {
+            var alert = UIAlertController(title: "New Car Mate",
+                    message: "Insert the email of your carmate",
+                    preferredStyle: .Alert)
                 
-                let textFieldEx = alert.textFields![0] as UITextField
-                if(self.isValidEmail(textFieldEx.text)){
-                    self.addUserToServer(textFieldEx.text)
-                  }else{
-                        self.wrongMailPopUp()
+                let saveAction = UIAlertAction(title: "Save",
+                    style: .Default) { (action: UIAlertAction!) -> Void in
+                        
+                        let textFieldEx = alert.textFields![0] as UITextField
+                        if(self.isValidEmail(textFieldEx.text)){
+           //                 self.addUserToServer(textFieldEx.text)
+                        }else{
+                            self.wrongMailPopUp()
+                        }
                 }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel",
-            style: .Default) { (action: UIAlertAction!) -> Void in
-        }
-        
-            alert.addTextFieldWithConfigurationHandler {
-               (textField: UITextField!) -> Void in
+                
+                let cancelAction = UIAlertAction(title: "Cancel",
+                    style: .Default) { (action: UIAlertAction!) -> Void in
+                }
+                
+                alert.addTextFieldWithConfigurationHandler {
+                    (textField: UITextField!) -> Void in
+                }
+                
+                alert.addAction(cancelAction)
+                alert.addAction(saveAction)
+                
+                presentViewController(alert,
+                    animated: true,
+                    completion: nil)
             }
+
         
-            alert.addAction(cancelAction)
-        alert.addAction(saveAction)
-        
-        presentViewController(alert,
-            animated: true,
-            completion: nil)
-    }
-    
     func addUserToServer(text:String){
        
         //car?.valueForKey("id"), forKey: "carId"
@@ -455,6 +461,35 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         }
         
         
+    }
+    
+    
+    private func showPeoplePickerController() {
+        let picker = ABPeoplePickerNavigationController()
+        picker.peoplePickerDelegate = self
+        let displayedItems = [Int(kABPersonEmailProperty)]
+        picker.displayedProperties = displayedItems
+        picker.predicateForEnablingPerson = NSPredicate(format:"emailAddresses.@count > 0")
+        
+        
+        self.presentViewController(picker, animated: true, completion: nil)
+    }
+    func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController!,
+        didSelectPerson person: ABRecord!,
+        property: ABPropertyID,
+        identifier: ABMultiValueIdentifier){
+            
+            var firstName = ABRecordCopyValue(person, kABPersonFirstNameProperty)
+            println(firstName.takeRetainedValue())
+            let propertyName = ABPersonCopyLocalizedPropertyName(property).takeRetainedValue()
+            let unmanagedMail = ABRecordCopyValue(person, kABPersonEmailProperty)
+            let mails: ABMultiValueRef =
+            Unmanaged.fromOpaque(unmanagedMail.toOpaque()).takeUnretainedValue()
+                as NSObject as ABMultiValueRef
+            var inx = identifier.description.toInt()
+            var email:String = ABMultiValueCopyValueAtIndex(mails, inx!).takeRetainedValue().description
+            self.addUserToServer(email)
+            
     }
 
     

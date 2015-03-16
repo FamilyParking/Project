@@ -42,6 +42,11 @@ class Car(ndb.Model):
         self.put()
         return 0
 
+    def updateParked(self):
+        self.isParked = False
+        self.put()
+        return 0
+
     def to_string_json_car(self):
         car_users = []
         id_users = User_car.getUserFromCar(self.key.id())
@@ -80,6 +85,11 @@ class Car(ndb.Model):
     def update_position_ID(id, latitude, longitude, lastdriver):
         temp_car = Car.getCarbyID(id)
         return temp_car.updatePosition(latitude, longitude, lastdriver)
+
+    @staticmethod
+    def pick_car(id):
+        temp_car = Car.getCarbyID(id)
+        return temp_car.updateParked()
 
     @staticmethod
     def update_car(id, bluetooth_MAC, bluetooth_name, brand, name, register):

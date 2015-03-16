@@ -1,16 +1,21 @@
 package it.familiyparking.app;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
@@ -34,18 +40,22 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
+import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskGCM;
 import it.familiyparking.app.task.DoGetAllCar;
 import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.utility.Code;
+import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private User user;
+
     private Map map;
     private CarFragment carFragment;
     private TabFragment tabFragment;
@@ -58,7 +68,10 @@ public class MainActivity extends ActionBarActivity {
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private AlertDialog dialogParking;
+
+    private BroadcastReceiver messageReceiver;
     private Tracker tracker;
+
     private boolean inflateMenu;
     private boolean doubleBackToExitPressedOnce;
     private boolean visibleActionPosition;
@@ -69,6 +82,12 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Notified notified = new Notified(this);
+        SQLiteDatabase dbTemp = Tools.getDB_Writable(this);
+        NotifiedTable.insertNotified(dbTemp,notified);
+        Tools.sendNotificationForStatics(this,Integer.parseInt(notified.getId()));
+        dbTemp.close();*/
 
         setBroadcastReceiver();
         startService();
@@ -99,6 +118,17 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if(messageReceiver != null){
+            try {
+                unregisterReceiver(messageReceiver);
+            }
+            catch (IllegalArgumentException e){}
+        }
+        super.onDestroy();
+    }
+
     private void init(){
         map.enableGraphics(false);
 
@@ -115,7 +145,7 @@ public class MainActivity extends ActionBarActivity {
 
         setMenu();
 
-        getAllCar();
+        getAllCar(false);
 
         new AsyncTaskGCM().execute(user,this);
     }
@@ -205,21 +235,46 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setBroadcastReceiver(){
-        final MainActivity activity = this;
-
-        BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        messageReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, Intent intent) {
+                final String action = intent.getAction();
+                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                if(intent.getAction().equals(Code.ACTION_BLUETOOTH)) {
-                    Car car = intent.getParcelableExtra("car");
-                    activity.park(car, true);
+                if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Looper.prepare();
+
+                            try {
+                                Thread.sleep(1000);
+                            }
+                            catch (Exception e){}
+
+                            SQLiteDatabase db = Tools.getDB_Readable(context);
+                            ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
+                            db.close();
+
+                            if(!user.isGhostmode()) {
+                                for(final Car c : carID) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            park(c, true);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }).start();
+
                 }
-
             }
         };
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,new IntentFilter(Code.ACTION_BLUETOOTH));
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver,new IntentFilter(Code.ACTION_BLUETOOTH));
     }
 
     /*********************************************** DATA *********************************************/
@@ -233,6 +288,16 @@ public class MainActivity extends ActionBarActivity {
 
     public void park(ArrayList<Car> cars){
         if(map != null) {
+            map.parkCar(cars);
+        }
+    }
+
+    public void unPark(){
+        SQLiteDatabase db = Tools.getDB_Readable(this);
+        ArrayList<Car> cars = CarTable.getAllCar(db);
+        db.close();
+
+        if(map != null){
             map.parkCar(cars);
         }
     }
@@ -253,6 +318,7 @@ public class MainActivity extends ActionBarActivity {
         if(cars.isEmpty()) {
             setLunchWithEmptyList();
             setTabFragment();
+            selectCreateCarTab();
         }
         else {
             resetLunchWithEmptyList();
@@ -274,12 +340,12 @@ public class MainActivity extends ActionBarActivity {
         return map.getLongitude();
     }
 
-    private void getAllCar(){
-        if(getLunchWithEmptyList()) {
+    private void getAllCar(boolean background){
+        if(getLunchWithEmptyList() && !background) {
             setProgressDialogCircular(getResources().getString(R.string.update_car_list));
         }
 
-        new Thread(new DoGetAllCar(this,user)).start();
+        new Thread(new DoGetAllCar(this,user,background)).start();
     }
 
     public void setAllCarRunning(){
@@ -317,7 +383,7 @@ public class MainActivity extends ActionBarActivity {
         boolean resetUpButton = true;
 
         if((modifyCar != null)&&(modifyCar != avoid)){
-            resetModifyCar();
+            resetModifyCar(false);
             resetUpButton = false;
         }
         else if((carDetail != null)&&(carDetail != avoid)){
@@ -351,7 +417,7 @@ public class MainActivity extends ActionBarActivity {
             confirmation = null;
         }
         if(modifyCar != null){
-            resetModifyCar();
+            resetModifyCar(false);
         }
         if(tabFragment != null){
             resetTabFragment();
@@ -402,32 +468,32 @@ public class MainActivity extends ActionBarActivity {
     /******************************************** BACK PRESS ******************************************/
     @Override
     public void onBackPressed() {
-        if(progressDialogCircular != null){
+        if((progressDialogCircular != null) && !lunchWithEmptyList){
             //Do nop
         }
-        else if(modifyCar != null){
-            resetModifyCar();
+        else if((modifyCar != null) && !lunchWithEmptyList){
+            resetModifyCar(false);
         }
-        else if(carDetail != null){
+        else if((carDetail != null) && !lunchWithEmptyList){
             resetCarDetail();
         }
-        else if((tabFragment != null) && (!lunchWithEmptyList)){
+        else if(((tabFragment != null) && (!lunchWithEmptyList)) && !lunchWithEmptyList){
             resetTabFragment();
         }
-        else if(contactDetailDialog != null){
+        else if((contactDetailDialog != null) && !lunchWithEmptyList){
             resetContactDetailDialog();
         }
-        else if(createCar != null){
+        else if((createCar != null) && !lunchWithEmptyList){
             Tools.resetUpButtonActionBar(this);
             getSupportFragmentManager().beginTransaction().remove(createCar).commit();
             createCar = null;
         }
-        else if(carFragment != null){
+        else if((carFragment != null) && !lunchWithEmptyList){
             Tools.resetUpButtonActionBar(this);
             getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
             carFragment = null;
         }
-        else if(ghostMode != null){
+        else if((ghostMode != null) && !lunchWithEmptyList){
             resetGhostmode();
         }
         else {
@@ -454,10 +520,10 @@ public class MainActivity extends ActionBarActivity {
         db.close();
 
         if(cars.isEmpty()){
-            Tools.createToast(this,"No car is vailable",Toast.LENGTH_LONG);
+            Tools.createToast(this,"No car is available",Toast.LENGTH_LONG);
         }
         else if(cars.size() > 1){
-            dialogParking = Tools.showAlertParking(this,cars,user);
+            dialogParking = Tools.showAlertParking(this,cars,user,false,null);
         }
         else{
             new Thread(new DoPark(this,this.user,cars.get(0))).start();
@@ -465,7 +531,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setPbutton(){
-        map.setPbutton();
+        if(map != null)
+            map.setPbutton();
     }
 
     /********************************************* FRAGMENT *******************************************/
@@ -494,7 +561,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setCreateCar(){
-        resetModifyCar();
+        resetModifyCar(false);
         resetCarDetail();
 
         createCar = new EditCar();
@@ -607,7 +674,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void resetModifyCar(){
+    public void resetModifyCar(boolean goCarList){
         if(modifyCar != null) {
             EditText editTextFinder = modifyCar.getEditTextFinder();
             if( editTextFinder != null){
@@ -616,12 +683,15 @@ public class MainActivity extends ActionBarActivity {
 
             getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
             modifyCar = null;
+
+            if(goCarList)
+                resetCarDetail();
         }
     }
 
     public void carAlreadyPressed(){
         if(modifyCar != null) {
-            resetModifyCar();
+            resetModifyCar(false);
             resetCarDetail();
         }
         else if(carDetail != null){

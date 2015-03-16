@@ -5,11 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
-import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.R;
-import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
-import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.IpoteticPark;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
@@ -22,6 +19,7 @@ import it.familiyparking.app.utility.Tools;
 public class DoParky implements Runnable {
 
     private Context context;
+    private Notified notified;
 
     public DoParky(Context context) {
         this.context = context;
@@ -31,6 +29,8 @@ public class DoParky implements Runnable {
     public void run() {
         Looper.prepare();
 
+        Notified notified = new Notified(context);
+
         if(Tools.isOnline(context)) {
 
             SQLiteDatabase db = Tools.getDB_Readable(context);
@@ -38,21 +38,25 @@ public class DoParky implements Runnable {
             db.close();
 
             if(user != null) {
+                Result result = ServerCall.isNotification(new IpoteticPark(user, notified.getPosition(), notified.getTimestamp()));
 
-                final double[] position = Tools.getPosition(context);
-
-                Result result = ServerCall.isNotification(new IpoteticPark(user, position, Tools.getTimestamp()));
-
-                if((result.isFlag()) && ((boolean) result.getObject())){
-                    Tools.sendNotificationForStatics(context);
-                }
+                if((result.isFlag()) && ((boolean) result.getObject()))
+                    sendNotification();
 
             }
 
         }
         else{
-            Tools.sendNotificationForStatics(context);
+            sendNotification();
         }
+    }
+
+    private void sendNotification(){
+        SQLiteDatabase db = Tools.getDB_Writable(context);
+        NotifiedTable.insertNotified(db,notified);
+        db.close();
+
+        Tools.sendNotificationForStatics(context,Integer.parseInt(notified.getId()));
     }
 
 }

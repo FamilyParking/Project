@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
@@ -46,6 +47,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".parky.StatisticActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".MessageService"/>
+
         <service
             android:name=".parky.ServiceBluetooth"
             android:process=":bluetooth"/>
@@ -66,7 +77,7 @@
             android:name=".parky.ParkyBroadcastReceiver"
             android:enabled="true"
             android:exported="true" >
-            <intent-filter android:priority="500" >
+            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>

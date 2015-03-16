@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800998C51AB3194800DBB666 /* contactTwoViewControler.swift */; };
 		80626AD81A95E97800D7AAA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626AD71A95E97800D7AAA5 /* AppDelegate.swift */; };
 		80626ADB1A95E97800D7AAA5 /* familyparking.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */; };
 		80626ADD1A95E97800D7AAA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626ADC1A95E97800D7AAA5 /* ViewController.swift */; };
@@ -57,6 +58,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		800998C51AB3194800DBB666 /* contactTwoViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTwoViewControler.swift; sourceTree = "<group>"; };
 		80626AD21A95E97800D7AAA5 /* familyparking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = familyparking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80626AD61A95E97800D7AAA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80626AD71A95E97800D7AAA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -166,7 +168,9 @@
 		80626AD41A95E97800D7AAA5 /* familyparking */ = {
 			isa = PBXGroup;
 			children = (
+				80FE74441AB305F400643D3A /* contacts */,
 				809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */,
+				800998C51AB3194800DBB666 /* contactTwoViewControler.swift */,
 				80BD23F11A9BAEE6004C4CB1 /* support */,
 				80BD23F01A9BAEDE004C4CB1 /* car */,
 				80BD23EF1A9BAEB0004C4CB1 /* GoogleAnalitycs */,
@@ -274,6 +278,13 @@
 			name = support;
 			sourceTree = "<group>";
 		};
+		80FE74441AB305F400643D3A /* contacts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = contacts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -379,6 +390,7 @@
 				80626ADD1A95E97800D7AAA5 /* ViewController.swift in Sources */,
 				80626B2A1A95F89A00D7AAA5 /* Comments.swift in Sources */,
 				80626ADB1A95E97800D7AAA5 /* familyparking.xcdatamodeld in Sources */,
+				800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */,
 				80626B301A961E8B00D7AAA5 /* CarsViewController.swift in Sources */,
 				80626B2E1A96000000D7AAA5 /* Registration2ViewController.swift in Sources */,
 				80626B321A961ED600D7AAA5 /* MyTableViewCell.swift in Sources */,

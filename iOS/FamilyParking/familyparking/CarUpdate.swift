@@ -49,6 +49,7 @@ class CarUpdate: UIViewController{
                         alertView.addButtonWithTitle("OK")
                         alertView.show()
                     })
+                    return
                     
                 }
                 

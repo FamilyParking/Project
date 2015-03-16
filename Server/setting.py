@@ -1,5 +1,11 @@
 __author__ = 'Nazzareno'
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+DEBUG = True
+=======
+>>>>>>> Stashed changes
 
 class static_variable():
 
@@ -19,4 +25,18 @@ class static_variable():
     percentage_not = 0.3
 
     # Radius of value that we consider when we analyzed all stored value
+<<<<<<< HEAD
     radius = 1.0      # 1 kilometre
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
+=======
+    radius = 0.5      # 1 kilometre
+
+    # Range of month that we consider to return the weight of history
+    range_month = 3
+
+    # Radius of google place check
+    google_radius = 200
+>>>>>>> origin/master

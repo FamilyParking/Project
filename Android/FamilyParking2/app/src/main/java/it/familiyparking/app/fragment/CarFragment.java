@@ -2,16 +2,14 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -54,6 +52,7 @@ public class CarFragment extends Fragment{
 
         if(activity.getLunchWithEmptyList()){
             activity.selectCreateCarTab();
+            Tools.createToast(activity,"You need to create a car to use the application", Toast.LENGTH_LONG);
         }
 
         listView = (ListView) rootView.findViewById(R.id.car_lv);

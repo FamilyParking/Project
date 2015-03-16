@@ -4,6 +4,7 @@ import sys
 import datetime
 import webapp2
 import random
+from Automatic.summary import Summary
 from setting import static_variable
 
 from Class.statusReturn import StatusReturn
@@ -167,15 +168,22 @@ class getCars(webapp2.RequestHandler):
 class deleteCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("deleteCar", self) >= 0:
+
             dati = json.loads(self.request.body)
             user_data = dati["User"]
             car_data = dati["Car"]
-            tempUser = User.static_querySearch_email(user_data["Email"])
-            for user in tempUser:
-                id_user = user.key.id()
+
+            temp_user = User.static_querySearch_email(user_data["Email"])
+            user = temp_user.get()
+            id_user = user.key.id()
+
             User_car.deleteCarUser(id_user, car_data["ID_car"])
             user_car = User_car.getUserFromCar(car_data["ID_car"])
-            if (user_car.count() == 0):
+
+            if static_variable.DEBUG:
+                logging.debug("Number of car with this user: "+str(user_car.count()))
+
+            if user_car.count() == 0:
                 Car.delete_car_ID(car_data["ID_car"])
 
             right = StatusReturn(7, "deleteCar")
@@ -278,7 +286,6 @@ class editCar(webapp2.RequestHandler):
 class updateGCM(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updateGCM", self) >= 0:
-
             dati = json.loads(self.request.body)
             user_data = dati["User"]
 
@@ -321,19 +328,53 @@ class getNotification(webapp2.RequestHandler):
             id_user = temp_user.get().key.id()
             timestamp = dati["Timestamp"]
 
+<<<<<<< Updated upstream
             if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
                 if static_variable.DEBUG:
+=======
+<<<<<<< HEAD
+            if History_park.get_notification(id_user, latitude, longitude, timestamp) == 1:
+                if DEBUG:
+=======
+            if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
+                if static_variable.DEBUG:
+>>>>>>> origin/master
+>>>>>>> Stashed changes
                     logging.debug("The application has to send notification? --> "+str(True))
 
                 right = StatusReturn(20, "getNotification", True)
                 self.response.write(right.print_result())
 
             else:
+<<<<<<< Updated upstream
                 if static_variable.DEBUG:
+=======
+<<<<<<< HEAD
+                if DEBUG:
+=======
+                if static_variable.DEBUG:
+>>>>>>> origin/master
+>>>>>>> Stashed changes
                     logging.debug("The application has to send notification? --> "+str(False))
 
                 right = StatusReturn(21, "getNotification", False)
                 self.response.write(right.print_result())
+
+
+class automatic_summary(webapp2.RequestHandler):
+    def get(self):
+        Summary.create_statistic()
+
+class pickCar(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("updatePosition", self) >= 0:
+            dati = json.loads(self.request.body)
+
+            car_data = dati["Car"]
+            Car.pick_car(car_data["ID_car"])
+
+            right = StatusReturn(21, "getNotification", False)
+            self.response.write(right.print_result())
 
 
 application = webapp2.WSGIApplication([
@@ -346,8 +387,11 @@ application = webapp2.WSGIApplication([
     ('/updateGoogleCode', updateGCM),
     ('/getAllCars', getCars),
     ('/deleteCar', deleteCar),
+    ('/pickCar', pickCar),
     ('/updatePosition', updatePosition),
     ('/insertContactCar', insertContactCar),
     ('/getNotification', getNotification),
-    ('/removeContactCar', removeContactCar)
+    ('/removeContactCar', removeContactCar),
+    ('/Automatic/summary', automatic_summary)
+
 ], debug=True)

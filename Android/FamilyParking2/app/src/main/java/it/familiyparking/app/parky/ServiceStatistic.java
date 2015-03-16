@@ -1,29 +1,24 @@
 package it.familiyparking.app.parky;
 
+import android.app.NotificationManager;
 import android.app.Service;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.IpoteticPark;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.task.DoPark;
+import it.familiyparking.app.task.DoParkByStatisticActivity;
 import it.familiyparking.app.utility.Code;
-import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -47,15 +42,34 @@ public class ServiceStatistic extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if((intent != null) && (intent.getAction() != null)) {
-            Log.e("ServiceStatistic", intent.getAction());
-            Log.e("ServiceStatistic", Integer.toString(intent.getIntExtra("notification_ID",-1)));
+
+            int ID = intent.getIntExtra("notification_ID", -1);
 
             if(intent.getAction().equals(Code.ACTION_SAVE)){
-                Log.e("ServiceStatistic", "SAVE");
+
+                SQLiteDatabase db = Tools.getDB_Readable(this);
+                User user = UserTable.getUser(db);
+                ArrayList<Car> cars = CarTable.getAllCar(db);
+                db.close();
+
+                if(cars.size() > 1){
+                    Intent activity = new Intent(getBaseContext(),StatisticActivity.class);
+                    activity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.putExtra("notification_ID",Integer.toString(ID));
+
+                    startActivity(activity);
+                }
+                else{
+                    new Thread(new DoParkByStatisticActivity(null,this,Integer.toString(ID),user,cars.get(0))).start();
+                }
+
             }
-            else if(intent.getAction().equals(Code.ACTION_DISCARD)){
-                Log.e("ServiceStatistic", "DISCARD");
-            }
+            /*else if(intent.getAction().equals(Code.ACTION_DISCARD)){
+
+            }*/
+
+            if(ID != -1)
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(ID);
 
         }
 

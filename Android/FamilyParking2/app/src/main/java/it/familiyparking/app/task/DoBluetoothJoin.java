@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Button;
 
 import it.familiyparking.app.MainActivity;
@@ -35,12 +36,14 @@ public class DoBluetoothJoin implements Runnable {
         while(PreferenceManager.getDefaultSharedPreferences(activity).getAll().isEmpty()){
             try {
                 Thread.sleep(100);
+                Log.e("Preferences","Sleep");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        Log.e("DoBluetoothJoin", "Preference :"+preferences.getAll().toString());
 
         activity.runOnUiThread(new Runnable() {
             @Override

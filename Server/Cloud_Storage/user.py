@@ -99,7 +99,15 @@ class User(ndb.Model):
         else:
             return -1
 
+<<<<<<< Updated upstream
     def update_contact(self, code,name):
+=======
+<<<<<<< HEAD
+    def update_contact(self, code, name):
+=======
+    def update_contact(self, code,name):
+>>>>>>> origin/master
+>>>>>>> Stashed changes
         self.temp_code = code
         self.nickname = name
         try:
