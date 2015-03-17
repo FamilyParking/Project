@@ -12,8 +12,6 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import it.familiyparking.app.task.DoGetAllCar;
-
 public class GcmMessageHandler extends IntentService {
 
     String mes;

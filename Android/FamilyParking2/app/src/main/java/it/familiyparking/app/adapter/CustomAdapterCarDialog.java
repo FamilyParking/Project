@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.parky.DoParkByStatisticActivity;
 import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.DoPark;
-import it.familiyparking.app.parky.DoParkByStatisticActivity;
 import it.familiyparking.app.utility.Tools;
 
 /**

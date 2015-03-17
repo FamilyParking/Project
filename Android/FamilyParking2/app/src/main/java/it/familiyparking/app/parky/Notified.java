@@ -3,11 +3,6 @@ package it.familiyparking.app.parky;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.sql.Timestamp;
 
 import it.familiyparking.app.utility.LocationService;
 import it.familiyparking.app.utility.Tools;
@@ -103,4 +98,13 @@ public class Notified {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "Notified{" +
+                "id='" + id + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
 }

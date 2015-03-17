@@ -37,7 +37,7 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
         }
 
         Car car = getItem(position);
-        setBrand(convertView,car);
+        setBrand(convertView, car);
         setName(convertView,car);
         setRegister(convertView, car);
         setPark(convertView,car);
@@ -82,7 +82,7 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
 
     private void setPark(View convertView, Car car) {
         if(car.isParked()) {
-            convertView.findViewById(R.id.park_circle_ko).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.park_circle_ok).setVisibility(View.VISIBLE);
             convertView.findViewById(R.id.park_circle_ko).setVisibility(View.GONE);
         }
         else {

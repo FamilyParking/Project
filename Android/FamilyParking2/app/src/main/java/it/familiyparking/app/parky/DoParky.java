@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;

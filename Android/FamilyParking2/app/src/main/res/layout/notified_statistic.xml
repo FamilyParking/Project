@@ -1,21 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sample_root"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin = "10dp"
     android:background="@drawable/card_layout">
 
-    <fragment
-        android:id="@+id/map_sample"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"/>
-
     <RelativeLayout
         android:id="@+id/sample_info"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@id/map_sample"
+        android:layout_alignParentTop="true"
         android:background="@color/transparent">
 
         <View
@@ -40,7 +35,7 @@
                 android:layout_alignParentTop="true"
                 android:text="Data"
                 android:textColor="@color/gray"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -49,10 +44,11 @@
 
                 <ImageView
                     android:id="@+id/sample_calendar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
                     android:background="@android:drawable/ic_menu_today"
-                    android:backgroundTint="@color/blue"/>
+                    android:backgroundTint="@color/gray"/>
 
                 <TextView
                     android:id="@+id/sample_data_value"
@@ -64,7 +60,7 @@
                     android:text="17 Mar 2015"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:textSize="15sp"/>
             </RelativeLayout>
 
         </RelativeLayout>
@@ -74,6 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
             android:layout_toRightOf="@id/separation_info">
 
             <TextView
@@ -83,7 +81,7 @@
                 android:layout_alignParentTop="true"
                 android:text="Data"
                 android:textColor="@color/gray"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -92,10 +90,11 @@
 
                 <ImageView
                     android:id="@+id/sample_clock"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
                     android:background="@android:drawable/ic_menu_recent_history"
-                    android:backgroundTint="@color/blue"/>
+                    android:backgroundTint="@color/gray"/>
 
                 <TextView
                     android:id="@+id/sample_time_value"
@@ -107,7 +106,7 @@
                     android:text="10:30"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:textSize="15sp"/>
 
             </RelativeLayout>
 
@@ -122,8 +121,8 @@
 
         <View
             android:id="@+id/separation_button"
-            android:layout_width="1px"
-            android:layout_height="1px"
+            android:layout_width="0.1px"
+            android:layout_height="0.1px"
             android:layout_centerInParent="true"
             android:background="@color/transparent"/>
 
@@ -131,19 +130,25 @@
             android:id="@+id/toDiscard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginBottom="2dp"
             android:layout_toLeftOf="@id/separation_button"
             android:text="DISCARD"
             android:textColor="@color/white"
-            android:background="@drawable/rectangle_red"/>
+            android:clickable="true"
+            android:background="@drawable/rectangle_red_no_corner"/>
 
         <Button
             android:id="@+id/toAccept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="2dp"
             android:layout_toRightOf="@id/separation_button"
             android:text="ACCEPT"
             android:textColor="@color/white"
-            android:background="@drawable/rectangle_green"/>
+            android:clickable="true"
+            android:background="@drawable/rectangle_green_no_corner"/>
 
 
     </RelativeLayout>

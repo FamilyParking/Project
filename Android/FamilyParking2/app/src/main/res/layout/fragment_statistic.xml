@@ -6,11 +6,18 @@
     android:orientation="vertical"
     android:background="@color/light_gray">
 
+    <fragment
+        android:id="@+id/map_samples"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"/>
+
     <ListView
         android:id="@+id/list_samples"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/map_samples"
         android:layout_margin="10dp"
         android:background="@color/transparent"
         android:divider="@android:color/transparent"

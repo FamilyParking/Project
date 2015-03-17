@@ -1,33 +1,21 @@
 package it.familiyparking.app.adapter;
 
-import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 
-import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.NotifiedTable;
-import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.parky.Notified;
-import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.parky.StatisticFragment;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
@@ -41,40 +29,50 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
     private StatisticFragment fragment;
     private User user;
     private ArrayList<Car> cars;
+    ArrayList<Notified> list;
 
     public CustomAdapterSamples(StatisticFragment fragment, ArrayList<Notified> list, User user, ArrayList<Car> cars) {
         super(fragment.getActivity().getApplicationContext(), 0, list);
         this.fragment = fragment;
         this.user = user;
         this.cars = cars;
+        this.list = list;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.car_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.notified_statistic, parent, false);
         }
 
         Notified notified = getItem(position);
 
-        setMap(convertView, notified);
+        setRoot(convertView, notified);
         setInfo(convertView, notified);
         setButton(convertView, notified);
+
+        if(position == 0){
+            fragment.setMarker(new LatLng(Double.parseDouble(notified.getLatitude()), Double.parseDouble(notified.getLongitude())));
+        }
 
         return convertView;
     }
 
-    private void setMap(View convertView, Notified notified){
-        GoogleMap googleMap = ((SupportMapFragment) fragment.getChildFragmentManager().findFragmentById(R.id.map_sample)).getMap();
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+    private void setRoot(View convertView, Notified notified){
+        final RelativeLayout relativeLayout = (RelativeLayout) convertView.findViewById(R.id.sample_root);
+        relativeLayout.setContentDescription(notified.getId());
 
-        double[] position = notified.getPosition();
-        LatLng latLng = new LatLng(position[0],position[1]);
-        googleMap.addMarker(new MarkerOptions().position(latLng));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18.0f));
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(Notified n : list){
+                    if(n.getId().equals(v.getContentDescription().toString())) {
+                        fragment.setMarker(new LatLng(Double.parseDouble(n.getLatitude()), Double.parseDouble(n.getLongitude())));
+                    }
+                }
+            }
+        });
     }
 
     private void setInfo(View convertView, Notified notified){
@@ -83,24 +81,31 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
         ((TextView) convertView.findViewById(R.id.sample_time_value)).setText(info[1]);
     }
 
-    private void setButton(View convertView, final Notified notified) {
-        convertView.findViewById(R.id.toDiscard).setOnClickListener(new View.OnClickListener() {
+    private void setButton(View convertView, Notified notified) {
+        Button discard = (Button) convertView.findViewById(R.id.toDiscard);
+        discard.setContentDescription(notified.getId());
+        discard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SQLiteDatabase db = Tools.getDB_Writable(fragment.getActivity());
-                NotifiedTable.deleteNotified(db,notified.getId());
-                db.close();
+                NotifiedTable.deleteNotified(db, v.getContentDescription().toString());
 
-                fragment.updateAdapter();
+                fragment.updateAdapter(NotifiedTable.getAllNotified(db));
+
+                db.close();
             }
         });
 
-        convertView.findViewById(R.id.toAccept).setOnClickListener(new View.OnClickListener() {
+        Button accept = (Button) convertView.findViewById(R.id.toAccept);
+        accept.setContentDescription(notified.getId());
+        accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.showAlertParking(fragment.getActivity(), cars, user, true, notified.getId());
+                Tools.showAlertParking(fragment.getActivity(), cars, user, true, v.getContentDescription().toString());
             }
         });
     }
+
+
 
 }

@@ -3,7 +3,6 @@ package it.familiyparking.app.parky;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import it.familiyparking.app.utility.Tools;
 

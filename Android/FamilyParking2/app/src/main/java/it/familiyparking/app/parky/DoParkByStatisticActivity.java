@@ -5,12 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
-import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.NotifiedTable;
-import it.familiyparking.app.parky.Notified;
-import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
@@ -55,6 +51,8 @@ public class DoParkByStatisticActivity implements Runnable {
 
             if (result.isFlag()) {
                 NotifiedTable.deleteNotified(db,notification_ID);
+
+                activity.updateStatistic();
 
                 car.setParked(true);
                 CarTable.updateCar(db,car);

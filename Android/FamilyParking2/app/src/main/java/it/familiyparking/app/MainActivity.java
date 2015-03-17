@@ -7,16 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,16 +38,13 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
-import it.familiyparking.app.parky.DoParky;
 import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskGCM;
 import it.familiyparking.app.task.DoGetAllCar;
 import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.utility.Code;
-import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -85,7 +79,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Thread(new DoParky(this)).start();
+        SQLiteDatabase dbTemp = Tools.getDB_Writable(this);
+        NotifiedTable.insertNotified(dbTemp, new Notified(this));
+        Tools.sendNotificationForStatics(this, 1);
+        dbTemp.close();
 
         setBroadcastReceiver();
         startService();

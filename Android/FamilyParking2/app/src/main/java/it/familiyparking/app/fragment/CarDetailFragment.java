@@ -24,8 +24,8 @@ import it.familiyparking.app.adapter.CustomAdapterUser;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
-import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.task.DoOccupy;
+import it.familiyparking.app.task.DoPark;
 import it.familiyparking.app.utility.Tools;
 
 
