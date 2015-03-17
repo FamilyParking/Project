@@ -42,6 +42,9 @@ public class ServiceStatistic extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
+
         if((intent != null) && (intent.getAction() != null)) {
 
             int ID = intent.getIntExtra("notification_ID", -1);
