@@ -85,7 +85,7 @@ public class Tools {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static void showAlertPosition(final Context context) {
+    public static AlertDialog showAlertPosition(final Context context) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         alertDialog.setCancelable(false);
@@ -110,7 +110,10 @@ public class Tools {
                     }
                 });
 
-        alertDialog.show();
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+
+        return dialog;
     }
 
     public static boolean isPositionHardwareEnable(Context context){
@@ -624,8 +627,7 @@ public class Tools {
 
     public static int getNotificationID(){
         Timestamp time = (new Timestamp((new java.util.Date()).getTime()));
-        return time.getNanos();
-        //return Integer.parseInt(time.getHours()+""+time.getMinutes()+""+time.getSeconds());
+        return Integer.parseInt(time.getHours()+""+time.getMinutes()+""+time.getSeconds());
     }
 
     public static void sendNotification(Context context, String message){

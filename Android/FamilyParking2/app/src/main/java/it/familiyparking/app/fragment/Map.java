@@ -1,5 +1,6 @@
 package it.familiyparking.app.fragment;
 
+import android.app.AlertDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
@@ -38,16 +39,13 @@ public class Map extends Fragment{
     private GoogleMap googleMap;
     private Button toPark;
     private RelativeLayout ghostmodeLable;
-    private boolean afterPositionSettings;
     private boolean setGraphic;
+    private AlertDialog dialogSettings;
 
     public Map() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        if(afterPositionSettings)
-            Log.e("Map","onCreateView");
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
@@ -77,16 +75,10 @@ public class Map extends Fragment{
     public void onStart() {
         super.onStart();
 
-        Log.e("Map","onStart");
-
-        if (afterPositionSettings) {
-
-            if (Tools.isPositionHardwareEnable(getActivity())) {
-                afterPositionSettings = false;
-            } else {
+        if((dialogSettings != null) && (!dialogSettings.isShowing())){
+            if (!Tools.isPositionHardwareEnable(getActivity())) {
                 Tools.showClosedInfoAlert(getActivity());
             }
-
         }
     }
 
@@ -109,8 +101,7 @@ public class Map extends Fragment{
                 setPbutton();
 
             if (!Tools.isPositionHardwareEnable(getActivity())) {
-                afterPositionSettings = true;
-                Tools.showAlertPosition(getActivity());
+                dialogSettings = Tools.showAlertPosition(getActivity());
             }
 
             googleMap.setMyLocationEnabled(true);

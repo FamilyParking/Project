@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
@@ -50,9 +51,10 @@ public class ServiceStatistic extends Service{
                 SQLiteDatabase db = Tools.getDB_Readable(this);
                 User user = UserTable.getUser(db);
                 ArrayList<Car> cars = CarTable.getAllCar(db);
+                ArrayList<Notified> notifies = NotifiedTable.getAllNotified(db);
                 db.close();
 
-                if(cars.size() > 1){
+                if((cars.size() > 1) || (notifies.size() > 1)){
                     Intent activity = new Intent(getBaseContext(),StatisticActivity.class);
                     activity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.putExtra("notification_ID",Integer.toString(ID));
