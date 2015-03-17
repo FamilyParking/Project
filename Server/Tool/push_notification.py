@@ -10,9 +10,10 @@ from setting import static_variable
 class Push_notification():
 
     @staticmethod
-    def send_push_park(reg_id, name_car, user):
+    def send_push_park(reg_id, name_car, user, id_car):
         json_data = {
             "data": {
+                "ID_car":long(id_car),
                 "User": str(user),
                 "Car": str(name_car),
                 "Type": "Park",

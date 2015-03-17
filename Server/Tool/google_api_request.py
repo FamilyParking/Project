@@ -4,17 +4,8 @@ import logging
 
 __author__ = 'Nazzareno'
 
-<<<<<<< Updated upstream
 from setting import static_variable
 
-=======
-<<<<<<< HEAD
-DEBUG = True
-=======
-from setting import static_variable
-
->>>>>>> origin/master
->>>>>>> Stashed changes
 class Google_api_request:
 
     @staticmethod
@@ -33,23 +24,10 @@ class Google_api_request:
 
         response = json.loads(r1.read())
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-        if DEBUG:
-            logging.debug("Status request google place --> "+response["status"])
-        if response["status"] == "OK":
-            if DEBUG:
-=======
->>>>>>> Stashed changes
         if static_variable.DEBUG:
             logging.debug("Status request google place --> "+response["status"])
         if response["status"] == "OK":
             if static_variable.DEBUG:
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
                 logging.debug("Station near the place")
             return 1
         else:

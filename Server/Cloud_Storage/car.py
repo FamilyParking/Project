@@ -1,4 +1,5 @@
 import sys
+from setting import static_variable
 
 __author__ = 'Nazzareno'
 
@@ -73,12 +74,16 @@ class Car(ndb.Model):
 
     @staticmethod
     def getCarbyID(id):
+
+        if static_variable.DEBUG:
+            logging.debug("Value ID: "+str(id)+" Cast a float: "+str(float(id)))
+
         app_key = Car.get_by_id(long(id))
         return app_key
 
     @staticmethod
     def get_json(id):
-        app_key = Car.get_by_id(long(id))
+        app_key = Car.getCarbyID(id)
         return app_key.to_string_json_car()
 
     @staticmethod

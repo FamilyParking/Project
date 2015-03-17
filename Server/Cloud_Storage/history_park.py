@@ -11,16 +11,7 @@ import datetime
 
 LOCAL_PRINT = False
 
-<<<<<<< Updated upstream
 from setting import static_variable
-=======
-<<<<<<< HEAD
-DEBUG = True
-
-=======
-from setting import static_variable
->>>>>>> origin/master
->>>>>>> Stashed changes
 
 class History_park(ndb.Model):
     id_user = ndb.IntegerProperty()
@@ -56,32 +47,14 @@ class History_park(ndb.Model):
                                         parked=0)
         new_history_park.put()
 
-<<<<<<< Updated upstream
         if history.count() < static_variable.min_value:
-=======
-<<<<<<< HEAD
-        if history.count() < 10:
-=======
-        if history.count() < static_variable.min_value:
->>>>>>> origin/master
->>>>>>> Stashed changes
             return 1
         else:
             counter = 0
             parked_counter = 0
             for value in history:
-<<<<<<< Updated upstream
                 # if DEBUG:
                 # logging.debug("Value history=lat:"+str(value.latitude)+" long:"+str(value.longitude))
-=======
-<<<<<<< HEAD
-                #if DEBUG:
-                    # logging.debug("Value history=lat:"+str(value.latitude)+" long:"+str(value.longitude))
-=======
-                # if DEBUG:
-                # logging.debug("Value history=lat:"+str(value.latitude)+" long:"+str(value.longitude))
->>>>>>> origin/master
->>>>>>> Stashed changes
 
 #                 if static_variable.DEBUG:
 #                    logging.debug("Timestamp: "+value.timestamp)
@@ -98,15 +71,6 @@ class History_park(ndb.Model):
 
                         parked_counter += weight_park
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-            if DEBUG:
-                logging.debug("Value counter user="+str(counter)+" value parked_counter="+str(parked_counter))
-
-            if counter < 10:
-=======
->>>>>>> Stashed changes
             if static_variable.DEBUG:
                 logging.debug("Value counter user=" + str(counter) + " value parked_counter=" + str(parked_counter))
 
@@ -115,10 +79,6 @@ class History_park(ndb.Model):
                 logging.debug("Percentage: "+str(percentage))
 
             if counter < static_variable.min_value:
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
                 return 1
 
             elif Google_api_request.request_place(latitude, longitude) == 1 and parked_counter > 0:
@@ -142,36 +102,10 @@ class History_park(ndb.Model):
         # if DEBUG:
         #   logging.debug("lat_point:"+str(lat_point)+" lon_point:"+str(lon_point))
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-        radius = 1.0
-        r = radius / 6371.0
-        delta_lon = abs(cmath.asin(cmath.sin(float(r)) / cmath.cos(float(latitude))))
-        delta_lat = abs(cmath.asin(cmath.sin(float(r)) / cmath.cos(float(longitude))))
-
-        # if DEBUG:
-        #     logging.debug("lat_point:"+str(lat_point)+" lon_point:"+str(lon_point))
-
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
         min_lat = float(latitude) - delta_lat.real
         max_lat = float(latitude) + delta_lat.real
         min_lon = float(longitude) - delta_lon.real
         max_lon = float(longitude) + delta_lon.real
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-
-        # if DEBUG:
-        #     logging.debug("min_lat:"+str(min_lat)+" min_lon:"+str(min_lon)+" max_lat:"+str(max_lat)+" max_lon:"+str(max_lon))
-
-        if (float(min_lat) <= float(lat_point) <= float(max_lat)) and (float(min_lon) <= float(lon_point) <= float(max_lon)):
-            if DEBUG:
-                logging.debug("Inside the IF")
-=======
->>>>>>> Stashed changes
 
         # if DEBUG:
         #     logging.debug("min_lat:"+str(min_lat)+" min_lon:"+str(min_lon)+" max_lat:"+str(max_lat)+" max_lon:"+str(max_lon))
@@ -180,10 +114,6 @@ class History_park(ndb.Model):
                         float(min_lon) <= float(lon_point) <= float(max_lon)):
             # if DEBUG:
             #     logging.debug("Inside the IF")
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
             return True
         else:
             return False

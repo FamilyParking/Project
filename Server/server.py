@@ -211,7 +211,7 @@ class updatePosition(webapp2.RequestHandler):
                                              car_data["Longitude"], user_data["Name"],car_data["Name"])
                 else:
                     if User.get_email_user(user.id_user) != user_data["Email"]:
-                        Push_notification.send_push_park(User.get_id_android(user.id_user), car_data["Name"], user_data["Name"])
+                        Push_notification.send_push_park(User.get_id_android(user.id_user), car_data["Name"], user_data["Name"], car_data["ID_car"])
 
             if static_variable.DEBUG:
                 logging.debug("Date if car: "+car_data["Name"])
@@ -286,6 +286,7 @@ class editCar(webapp2.RequestHandler):
 class updateGCM(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("updateGCM", self) >= 0:
+
             dati = json.loads(self.request.body)
             user_data = dati["User"]
 
@@ -328,33 +329,15 @@ class getNotification(webapp2.RequestHandler):
             id_user = temp_user.get().key.id()
             timestamp = dati["Timestamp"]
 
-<<<<<<< Updated upstream
             if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
                 if static_variable.DEBUG:
-=======
-<<<<<<< HEAD
-            if History_park.get_notification(id_user, latitude, longitude, timestamp) == 1:
-                if DEBUG:
-=======
-            if History_park.parky(id_user, latitude, longitude, timestamp) == 1:
-                if static_variable.DEBUG:
->>>>>>> origin/master
->>>>>>> Stashed changes
                     logging.debug("The application has to send notification? --> "+str(True))
 
                 right = StatusReturn(20, "getNotification", True)
                 self.response.write(right.print_result())
 
             else:
-<<<<<<< Updated upstream
                 if static_variable.DEBUG:
-=======
-<<<<<<< HEAD
-                if DEBUG:
-=======
-                if static_variable.DEBUG:
->>>>>>> origin/master
->>>>>>> Stashed changes
                     logging.debug("The application has to send notification? --> "+str(False))
 
                 right = StatusReturn(21, "getNotification", False)
@@ -364,6 +347,7 @@ class getNotification(webapp2.RequestHandler):
 class automatic_summary(webapp2.RequestHandler):
     def get(self):
         Summary.create_statistic()
+
 
 class pickCar(webapp2.RequestHandler):
     def post(self):
