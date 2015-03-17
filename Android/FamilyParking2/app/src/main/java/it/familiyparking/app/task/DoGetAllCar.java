@@ -2,12 +2,10 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
@@ -23,10 +21,12 @@ public class DoGetAllCar implements Runnable {
 
     private User user;
     private MainActivity activity;
+    private boolean background;
 
-    public DoGetAllCar(MainActivity activity, User user) {
+    public DoGetAllCar(MainActivity activity, User user, boolean background) {
         this.user = user;
         this.activity = activity;
+        this.background = background;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class DoGetAllCar implements Runnable {
                 Tools.manageServerError(result, activity);
             }
 
-            if(flag_dialog) {
+            if(flag_dialog && !background) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

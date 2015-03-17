@@ -2,17 +2,9 @@ package it.familiyparking.app.parky;
 
 import android.app.PendingIntent;
 import android.app.Service;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -20,14 +12,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
-
-import java.util.ArrayList;
-
-import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.UserTable;
-import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.User;
 
 /**
  * Created by francesco on 13/02/15.
@@ -43,23 +27,21 @@ public class ServiceAPI extends Service implements GoogleApiClient.ConnectionCal
     public void onCreate() {
         super.onCreate();
 
+        Log.e("ServiceAPI","Call method to block service if necessary");
+
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
         final Tracker t = analytics.newTracker("UA-58079755-2");
 
         setGoogleApiClient();
-
-        Log.e("ServiceAPI","onCreate");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.e("ServiceAPI","onBind");
         return null;
     }
 
     public int onStartCommand(Intent i, int flags, int start){
-        Log.e("ServiceAPI","onStartCommand");
-        return START_STICKY;
+        return super.onStartCommand(i,flags,start);
     }
 
     @Override
@@ -73,7 +55,6 @@ public class ServiceAPI extends Service implements GoogleApiClient.ConnectionCal
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override

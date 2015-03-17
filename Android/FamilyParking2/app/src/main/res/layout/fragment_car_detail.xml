@@ -79,8 +79,8 @@
 
                 <RelativeLayout
                     android:id="@+id/edit_rl"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
@@ -93,8 +93,8 @@
                         android:id="@+id/edit_iv"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginTop="15dp"
                         android:src="@drawable/ic_pencil"/>
 
                 </RelativeLayout>
@@ -171,13 +171,26 @@
 
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/toUnPark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/last_driver_relative"
+                android:text="@string/unpark"
+                android:textColor="@color/white"
+                android:background="@drawable/rectangle_blue"/>
+
             <RelativeLayout
                 android:id="@+id/bluetooth_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="5dp"
-                android:layout_below="@id/last_driver_relative"
+                android:layout_below="@id/toUnPark"
                 android:background="@drawable/card_layout">
 
                 <RelativeLayout
@@ -256,13 +269,13 @@
 
     <Button
         android:id="@+id/toPark_detail"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/park"/>
+        android:background="@drawable/button_park"/>
 
 </RelativeLayout>
 

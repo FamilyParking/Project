@@ -347,7 +347,7 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/save"
                 android:textColor="@color/white"
-                android:background="@drawable/rectangle_red"/>
+                android:background="@drawable/rectangle_green"/>
 
         </RelativeLayout>
 

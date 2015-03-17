@@ -1,0 +1,152 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin = "10dp"
+    android:background="@drawable/card_layout">
+
+    <fragment
+        android:id="@+id/map_sample"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"/>
+
+    <RelativeLayout
+        android:id="@+id/sample_info"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/map_sample"
+        android:background="@color/transparent">
+
+        <View
+            android:id="@+id/separation_info"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:layout_centerInParent="true"
+            android:background="@color/transparent"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:id="@+id/sample_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Data"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sample_data">
+
+                <ImageView
+                    android:id="@+id/sample_calendar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@android:drawable/ic_menu_today"
+                    android:backgroundTint="@color/blue"/>
+
+                <TextView
+                    android:id="@+id/sample_data_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/sample_calendar"
+                    android:layout_marginLeft="5dp"
+                    android:text="17 Mar 2015"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toRightOf="@id/separation_info">
+
+            <TextView
+                android:id="@+id/sample_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Data"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sample_time">
+
+                <ImageView
+                    android:id="@+id/sample_clock"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@android:drawable/ic_menu_recent_history"
+                    android:backgroundTint="@color/blue"/>
+
+                <TextView
+                    android:id="@+id/sample_time_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/sample_clock"
+                    android:layout_marginLeft="5dp"
+                    android:text="10:30"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sample_info">
+
+        <View
+            android:id="@+id/separation_button"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:layout_centerInParent="true"
+            android:background="@color/transparent"/>
+
+        <Button
+            android:id="@+id/toDiscard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/separation_button"
+            android:text="DISCARD"
+            android:textColor="@color/white"
+            android:background="@drawable/rectangle_red"/>
+
+        <Button
+            android:id="@+id/toAccept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/separation_button"
+            android:text="ACCEPT"
+            android:textColor="@color/white"
+            android:background="@drawable/rectangle_green"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>
+
+

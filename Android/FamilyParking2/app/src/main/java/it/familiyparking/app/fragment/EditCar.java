@@ -13,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -107,6 +108,11 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         if(isCreation){
             Tools.setTitleActionBar(activity,R.string.create_car);
             contactListAdapter.add(user);
+
+            if(activity.getLunchWithEmptyList()){
+                Tools.resetUpButtonActionBar(activity);
+                activity.resetMenu();
+            }
         }
         else{
             Tools.setTitleActionBar(activity,R.string.edit_car);

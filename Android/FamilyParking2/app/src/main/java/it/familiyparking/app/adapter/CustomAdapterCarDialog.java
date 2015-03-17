@@ -2,26 +2,24 @@ package it.familiyparking.app.adapter;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.DoPark;
+import it.familiyparking.app.parky.DoParkByStatisticActivity;
 import it.familiyparking.app.utility.Tools;
 
 /**
@@ -29,13 +27,17 @@ import it.familiyparking.app.utility.Tools;
  */
 public class CustomAdapterCarDialog extends ArrayAdapter<Car> {
 
-    private MainActivity activity;
+    private Activity activity;
     private User user;
+    private String notification_ID;
+    private boolean parky;
 
-    public CustomAdapterCarDialog(Activity activity, ArrayList<Car> list, User user) {
+    public CustomAdapterCarDialog(Activity activity, ArrayList<Car> list, User user, boolean parky, String notification_ID) {
         super(activity.getApplicationContext(), 0, list);
-        this.activity = (MainActivity) activity;
+        this.activity = activity;
         this.user = user;
+        this.parky = parky;
+        this.notification_ID = notification_ID;
     }
 
     @Override
@@ -86,9 +88,14 @@ public class CustomAdapterCarDialog extends ArrayAdapter<Car> {
                 Car car = CarTable.getCar_byID(db,v.getContentDescription().toString());
                 db.close();
 
-                activity.resetDialogParking();
+                if(parky){
+                    new Thread(new DoParkByStatisticActivity((StatisticActivity)activity,activity,notification_ID,user,car)).start();
+                }
+                else {
+                    ((MainActivity) activity).resetDialogParking();
 
-                new Thread(new DoPark(activity,user,car)).start();
+                    new Thread(new DoPark(((MainActivity) activity), user, car)).start();
+                }
             }
         });
     }

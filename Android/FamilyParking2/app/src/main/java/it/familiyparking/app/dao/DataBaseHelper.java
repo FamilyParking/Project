@@ -44,9 +44,17 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     UserTable.GHOST_MODE+" TEXT, "+
                     "PRIMARY KEY ( "+UserTable.EMAIL+" )"+" ) ; ";
 
+    public static final String CREATE_TABLE_NOTIFIED =
+            "CREATE TABLE IF NOT EXISTS "+ NotifiedTable.TABLE+" ( " +
+                    NotifiedTable.ID+" INTEGER PRIMARY KEY , "+
+                    NotifiedTable.LATITUDE+" REAL NOT NULL, "+
+                    NotifiedTable.LONGITUDE+" REAL NOT NULL, "+
+                    NotifiedTable.TIMESTAMP+" TEXT NOT NULL ) ; ";
+
     public static final String DROP_TABLE_GROUP = "DROP TABLE IF EXISTS "+ GroupTable.TABLE+" ;";
     public static final String DROP_TABLE_CAR = "DROP TABLE IF EXISTS "+ CarTable.TABLE+" ;";
     public static final String DROP_TABLE_USER = "DROP TABLE IF EXISTS "+ UserTable.TABLE+" ;";
+    public static final String DROP_TABLE_NOTIFIED = "DROP TABLE IF EXISTS "+ NotifiedTable.TABLE+" ;";
 
     public DataBaseHelper(Context context){
         super(context, NAME_DB, null, VERSION_DB);
@@ -57,6 +65,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         db.execSQL(CREATE_TABLE_GROUP);
         db.execSQL(CREATE_TABLE_CAR);
         db.execSQL(CREATE_TABLE_USER);
+        db.execSQL(CREATE_TABLE_NOTIFIED);
     }
 
     @Override
@@ -64,6 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         db.execSQL(DROP_TABLE_GROUP);
         db.execSQL(DROP_TABLE_CAR);
         db.execSQL(DROP_TABLE_USER);
+        db.execSQL(DROP_TABLE_NOTIFIED);
         onCreate(db);
     }
 

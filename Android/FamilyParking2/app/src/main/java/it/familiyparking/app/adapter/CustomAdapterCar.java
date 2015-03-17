@@ -1,7 +1,6 @@
 package it.familiyparking.app.adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +60,13 @@ public class CustomAdapterCar extends ArrayAdapter<Car> {
 
     private void setRegister(View convertView, Car car) {
         TextView register = (TextView) convertView.findViewById(R.id.car_register_tv);
-        if(car.getRegister() != null)
+        if(car.getRegister() != null) {
             register.setText(car.getRegister());
+            register.setVisibility(View.VISIBLE);
+        }
+        else{
+            register.setVisibility(View.GONE);
+        }
     }
 
     private void setBluetooth(View convertView, Car car) {

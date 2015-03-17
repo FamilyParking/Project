@@ -1,5 +1,6 @@
 package it.familiyparking.app.fragment;
 
+import android.app.AlertDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,13 +39,14 @@ public class Map extends Fragment{
     private GoogleMap googleMap;
     private Button toPark;
     private RelativeLayout ghostmodeLable;
-    private boolean afterPositionSettings;
     private boolean setGraphic;
+    private AlertDialog dialogSettings;
 
     public Map() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         this.activity = (MainActivity) getActivity();
@@ -71,16 +72,24 @@ public class Map extends Fragment{
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
-        if(afterPositionSettings){
-            if(Tools.isPositionHardwareEnable(getActivity()))
-                afterPositionSettings = false;
-            else
+        if((dialogSettings != null) && (!dialogSettings.isShowing())){
+            if (!Tools.isPositionHardwareEnable(getActivity())) {
                 Tools.showClosedInfoAlert(getActivity());
+            }
+        }
+
+        if(!toPark.isShown()){
+            enableGraphics(true);
+        }
+        else{
+            if((googleMap != null) && (googleMap.getCameraPosition().zoom < 10))
+                new AsyncTaskLocationMap().execute(googleMap, getActivity());
         }
     }
+
 
     private void setUpMap(){
         if (googleMap == null) {
@@ -90,24 +99,22 @@ public class Map extends Fragment{
     }
 
     public void enableGraphics(boolean p_button){
-
         if(getActivity() == null) {
             setGraphic = true;
         }
         else {
             setGraphic = false;
 
+            if(p_button)
+                setPbutton();
+
             if (!Tools.isPositionHardwareEnable(getActivity())) {
-                afterPositionSettings = true;
-                Tools.showAlertPosition(getActivity());
+                dialogSettings = Tools.showAlertPosition(getActivity());
             }
 
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
             new AsyncTaskLocationMap().execute(googleMap, getActivity());
-
-            if(p_button)
-                setPbutton();
         }
     }
 

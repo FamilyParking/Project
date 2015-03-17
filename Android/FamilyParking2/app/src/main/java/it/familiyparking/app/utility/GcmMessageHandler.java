@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import it.familiyparking.app.task.DoGetAllCar;
+
 public class GcmMessageHandler extends IntentService {
 
     String mes;
@@ -34,7 +36,10 @@ public class GcmMessageHandler extends IntentService {
 
         String user = extras.getString("User");
         String car = extras.getString("Car");
+        String car_id = extras.getString("ID_car");
         String type = extras.getString("Type");
+
+        Log.e("Car_ID",car_id);
 
         String message = "";
         if(type.equals(Code.TYPE_GROUP))
