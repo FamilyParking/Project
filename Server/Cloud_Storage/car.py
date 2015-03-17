@@ -76,9 +76,9 @@ class Car(ndb.Model):
     def getCarbyID(id):
 
         if static_variable.DEBUG:
-            logging.debug("Value ID: "+str(id)+" Cast a float: "+str(float(id)))
+            logging.debug("Value ID: "+str(id)+" Cast a float: "+str("%.0f" % float(id)))
 
-        app_key = Car.get_by_id(long(id))
+        app_key = Car.get_by_id(long("%.0f" % float(id)))     # This why sometime arrive id like '4.93745548034048E15'
         return app_key
 
     @staticmethod

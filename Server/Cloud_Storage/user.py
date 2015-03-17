@@ -56,7 +56,7 @@ class User(ndb.Model):
 
     @staticmethod
     def is_registered_check(id):
-        temp_user = User.get_by_id(long(id))
+        temp_user = User.get_user_by_id(id)
         return temp_user.is_user
 
     @staticmethod
@@ -75,17 +75,17 @@ class User(ndb.Model):
 
     @staticmethod
     def get_id_android(id):
-        temp_user = User.get_by_id(long(id))
+        temp_user = User.get_user_by_id(id)
         return temp_user.id_android
 
     @staticmethod
     def get_email_user(id):
-        temp_user = User.get_by_id(long(id))
+        temp_user = User.get_user_by_id(id)
         return temp_user.email
 
     @staticmethod
     def get_user_by_id(id):
-        temp_user = User.get_by_id(long(id))
+        temp_user = User.get_by_id(long("%.0f" % float(id)))
         return temp_user
 
     def check_code(self, new_code):
