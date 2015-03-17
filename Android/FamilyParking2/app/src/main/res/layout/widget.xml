@@ -6,18 +6,47 @@
     android:padding="5dp"
     android:layout_margin="0dp"
     android:background="@drawable/card_layout">
-    <Button
-        android:id="@+id/park_button"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@drawable/park"
-        android:layout_alignParentLeft="true"
-        />
-    <Button
-        android:id="@+id/unpark_button"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@drawable/park_pushed"
-        android:layout_alignParentRight="true"
-        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/buttonsLayout">
+        <Button
+            android:id="@+id/park_button"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/park"
+            android:layout_alignParentLeft="true"
+            />
+        <Button
+            android:id="@+id/unpark_button"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/park_pushed"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/signInLayout"
+        android:visibility="invisible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You need to sign in"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/noCarsLayout"
+        android:visibility="invisible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You still have no cars shared with you"/>
+    </RelativeLayout>
 </RelativeLayout>
