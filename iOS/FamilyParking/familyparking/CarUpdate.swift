@@ -350,6 +350,11 @@ class CarUpdate: UIViewController{
     
     func resetSystem(){
         println("System Reset")
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        prefs.setInteger(0, forKey:"ISLOGGEDIN")
+        prefs.synchronize()
+  //      prefs.syncronize()
+        
         removeAllCar()
         removeAllUsers()
       
