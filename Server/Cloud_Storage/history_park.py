@@ -30,6 +30,11 @@ class History_park(ndb.Model):
         return result_history
 
     @staticmethod
+    def history_parked_from_user(id_user):
+        result_history = History_park.query(History_park.id_user == id_user and History_park.parked == 1 )
+        return result_history
+
+    @staticmethod
     def parky(id_user, latitude, longitude, timestamp):
 
         # temp_time = timestamp.strftime("%y-%m-%d %H:%M:%S")
@@ -132,32 +137,6 @@ class History_park(ndb.Model):
         else:
             temp_history = result_query.get()
             temp_history.update_parked()
-
-    @staticmethod
-    def compair_date(date1,date2):
-        temp_date1 = date1.split(" ")
-        temp_date2 = date2.split(" ")
-        temp_day_date1 = temp_date1[0].split("-")
-        temp_day_date2 = temp_date2[0].split("-")
-        if temp_day_date1[0]<=temp_day_date2[0]:
-            if temp_day_date1[0]<temp_day_date2[0]:
-                return 1
-            else:
-                if temp_day_date1[1]<=temp_day_date2[1]:
-                    if temp_day_date1[1]<temp_day_date2[1]:
-                        return 1
-                    else:
-                        if temp_day_date1[2]<=temp_day_date2[2]:
-                            if temp_day_date1[2]<temp_day_date2[2]:
-                                return 1
-                            else:
-                                return 0
-                        else:
-                            return 2
-                else:
-                    return 2
-        else:
-            return 2
 
     @staticmethod
     def weight_date(date1):

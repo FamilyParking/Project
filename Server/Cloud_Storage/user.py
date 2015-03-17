@@ -108,3 +108,12 @@ class User(ndb.Model):
         except:
             logging.debug(sys.exc_info())
             return False
+
+    @staticmethod
+    def all_user():
+        try:
+            users = User.query()
+        except:
+            logging.debug(sys.exc_info())
+        return users
+

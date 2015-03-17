@@ -14,7 +14,7 @@ class User_car(ndb.Model):
 
     @staticmethod
     def getUserFromCar(id_car):
-        result_group = User_car.query(User_car.id_car == long(id_car))
+        result_group = User_car.query(User_car.id_car == long("%.0f" % float(id_car)))
         return result_group
 
     @staticmethod
@@ -37,12 +37,12 @@ class User_car(ndb.Model):
     def deleteCarUser(id_user, id_car):
         delete_entry = User_car.getCarFromUser(id_user)
         for car in delete_entry:
-            if long(car.id_car) == long(id_car):
+            if long(car.id_car) == long("%.0f" % float(id_car)):
                 car.key.delete()
         return 0
 
     @staticmethod
     def insertContactCar(user, car):
-        new_contact_car = User_car(id_user=user, id_car=long(car))
+        new_contact_car = User_car(id_user=user, id_car=long("%.0f" % float(car)))
         new_contact_car.put()
         return 0

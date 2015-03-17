@@ -357,9 +357,15 @@ class pickCar(webapp2.RequestHandler):
             car_data = dati["Car"]
             Car.pick_car(car_data["ID_car"])
 
-            right = StatusReturn(21, "getNotification", False)
+            right = StatusReturn(22, "pickCar", False)
             self.response.write(right.print_result())
 
+
+class user_house(webapp2.RequestHandler):
+    def get(self):
+        all_users = User.all_user()
+        for user in all_users:
+            Summary.user_house(user.key.id())
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
@@ -376,6 +382,7 @@ application = webapp2.WSGIApplication([
     ('/insertContactCar', insertContactCar),
     ('/getNotification', getNotification),
     ('/removeContactCar', removeContactCar),
+    ('/Automatic/user_house', user_house),
     ('/Automatic/summary', automatic_summary)
 
 ], debug=True)
