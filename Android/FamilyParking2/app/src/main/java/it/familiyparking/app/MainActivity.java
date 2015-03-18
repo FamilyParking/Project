@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
+import it.familiyparking.app.parky.DoParky;
 import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
@@ -74,18 +76,17 @@ public class MainActivity extends ActionBarActivity {
     private boolean flagAllCarRunning;
     private boolean lunchWithEmptyList;
 
+    private String car_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SQLiteDatabase dbTemp = Tools.getDB_Writable(this);
-        NotifiedTable.insertNotified(dbTemp, new Notified(this));
-        Tools.sendNotificationForStatics(this, 1);
-        dbTemp.close();
-
         setBroadcastReceiver();
         startService();
+
+        car_id = getIntent().getStringExtra("car_id");
 
         initBool();
 
@@ -116,7 +117,17 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        removeParkingNotification();
+        //removeParkingNotification();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        String car_id = intent.getStringExtra("car_id");
+        if(car_id != null){
+            getAllCar(false,car_id);
+        }
     }
 
     @Override
@@ -146,7 +157,7 @@ public class MainActivity extends ActionBarActivity {
 
         setMenu();
 
-        getAllCar(false);
+        getAllCar(false,car_id);
 
         new AsyncTaskGCM().execute(user,this);
     }
@@ -291,9 +302,9 @@ public class MainActivity extends ActionBarActivity {
         return this.user;
     }
 
-    public void park(ArrayList<Car> cars){
+    public void park(ArrayList<Car> cars, String car_id){
         if(map != null) {
-            map.parkCar(cars);
+            map.parkCar(cars,car_id);
         }
     }
 
@@ -303,7 +314,7 @@ public class MainActivity extends ActionBarActivity {
         db.close();
 
         if(map != null){
-            map.parkCar(cars);
+            map.parkCar(cars,null);
         }
     }
 
@@ -345,12 +356,12 @@ public class MainActivity extends ActionBarActivity {
         return map.getLongitude();
     }
 
-    private void getAllCar(boolean background){
+    private void getAllCar(boolean background, String car_id){
         if(getLunchWithEmptyList() && !background) {
             setProgressDialogCircular(getResources().getString(R.string.update_car_list));
         }
 
-        new Thread(new DoGetAllCar(this,user,background)).start();
+        new Thread(new DoGetAllCar(this,user,background,car_id)).start();
     }
 
     public void setAllCarRunning(){
@@ -546,13 +557,22 @@ public class MainActivity extends ActionBarActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
     }
 
+    public boolean signInIsShown(){
+        return (signIn != null);
+    }
+
     private void setConfirmation(){
         confirmation = new Confirmation();
         getSupportFragmentManager().beginTransaction().add(R.id.container, confirmation).commit();
     }
 
     private void setMap(){
+        Bundle bundle = new Bundle();
+        bundle.putString("car_id",car_id);
+
         map = new Map();
+        map.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
     }
 

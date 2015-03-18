@@ -1,5 +1,6 @@
 package it.familiyparking.app.parky;
 
+import android.app.AlertDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,8 +49,11 @@ public class StatisticActivity extends FragmentActivity{
     }
 
     public void updateStatistic(){
-        SQLiteDatabase db = Tools.getDB_Readable(this);
-        fragment.updateAdapter(NotifiedTable.getAllNotified(db));
-        db.close();
+        fragment.updateData();
     }
+
+    public void closeDialog(){
+        fragment.closeDialog();
+    }
+
 }

@@ -37,17 +37,13 @@ public class GcmMessageHandler extends IntentService {
         String car_id = extras.getString("ID_car");
         String type = extras.getString("Type");
 
-        Log.e("Car_ID",car_id);
-
         String message = "";
         if(type.equals(Code.TYPE_GROUP))
             message = user + " added you to " + car;
         else if(type.equals(Code.TYPE_PARK))
             message = user + " parked the " + car;
 
-        Log.e("GCM Notification",message);
-
-        Tools.sendNotification(this,message);
+        Tools.sendNotification(this,message,car_id);
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }

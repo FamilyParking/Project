@@ -52,8 +52,6 @@ public class DoParkByStatisticActivity implements Runnable {
             if (result.isFlag()) {
                 NotifiedTable.deleteNotified(db,notification_ID);
 
-                activity.updateStatistic();
-
                 car.setParked(true);
                 CarTable.updateCar(db,car);
 
@@ -61,6 +59,8 @@ public class DoParkByStatisticActivity implements Runnable {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            activity.updateStatistic();
+                            activity.closeDialog();
                             Tools.createToast(activity, "Car parked!", Toast.LENGTH_SHORT);
                         }
                     });
@@ -71,6 +71,7 @@ public class DoParkByStatisticActivity implements Runnable {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            activity.closeDialog();
                             Tools.createToast(activity, "Server not available!", Toast.LENGTH_SHORT);
                         }
                     });
@@ -85,6 +86,7 @@ public class DoParkByStatisticActivity implements Runnable {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        activity.closeDialog();
                         Tools.createToast(activity, "No connection available!", Toast.LENGTH_SHORT);
                     }
                 });

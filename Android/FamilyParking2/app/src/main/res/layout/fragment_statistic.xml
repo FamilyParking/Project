@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light_gray">
+    android:background="@color/soft_gray">
 
     <fragment
         android:id="@+id/map_samples"
@@ -22,5 +22,31 @@
         android:background="@color/transparent"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0dp"/>
+
+    <RelativeLayout
+        android:id="@+id/empty_samples"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/map_samples"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/img_samples"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/statistic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_samples"
+            android:layout_centerHorizontal="true"
+            android:text="Thanks for your help!"
+            android:textColor="@color/dark_gray"
+            android:textSize="20dp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

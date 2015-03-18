@@ -89,10 +89,9 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
             public void onClick(View v) {
                 SQLiteDatabase db = Tools.getDB_Writable(fragment.getActivity());
                 NotifiedTable.deleteNotified(db, v.getContentDescription().toString());
-
-                fragment.updateAdapter(NotifiedTable.getAllNotified(db));
-
                 db.close();
+
+                fragment.updateData();
             }
         });
 
@@ -101,7 +100,7 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.showAlertParking(fragment.getActivity(), cars, user, true, v.getContentDescription().toString());
+                fragment.setDialog(Tools.showAlertParking(fragment.getActivity(), cars, user, true, v.getContentDescription().toString()));
             }
         });
     }

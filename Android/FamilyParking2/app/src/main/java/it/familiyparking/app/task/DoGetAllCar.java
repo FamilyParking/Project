@@ -22,11 +22,13 @@ public class DoGetAllCar implements Runnable {
     private User user;
     private MainActivity activity;
     private boolean background;
+    private String car_id;
 
-    public DoGetAllCar(MainActivity activity, User user, boolean background) {
+    public DoGetAllCar(MainActivity activity, User user, boolean background, String car_id) {
         this.user = user;
         this.activity = activity;
         this.background = background;
+        this.car_id = car_id;
     }
 
     @Override
@@ -75,7 +77,7 @@ public class DoGetAllCar implements Runnable {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        activity.park(cars);
+                        activity.park(cars,car_id);
                         activity.updateCarAdapter(cars);
                     }
                 });

@@ -41,7 +41,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,13 +52,12 @@
 
         <activity
             android:name=".parky.StatisticActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".MessageService"/>
 
         <service
             android:name=".parky.ServiceBluetooth"
@@ -81,6 +81,8 @@
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.bluetooth.BluetoothDevice.ACTION_ACL_CONNECTED" />
+                <action android:name="android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED" />
             </intent-filter>
         </receiver>
 

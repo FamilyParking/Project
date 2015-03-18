@@ -630,7 +630,7 @@ public class Tools {
         return Integer.parseInt(time.getHours()+""+time.getMinutes()+""+time.getSeconds());
     }
 
-    public static void sendNotification(Context context, String message){
+    public static void sendNotification(Context context, String message, String car_id){
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
 
@@ -644,7 +644,9 @@ public class Tools {
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setColor(context.getResources().getColor(R.color.green));
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("car_id",car_id);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setContentIntent(contentIntent);
 
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);

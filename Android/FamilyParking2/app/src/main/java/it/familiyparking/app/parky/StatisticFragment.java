@@ -1,8 +1,11 @@
 package it.familiyparking.app.parky;
 
+import android.app.AlertDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +42,7 @@ public class StatisticFragment extends Fragment{
     private ArrayList<Notified> nofieds;
     private User user;
     private ArrayList<Car> cars;
+    private AlertDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,25 +80,50 @@ public class StatisticFragment extends Fragment{
         }
     }
 
-    public void updateAdapter(ArrayList<Notified> nofieds){
-        this.nofieds = nofieds;
-        adapter = new CustomAdapterSamples(this,nofieds,user,cars);
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
+        updateData();
+    }
 
-        if(adapter.isEmpty()){
-            Tools.createToast(activity, "Statistics updated correctly", Toast.LENGTH_SHORT);
-            activity.finish();
+    public void updateData(){
+        SQLiteDatabase db = Tools.getDB_Readable(activity);
+        nofieds = NotifiedTable.getAllNotified(db);
+        db.close();
+
+        if(nofieds.isEmpty()){
+            rootView.findViewById(R.id.empty_samples).setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Tools.createToast(activity, "Thanks for your help!", Toast.LENGTH_SHORT);
+                            activity.finish();
+                        }
+                    });
+                }
+            }, 2000);
         }
         else{
-            SQLiteDatabase db = Tools.getDB_Readable(activity);
-            updateAdapter(NotifiedTable.getAllNotified(db));
-            db.close();
+            adapter = new CustomAdapterSamples(this,nofieds,user,cars);
+            listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void setDialog(AlertDialog dialog){
+        this.dialog = dialog;
+    }
+
+    public void closeDialog(){
+        if(dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
         }
     }
 }

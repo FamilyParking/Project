@@ -17,6 +17,7 @@
     <color name="black_light_transparent">#25000000</color>
     <color name="light_gray">#C2C2C2</color>
     <color name="gray">@android:color/darker_gray</color>
+    <color name="dark_gray">#7C7C7C</color>
     <color name="soft_gray">#EEEEEE</color>
     <color name="soft_gray_transparent">#AAEEEEEE</color>
     <color name="gray_transparent">#AA999999</color>

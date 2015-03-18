@@ -16,12 +16,14 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
 
     private GoogleMap googleMap;
     private MainActivity activity;
+    private boolean moveToMyLocation;
     private boolean flag;
 
     @Override
     protected Void doInBackground(Object... object) {
         googleMap = (GoogleMap)object[0];
         activity = (MainActivity)object[1];
+        moveToMyLocation = ((Boolean)object[2]).booleanValue();
         flag = true;
         int count = 100;
 
@@ -52,7 +54,9 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
             @Override
             public void run() {
             try {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
+                if(moveToMyLocation)
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
+
                 activity.setPbutton();
             }
             catch (Exception e){}

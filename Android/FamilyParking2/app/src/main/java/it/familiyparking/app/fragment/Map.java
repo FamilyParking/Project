@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class Map extends Fragment{
     private RelativeLayout ghostmodeLable;
     private boolean setGraphic;
     private AlertDialog dialogSettings;
+    private boolean moveToMyLocation;
 
     public Map() {}
 
@@ -71,6 +73,12 @@ public class Map extends Fragment{
     }
 
     @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        moveToMyLocation = (args.getString("car_id") == null);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -80,13 +88,8 @@ public class Map extends Fragment{
             }
         }
 
-        if(!toPark.isShown()){
-            enableGraphics(true);
-        }
-        else{
-            if((googleMap != null) && (googleMap.getCameraPosition().zoom < 10))
-                new AsyncTaskLocationMap().execute(googleMap, getActivity());
-        }
+        if((!activity.signInIsShown()) && (!toPark.isShown()) && (googleMap != null) && (googleMap.getCameraPosition().zoom < 10))
+                new AsyncTaskLocationMap().execute(googleMap, getActivity(), moveToMyLocation);
     }
 
 
@@ -94,6 +97,8 @@ public class Map extends Fragment{
         if (googleMap == null) {
             googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
 
@@ -111,9 +116,7 @@ public class Map extends Fragment{
                 dialogSettings = Tools.showAlertPosition(getActivity());
             }
 
-            googleMap.setMyLocationEnabled(true);
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-            new AsyncTaskLocationMap().execute(googleMap, getActivity());
+            new AsyncTaskLocationMap().execute(googleMap, getActivity(), moveToMyLocation);
         }
     }
 
@@ -150,13 +153,16 @@ public class Map extends Fragment{
         }
     }
 
-    public void parkCar(ArrayList<Car> cars){
+    public void parkCar(ArrayList<Car> cars, String car_id){
         googleMap.clear();
 
         for(Car car : cars){
             if(car.isParked()) {
                 LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()));
                 googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+
+                if((car_id != null) && (car.getId().equals(car_id)))
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude())),18.0f));
             }
         }
     }

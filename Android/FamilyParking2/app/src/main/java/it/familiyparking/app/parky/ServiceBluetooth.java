@@ -40,11 +40,11 @@ public class ServiceBluetooth extends Service{
     }
 
     protected void onHandleIntent(){
-        this.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED));
-        this.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
+        //this.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED));
+        //this.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
     }
 
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    /*private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, Intent intent) {
             final String action = intent.getAction();
@@ -112,7 +112,7 @@ public class ServiceBluetooth extends Service{
     @Override
     public void onDestroy(){
         unregisterReceiver(mReceiver);
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
