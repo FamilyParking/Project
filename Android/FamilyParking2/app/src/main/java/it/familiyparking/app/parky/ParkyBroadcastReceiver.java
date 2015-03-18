@@ -15,8 +15,6 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent){
 
-        Log.e("ParkyBroadcastReceiver",intent.getAction());
-
         if(intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)){
             Tools.startService(context);
         }

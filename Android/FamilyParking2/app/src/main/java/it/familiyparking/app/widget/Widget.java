@@ -22,6 +22,8 @@ public class Widget extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+            //views.setOnClickPendingIntent(R.id.toParkWidget,getPendingSelfIntent(context, Park_Button_Clicked_Action));
+            //views.setOnClickPendingIntent(R.id.toUnparkWidget,getPendingSelfIntent(context, UnPark_Button_Clicked_Action));
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
