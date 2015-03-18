@@ -2,6 +2,7 @@ package it.familiyparking.app.utility;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -56,6 +57,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import java.sql.Timestamp;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import it.familiyparking.app.MainActivity;
@@ -67,7 +69,6 @@ import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.parky.ServiceAPI;
-import it.familiyparking.app.parky.ServiceBluetooth;
 import it.familiyparking.app.parky.ServiceStatistic;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
@@ -836,9 +837,6 @@ public class Tools {
     }
 
     public static void startService(Context context){
-        Intent serviceIntentBluetooth = new Intent(context, ServiceBluetooth.class);
-        context.startService(serviceIntentBluetooth);
-
         Intent serviceIntentApi = new Intent(context, ServiceAPI.class);
         context.startService(serviceIntentApi);
     }
@@ -849,6 +847,29 @@ public class Tools {
         String[] time = all[1].split(":");
 
         return new String[]{ all[0],time[0]+":"+time[1]};
+    }
+
+    public static boolean isAppRunning(Context context) {
+
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> task_list = activityManager.getRunningTasks(Integer.MAX_VALUE);
+
+        String pathPackage = "ComponentInfo{"+context.getPackageName()+"/"+context.getPackageName();
+        String mainActivityPackage = pathPackage+".MainActivity}";
+        String statisticActivityPackage = pathPackage+".StatisticActivity}";
+
+        for(ActivityManager.RunningTaskInfo task : task_list){
+
+            if(task.topActivity.toString().equals(mainActivityPackage))  return true;
+            else if(task.baseActivity.toString().equals(mainActivityPackage))  return true;
+
+            else if(task.topActivity.toString().equals(statisticActivityPackage))  return true;
+            else if(task.baseActivity.toString().equals(statisticActivityPackage))  return true;
+
+        }
+
+        return false;
+
     }
 
 }

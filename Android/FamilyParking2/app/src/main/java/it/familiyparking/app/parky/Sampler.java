@@ -3,6 +3,7 @@ package it.familiyparking.app.parky;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -33,6 +34,8 @@ public class Sampler extends IntentService {
             ActivityRecognitionResult activityRecognitionResult = bundle.getParcelable("com.google.android.location.internal.EXTRA_ACTIVITY_RESULT");
 
             DetectedActivity detectedActivity = activityRecognitionResult.getMostProbableActivity();
+
+            Log.e("Sampler",detectedActivity.toString());
 
             if ((detectedActivity.getType() == DetectedActivity.ON_FOOT) || (detectedActivity.getType() == DetectedActivity.RUNNING) || (detectedActivity.getType() == DetectedActivity.WALKING) || (detectedActivity.getType() == DetectedActivity.STILL)) {
 

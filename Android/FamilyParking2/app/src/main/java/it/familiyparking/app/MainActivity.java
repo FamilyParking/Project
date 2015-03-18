@@ -67,7 +67,6 @@ public class MainActivity extends ActionBarActivity {
     private ContactDetailDialog contactDetailDialog;
     private AlertDialog dialogParking;
 
-    private BroadcastReceiver messageReceiver;
     private Tracker tracker;
 
     private boolean inflateMenu;
@@ -83,10 +82,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setBroadcastReceiver();
-        startService();
-
         car_id = getIntent().getStringExtra("car_id");
+
+        startGoogleApi();
 
         initBool();
 
@@ -117,28 +115,26 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //removeParkingNotification();
+        removeParkingNotification();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        String car_id = intent.getStringExtra("car_id");
-        if(car_id != null){
-            getAllCar(false,car_id);
+        String carID_notification = intent.getStringExtra("car_id");
+        if(carID_notification != null){
+            getAllCar(false,carID_notification);
         }
-    }
 
-    @Override
-    protected void onDestroy() {
-        if(messageReceiver != null){
-            try {
-                unregisterReceiver(messageReceiver);
+        String carID_bluetooth = intent.getStringExtra("parked");
+        if(carID_bluetooth != null){
+            if(map != null){
+                SQLiteDatabase db = Tools.getDB_Readable(this);
+                map.parkCar(CarTable.getAllCar(db),carID_bluetooth);
+                db.close();
             }
-            catch (IllegalArgumentException e){}
         }
-        super.onDestroy();
     }
 
     private void init(){
@@ -246,47 +242,10 @@ public class MainActivity extends ActionBarActivity {
         Tools.startService(this);
     }
 
-    private void setBroadcastReceiver(){
-        messageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, Intent intent) {
-                final String action = intent.getAction();
-                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Looper.prepare();
-
-                            try {
-                                Thread.sleep(1000);
-                            }
-                            catch (Exception e){}
-
-                            SQLiteDatabase db = Tools.getDB_Readable(context);
-                            ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
-                            db.close();
-
-                            if(!user.isGhostmode()) {
-                                for(final Car c : carID) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            park(c, true);
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    }).start();
-
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver,new IntentFilter(Code.ACTION_BLUETOOTH));
+    private void startGoogleApi(){
+        Intent i = new Intent();
+        i.setAction(Code.CUSTOM_INTENT);
+        sendBroadcast(i);
     }
 
     private void removeParkingNotification(){

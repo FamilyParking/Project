@@ -76,12 +76,12 @@
             android:process=":statistics"/>
 
         <service
-            android:name=".parky.ServiceAPI"
-            android:process=":api"/>
-
-        <service
             android:name=".parky.Sampler"
             android:process=":sampler"/>
+
+        <service
+            android:name=".parky.ServiceAPI"
+            android:process=":api"/>
 
         <receiver
             android:name=".parky.ParkyBroadcastReceiver"
@@ -93,6 +93,7 @@
                 <action android:name="android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED" />
                 <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
                 <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="familyparking.it.intent.action.ActivityStart" />
             </intent-filter>
         </receiver>
 
