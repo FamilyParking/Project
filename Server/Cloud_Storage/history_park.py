@@ -1,5 +1,6 @@
 import logging
 from time import strftime
+from Cloud_Storage.user_house import User_house
 from Tool.google_api_request import Google_api_request
 
 __author__ = 'Nazzareno'
@@ -12,6 +13,7 @@ import datetime
 LOCAL_PRINT = False
 
 from setting import static_variable
+
 
 class History_park(ndb.Model):
     id_user = ndb.IntegerProperty()
@@ -31,7 +33,7 @@ class History_park(ndb.Model):
 
     @staticmethod
     def history_parked_from_user(id_user):
-        result_history = History_park.query(History_park.id_user == id_user and History_park.parked == 1 )
+        result_history = History_park.query(ndb.AND(History_park.id_user == id_user, History_park.parked == 1))
         return result_history
 
     @staticmethod
@@ -40,7 +42,7 @@ class History_park(ndb.Model):
         # temp_time = timestamp.strftime("%y-%m-%d %H:%M:%S")
         #
         # if static_variable.DEBUG:
-        #     logging.debug("timestamp iso_format: "+temp_time)
+        # logging.debug("timestamp iso_format: "+temp_time)
 
         History_park.weight_date(timestamp)
 
@@ -52,6 +54,7 @@ class History_park(ndb.Model):
                                         parked=0)
         new_history_park.put()
 
+        # If the number of history is less than minimum value not have sense try to guest
         if history.count() < static_variable.min_value:
             return 1
         else:
@@ -61,36 +64,61 @@ class History_park(ndb.Model):
                 # if DEBUG:
                 # logging.debug("Value history=lat:"+str(value.latitude)+" long:"+str(value.longitude))
 
-#                 if static_variable.DEBUG:
-#                    logging.debug("Timestamp: "+value.timestamp)
+                # if static_variable.DEBUG:
+                #                    logging.debug("Timestamp: "+value.timestamp)
 
 
                 if History_park.right_point(latitude, longitude, value.latitude, value.longitude):
                     weight_park = History_park.weight_date(value.timestamp)
 
                     if static_variable.DEBUG and LOCAL_PRINT:
-                        logging.debug("weight of park: "+str(weight_park)+" value lat: "+str(value.latitude))
+                        logging.debug("weight of park: " + str(weight_park) + " value lat: " + str(value.latitude))
 
                     counter += weight_park
                     if value.parked == 1:
-
                         parked_counter += weight_park
 
             if static_variable.DEBUG:
                 logging.debug("Value counter user=" + str(counter) + " value parked_counter=" + str(parked_counter))
 
-            if static_variable.DEBUG:
-                percentage = parked_counter/counter
-                logging.debug("Percentage: "+str(percentage))
-
+            # If the number of history is less than minimum value not have sense try to guest
             if counter < static_variable.min_value:
                 return 1
 
-            elif Google_api_request.request_place(latitude, longitude) == 1 and parked_counter > 0:
-                return 1
-
             else:
-                # If the percentage of parked counter and counter is bigger than 30% the application send notification
+
+                # Check if that place is the house of user --> NOTIFICATION
+                house = User_house.get_house(id_user)
+                if house != 0:
+                    if History_park.right_point(latitude, longitude, house.getLatitude(), house.getLongitude()):
+
+                        if static_variable.DEBUG:
+                            logging.debug("HOUSE")
+
+                        return 1
+
+                result_google_API = Google_api_request.request_place(latitude, longitude)
+
+                # If the google API return that close there is a Station and you park there at least one time -->
+                # NOTIFICATION
+                if result_google_API == 1 and parked_counter > 1:
+                    if static_variable.DEBUG:
+                        logging.debug("STATION")
+                    return 1
+
+                # If the google API return that close there is a parking and you park there at least one time -->
+                # NOTIFICATION
+                if result_google_API == 2 and parked_counter > 1:
+                    if static_variable.DEBUG:
+                        logging.debug("PARK")
+                    return 1
+
+                # DEBUG
+                if static_variable.DEBUG:
+                    percentage = parked_counter / counter
+                    logging.debug("Percentage: " + str(percentage))
+
+                # If the percentage of parked counter and counter is bigger than 30% the application --> NOTIFICATION
                 if parked_counter / counter > static_variable.percentage_not:
                     return 1
                 else:
@@ -105,7 +133,7 @@ class History_park(ndb.Model):
         delta_lat = abs(cmath.asin(cmath.sin(float(r)) / cmath.cos(float(longitude))))
 
         # if DEBUG:
-        #   logging.debug("lat_point:"+str(lat_point)+" lon_point:"+str(lon_point))
+        # logging.debug("lat_point:"+str(lat_point)+" lon_point:"+str(lon_point))
 
         min_lat = float(latitude) - delta_lat.real
         max_lat = float(latitude) + delta_lat.real
@@ -113,7 +141,8 @@ class History_park(ndb.Model):
         max_lon = float(longitude) + delta_lon.real
 
         # if DEBUG:
-        #     logging.debug("min_lat:"+str(min_lat)+" min_lon:"+str(min_lon)+" max_lat:"+str(max_lat)+" max_lon:"+str(max_lon))
+        # logging.debug("min_lat:"+str(min_lat)+" min_lon:"+str(min_lon)+
+        # " max_lat:"+str(max_lat)+" max_lon:"+str(max_lon))
 
         if (float(min_lat) <= float(lat_point) <= float(max_lat)) and (
                         float(min_lon) <= float(lon_point) <= float(max_lon)):
@@ -143,14 +172,18 @@ class History_park(ndb.Model):
         temp_date1 = date1.split(" ")
         temp_day_date1 = temp_date1[0].split("-")
         if static_variable.DEBUG and LOCAL_PRINT:
-            logging.debug(str(temp_day_date1)+" value year: "+str(int(temp_day_date1[0]))+" value now year "+datetime.datetime.utcnow().strftime("%Y"))
+            logging.debug(str(temp_day_date1) + " value year: " + str(
+                int(temp_day_date1[0])) + " value now year " + datetime.datetime.utcnow().strftime("%Y"))
         if int(temp_day_date1[0]) == int(datetime.datetime.utcnow().strftime("%Y")):
             if static_variable.DEBUG and LOCAL_PRINT:
-                logging.debug("value of month: "+str(temp_day_date1[1]))
+                logging.debug("value of month: " + str(temp_day_date1[1]))
             if int(temp_day_date1[1]) == int(datetime.datetime.utcnow().strftime("%m")):
                 return 1.0
             else:
-                if int(datetime.datetime.utcnow().strftime("%m"))-int(temp_day_date1[1]) <= static_variable.range_month:
+                if int(datetime.datetime.utcnow().strftime("%m")) - int(temp_day_date1[1]) <= 1:
+                    return 0.7
+                elif int(datetime.datetime.utcnow().strftime("%m")) - int(
+                        temp_day_date1[1]) <= static_variable.range_month:
                     return 0.5
                 else:
                     return 0.3

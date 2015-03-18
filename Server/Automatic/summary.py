@@ -4,6 +4,7 @@ import os
 #from Automatic.file import File
 from Cloud_Storage.history_park import History_park
 from Cloud_Storage.user_house import User_house
+from setting import static_variable
 
 __author__ = 'Nazzareno'
 
@@ -45,15 +46,25 @@ class Summary():
         max_value = 0
         latitude = 0
         longitude = 0
-        for value in history:
-            counter_max = 0
-            for value_inside in history:
-                if History_park.right_point(value.latitude, value.longitude,value_inside.latitude, value_inside.longitude):
-                    counter_max +=1
 
-            if counter_max>=max_value:
-                max_value = counter_max
-                latitude = value.latitude
-                longitude = value.longitude
+        if static_variable.DEBUG:
+            logging.debug("Number of entry :"+str(history.count())+" user --> "+str(id_user))
 
-        User_house.update(id_user, latitude, longitude)
+        if history.count() > 0:
+            for value in history:
+                counter_max = 0
+                for value_inside in history:
+                    if History_park.right_point(value.latitude, value.longitude,value_inside.latitude, value_inside.longitude):
+                        counter_max +=1
+
+                if counter_max>=max_value:
+                    max_value = counter_max
+                    latitude = value.latitude
+                    longitude = value.longitude
+
+            User_house.update(id_user, latitude, longitude)
+
+        else:
+            User_house.update(id_user, None, None)
+
+

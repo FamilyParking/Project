@@ -15,7 +15,7 @@ class Google_api_request:
         url = '/maps/api/place/nearbysearch/json?location='
         url_place = url+latitude+","+longitude
         url_radius = url_place+"&radius="+str(static_variable.google_radius)
-        url_type = url_radius+"&types=subway_station|train_station"
+        url_type = url_radius+"&types="+static_variable.google_types
         my_key = "key=" + static_variable.google_api_key
 
         conn = httplib.HTTPSConnection("maps.googleapis.com")
@@ -27,8 +27,18 @@ class Google_api_request:
         if static_variable.DEBUG:
             logging.debug("Status request google place --> "+response["status"])
         if response["status"] == "OK":
-            if static_variable.DEBUG:
-                logging.debug("Station near the place")
+            temp_result = response["results"]
+            for temp in temp_result:
+                #logging.debug(temp)
+                if static_variable.DEBUG:
+                    if static_variable.DEBUG:
+                        logging.debug(str(temp["name"])+" is near")
+                    for value in temp["types"]:
+                        if value == "parking":
+                            return 2
+                        elif value == "train_station" or value == "subway_station":
+                            return 1
             return 1
+
         else:
             return 0

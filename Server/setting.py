@@ -19,10 +19,13 @@ class static_variable():
     percentage_not = 0.3
 
     # Radius of value that we consider when we analyzed all stored value
-    radius = 0.5      # 1 kilometre
+    radius = 1.0      # 1 kilometre
 
     # Range of month that we consider to return the weight of history
     range_month = 3
 
     # Radius of google place check
     google_radius = 200
+
+    # Type of google place
+    google_types = "subway_station|train_station|parking"

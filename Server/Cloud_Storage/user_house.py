@@ -1,5 +1,6 @@
 import logging
 import sys
+from Class.position import Position
 from setting import static_variable
 
 __author__ = 'Nazzareno'
@@ -33,11 +34,22 @@ class User_house(ndb.Model):
     @staticmethod
     def update(id_user, latitude, longitude):
         temp_user = User_house.get_by_id_user(id_user)
-        if static_variable.DEBUG:
-            logging.debug(temp_user)
+
         if temp_user == 0:
             temp_user = User_house(id_user=id_user, latitude=latitude, longitude=longitude)
             temp_user.put()
         else:
             app_user = temp_user.get()
             app_user.update_house(latitude,longitude)
+
+    @staticmethod
+    def get_house(id_user):
+        temp_user = User_house.get_by_id_user(id_user)
+        if temp_user != 0:
+            user = temp_user.get()
+            if(user.latitude != None):
+                return Position(user.latitude,user.longitude)
+            else:
+                return 0
+        else:
+            return 0
