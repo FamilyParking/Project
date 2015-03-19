@@ -9,20 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/card_layout">
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="0.01dp"
-            android:layout_height="0.01dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible"/>
+        android:background="@color/transparent">
 
         <Button
             android:id="@+id/toUnparkWidget"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_toLeftOf="@id/divider"
+            android:layout_alignParentLeft="true"
             android:visibility="visible"
             android:clickable="true"
             android:background="@drawable/button_wheel"/>
@@ -31,7 +24,7 @@
             android:id="@+id/toParkWidget"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_toRightOf="@id/divider"
+            android:layout_alignParentRight="true"
             android:visibility="visible"
             android:clickable="true"
             android:background="@drawable/button_park"/>

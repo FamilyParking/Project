@@ -13,6 +13,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
 
+import it.familiyparking.app.utility.Code;
+
 /**
  * Created by francesco on 13/02/15.
  */
@@ -50,7 +52,7 @@ public class ServiceAPI extends Service implements GoogleApiClient.ConnectionCal
 
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 1000, pendingIntent);
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL, pendingIntent);
     }
 
     @Override

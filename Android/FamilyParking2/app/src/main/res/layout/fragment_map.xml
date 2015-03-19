@@ -12,7 +12,8 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:progress="10"/>
+        android:progress="0"
+        android:progressDrawable="@drawable/custom_progress_horizontal_bar"  />
 
     <fragment
         android:id="@+id/map"

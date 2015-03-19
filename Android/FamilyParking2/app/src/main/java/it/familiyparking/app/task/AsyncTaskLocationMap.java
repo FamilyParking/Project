@@ -32,6 +32,14 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
         flag = true;
         int count = 100;
 
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(!progressBar.isShown())
+                    progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
         while(flag && (count>0)) {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -43,7 +51,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
             try{
                 Thread.sleep(500);
 
-                final int value = 100 - count;
+                final int value = (100 - count) * 10;
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
