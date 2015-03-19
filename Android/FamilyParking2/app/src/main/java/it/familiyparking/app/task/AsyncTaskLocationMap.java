@@ -35,7 +35,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(!progressBar.isShown())
+                if((progressBar != null) && (!progressBar.isShown()))
                     progressBar.setVisibility(View.VISIBLE);
             }
         });

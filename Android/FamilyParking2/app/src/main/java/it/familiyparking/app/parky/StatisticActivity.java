@@ -1,7 +1,5 @@
 package it.familiyparking.app.parky;
 
-import android.app.AlertDialog;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +8,6 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.Tracker;
 
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -26,10 +23,10 @@ public class StatisticActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tracker = Tools.activeAnalytic(this);
+
         fragment = new StatisticFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
-
-        tracker = Tools.activeAnalytic(this);
     }
 
     @Override

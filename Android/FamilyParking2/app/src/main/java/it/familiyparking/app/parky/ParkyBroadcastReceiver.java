@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -86,6 +85,7 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
                     for (final Car car : carID) {
 
                         car.setPosition(position);
+                        car.setTimestamp(Tools.getTimestamp());
 
                         new Thread(new Runnable() {
                             @Override

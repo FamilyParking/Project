@@ -24,8 +24,8 @@ import it.familiyparking.app.adapter.CustomAdapterUser;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
-import it.familiyparking.app.task.DoOccupy;
 import it.familiyparking.app.task.DoPark;
+import it.familiyparking.app.task.DoUnpark;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -179,7 +179,7 @@ public class CarDetailFragment extends Fragment{
             unpark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new Thread(new DoOccupy(activity, user, car)).start();
+                    new Thread(new DoUnpark(activity, user, car)).start();
                 }
             });
         }

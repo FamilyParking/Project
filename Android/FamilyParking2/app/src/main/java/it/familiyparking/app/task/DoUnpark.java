@@ -15,13 +15,13 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoOccupy implements Runnable {
+public class DoUnpark implements Runnable {
 
     private MainActivity activity;
     private Car car;
     private User user;
 
-    public DoOccupy(MainActivity activity, User user, Car car) {
+    public DoUnpark(MainActivity activity, User user, Car car) {
         this.activity = activity;
         this.car = car;
         this.user = user;
@@ -35,12 +35,12 @@ public class DoOccupy implements Runnable {
 
             final Result result = ServerCall.occupyCar(user, car);
 
-            SQLiteDatabase db = Tools.getDB_Writable(activity);
-            car.setParked(false);
-            CarTable.updateCar(db,car);
-            db.close();
-
             if (result.isFlag()) {
+                SQLiteDatabase db = Tools.getDB_Writable(activity);
+                car.setParked(false);
+                CarTable.updateCar(db,car);
+                db.close();
+
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
