@@ -103,14 +103,13 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
                                     if (Tools.isAppRunning(context)) {
                                         Intent intent = new Intent(context, MainActivity.class);
                                         intent.putExtra("parked",car.getId());
-                                        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
+                                        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                         try {
                                             contentIntent.send();
                                         } catch (PendingIntent.CanceledException e) {
                                             e.printStackTrace();
                                         }
-
                                     }
                                 }
 
@@ -133,7 +132,7 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
 
         PendingIntent pendingIntent = PendingIntent.getService(globalContext, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 500, pendingIntent);
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 1000, pendingIntent);
     }
 
     @Override

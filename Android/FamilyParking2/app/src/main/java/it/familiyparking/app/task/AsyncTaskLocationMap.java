@@ -2,6 +2,8 @@ package it.familiyparking.app.task;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +18,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
 
     private GoogleMap googleMap;
     private MainActivity activity;
+    private ProgressBar progressBar;
     private boolean moveToMyLocation;
     private boolean flag;
 
@@ -24,6 +27,8 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
         googleMap = (GoogleMap)object[0];
         activity = (MainActivity)object[1];
         moveToMyLocation = ((Boolean)object[2]).booleanValue();
+        progressBar = (ProgressBar)object[3];
+
         flag = true;
         int count = 100;
 
@@ -37,6 +42,16 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
 
             try{
                 Thread.sleep(500);
+
+                final int value = 100 - count;
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(progressBar != null)
+                            progressBar.setProgress(value);
+                    }
+                });
+
                 count--;
             }
             catch(InterruptedException e){
@@ -50,6 +65,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -58,6 +74,9 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
 
                 activity.setPbutton();
+
+                if(progressBar != null)
+                    progressBar.setVisibility(View.GONE);
             }
             catch (Exception e){}
 

@@ -3,14 +3,18 @@ package it.familiyparking.app.fragment;
 import android.app.AlertDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +46,7 @@ public class Map extends Fragment{
     private boolean setGraphic;
     private AlertDialog dialogSettings;
     private boolean moveToMyLocation;
+    private ProgressBar progressBar;
 
     public Map() {}
 
@@ -53,6 +58,8 @@ public class Map extends Fragment{
         this.activity = (MainActivity) getActivity();
 
         Tools.resetUpButtonActionBar(activity);
+
+        this.progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar);
 
         setUpMap();
 
@@ -89,7 +96,7 @@ public class Map extends Fragment{
         }
 
         if((!activity.signInIsShown()) && (!toPark.isShown()) && (googleMap != null) && (googleMap.getCameraPosition().zoom < 10))
-                new AsyncTaskLocationMap().execute(googleMap, getActivity(), moveToMyLocation);
+                new AsyncTaskLocationMap().execute(googleMap, getActivity(), moveToMyLocation, progressBar);
     }
 
 
@@ -116,7 +123,7 @@ public class Map extends Fragment{
                 dialogSettings = Tools.showAlertPosition(getActivity());
             }
 
-            new AsyncTaskLocationMap().execute(googleMap, getActivity(), moveToMyLocation);
+            new AsyncTaskLocationMap().execute(googleMap, getActivity(), moveToMyLocation, progressBar);
         }
     }
 
@@ -189,4 +196,5 @@ public class Map extends Fragment{
         else
             ghostmodeLable.setVisibility(View.VISIBLE);
     }
+
 }

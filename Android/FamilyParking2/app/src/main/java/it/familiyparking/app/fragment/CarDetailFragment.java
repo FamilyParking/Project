@@ -97,7 +97,7 @@ public class CarDetailFragment extends Fragment{
         }
         else{
             googleMap.setMyLocationEnabled(true);
-            new AsyncTaskLocationMap().execute(googleMap, getActivity(),false);
+            new AsyncTaskLocationMap().execute(googleMap, getActivity(),false, null);
         }
     }
 
