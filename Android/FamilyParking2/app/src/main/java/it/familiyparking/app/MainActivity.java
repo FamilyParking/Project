@@ -346,6 +346,11 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void updateCarDetailPosition(){
+        if(carDetail != null)
+            carDetail.updateCarPosition();
+    }
+
     /***************************************** FRAGMENT MANAGER ***************************************/
     private void replaceFragment(Fragment avoid){
         boolean resetUpButton = true;
@@ -686,7 +691,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetFixPosition(){
         if(fixPosition != null){
-            getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
+            getSupportFragmentManager().beginTransaction().remove(fixPosition).commit();
             fixPosition = null;
         }
     }

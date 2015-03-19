@@ -29,6 +29,7 @@ import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
+import it.familiyparking.app.task.DoFixPosition;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -57,8 +58,23 @@ public class FixPosition extends Fragment implements GoogleMap.OnMarkerDragListe
 
         setUpMap();
 
-        toSave = (RelativeLayout)rootView.findViewById(R.id.save_rl);
-        toBack = (RelativeLayout)rootView.findViewById(R.id.back_rl);
+        toSave = (RelativeLayout)rootView.findViewById(R.id.save_fix_rl);
+        toSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new DoFixPosition(activity,user,car)).start();
+            }
+        });
+        toSave.setClickable(true);
+
+        toBack = (RelativeLayout)rootView.findViewById(R.id.back_fix_rl);
+        toBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.resetFixPosition();
+            }
+        });
+        toBack.setClickable(true);
 
         return rootView;
     }
@@ -76,7 +92,6 @@ public class FixPosition extends Fragment implements GoogleMap.OnMarkerDragListe
             googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             googleMap.setMyLocationEnabled(true);
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
             googleMap.setOnMarkerDragListener(this);
 
@@ -86,19 +101,16 @@ public class FixPosition extends Fragment implements GoogleMap.OnMarkerDragListe
         }
     }
 
+
     @Override
-    public void onMarkerDrag(Marker marker) {
-        Log.e("FixPoint", "Marker " + marker.getId() + " Drag@" + marker.getPosition());
-    }
+    public void onMarkerDrag(Marker marker) {}
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        Log.e("FixPoint", "Marker " + marker.getId() + " DragEnd");
+        LatLng position = marker.getPosition();
+        car.setPosition(new double[]{position.latitude,position.longitude});
     }
 
     @Override
-    public void onMarkerDragStart(Marker marker) {
-        Log.e("FixPoint", "Marker " + marker.getId() + " DragStart");
-
-    }
+    public void onMarkerDragStart(Marker marker) {}
 }

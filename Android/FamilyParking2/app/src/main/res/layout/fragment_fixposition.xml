@@ -14,14 +14,14 @@
         android:layout_height="match_parent"/>
 
     <RelativeLayout
-        android:id="@+id/save_rl"
+        android:id="@+id/save_fix_rl"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
         android:clickable="true"
-        android:background="@drawable/circle_blue_shadow">
+        android:background="@drawable/circle_blue_shadow_dark">
 
         <ImageView
             android:id="@+id/save_iv"
@@ -29,20 +29,19 @@
             android:layout_height="30dp"
             android:layout_marginLeft="18dp"
             android:layout_marginTop="15dp"
-            android:background="@android:drawable/ic_menu_save"
-            android:backgroundTint="@color/white"/>
+            android:background="@drawable/fix_marker"/>
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/back_rl"
+        android:id="@+id/back_fix_rl"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_margin="10dp"
         android:clickable="true"
-        android:background="@drawable/circle_blue_shadow">
+        android:background="@drawable/circle_blue_shadow_dark">
 
         <ImageView
             android:id="@+id/back_iv"
@@ -50,8 +49,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="18dp"
             android:layout_marginTop="15dp"
-            android:background="@android:drawable/ic_menu_revert"
-            android:backgroundTint="@color/white"/>
+            android:background="@drawable/back_fix"/>
 
     </RelativeLayout>
 

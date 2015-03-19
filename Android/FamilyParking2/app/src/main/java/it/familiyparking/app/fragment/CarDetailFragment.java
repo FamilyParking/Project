@@ -2,6 +2,7 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +61,13 @@ public class CarDetailFragment extends Fragment{
         super.setArguments(args);
         this.user = args.getParcelable("user");
         this.car = args.getParcelable("car");
+    }
+
+    public void updateCarPosition() {
+        if((googleMap != null) && (car.isParked())){
+            googleMap.clear();
+            setMap();
+        }
     }
 
     private void setData(){
