@@ -79,6 +79,15 @@ public class CarDetailFragment extends Fragment{
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             googleMap.getUiSettings().setAllGesturesEnabled(false);
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+            if(car.isParked()) {
+                googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        activity.setFixPositionMarker(car);
+                    }
+                });
+            }
         }
 
         if(car.isParked()){

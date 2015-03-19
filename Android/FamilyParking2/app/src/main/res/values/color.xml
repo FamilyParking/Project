@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="ligth_blue">#5F89C6</color>
     <color name="blue">#3F6EAF</color>
     <color name="dark_blue">#31569D</color>
     <color name="red">#E91D4A</color>

@@ -28,6 +28,7 @@ import it.familiyparking.app.fragment.CarDetailFragment;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.fragment.EditCar;
+import it.familiyparking.app.fragment.FixPosition;
 import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
@@ -54,6 +55,7 @@ public class MainActivity extends ActionBarActivity {
     private EditCar createCar;
     private EditCar modifyCar;
     private CarDetailFragment carDetail;
+    private FixPosition fixPosition;
     private ProgressDialogCircular progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private AlertDialog dialogParking;
@@ -352,6 +354,10 @@ public class MainActivity extends ActionBarActivity {
             resetModifyCar(false);
             resetUpButton = false;
         }
+        else if((fixPosition != null)&&(fixPosition != avoid)){
+            resetFixPosition();
+            resetUpButton = false;
+        }
         else if((carDetail != null)&&(carDetail != avoid)){
             resetCarDetail();
             resetUpButton = false;
@@ -439,6 +445,9 @@ public class MainActivity extends ActionBarActivity {
         }
         else if((modifyCar != null) && !lunchWithEmptyList){
             resetModifyCar(false);
+        }
+        else if((fixPosition != null) && !lunchWithEmptyList){
+            resetFixPosition();
         }
         else if((carDetail != null) && !lunchWithEmptyList){
             resetCarDetail();
@@ -661,6 +670,24 @@ public class MainActivity extends ActionBarActivity {
 
             if(goCarList)
                 resetCarDetail();
+        }
+    }
+
+    public void setFixPositionMarker(Car car) {
+        fixPosition = new FixPosition();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", user);
+        bundle.putParcelable("car", car);
+        fixPosition.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container, fixPosition).commit();
+    }
+
+    public void resetFixPosition(){
+        if(fixPosition != null){
+            getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
+            fixPosition = null;
         }
     }
 

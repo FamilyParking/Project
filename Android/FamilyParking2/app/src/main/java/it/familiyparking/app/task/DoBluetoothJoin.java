@@ -36,7 +36,7 @@ public class DoBluetoothJoin implements Runnable {
 
         boolean bluetooth_found = false;
 
-        for(int i=0; i<30; i++) {
+        for(int i=0; i<300; i++) {
 
             while (PreferenceManager.getDefaultSharedPreferences(activity).getAll().isEmpty()) {
                 try {
