@@ -72,7 +72,8 @@ public class DoPark implements Runnable {
                         Tools.createToast(activity, "Car parked!", Toast.LENGTH_SHORT);
                         activity.park(car, true);
                         activity.resetProgressDialogCircular(true);
-                        activity.resetTabFragment();
+                        activity.resetCarDetail();
+                        activity.resetCar();
                     }
                 });
             } else {

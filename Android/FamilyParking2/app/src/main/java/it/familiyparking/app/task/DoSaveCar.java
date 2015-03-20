@@ -3,6 +3,7 @@ package it.familiyparking.app.task;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
@@ -55,7 +56,7 @@ public class DoSaveCar implements Runnable {
                     @Override
                     public void run() {
                         activity.resetProgressDialogCircular(false);
-                        activity.selectCarListTab();
+                        activity.resetCreateCar();
                         activity.resetLunchWithEmptyList();
                         Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
                     }

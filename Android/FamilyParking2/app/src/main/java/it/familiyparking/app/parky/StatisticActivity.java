@@ -8,14 +8,16 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.Tracker;
 
 import it.familiyparking.app.R;
+import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.utility.Tools;
 
 
-public class StatisticActivity extends FragmentActivity{
+public class StatisticActivity extends FragmentActivity {
 
     private Tracker tracker;
     private boolean doubleBackToExitPressedOnce = false;
-    private StatisticFragment fragment;
+    private StatisticFragment statisticFragment;
+    private ProgressDialogCircular progressDialogCircular;
 
 
     @Override
@@ -25,8 +27,8 @@ public class StatisticActivity extends FragmentActivity{
 
         tracker = Tools.activeAnalytic(this);
 
-        fragment = new StatisticFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+        statisticFragment = new StatisticFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, statisticFragment).commit();
     }
 
     @Override
@@ -46,11 +48,28 @@ public class StatisticActivity extends FragmentActivity{
     }
 
     public void updateStatistic(){
-        fragment.updateData();
+        statisticFragment.updateData();
     }
 
     public void closeDialog(){
-        fragment.closeDialog();
+        statisticFragment.closeDialog();
+    }
+
+    public void setProgressDialogCircular(String message){
+        progressDialogCircular = new ProgressDialogCircular();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("message", message);
+        progressDialogCircular.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialogCircular).commit();
+    }
+
+    public void resetProgressDialogCircular(){
+        if(progressDialogCircular != null) {
+            getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+            progressDialogCircular = null;
+        }
     }
 
 }

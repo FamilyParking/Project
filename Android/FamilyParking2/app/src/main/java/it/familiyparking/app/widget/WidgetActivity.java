@@ -14,15 +14,17 @@ import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomAdapterCarDialogWidget;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
 
 
-public class WidgetActivity extends FragmentActivity{
+public class WidgetActivity extends FragmentActivity {
 
     private Tracker tracker;
     private AlertDialog dialog;
+    private ProgressDialogCircular progressDialogCircular;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,23 @@ public class WidgetActivity extends FragmentActivity{
         if(dialog != null) {
             dialog.dismiss();
             dialog = null;
+        }
+    }
+
+    public void setProgressDialogCircular(String message){
+        progressDialogCircular = new ProgressDialogCircular();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("message", message);
+        progressDialogCircular.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container, progressDialogCircular).commit();
+    }
+
+    public void resetProgressDialogCircular(){
+        if(progressDialogCircular != null) {
+            getSupportFragmentManager().beginTransaction().remove(progressDialogCircular).commit();
+            progressDialogCircular = null;
         }
     }
 
