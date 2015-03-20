@@ -62,7 +62,7 @@ public class Widget extends AppWidgetProvider {
 
         String action = intent.getAction();
 
-        if(!action.equalsIgnoreCase(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
+        if((action.equalsIgnoreCase(Code.TYPE_PARK)) || (action.equalsIgnoreCase(Code.TYPE_UNPARK))){
 
             SQLiteDatabase db = Tools.getDB_Readable(context);
             User user = UserTable.getUser(db);

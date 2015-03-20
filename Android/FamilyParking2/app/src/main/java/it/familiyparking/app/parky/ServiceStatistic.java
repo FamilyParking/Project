@@ -1,11 +1,13 @@
 package it.familiyparking.app.parky;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -59,13 +61,21 @@ public class ServiceStatistic extends Service{
                 }
 
             }
+            else if(intent.getAction().equals(Code.ACTION_DISCARD)){
+                stopSelf();
+                Log.e("ServiceStatistic","StopSelf");
+            }
+            else if(intent.getAction().equals(Code.ACTION_STOP)){
+                stopSelf();
+                Log.e("ServiceStatistic","StopSelf");
+            }
 
             if(ID != -1)
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(ID);
-
         }
 
         return super.onStartCommand(intent, flags, startId);
     }
+
 
 }

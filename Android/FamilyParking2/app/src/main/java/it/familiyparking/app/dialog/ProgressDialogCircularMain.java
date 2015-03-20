@@ -16,16 +16,20 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 15/01/15.
  */
-public class ProgressDialogCircular extends Fragment{
+public class ProgressDialogCircularMain extends Fragment{
 
     private String text;
     private TextView textView;
 
-    public ProgressDialogCircular() {}
+    public ProgressDialogCircularMain() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.progress_circle_dialog, container, false);
+
+        Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
+        ((MainActivity) getActivity()).resetMenu();
+
 
         textView = (TextView) rootView.findViewById(R.id.message_dialog);
         textView.setText(text);

@@ -125,4 +125,5 @@ public class StatisticFragment extends Fragment{
             dialog = null;
         }
     }
+
 }

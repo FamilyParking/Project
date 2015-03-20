@@ -51,7 +51,7 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
             try{
                 Thread.sleep(500);
 
-                final int value = (100 - count) * 10;
+                final int value = ((100 - count) * 10) % 100;
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

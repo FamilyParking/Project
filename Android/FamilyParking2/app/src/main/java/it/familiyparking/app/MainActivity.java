@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
-import it.familiyparking.app.dialog.ProgressDialogCircular;
+import it.familiyparking.app.dialog.ProgressDialogCircularMain;
 import it.familiyparking.app.fragment.CarDetailFragment;
 import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Confirmation;
@@ -33,6 +33,7 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
+import it.familiyparking.app.parky.DoParky;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskGCM;
@@ -56,7 +57,7 @@ public class MainActivity extends ActionBarActivity {
     private EditCar modifyCar;
     private CarDetailFragment carDetail;
     private FixPosition fixPosition;
-    private ProgressDialogCircular progressDialogCircular;
+    private ProgressDialogCircularMain progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private AlertDialog dialogParking;
 
@@ -74,6 +75,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new DoParky(this)).start();
 
         car_id = getIntent().getStringExtra("car_id");
 
@@ -769,7 +772,7 @@ public class MainActivity extends ActionBarActivity {
 
     /********************************************* DIALOG *********************************************/
     public void setProgressDialogCircular(String message){
-        ProgressDialogCircular fragment = new ProgressDialogCircular();
+        ProgressDialogCircularMain fragment = new ProgressDialogCircularMain();
         progressDialogCircular = fragment;
 
         Bundle bundle = new Bundle();
