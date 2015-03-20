@@ -59,7 +59,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                 cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
 
                 let person = people[indexPath.row]
-                cell.textLabel.text = person.valueForKey("name") as String?
+                cell.textLabel?.text = person.valueForKey("name") as String?
                // cell.detailTextLabel?.text = "hi"
                 return cell
         }

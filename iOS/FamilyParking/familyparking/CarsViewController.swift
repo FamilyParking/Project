@@ -57,7 +57,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 as UITableViewCell
             
             let person = people[indexPath.row]
-            cell.textLabel.text = person.valueForKey("name") as String?
+            cell.textLabel?.text = person.valueForKey("name") as String?
             if((person.valueForKey("isParked") as String) == "true"){
                 cell.detailTextLabel?.text = person.valueForKey("lastPark") as String?
             }else{

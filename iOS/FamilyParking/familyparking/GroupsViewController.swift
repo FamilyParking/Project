@@ -53,7 +53,7 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
                 as UITableViewCell
             
             let person = people[indexPath.row]
-            cell.textLabel.text = person.valueForKey("name") as String?
+            cell.textLabel?.text = person.valueForKey("name") as String?
             
             return cell
     }

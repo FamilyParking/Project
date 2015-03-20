@@ -67,10 +67,10 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 var mail = person.valueForKey("email") as String?
                 var showingName = person.valueForKey("username") as String?
                 if( mail == localMail){
-                    cell.textLabel.text = showingName! + " (You)"
+                    cell.textLabel?.text = showingName! + " (You)"
                 }
                 else{
-                    cell.textLabel.text = person.valueForKey("username") as String?
+                    cell.textLabel?.text = person.valueForKey("username") as String?
                 }
                 cell.detailTextLabel?.text = person.valueForKey("email") as String?
                 return cell
