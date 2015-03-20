@@ -446,7 +446,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         super.onDestroy();
 
         if(isCreation)
-            Tools.setTitleActionBar(activity, R.string.list_car);
+            Tools.setTitleActionBar(activity, R.string.app_name);
         else
             Tools.setTitleActionBar(activity, car.getName());
     }
