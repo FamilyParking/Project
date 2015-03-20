@@ -56,7 +56,9 @@ import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.sql.Timestamp;
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -627,8 +629,9 @@ public class Tools {
     }
 
     public static int getNotificationID(){
-        Timestamp time = (new Timestamp((new java.util.Date()).getTime()));
-        return Integer.parseInt(time.getHours()+""+time.getMinutes()+""+time.getSeconds());
+        Date now = new Date();
+        String format = new SimpleDateFormat("ddHHmmss").format(now);
+        return Integer.parseInt(format);
     }
 
     public static void sendNotification(Context context, String message, String car_id){

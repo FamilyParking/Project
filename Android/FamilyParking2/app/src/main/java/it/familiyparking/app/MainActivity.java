@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircularMain;
@@ -34,6 +35,7 @@ import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
 import it.familiyparking.app.parky.DoParky;
+import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskGCM;
@@ -75,8 +77,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new Thread(new DoParky(this)).start();
 
         car_id = getIntent().getStringExtra("car_id");
 

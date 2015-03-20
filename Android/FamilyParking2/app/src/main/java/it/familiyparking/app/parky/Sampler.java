@@ -35,7 +35,7 @@ public class Sampler extends IntentService {
 
             DetectedActivity detectedActivity = activityRecognitionResult.getMostProbableActivity();
 
-            Log.e("Sampler",detectedActivity.toString());
+            //Log.e("Sampler",detectedActivity.toString());
 
             if ((detectedActivity.getType() == DetectedActivity.ON_FOOT) || (detectedActivity.getType() == DetectedActivity.RUNNING) || (detectedActivity.getType() == DetectedActivity.WALKING) || (detectedActivity.getType() == DetectedActivity.STILL)) {
 

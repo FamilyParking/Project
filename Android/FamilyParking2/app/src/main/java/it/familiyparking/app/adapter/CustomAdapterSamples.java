@@ -1,6 +1,7 @@
 package it.familiyparking.app.adapter;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,13 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 02/01/15.
  */
-public class CustomAdapterSamples extends ArrayAdapter<Notified> {
+public class CustomAdapterSamples extends ArrayAdapter<Notified> implements View.OnClickListener{
 
     private StatisticFragment fragment;
     private User user;
     private ArrayList<Car> cars;
     ArrayList<Notified> list;
+    private View lastSelected;
 
     public CustomAdapterSamples(StatisticFragment fragment, ArrayList<Notified> list, User user, ArrayList<Car> cars) {
         super(fragment.getActivity().getApplicationContext(), 0, list);
@@ -54,6 +56,9 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
 
         if(position == 0){
             fragment.setMarker(new LatLng(Double.parseDouble(notified.getLatitude()), Double.parseDouble(notified.getLongitude())));
+            RelativeLayout relativeLayout = ((RelativeLayout) convertView.findViewById(R.id.sample_root));
+            relativeLayout.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout));
+            lastSelected = relativeLayout;
         }
 
         return convertView;
@@ -62,17 +67,8 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
     private void setRoot(View convertView, Notified notified){
         final RelativeLayout relativeLayout = (RelativeLayout) convertView.findViewById(R.id.sample_root);
         relativeLayout.setContentDescription(notified.getId());
-
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(Notified n : list){
-                    if(n.getId().equals(v.getContentDescription().toString())) {
-                        fragment.setMarker(new LatLng(Double.parseDouble(n.getLatitude()), Double.parseDouble(n.getLongitude())));
-                    }
-                }
-            }
-        });
+        relativeLayout.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout_dark));
+        relativeLayout.setOnClickListener(this);
     }
 
     private void setInfo(View convertView, Notified notified){
@@ -103,6 +99,25 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> {
                 fragment.setDialog(Tools.showAlertParking(fragment.getActivity(), cars, user, true, v.getContentDescription().toString()));
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        for(Notified n : list){
+            if(n.getId().equals(v.getContentDescription().toString())) {
+                if(!lastSelected.getContentDescription().toString().equals(n.getId())) {
+                    fragment.setMarker(new LatLng(Double.parseDouble(n.getLatitude()), Double.parseDouble(n.getLongitude())));
+
+                    v.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout));
+                    lastSelected.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout_dark));
+                    setLastSelected(v);
+                }
+            }
+        }
+    }
+
+    private void setLastSelected(View v){
+        lastSelected = v;
     }
 
 
