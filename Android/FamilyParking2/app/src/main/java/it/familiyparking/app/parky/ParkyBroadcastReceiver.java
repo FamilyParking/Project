@@ -45,7 +45,8 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
 
             if((googleApiClient == null) || (!googleApiClient.isConnected() && !googleApiClient.isConnecting()))
                 setGoogleApiClient();
-
+            else
+                Log.e("ParkyBroadcastReceiver","API connected");
         }
         else if(intent.getAction().equalsIgnoreCase(BluetoothDevice.ACTION_ACL_CONNECTED)){
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -124,6 +125,9 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
 
     @Override
     public void onConnected(Bundle bundle) {
+
+        Log.e("ParkyBroadcastReceiver", "onConnected");
+
         Intent intent = new Intent(globalContext, Sampler.class);
 
         PendingIntent pendingIntent = PendingIntent.getService(globalContext, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);

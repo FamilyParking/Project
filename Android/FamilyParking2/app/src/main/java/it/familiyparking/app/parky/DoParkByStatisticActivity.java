@@ -1,19 +1,15 @@
 package it.familiyparking.app.parky;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
-import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
@@ -40,102 +36,62 @@ public class DoParkByStatisticActivity implements Runnable {
     public void run() {
         Looper.prepare();
 
-        try {
+        if(Tools.isOnline(context)) {
 
-            boolean done = false;
+            SQLiteDatabase db = Tools.getDB_Writable(context);
+            Notified notified = NotifiedTable.getNotified_ByID(db,notification_ID);
 
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.closeDialog();
-                    activity.setProgressDialogCircular(activity.getResources().getString(R.string.park_car));
-                }
-            });
+            car.setLatitude(notified.getLatitude());
+            car.setLongitude(notified.getLongitude());
+            car.setTimestamp(notified.getTimestamp());
 
-            for(int i=0; i< Code.TRIALS; i++) {
+            car.setLast_driver(user.getEmail());
 
-                if (Tools.isOnline(context)) {
+            final Result result = ServerCall.parkCar(user, car);
 
-                    SQLiteDatabase db = Tools.getDB_Writable(context);
-                    Notified notified = NotifiedTable.getNotified_ByID(db, notification_ID);
+            if (result.isFlag()) {
+                NotifiedTable.deleteNotified(db,notification_ID);
 
-                    car.setLatitude(notified.getLatitude());
-                    car.setLongitude(notified.getLongitude());
-                    car.setTimestamp(notified.getTimestamp());
+                car.setParked(true);
+                CarTable.updateCar(db,car);
 
-                    car.setLast_driver(user.getEmail());
-
-                    final Result result = ServerCall.parkCar(user, car);
-
-                    if (result.isFlag()) {
-                        NotifiedTable.deleteNotified(db, notification_ID);
-
-                        car.setParked(true);
-                        CarTable.updateCar(db, car);
-                        db.close();
-
-                        if (activity != null) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    activity.updateStatistic();
-                                    activity.resetProgressDialogCircular();
-                                    Tools.createToast(activity, "Car parked!", Toast.LENGTH_SHORT);
-                                }
-                            });
-                        }
-
-                        done = true;
-                        break;
-
-                    } else {
-                        db.close();
-
-                        if (activity != null) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    activity.resetProgressDialogCircular();
-                                    Tools.createToast(activity, "Server not available!", Toast.LENGTH_SHORT);
-                                }
-                            });
-                        }
-
-                        done = true;
-                        break;
-                    }
-
-                } else {
-                    Thread.sleep(100);
-                }
-
-            }
-
-            if(!done){
                 if(activity != null) {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            activity.resetProgressDialogCircular();
-                            Tools.createToast(activity, "No connection available!", Toast.LENGTH_SHORT);
+                            activity.updateStatistic();
+                            activity.closeDialog();
+                            Tools.createToast(activity, "Car parked!", Toast.LENGTH_SHORT);
+                        }
+                    });
+                }
+            }
+            else {
+                if(activity != null) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            activity.closeDialog();
+                            Tools.createToast(activity, "Server not available!", Toast.LENGTH_SHORT);
                         }
                     });
                 }
             }
 
-            Intent stopIntent = new Intent(context, ServiceStatistic.class);
-            stopIntent.setAction(Code.ACTION_STOP);
-            PendingIntent stopPending = PendingIntent.getService(context, 0, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            try {
-                stopPending.send();
+            db.close();
+
+        }
+        else{
+            if(activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.closeDialog();
+                        Tools.createToast(activity, "No connection available!", Toast.LENGTH_SHORT);
+                    }
+                });
             }
-            catch (Exception e){}
-
         }
-        catch (Exception e){
-
-        }
-
     }
 
 }

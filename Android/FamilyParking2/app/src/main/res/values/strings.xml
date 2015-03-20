@@ -12,7 +12,6 @@
     <string name="remove_bluetooth">Remove bluetooth device</string>
     <string name="add_car">Create new car ...</string>
     <string name="park_car">Parking car ...</string>
-    <string name="unpark_car">Occupying car ...</string>
     <string name="no_connection">No connection available!</string>
     <string name="back">BACK</string>
     <string name="code">Insert the code received by email</string>

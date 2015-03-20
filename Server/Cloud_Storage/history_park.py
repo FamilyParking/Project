@@ -177,7 +177,6 @@ class History_park(ndb.Model):
         if int(temp_day_date1[0]) == int(datetime.datetime.utcnow().strftime("%Y")):
             if static_variable.DEBUG and LOCAL_PRINT:
                 logging.debug("value of month: " + str(temp_day_date1[1]))
-
             if int(temp_day_date1[1]) == int(datetime.datetime.utcnow().strftime("%m")):
                 return 1.0
             else:

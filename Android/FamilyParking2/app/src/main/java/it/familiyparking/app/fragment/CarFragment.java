@@ -2,7 +2,6 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,10 +49,9 @@ public class CarFragment extends Fragment{
         activity = (MainActivity) getActivity();
 
         Tools.setTitleActionBar((MainActivity) getActivity(), R.string.list_car);
-        Tools.setUpButtonActionBar(activity);
 
         if(activity.getLunchWithEmptyList()){
-            activity.setCreateCar();
+            activity.selectCreateCarTab();
             Tools.createToast(activity,"You need to create a car to use the application", Toast.LENGTH_LONG);
         }
 
@@ -65,13 +63,6 @@ public class CarFragment extends Fragment{
         progess = (ProgressWheel) rootView.findViewById(R.id.car_info_progress);
 
         setData();
-
-        rootView.findViewById(R.id.to_create_rl).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.setCreateCar();
-            }
-        });
 
         return rootView;
     }

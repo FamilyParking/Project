@@ -13,8 +13,6 @@ public class Code {
     public static final String TYPE_UNPARK = "Unpark";
     public static final String ACTION_DISCARD = "Discard";
     public static final String ACTION_SAVE = "Save";
-    public static final String ACTION_STOP = "Stop";
     public static final String CUSTOM_INTENT = "familyparking.it.intent.action.ActivityStart";
     public static final int API_INTERVAL = 500;
-    public static final int TRIALS = 10;
 }
