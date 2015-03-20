@@ -36,8 +36,9 @@ class Car(ndb.Model):
         self.latitude = latitude
         self.longitude = longitude
         self.lastdriver = lastdriver
-        ts = time.time()
-        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+        st = str(datetime.datetime.utcnow() + datetime.timedelta(hours=1))
+
         self.timestamp = st
         self.isParked = True
         self.put()

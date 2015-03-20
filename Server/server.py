@@ -198,7 +198,13 @@ class updatePosition(webapp2.RequestHandler):
             temp_user = User.static_querySearch_email(user_data["Email"])
 
             car_data = dati["Car"]
+
+            timestamp = str(datetime.datetime.utcnow() + datetime.timedelta(hours=1))
+            if "Timestamp" in car_data:
+                timestamp = car_data["Timestamp"]
+
             Car.update_position_ID(car_data["ID_car"], car_data["Latitude"], car_data["Longitude"], user_data["Email"])
+
             list_user = User_car.getUserFromCar(car_data["ID_car"])
 
             # Send notification to all user register with this car
@@ -218,9 +224,7 @@ class updatePosition(webapp2.RequestHandler):
 
             id_user = temp_user.get().key.id()
 
-            timestamp = str(datetime.datetime.utcnow() + datetime.timedelta(hours=1))
-            if "Timestamp" in car_data:
-                timestamp = car_data["Timestamp"]
+
 
             if static_variable.DEBUG:
                 logging.debug(timestamp)

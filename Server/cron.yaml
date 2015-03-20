@@ -1,7 +1,4 @@
 cron:
-- description: daily summary job
-  url: /Automatic/summary
-  schedule: every 24 hours
 
 - description: daily summary job
   url: /Automatic/user_house
