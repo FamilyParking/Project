@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.opengl.GLSurfaceView;
 import android.os.Looper;
 import android.widget.Toast;
 

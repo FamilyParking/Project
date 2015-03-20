@@ -46,7 +46,8 @@ public class DoUnpark implements Runnable {
                     public void run() {
                         Tools.createToast(activity, "Car occupied!", Toast.LENGTH_SHORT);
                         activity.unPark();
-                        activity.resetTabFragment();
+                        activity.resetCarDetail();
+                        activity.resetCar();
                     }
                 });
             } else {

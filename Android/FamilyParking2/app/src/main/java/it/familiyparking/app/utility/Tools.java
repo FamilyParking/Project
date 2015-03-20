@@ -70,7 +70,6 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.EditCar;
-import it.familiyparking.app.parky.ServiceAPI;
 import it.familiyparking.app.parky.ServiceStatistic;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
@@ -837,11 +836,6 @@ public class Tools {
         String[] day = starter[0].split("-");
 
         return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
-    }
-
-    public static void startService(Context context){
-        Intent serviceIntentApi = new Intent(context, ServiceAPI.class);
-        context.startService(serviceIntentApi);
     }
 
     public static String[] getDataTime(String data){

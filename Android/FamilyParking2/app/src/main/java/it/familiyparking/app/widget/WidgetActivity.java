@@ -15,7 +15,6 @@ import it.familiyparking.app.adapter.CustomAdapterCarDialogWidget;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
-import it.familiyparking.app.dialog.ProgressDialogCircularMain;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Tools;
