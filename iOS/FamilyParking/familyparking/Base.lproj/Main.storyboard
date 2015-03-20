@@ -241,7 +241,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZF-x0-6Kv">
-                                <rect key="frame" x="152" y="380" width="152" height="103"/>
+                                <rect key="frame" x="162" y="380" width="152" height="103"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XZz-5h-AuL">
                                         <rect key="frame" x="90" y="0.0" width="60" height="60"/>
@@ -268,7 +268,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dZF-x0-6Kv" firstAttribute="trailing" secondItem="UCK-Zp-MJZ" secondAttribute="trailingMargin" id="2bP-0s-yFg"/>
+                            <constraint firstItem="dZF-x0-6Kv" firstAttribute="trailing" secondItem="UCK-Zp-MJZ" secondAttribute="trailingMargin" constant="10" id="2bP-0s-yFg"/>
                             <constraint firstItem="Gjh-Cj-COu" firstAttribute="top" secondItem="dZF-x0-6Kv" secondAttribute="bottom" constant="36" id="g3h-TV-Kvw"/>
                         </constraints>
                     </view>

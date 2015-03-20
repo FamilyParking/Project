@@ -1,0 +1,10 @@
+platform :ios, "8.0"
+ 
+target "familyparking" do
+ 
+end
+ 
+target "FastPark" do
+pod 'BlockRSSParser', '~> 2.1'
+pod 'TMCache'
+end

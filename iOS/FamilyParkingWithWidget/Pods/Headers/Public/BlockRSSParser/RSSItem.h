@@ -1,0 +1,1 @@
+../../../BlockRSSParser/RSSParser/RSSItem.h

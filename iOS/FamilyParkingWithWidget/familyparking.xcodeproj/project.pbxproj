@@ -1,0 +1,868 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800998C51AB3194800DBB666 /* contactTwoViewControler.swift */; };
+		80626AD81A95E97800D7AAA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626AD71A95E97800D7AAA5 /* AppDelegate.swift */; };
+		80626ADB1A95E97800D7AAA5 /* familyparking.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */; };
+		80626ADD1A95E97800D7AAA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626ADC1A95E97800D7AAA5 /* ViewController.swift */; };
+		80626AE01A95E97800D7AAA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80626ADE1A95E97800D7AAA5 /* Main.storyboard */; };
+		80626AE21A95E97800D7AAA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80626AE11A95E97800D7AAA5 /* Images.xcassets */; };
+		80626AE51A95E97800D7AAA5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80626AE31A95E97800D7AAA5 /* LaunchScreen.xib */; };
+		80626AF11A95E97800D7AAA5 /* familyparkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626AF01A95E97800D7AAA5 /* familyparkingTests.swift */; };
+		80626AFB1A95EC2300D7AAA5 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626AFA1A95EC2300D7AAA5 /* GoogleMaps.framework */; };
+		80626AFD1A95ECBF00D7AAA5 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 80626AFC1A95ECBF00D7AAA5 /* GoogleMaps.bundle */; };
+		80626AFF1A95ECE000D7AAA5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626AFE1A95ECE000D7AAA5 /* AVFoundation.framework */; };
+		80626B011A95ECE800D7AAA5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B001A95ECE800D7AAA5 /* CoreData.framework */; };
+		80626B031A95ECED00D7AAA5 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B021A95ECED00D7AAA5 /* CoreLocation.framework */; };
+		80626B051A95ECF400D7AAA5 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B041A95ECF400D7AAA5 /* CoreText.framework */; };
+		80626B071A95ECFC00D7AAA5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B061A95ECFC00D7AAA5 /* GLKit.framework */; };
+		80626B091A95ED0600D7AAA5 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B081A95ED0600D7AAA5 /* ImageIO.framework */; };
+		80626B0B1A95ED1000D7AAA5 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B0A1A95ED1000D7AAA5 /* libc++.dylib */; };
+		80626B0D1A95ED1C00D7AAA5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B0C1A95ED1C00D7AAA5 /* libicucore.dylib */; };
+		80626B0F1A95ED2300D7AAA5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B0E1A95ED2300D7AAA5 /* libz.dylib */; };
+		80626B111A95ED2900D7AAA5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B101A95ED2900D7AAA5 /* OpenGLES.framework */; };
+		80626B131A95ED2D00D7AAA5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B121A95ED2D00D7AAA5 /* QuartzCore.framework */; };
+		80626B151A95ED3600D7AAA5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B141A95ED3500D7AAA5 /* SystemConfiguration.framework */; };
+		80626B171A95ED6300D7AAA5 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B161A95ED6300D7AAA5 /* libsqlite3.dylib */; };
+		80626B191A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80626B181A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a */; };
+		80626B281A95EF7B00D7AAA5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B271A95EF7B00D7AAA5 /* MapViewController.swift */; };
+		80626B2A1A95F89A00D7AAA5 /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B291A95F89A00D7AAA5 /* Comments.swift */; };
+		80626B2C1A95FD3C00D7AAA5 /* Registration1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B2B1A95FD3C00D7AAA5 /* Registration1ViewController.swift */; };
+		80626B2E1A96000000D7AAA5 /* Registration2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B2D1A96000000D7AAA5 /* Registration2ViewController.swift */; };
+		80626B301A961E8B00D7AAA5 /* CarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B2F1A961E8B00D7AAA5 /* CarsViewController.swift */; };
+		80626B321A961ED600D7AAA5 /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B311A961ED600D7AAA5 /* MyTableViewCell.swift */; };
+		80626B341A96207900D7AAA5 /* AddCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B331A96207900D7AAA5 /* AddCarViewController.swift */; };
+		80626B361A96289500D7AAA5 /* CarUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B351A96289500D7AAA5 /* CarUpdate.swift */; };
+		80626B381A96426800D7AAA5 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B371A96426800D7AAA5 /* GroupsViewController.swift */; };
+		80626B3A1A9647DC00D7AAA5 /* GroupUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */; };
+		80626B3C1A964C5000D7AAA5 /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */; };
+		8066A55D1AB9CE93003A75C2 /* RSSItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8066A55C1AB9CE93003A75C2 /* RSSItemTableViewCell.swift */; };
+		808967471AB9C6A700795DC0 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 808967461AB9C6A700795DC0 /* NotificationCenter.framework */; };
+		8089674C1AB9C6A800795DC0 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8089674B1AB9C6A800795DC0 /* TodayViewController.swift */; };
+		8089674E1AB9C6A800795DC0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8089674D1AB9C6A800795DC0 /* MainInterface.storyboard */; };
+		808967511AB9C6A800795DC0 /* FastPark.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 808967441AB9C6A700795DC0 /* FastPark.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		809C44D41A9B895B00C9B297 /* SingleCarUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */; };
+		809DF0001AAE004400FDB509 /* AppInfosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */; };
+		80B0E5941A9A63990032EC8B /* ChooseParkCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */; };
+		DFF0144A6DA810580FBD1EB3 /* libPods-FastPark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B38072023771DB5B6064AAC /* libPods-FastPark.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		80626AEB1A95E97800D7AAA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80626ACA1A95E97800D7AAA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80626AD11A95E97800D7AAA5;
+			remoteInfo = familyparking;
+		};
+		8089674F1AB9C6A800795DC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80626ACA1A95E97800D7AAA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 808967431AB9C6A700795DC0;
+			remoteInfo = FastPark;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		808967551AB9C6A800795DC0 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				808967511AB9C6A800795DC0 /* FastPark.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0717D353916DED69631BBBE6 /* Pods-FastPark.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FastPark.release.xcconfig"; path = "Pods/Target Support Files/Pods-FastPark/Pods-FastPark.release.xcconfig"; sourceTree = "<group>"; };
+		800998C51AB3194800DBB666 /* contactTwoViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTwoViewControler.swift; sourceTree = "<group>"; };
+		80626AD21A95E97800D7AAA5 /* familyparking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = familyparking.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		80626AD61A95E97800D7AAA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80626AD71A95E97800D7AAA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		80626ADA1A95E97800D7AAA5 /* familyparking.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = familyparking.xcdatamodel; sourceTree = "<group>"; };
+		80626ADC1A95E97800D7AAA5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		80626ADF1A95E97800D7AAA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		80626AE11A95E97800D7AAA5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		80626AE41A95E97800D7AAA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		80626AEA1A95E97800D7AAA5 /* familyparkingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = familyparkingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		80626AEF1A95E97800D7AAA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80626AF01A95E97800D7AAA5 /* familyparkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = familyparkingTests.swift; sourceTree = "<group>"; };
+		80626AFA1A95EC2300D7AAA5 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		80626AFC1A95ECBF00D7AAA5 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		80626AFE1A95ECE000D7AAA5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		80626B001A95ECE800D7AAA5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		80626B021A95ECED00D7AAA5 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		80626B041A95ECF400D7AAA5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		80626B061A95ECFC00D7AAA5 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		80626B081A95ED0600D7AAA5 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		80626B0A1A95ED1000D7AAA5 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		80626B0C1A95ED1C00D7AAA5 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		80626B0E1A95ED2300D7AAA5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		80626B101A95ED2900D7AAA5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		80626B121A95ED2D00D7AAA5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		80626B141A95ED3500D7AAA5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		80626B161A95ED6300D7AAA5 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		80626B181A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		80626B1A1A95EDB300D7AAA5 /* GAI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		80626B1B1A95EDB300D7AAA5 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		80626B1C1A95EDB300D7AAA5 /* GAIEcommerceFields.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		80626B1D1A95EDB300D7AAA5 /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		80626B1E1A95EDB300D7AAA5 /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		80626B1F1A95EDB300D7AAA5 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
+		80626B201A95EDB300D7AAA5 /* GAIFields.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		80626B211A95EDB300D7AAA5 /* GAILogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		80626B221A95EDB300D7AAA5 /* GAITrackedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		80626B231A95EDB300D7AAA5 /* GAITracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		80626B241A95EF3000D7AAA5 /* familyparking-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "familyparking-Bridging-Header.h"; sourceTree = "<group>"; };
+		80626B271A95EF7B00D7AAA5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		80626B291A95F89A00D7AAA5 /* Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
+		80626B2B1A95FD3C00D7AAA5 /* Registration1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration1ViewController.swift; sourceTree = "<group>"; };
+		80626B2D1A96000000D7AAA5 /* Registration2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration2ViewController.swift; sourceTree = "<group>"; };
+		80626B2F1A961E8B00D7AAA5 /* CarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarsViewController.swift; sourceTree = "<group>"; };
+		80626B311A961ED600D7AAA5 /* MyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
+		80626B331A96207900D7AAA5 /* AddCarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AddCarViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		80626B351A96289500D7AAA5 /* CarUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CarUpdate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		80626B371A96426800D7AAA5 /* GroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
+		80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupUpdate.swift; sourceTree = "<group>"; };
+		80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
+		8066A55B1AB9CD2A003A75C2 /* XebiaBlogRSSWidget-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XebiaBlogRSSWidget-Bridging-Header.h"; sourceTree = "<group>"; };
+		8066A55C1AB9CE93003A75C2 /* RSSItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSItemTableViewCell.swift; sourceTree = "<group>"; };
+		808967441AB9C6A700795DC0 /* FastPark.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FastPark.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		808967461AB9C6A700795DC0 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		8089674A1AB9C6A800795DC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8089674B1AB9C6A800795DC0 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		8089674D1AB9C6A800795DC0 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleCarUsersViewController.swift; sourceTree = "<group>"; };
+		809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfosViewController.swift; sourceTree = "<group>"; };
+		80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseParkCar.swift; sourceTree = "<group>"; };
+		8B38072023771DB5B6064AAC /* libPods-FastPark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FastPark.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7469BCC9DE455312124B088 /* Pods-FastPark.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FastPark.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FastPark/Pods-FastPark.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		80626ACF1A95E97800D7AAA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80626B191A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a in Frameworks */,
+				80626B171A95ED6300D7AAA5 /* libsqlite3.dylib in Frameworks */,
+				80626B151A95ED3600D7AAA5 /* SystemConfiguration.framework in Frameworks */,
+				80626B131A95ED2D00D7AAA5 /* QuartzCore.framework in Frameworks */,
+				80626B111A95ED2900D7AAA5 /* OpenGLES.framework in Frameworks */,
+				80626B0F1A95ED2300D7AAA5 /* libz.dylib in Frameworks */,
+				80626B0D1A95ED1C00D7AAA5 /* libicucore.dylib in Frameworks */,
+				80626B0B1A95ED1000D7AAA5 /* libc++.dylib in Frameworks */,
+				80626B091A95ED0600D7AAA5 /* ImageIO.framework in Frameworks */,
+				80626B071A95ECFC00D7AAA5 /* GLKit.framework in Frameworks */,
+				80626B051A95ECF400D7AAA5 /* CoreText.framework in Frameworks */,
+				80626B031A95ECED00D7AAA5 /* CoreLocation.framework in Frameworks */,
+				80626B011A95ECE800D7AAA5 /* CoreData.framework in Frameworks */,
+				80626AFF1A95ECE000D7AAA5 /* AVFoundation.framework in Frameworks */,
+				80626AFB1A95EC2300D7AAA5 /* GoogleMaps.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80626AE71A95E97800D7AAA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		808967411AB9C6A700795DC0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				808967471AB9C6A700795DC0 /* NotificationCenter.framework in Frameworks */,
+				DFF0144A6DA810580FBD1EB3 /* libPods-FastPark.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		80626AC91A95E97800D7AAA5 = {
+			isa = PBXGroup;
+			children = (
+				80BD23EE1A9BAE9C004C4CB1 /* ExtLib */,
+				80626AD41A95E97800D7AAA5 /* familyparking */,
+				80626AED1A95E97800D7AAA5 /* familyparkingTests */,
+				808967481AB9C6A700795DC0 /* FastPark */,
+				808967451AB9C6A700795DC0 /* Frameworks */,
+				80626AD31A95E97800D7AAA5 /* Products */,
+				8840A7E231770318D3DDB88F /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		80626AD31A95E97800D7AAA5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				80626AD21A95E97800D7AAA5 /* familyparking.app */,
+				80626AEA1A95E97800D7AAA5 /* familyparkingTests.xctest */,
+				808967441AB9C6A700795DC0 /* FastPark.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		80626AD41A95E97800D7AAA5 /* familyparking */ = {
+			isa = PBXGroup;
+			children = (
+				80FE74441AB305F400643D3A /* contacts */,
+				809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */,
+				800998C51AB3194800DBB666 /* contactTwoViewControler.swift */,
+				80BD23F11A9BAEE6004C4CB1 /* support */,
+				80BD23F01A9BAEDE004C4CB1 /* car */,
+				80BD23EF1A9BAEB0004C4CB1 /* GoogleAnalitycs */,
+				80626ADE1A95E97800D7AAA5 /* Main.storyboard */,
+				80626B271A95EF7B00D7AAA5 /* MapViewController.swift */,
+				80626B311A961ED600D7AAA5 /* MyTableViewCell.swift */,
+				80626B2B1A95FD3C00D7AAA5 /* Registration1ViewController.swift */,
+				80626B2D1A96000000D7AAA5 /* Registration2ViewController.swift */,
+				80626AE11A95E97800D7AAA5 /* Images.xcassets */,
+				80626AE31A95E97800D7AAA5 /* LaunchScreen.xib */,
+				80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */,
+				80626AD51A95E97800D7AAA5 /* Supporting Files */,
+			);
+			path = familyparking;
+			sourceTree = "<group>";
+		};
+		80626AD51A95E97800D7AAA5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				80626AD61A95E97800D7AAA5 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		80626AED1A95E97800D7AAA5 /* familyparkingTests */ = {
+			isa = PBXGroup;
+			children = (
+				80626AF01A95E97800D7AAA5 /* familyparkingTests.swift */,
+				80626AEE1A95E97800D7AAA5 /* Supporting Files */,
+			);
+			path = familyparkingTests;
+			sourceTree = "<group>";
+		};
+		80626AEE1A95E97800D7AAA5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				80626AEF1A95E97800D7AAA5 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		808967451AB9C6A700795DC0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				808967461AB9C6A700795DC0 /* NotificationCenter.framework */,
+				8B38072023771DB5B6064AAC /* libPods-FastPark.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		808967481AB9C6A700795DC0 /* FastPark */ = {
+			isa = PBXGroup;
+			children = (
+				8089674B1AB9C6A800795DC0 /* TodayViewController.swift */,
+				8089674D1AB9C6A800795DC0 /* MainInterface.storyboard */,
+				808967491AB9C6A800795DC0 /* Supporting Files */,
+				8066A55B1AB9CD2A003A75C2 /* XebiaBlogRSSWidget-Bridging-Header.h */,
+				8066A55C1AB9CE93003A75C2 /* RSSItemTableViewCell.swift */,
+			);
+			path = FastPark;
+			sourceTree = "<group>";
+		};
+		808967491AB9C6A800795DC0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8089674A1AB9C6A800795DC0 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		80BD23EE1A9BAE9C004C4CB1 /* ExtLib */ = {
+			isa = PBXGroup;
+			children = (
+				80626B181A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a */,
+				80626B161A95ED6300D7AAA5 /* libsqlite3.dylib */,
+				80626B141A95ED3500D7AAA5 /* SystemConfiguration.framework */,
+				80626B121A95ED2D00D7AAA5 /* QuartzCore.framework */,
+				80626B101A95ED2900D7AAA5 /* OpenGLES.framework */,
+				80626B0E1A95ED2300D7AAA5 /* libz.dylib */,
+				80626B0C1A95ED1C00D7AAA5 /* libicucore.dylib */,
+				80626B0A1A95ED1000D7AAA5 /* libc++.dylib */,
+				80626B081A95ED0600D7AAA5 /* ImageIO.framework */,
+				80626B061A95ECFC00D7AAA5 /* GLKit.framework */,
+				80626B041A95ECF400D7AAA5 /* CoreText.framework */,
+				80626B021A95ECED00D7AAA5 /* CoreLocation.framework */,
+				80626B001A95ECE800D7AAA5 /* CoreData.framework */,
+				80626AFE1A95ECE000D7AAA5 /* AVFoundation.framework */,
+				80626AFC1A95ECBF00D7AAA5 /* GoogleMaps.bundle */,
+				80626AFA1A95EC2300D7AAA5 /* GoogleMaps.framework */,
+			);
+			name = ExtLib;
+			sourceTree = "<group>";
+		};
+		80BD23EF1A9BAEB0004C4CB1 /* GoogleAnalitycs */ = {
+			isa = PBXGroup;
+			children = (
+				80626B201A95EDB300D7AAA5 /* GAIFields.h */,
+				80626B211A95EDB300D7AAA5 /* GAILogger.h */,
+				80626B221A95EDB300D7AAA5 /* GAITrackedViewController.h */,
+				80626B231A95EDB300D7AAA5 /* GAITracker.h */,
+				80626B1A1A95EDB300D7AAA5 /* GAI.h */,
+				80626B1B1A95EDB300D7AAA5 /* GAIDictionaryBuilder.h */,
+				80626B1C1A95EDB300D7AAA5 /* GAIEcommerceFields.h */,
+				80626B1D1A95EDB300D7AAA5 /* GAIEcommerceProduct.h */,
+				80626B1E1A95EDB300D7AAA5 /* GAIEcommerceProductAction.h */,
+				80626B1F1A95EDB300D7AAA5 /* GAIEcommercePromotion.h */,
+			);
+			name = GoogleAnalitycs;
+			sourceTree = "<group>";
+		};
+		80BD23F01A9BAEDE004C4CB1 /* car */ = {
+			isa = PBXGroup;
+			children = (
+				80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */,
+				80626B351A96289500D7AAA5 /* CarUpdate.swift */,
+				80626B2F1A961E8B00D7AAA5 /* CarsViewController.swift */,
+				80626B331A96207900D7AAA5 /* AddCarViewController.swift */,
+				809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */,
+			);
+			name = car;
+			sourceTree = "<group>";
+		};
+		80BD23F11A9BAEE6004C4CB1 /* support */ = {
+			isa = PBXGroup;
+			children = (
+				80626B241A95EF3000D7AAA5 /* familyparking-Bridging-Header.h */,
+				80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */,
+				80626ADC1A95E97800D7AAA5 /* ViewController.swift */,
+				80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */,
+				80626B371A96426800D7AAA5 /* GroupsViewController.swift */,
+				80626AD71A95E97800D7AAA5 /* AppDelegate.swift */,
+				80626B291A95F89A00D7AAA5 /* Comments.swift */,
+			);
+			name = support;
+			sourceTree = "<group>";
+		};
+		80FE74441AB305F400643D3A /* contacts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = contacts;
+			sourceTree = "<group>";
+		};
+		8840A7E231770318D3DDB88F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E7469BCC9DE455312124B088 /* Pods-FastPark.debug.xcconfig */,
+				0717D353916DED69631BBBE6 /* Pods-FastPark.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		80626AD11A95E97800D7AAA5 /* familyparking */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80626AF41A95E97800D7AAA5 /* Build configuration list for PBXNativeTarget "familyparking" */;
+			buildPhases = (
+				80626ACE1A95E97800D7AAA5 /* Sources */,
+				80626ACF1A95E97800D7AAA5 /* Frameworks */,
+				80626AD01A95E97800D7AAA5 /* Resources */,
+				808967551AB9C6A800795DC0 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				808967501AB9C6A800795DC0 /* PBXTargetDependency */,
+			);
+			name = familyparking;
+			productName = familyparking;
+			productReference = 80626AD21A95E97800D7AAA5 /* familyparking.app */;
+			productType = "com.apple.product-type.application";
+		};
+		80626AE91A95E97800D7AAA5 /* familyparkingTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80626AF71A95E97800D7AAA5 /* Build configuration list for PBXNativeTarget "familyparkingTests" */;
+			buildPhases = (
+				80626AE61A95E97800D7AAA5 /* Sources */,
+				80626AE71A95E97800D7AAA5 /* Frameworks */,
+				80626AE81A95E97800D7AAA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				80626AEC1A95E97800D7AAA5 /* PBXTargetDependency */,
+			);
+			name = familyparkingTests;
+			productName = familyparkingTests;
+			productReference = 80626AEA1A95E97800D7AAA5 /* familyparkingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		808967431AB9C6A700795DC0 /* FastPark */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 808967541AB9C6A800795DC0 /* Build configuration list for PBXNativeTarget "FastPark" */;
+			buildPhases = (
+				79448D62EDC5629804AB7B0E /* Check Pods Manifest.lock */,
+				808967401AB9C6A700795DC0 /* Sources */,
+				808967411AB9C6A700795DC0 /* Frameworks */,
+				808967421AB9C6A700795DC0 /* Resources */,
+				44E042E56581A823368441A2 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FastPark;
+			productName = FastPark;
+			productReference = 808967441AB9C6A700795DC0 /* FastPark.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80626ACA1A95E97800D7AAA5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = familyParking;
+				TargetAttributes = {
+					80626AD11A95E97800D7AAA5 = {
+						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 4UVHD887LG;
+					};
+					80626AE91A95E97800D7AAA5 = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 80626AD11A95E97800D7AAA5;
+					};
+					808967431AB9C6A700795DC0 = {
+						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 4UVHD887LG;
+					};
+				};
+			};
+			buildConfigurationList = 80626ACD1A95E97800D7AAA5 /* Build configuration list for PBXProject "familyparking" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 80626AC91A95E97800D7AAA5;
+			productRefGroup = 80626AD31A95E97800D7AAA5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				80626AD11A95E97800D7AAA5 /* familyparking */,
+				80626AE91A95E97800D7AAA5 /* familyparkingTests */,
+				808967431AB9C6A700795DC0 /* FastPark */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		80626AD01A95E97800D7AAA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80626AE01A95E97800D7AAA5 /* Main.storyboard in Resources */,
+				80626AE51A95E97800D7AAA5 /* LaunchScreen.xib in Resources */,
+				80626AE21A95E97800D7AAA5 /* Images.xcassets in Resources */,
+				80626AFD1A95ECBF00D7AAA5 /* GoogleMaps.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80626AE81A95E97800D7AAA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		808967421AB9C6A700795DC0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8089674E1AB9C6A800795DC0 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		44E042E56581A823368441A2 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FastPark/Pods-FastPark-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79448D62EDC5629804AB7B0E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		80626ACE1A95E97800D7AAA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80626ADD1A95E97800D7AAA5 /* ViewController.swift in Sources */,
+				80626B2A1A95F89A00D7AAA5 /* Comments.swift in Sources */,
+				80626ADB1A95E97800D7AAA5 /* familyparking.xcdatamodeld in Sources */,
+				800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */,
+				80626B301A961E8B00D7AAA5 /* CarsViewController.swift in Sources */,
+				80626B2E1A96000000D7AAA5 /* Registration2ViewController.swift in Sources */,
+				80626B321A961ED600D7AAA5 /* MyTableViewCell.swift in Sources */,
+				80626B2C1A95FD3C00D7AAA5 /* Registration1ViewController.swift in Sources */,
+				80B0E5941A9A63990032EC8B /* ChooseParkCar.swift in Sources */,
+				80626B361A96289500D7AAA5 /* CarUpdate.swift in Sources */,
+				80626B3C1A964C5000D7AAA5 /* AddGroupViewController.swift in Sources */,
+				80626B381A96426800D7AAA5 /* GroupsViewController.swift in Sources */,
+				80626B341A96207900D7AAA5 /* AddCarViewController.swift in Sources */,
+				80626AD81A95E97800D7AAA5 /* AppDelegate.swift in Sources */,
+				809DF0001AAE004400FDB509 /* AppInfosViewController.swift in Sources */,
+				80626B281A95EF7B00D7AAA5 /* MapViewController.swift in Sources */,
+				809C44D41A9B895B00C9B297 /* SingleCarUsersViewController.swift in Sources */,
+				80626B3A1A9647DC00D7AAA5 /* GroupUpdate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80626AE61A95E97800D7AAA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80626AF11A95E97800D7AAA5 /* familyparkingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		808967401AB9C6A700795DC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8089674C1AB9C6A800795DC0 /* TodayViewController.swift in Sources */,
+				8066A55D1AB9CE93003A75C2 /* RSSItemTableViewCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		80626AEC1A95E97800D7AAA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80626AD11A95E97800D7AAA5 /* familyparking */;
+			targetProxy = 80626AEB1A95E97800D7AAA5 /* PBXContainerItemProxy */;
+		};
+		808967501AB9C6A800795DC0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 808967431AB9C6A700795DC0 /* FastPark */;
+			targetProxy = 8089674F1AB9C6A800795DC0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		80626ADE1A95E97800D7AAA5 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				80626ADF1A95E97800D7AAA5 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		80626AE31A95E97800D7AAA5 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				80626AE41A95E97800D7AAA5 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		80626AF21A95E97800D7AAA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		80626AF31A95E97800D7AAA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		80626AF51A95E97800D7AAA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = familyparking/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "familyparking/familyparking-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		80626AF61A95E97800D7AAA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = familyparking/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "familyparking/familyparking-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		80626AF81A95E97800D7AAA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = familyparkingTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/familyparking.app/familyparking";
+			};
+			name = Debug;
+		};
+		80626AF91A95E97800D7AAA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = familyparkingTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/familyparking.app/familyparking";
+			};
+			name = Release;
+		};
+		808967521AB9C6A800795DC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7469BCC9DE455312124B088 /* Pods-FastPark.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = AF_APP_EXTENSIONS;
+				INFOPLIST_FILE = FastPark/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XebiaBlogRSSWidget-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Debug;
+		};
+		808967531AB9C6A800795DC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0717D353916DED69631BBBE6 /* Pods-FastPark.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = "AF_APP_EXTENSIONS ";
+				INFOPLIST_FILE = FastPark/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XebiaBlogRSSWidget-Bridging-Header.h";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		80626ACD1A95E97800D7AAA5 /* Build configuration list for PBXProject "familyparking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80626AF21A95E97800D7AAA5 /* Debug */,
+				80626AF31A95E97800D7AAA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80626AF41A95E97800D7AAA5 /* Build configuration list for PBXNativeTarget "familyparking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80626AF51A95E97800D7AAA5 /* Debug */,
+				80626AF61A95E97800D7AAA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80626AF71A95E97800D7AAA5 /* Build configuration list for PBXNativeTarget "familyparkingTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80626AF81A95E97800D7AAA5 /* Debug */,
+				80626AF91A95E97800D7AAA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		808967541AB9C6A800795DC0 /* Build configuration list for PBXNativeTarget "FastPark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				808967521AB9C6A800795DC0 /* Debug */,
+				808967531AB9C6A800795DC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				80626ADA1A95E97800D7AAA5 /* familyparking.xcdatamodel */,
+			);
+			currentVersion = 80626ADA1A95E97800D7AAA5 /* familyparking.xcdatamodel */;
+			path = familyparking.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 80626ACA1A95E97800D7AAA5 /* Project object */;
+}

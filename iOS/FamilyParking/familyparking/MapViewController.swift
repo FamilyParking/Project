@@ -128,6 +128,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
                         if(latDouble != 0){
                             var position = CLLocationCoordinate2DMake(latDouble, longDouble)
                             var london = GMSMarker(position: position)
+                            london.draggable = true
                             london.title = man.valueForKey("name")?.description
                             london.snippet = man.valueForKey("brand")?.description
                             london.infoWindowAnchor = CGPointMake(0.5, 0.5)
@@ -157,6 +158,17 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         }
     }
 
+    func didEndDraggingMarker(marker:GMSMarker){
+            println("FINEMOVIMENTO")
+            self.staticParkCar(marker.userData.description, nameCar: marker.title, lat: marker.position.latitude.description, lon: marker.position.longitude.description)       //    marker.title!
+        
+    }
+    
+    func mapView(mapView: GMSMapView!, didEndDraggingMarker marker:GMSMarker) {
+        //addressLabel.lock()
+        println(marker.title)
+        self.staticParkCar(marker.userData.description, nameCar: marker.title, lat: marker.position.latitude.description, lon: marker.position.longitude.description)
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -201,4 +213,113 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         }
         
     }
+    
+    func staticParkCar(idCar:String,nameCar:String,lat:String,lon:String) {
+        
+        //     var carN = self.people[index.item]
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let code = prefs.objectForKey("PIN") as String
+        let mail = prefs.objectForKey("EMAIL") as String
+        //    let lat = prefs.objectForKey("LAT") as String
+        //   let lon = prefs.objectForKey("LON") as String
+        let username = prefs.objectForKey("USERNAME") as String
+        
+        //  let idCar : String = carN.valueForKey("id")!.description
+        //   let nameCar : String = carN.valueForKey("name")!.description
+        
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "updatePosition")!)
+        var session = NSURLSession.sharedSession()
+        request.HTTPMethod = "POST"
+        
+        var user = ["Code":code,
+            "Name":username,
+            "Email":mail] as Dictionary<String, NSObject>
+        /*
+        var car = [ "Id_car":carN.valueForKey("id")?.description,
+        "latitude":lat,
+        "longiude":lon]  as Dictionary<String, NSObject>
+        */
+        var car = ["Longitude":lon,
+            "Latitude":lat,
+            "Name":nameCar,
+            
+            "ID_car":idCar] as Dictionary<String,NSObject>
+        
+        var params = ["User":user,
+            "Car":car] as Dictionary<String, NSObject>
+        
+        var err: NSError?
+        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            println("Response: \(response)")
+            
+            
+            if(response == nil){
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var alertView:UIAlertView = UIAlertView()
+                    alertView.title = "No internet connection"
+                    alertView.message = "Please, check your internet connection."
+                    alertView.delegate = self
+                    alertView.addButtonWithTitle("OK")
+                    alertView.show()
+                })
+                return
+            }
+            
+            var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+            println(castato.statusCode)
+            if(castato.statusCode==500){
+                
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var alertView:UIAlertView = UIAlertView()
+                    alertView.title = "Server Error"
+                    alertView.message = "Our Monkeys are working! Try in minutes!"
+                    alertView.delegate = self
+                    alertView.addButtonWithTitle("OK")
+                    alertView.show()
+                })
+                
+                return
+            }
+            
+            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+            println("Body: \(strData)")
+            var err: NSError?
+            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            if(err == nil&&(!(response==nil))){
+                
+                if((json!["Flag"] as Bool) == true){
+                    dispatch_async(dispatch_get_main_queue(),{() -> Void in
+                        println("")
+                        self.navigationController?.popViewControllerAnimated(true)
+                    })
+                }
+                else {
+                    self.noInternetPopUp()
+                }
+            }else
+            {
+                self.noInternetPopUp()
+            }
+            
+        })
+        
+        task.resume()
+        // self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func noInternetPopUp(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "No internet"
+        alertView.message = "Please check your internet connection"
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
+    }
+
 }

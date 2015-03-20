@@ -204,9 +204,9 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                     
                     let email = self.people[index.item].valueForKey("username")?.description
 
-                    let toRem = self.people.removeAtIndex(index.item)
+              //      let toRem = self.people.removeAtIndex(index.item)
                     
-                    self.removeUserFromServer(email!)
+                    self.removeUserFromServer(email!,posx: index.item)
                    // self.removeName(toRem)
                    // self.tableView.reloadData()
             }
@@ -252,7 +252,10 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
     
     
     @IBAction func AddUser(sender: AnyObject) {
-            showPeoplePickerController()
+        
+        OldAddUser(sender)
+        
+          //  showPeoplePickerController()
              }
 
         func OldAddUser(sender: AnyObject) {
@@ -265,7 +268,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                         
                         let textFieldEx = alert.textFields![0] as UITextField
                         if(self.isValidEmail(textFieldEx.text)){
-           //                 self.addUserToServer(textFieldEx.text)
+                            self.addUserToServer(textFieldEx.text)
                         }else{
                             self.wrongMailPopUp()
                         }
@@ -274,14 +277,22 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 let cancelAction = UIAlertAction(title: "Cancel",
                     style: .Default) { (action: UIAlertAction!) -> Void in
                 }
-                
+            
+                let rubricAction = UIAlertAction(title: "Open Contacts",
+                    style: .Default) { (action: UIAlertAction!) -> Void in
+                       self.showPeoplePickerController()
+                }
+
+            
                 alert.addTextFieldWithConfigurationHandler {
                     (textField: UITextField!) -> Void in
                 }
-                
-                alert.addAction(cancelAction)
+            
+            
                 alert.addAction(saveAction)
-                
+                alert.addAction(rubricAction)
+                alert.addAction(cancelAction)
+            
                 presentViewController(alert,
                     animated: true,
                     completion: nil)
@@ -364,11 +375,11 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 if(err==nil){
                     println(json);
                     if((json!["Flag"]as Bool)==true){
-                    //    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         println("")
                         self.saveName(text)
                         self.tableView.reloadData()
-                    //    })
+                       })
                         
                     }else{
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -388,7 +399,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         
     }
     
-    func removeUserFromServer(text:String){
+    func removeUserFromServer(text:String,posx:Int){
         
         //car?.valueForKey("id"), forKey: "carId"
         
@@ -405,7 +416,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 completion: nil)
         }
         else{
-            println("ServerCAraar")
+            println("RemoveUser")
             
             var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "removeContactCar")!)
             var session = NSURLSession.sharedSession()
@@ -424,8 +435,9 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 ] as Dictionary<String, NSObject>
             // [text]
             var idcar:String = car?.valueForKey("id") as String
+            
             var carToServer = [
-                "Users":usersMail,
+                "Users":[usersMail],
                 "ID_car":idcar
                 ] as Dictionary<String, NSObject>
             
@@ -454,6 +466,14 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
                 
                 println(json);
+                if((json!["Flag"]as Bool)==true){
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        println("")
+                        self.people.removeAtIndex(posx)
+                        self.tableView.reloadData()
+                    })
+                }
+                
                 
             })
             task.resume()

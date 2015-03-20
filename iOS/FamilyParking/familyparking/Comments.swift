@@ -23,14 +23,20 @@ USERNAME        is the inserted USERNAME
 PIN             is the received PIN
                 ""
 
-DOING 
+SERVERPATH      server path
+                ""
+
+
+DOING
 show groups names
 
 */
 
 class Comments {
     
-    let serverPath = "http://android02.first-vision-798.appspot.com/"
+    
+       
+    let serverPath = "http://android03.first-vision-798.appspot.com/"
 
 }
 /*USEFUL CODE

@@ -181,7 +181,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                             if((json!["Flag"] as Bool) == true){
                                  dispatch_async(dispatch_get_main_queue(),{() -> Void in
                                    println("")
-                                    self.navigationController!.popViewControllerAnimated(true)
+                                    self.navigationController?.popViewControllerAnimated(true)
                                 })
                             }
                             else {
@@ -207,6 +207,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
         alertView.show()
     }
     
+  
     
     }
 
