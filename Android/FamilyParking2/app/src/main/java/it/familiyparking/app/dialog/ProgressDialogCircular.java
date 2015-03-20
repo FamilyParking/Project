@@ -2,15 +2,12 @@ package it.familiyparking.app.dialog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.utility.Tools;
 
 
 /**
@@ -26,10 +23,6 @@ public class ProgressDialogCircular extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.progress_circle_dialog, container, false);
-
-        Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
-        ((MainActivity) getActivity()).resetMenu();
-
 
         textView = (TextView) rootView.findViewById(R.id.message_dialog);
         textView.setText(text);

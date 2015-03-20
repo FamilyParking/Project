@@ -5,7 +5,6 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
-import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;

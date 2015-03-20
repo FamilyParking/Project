@@ -56,7 +56,9 @@ import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.sql.Timestamp;
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,7 +70,6 @@ import it.familiyparking.app.dao.DataBaseHelper;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.EditCar;
-import it.familiyparking.app.parky.ServiceAPI;
 import it.familiyparking.app.parky.ServiceStatistic;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
@@ -627,8 +628,9 @@ public class Tools {
     }
 
     public static int getNotificationID(){
-        Timestamp time = (new Timestamp((new java.util.Date()).getTime()));
-        return Integer.parseInt(time.getHours()+""+time.getMinutes()+""+time.getSeconds());
+        Date now = new Date();
+        String format = new SimpleDateFormat("ddHHmmss").format(now);
+        return Integer.parseInt(format);
     }
 
     public static void sendNotification(Context context, String message, String car_id){
@@ -834,11 +836,6 @@ public class Tools {
         String[] day = starter[0].split("-");
 
         return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
-    }
-
-    public static void startService(Context context){
-        Intent serviceIntentApi = new Intent(context, ServiceAPI.class);
-        context.startService(serviceIntentApi);
     }
 
     public static String[] getDataTime(String data){

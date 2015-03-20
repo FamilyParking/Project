@@ -2,7 +2,6 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -106,7 +105,7 @@ public class CarDetailFragment extends Fragment{
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     activity.resetCarDetail();
-                    activity.resetTabFragment();
+                    activity.resetCar();
                     activity.moveCamera(marker.getPosition());
                     return true;
                 }

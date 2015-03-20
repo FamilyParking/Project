@@ -3,8 +3,7 @@
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin = "10dp"
-    android:background="@drawable/card_layout">
+    android:layout_margin = "10dp">
 
     <RelativeLayout
         android:id="@+id/sample_info"

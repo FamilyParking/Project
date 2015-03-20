@@ -4,10 +4,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.ServerCall;
 import it.familiyparking.app.utility.Tools;
 
@@ -30,26 +32,55 @@ public class DoUnparkByWidget implements Runnable {
     public void run() {
         Looper.prepare();
 
-        if(Tools.isOnline(activity)) {
+        try{
 
-            final Result result = ServerCall.occupyCar(user, car);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.setProgressDialogCircular(activity.getResources().getString(R.string.unpark_car));
+                }
+            });
 
-            if (result.isFlag()) {
-                SQLiteDatabase db = Tools.getDB_Writable(activity);
-                car.setParked(false);
-                CarTable.updateCar(db,car);
-                db.close();
+            boolean done = false;
 
-                sendMessage("Car occupied!");
+            for (int i = 0; i < Code.TRIALS; i++) {
+
+                if (Tools.isOnline(activity)) {
+
+                    final Result result = ServerCall.occupyCar(user, car);
+
+                    if (result.isFlag()) {
+                        SQLiteDatabase db = Tools.getDB_Writable(activity);
+                        car.setParked(false);
+                        CarTable.updateCar(db, car);
+                        db.close();
+
+                        done = true;
+
+                        sendMessage("Car occupied!");
+
+                        break;
+                    } else {
+                        done = true;
+                        sendMessage("Server not available!");
+                        break;
+                    }
+
+                }
+                else{
+                    Thread.sleep(100);
+                }
+
             }
-            else {
-                sendMessage("Server not available!");
-            }
+
+            if(!done)
+                sendMessage("No connection available!");
+        }
+        catch(Exception e){
 
         }
-        else{
-            sendMessage("No connection available!");
-        }
+
+
     }
 
     private void sendMessage(final String message){
@@ -58,6 +89,7 @@ public class DoUnparkByWidget implements Runnable {
             public void run() {
                 Tools.createToast(activity, message, Toast.LENGTH_SHORT);
                 activity.closeDialog();
+                activity.resetProgressDialogCircular();
                 activity.finish();
             }
         });
