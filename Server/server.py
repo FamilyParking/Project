@@ -95,6 +95,9 @@ class createCar(webapp2.RequestHandler):
             bluetooth_MAC = ""
             bluetooth_name = ""
             register = ""
+            uuid = ""
+            bmaj = ""
+            bmin = ""
             if "Bluetooth_MAC" in car_data:
                 bluetooth_MAC = car_data["Bluetooth_MAC"]
             if "Bluetooth_Name" in car_data:
@@ -103,7 +106,7 @@ class createCar(webapp2.RequestHandler):
                 register = car_data["Register"]
             new_car = Car(name=car_data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
                           email=user_data["Email"], bluetooth_MAC=bluetooth_MAC, bluetooth_name=bluetooth_name,
-                          brand=car_data["Brand"], register=register, isParked=False, lastdriver=user_data["Email"])
+                          brand=car_data["Brand"], register=register, isParked=False, lastdriver=user_data["Email"], uuid=uuid)
             new_car = new_car.put()
             list_user = car_data["Users"]
             searchuser = User.static_querySearch_email(user_data["Email"])
@@ -298,7 +301,15 @@ class updateGCM(webapp2.RequestHandler):
                 right = StatusReturn(15, "updateGCM")
                 self.response.write(right.print_result())
 
+class updateUUID(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("updateGCM", self) >= 0:
 
+            dati = json.loads(self.request.body)
+            car_data = dati["Car"]
+            if Car.updateUUID(id=car_data["ID_car"], uuid=car_data["UUID"], bmaj=car_data["Bmaj"], bmin=car_data["Bmin"]) == 0:
+                right = StatusReturn(15, "updateUUID")
+                self.response.write(right.print_result())
 class removeContactCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("removeContactCar", self) >= 0:
@@ -364,6 +375,12 @@ class pickCar(webapp2.RequestHandler):
             right = StatusReturn(22, "pickCar", False)
             self.response.write(right.print_result())
 
+class sendAcceptableUUID(webapp2.RequestHandler):
+    def post(self):
+        if User_tool.check_before_start("sendAcceptableUUID", self) >= 0:
+            uuid = ["B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
+            right = StatusReturn(3, "sendAcceptableUUID", uuid)
+            self.response.write(right.print_result())
 
 class user_house(webapp2.RequestHandler):
     def get(self):
@@ -387,6 +404,7 @@ application = webapp2.WSGIApplication([
     ('/getNotification', getNotification),
     ('/removeContactCar', removeContactCar),
     ('/Automatic/user_house', user_house),
-    ('/Automatic/summary', automatic_summary)
-
+    ('/Automatic/summary', automatic_summary),
+	('/getBeaconUUID', sendAcceptableUUID),
+	('/updateUUID', updateUUID)
 ], debug=True)

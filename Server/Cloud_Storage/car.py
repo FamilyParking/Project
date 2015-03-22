@@ -27,7 +27,9 @@ class Car(ndb.Model):
     register = ndb.StringProperty()
     lastdriver = ndb.StringProperty()
     isParked = ndb.BooleanProperty()
-
+    uuid = ndb.StringProperty()
+    bmaj = ndb.StringProperty()
+    bmin = ndb.StringProperty()
     def getPositionFromID(self):
         result = Position(self.latitude, self.longitude)
         return result
@@ -59,8 +61,17 @@ class Car(ndb.Model):
                 "Latitude": str(self.latitude),
                 "Longitude": str(self.longitude), "Users": car_users, "Timestamp": str(self.timestamp),
                 "Register": str(self.register), "Last_driver": str(self.lastdriver), "isParked": self.isParked,
-                "Bluetooth_MAC": str(self.bluetooth_MAC), "Bluetooth_Name": str(self.bluetooth_name)
+                "Bluetooth_MAC": str(self.bluetooth_MAC), "Bluetooth_Name": str(self.bluetooth_name), "UUID": str(self.uuid), "Bmin":str(self.bmin), "Bmaj":str(self.bmaj)
                 }
+    @staticmethod
+    def updateUUID(id,uuid, bmaj, bmin):
+        temp_car = Car.getCarbyID(id)
+        temp_car.bmaj = bmaj
+        temp_car.bmin = bmin
+        temp_car.uuid = uuid
+        temp_car.put()
+        return 0
+
 
     def update(self, bluetooth_MAC, bluetooth_name, brand, email, latitude, longitude, name):
         self.latitude = latitude
