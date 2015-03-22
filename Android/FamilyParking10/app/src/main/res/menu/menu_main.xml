@@ -1,0 +1,40 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/action_position"
+        android:title=""
+        android:icon="@drawable/ic_menu_mylocation"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/action_ghostmode"
+            android:title="@string/action_ghostmode"
+            android:orderInCategory="200"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_parky"
+            android:title="@string/action_parky"
+            android:orderInCategory="300"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_notification"
+            android:title="@string/action_notification"
+            android:orderInCategory="400"
+            app:showAsAction="never" />
+    </group>
+
+    <item
+        android:id="@+id/action_statistics"
+        android:title="@string/action_statistics"
+        android:orderInCategory="500"
+        app:showAsAction="never" />
+
+</menu>

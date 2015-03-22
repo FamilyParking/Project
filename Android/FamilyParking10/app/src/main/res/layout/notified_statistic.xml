@@ -1,0 +1,160 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sample_root"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin = "10dp">
+
+    <RelativeLayout
+        android:id="@+id/sample_info"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/transparent">
+
+        <View
+            android:id="@+id/separation_info"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:layout_centerInParent="true"
+            android:background="@color/transparent"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:id="@+id/sample_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Data"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sample_data">
+
+                <ImageView
+                    android:id="@+id/sample_calendar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:background="@android:drawable/ic_menu_today"
+                    android:backgroundTint="@color/gray"/>
+
+                <TextView
+                    android:id="@+id/sample_data_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/sample_calendar"
+                    android:layout_marginLeft="5dp"
+                    android:text="17 Mar 2015"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_toRightOf="@id/separation_info">
+
+            <TextView
+                android:id="@+id/sample_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Data"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sample_time">
+
+                <ImageView
+                    android:id="@+id/sample_clock"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:background="@android:drawable/ic_menu_recent_history"
+                    android:backgroundTint="@color/gray"/>
+
+                <TextView
+                    android:id="@+id/sample_time_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/sample_clock"
+                    android:layout_marginLeft="5dp"
+                    android:text="10:30"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sample_info">
+
+        <Button
+            android:id="@+id/toGhostmode"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_centerInParent="true"
+            android:text="GHOSTMODE"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:background="@drawable/rectangle_blue_no_corner"/>
+
+        <Button
+            android:id="@+id/toDiscard"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_toLeftOf="@id/toGhostmode"
+            android:text="DISCARD"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:background="@drawable/rectangle_red_no_corner"/>
+
+        <Button
+            android:id="@+id/toAccept"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_toRightOf="@id/toGhostmode"
+            android:text="ACCEPT"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:background="@drawable/rectangle_green_no_corner"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>
+
+
