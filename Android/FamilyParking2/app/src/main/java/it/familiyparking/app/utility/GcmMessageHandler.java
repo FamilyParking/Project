@@ -36,7 +36,10 @@ public class GcmMessageHandler extends IntentService {
 
         String user = extras.getString("User");
         String car = extras.getString("Car");
+        String car_id = extras.getString("ID_car");
         String type = extras.getString("Type");
+
+        Log.e("Car_ID",car_id);
 
         String message = "";
         if(type.equals(Code.TYPE_GROUP))

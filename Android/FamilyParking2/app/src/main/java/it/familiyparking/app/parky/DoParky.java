@@ -3,6 +3,7 @@ package it.familiyparking.app.parky;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import it.familiyparking.app.dao.NotifiedTable;
@@ -29,7 +30,7 @@ public class DoParky implements Runnable {
     public void run() {
         Looper.prepare();
 
-        Notified notified = new Notified(context);
+        notified = new Notified(context);
 
         if(Tools.isOnline(context)) {
 
@@ -40,13 +41,17 @@ public class DoParky implements Runnable {
             if(user != null) {
                 Result result = ServerCall.isNotification(new IpoteticPark(user, notified.getPosition(), notified.getTimestamp()));
 
-                if((result.isFlag()) && ((boolean) result.getObject()))
+                if((result.isFlag()) && (((Boolean) result.getObject()).booleanValue())) {
                     sendNotification();
+                }
 
             }
 
         }
         else{
+
+            Log.e("doParky","Offline");
+
             sendNotification();
         }
     }

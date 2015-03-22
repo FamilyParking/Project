@@ -54,15 +54,18 @@ public class DoPark implements Runnable {
 
             while (flag) ;
 
+            car.setTimestamp(Tools.getTimestamp());
+            car.setLast_driver(user.getEmail());
+
             final Result result = ServerCall.parkCar(user, car);
 
-            SQLiteDatabase db = Tools.getDB_Writable(activity);
-            car.setParked(true);
-            car.setLast_driver(user.getEmail());
-            CarTable.updateCar(db,car);
-            db.close();
-
             if (result.isFlag()) {
+
+                SQLiteDatabase db = Tools.getDB_Writable(activity);
+                car.setParked(true);
+                CarTable.updateCar(db,car);
+                db.close();
+
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

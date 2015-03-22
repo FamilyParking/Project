@@ -1,6 +1,7 @@
 package it.familiyparking.app;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,6 +41,7 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
+import it.familiyparking.app.parky.DoParky;
 import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
@@ -83,11 +85,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Notified notified = new Notified(this);
-        SQLiteDatabase dbTemp = Tools.getDB_Writable(this);
-        NotifiedTable.insertNotified(dbTemp,notified);
-        Tools.sendNotificationForStatics(this,Integer.parseInt(notified.getId()));
-        dbTemp.close();*/
+        new Thread(new DoParky(this)).start();
 
         setBroadcastReceiver();
         startService();
@@ -116,6 +114,12 @@ public class MainActivity extends ActionBarActivity {
 
             db.close();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        removeParkingNotification();
     }
 
     @Override
@@ -275,6 +279,10 @@ public class MainActivity extends ActionBarActivity {
         };
 
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver,new IntentFilter(Code.ACTION_BLUETOOTH));
+    }
+
+    private void removeParkingNotification(){
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(0);
     }
 
     /*********************************************** DATA *********************************************/

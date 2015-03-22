@@ -5,10 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,8 +14,6 @@ import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.task.DoPark;
-import it.familiyparking.app.task.DoParkByStatisticActivity;
 import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
 
@@ -42,9 +37,6 @@ public class ServiceStatistic extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
-
         if((intent != null) && (intent.getAction() != null)) {
 
             int ID = intent.getIntExtra("notification_ID", -1);
@@ -60,8 +52,6 @@ public class ServiceStatistic extends Service{
                 if((cars.size() > 1) || (notifies.size() > 1)){
                     Intent activity = new Intent(getBaseContext(),StatisticActivity.class);
                     activity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.putExtra("notification_ID",Integer.toString(ID));
-
                     startActivity(activity);
                 }
                 else{
@@ -69,9 +59,6 @@ public class ServiceStatistic extends Service{
                 }
 
             }
-            /*else if(intent.getAction().equals(Code.ACTION_DISCARD)){
-
-            }*/
 
             if(ID != -1)
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(ID);

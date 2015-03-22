@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -171,12 +172,20 @@ public class CarDetailFragment extends Fragment{
     }
 
     private void setOccupyCar(View rootView){
-        rootView.findViewById(R.id.toWheel_detail).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new DoOccupy(activity,user,car)).start();
-            }
-        });
+        Button unpark = (Button) rootView.findViewById(R.id.toUnPark);
+
+        if(car.isParked()) {
+            unpark.setVisibility(View.VISIBLE);
+            unpark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new DoOccupy(activity, user, car)).start();
+                }
+            });
+        }
+        else{
+            unpark.setVisibility(View.GONE);
+        }
     }
 
     public void updateCar(Car car){

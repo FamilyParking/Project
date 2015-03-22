@@ -171,13 +171,26 @@
 
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/toUnPark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/last_driver_relative"
+                android:text="@string/unpark"
+                android:textColor="@color/white"
+                android:background="@drawable/rectangle_blue"/>
+
             <RelativeLayout
                 android:id="@+id/bluetooth_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="5dp"
-                android:layout_below="@id/last_driver_relative"
+                android:layout_below="@id/toUnPark"
                 android:background="@drawable/card_layout">
 
                 <RelativeLayout
@@ -263,16 +276,6 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_park"/>
-
-    <Button
-        android:id="@+id/toWheel_detail"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/button_wheel"/>
 
 </RelativeLayout>
 

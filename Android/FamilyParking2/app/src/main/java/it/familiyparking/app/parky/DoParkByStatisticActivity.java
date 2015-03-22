@@ -1,4 +1,4 @@
-package it.familiyparking.app.task;
+package it.familiyparking.app.parky;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,14 +47,16 @@ public class DoParkByStatisticActivity implements Runnable {
 
             car.setLatitude(notified.getLatitude());
             car.setLongitude(notified.getLongitude());
+            car.setTimestamp(notified.getTimestamp());
 
-            NotifiedTable.deleteNotified(db,notification_ID);
+            car.setLast_driver(user.getEmail());
 
             final Result result = ServerCall.parkCar(user, car);
 
             if (result.isFlag()) {
+                NotifiedTable.deleteNotified(db,notification_ID);
+
                 car.setParked(true);
-                car.setLast_driver(user.getEmail());
                 CarTable.updateCar(db,car);
 
                 if(activity != null) {

@@ -27,6 +27,8 @@ public class ServiceAPI extends Service implements GoogleApiClient.ConnectionCal
     public void onCreate() {
         super.onCreate();
 
+        Log.e("ServiceAPI","Call method to block service if necessary");
+
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
         final Tracker t = analytics.newTracker("UA-58079755-2");
 
@@ -53,7 +55,6 @@ public class ServiceAPI extends Service implements GoogleApiClient.ConnectionCal
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override

@@ -19,7 +19,7 @@ import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.DoPark;
-import it.familiyparking.app.task.DoParkByStatisticActivity;
+import it.familiyparking.app.parky.DoParkByStatisticActivity;
 import it.familiyparking.app.utility.Tools;
 
 /**

@@ -32,6 +32,9 @@ public class ServiceBluetooth extends Service{
 
     @Override
     public void onCreate() {
+
+        Log.e("ServiceBluetooth","Call method to block service if necessary");
+
         super.onCreate();
         onHandleIntent();
     }

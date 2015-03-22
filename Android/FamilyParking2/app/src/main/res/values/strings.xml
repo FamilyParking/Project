@@ -46,6 +46,7 @@
     <string name="tab_create">CREATE</string>
     <string name="no_car">Your car list is empty"</string>
     <string name="update_car_list">Downloading cars information ..."</string>
+    <string name="unpark">"UNPARK THE CAR"</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

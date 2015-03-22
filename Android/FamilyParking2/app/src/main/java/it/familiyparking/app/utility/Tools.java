@@ -644,12 +644,12 @@ public class Tools {
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setColor(context.getResources().getColor(R.color.green));
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setContentIntent(contentIntent);
 
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
-        mNotificationManager.notify(getNotificationID(), notificationBuilder.build());
+        mNotificationManager.notify(0, notificationBuilder.build());
     }
 
     public static void sendNotificationForStatics(Context context, int notification_ID){
@@ -815,9 +815,6 @@ public class Tools {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-
-                        if(destroy)
-                            activity.finish();
                     }
                 });
 
@@ -844,11 +841,12 @@ public class Tools {
         context.startService(serviceIntentApi);
     }
 
+    public static String[] getDataTime(String data){
 
+        String[] all = data.split(" ");
+        String[] time = all[1].split(":");
 
-
-
-
-    
+        return new String[]{ all[0],time[0]+":"+time[1]};
+    }
 
 }

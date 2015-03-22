@@ -80,6 +80,14 @@ public class Map extends Fragment{
                 Tools.showClosedInfoAlert(getActivity());
             }
         }
+
+        if(!toPark.isShown()){
+            enableGraphics(true);
+        }
+        else{
+            if((googleMap != null) && (googleMap.getCameraPosition().zoom < 10))
+                new AsyncTaskLocationMap().execute(googleMap, getActivity());
+        }
     }
 
 
