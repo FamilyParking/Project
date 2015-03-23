@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
@@ -142,6 +143,10 @@ public class DoUpdateCar implements Runnable {
     }
 
     private void success(){
+        SQLiteDatabase db = Tools.getDB_Readable(activity);
+        ((FPApplication) activity.getApplication()).setCars(CarTable.getAllCar(db));
+        db.close();
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

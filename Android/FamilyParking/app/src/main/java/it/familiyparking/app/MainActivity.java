@@ -110,12 +110,7 @@ public class MainActivity extends ActionBarActivity {
 
             db.close();
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        removeParkingNotification();
     }
 
     @Override
@@ -331,7 +326,7 @@ public class MainActivity extends ActionBarActivity {
     public void updateCarAdapter(ArrayList<Car> cars){
         if(cars.isEmpty()) {
             setLunchWithEmptyList();
-            setCar();
+            setTabCar();
             setCreateCar();
         }
         else {
@@ -486,10 +481,8 @@ public class MainActivity extends ActionBarActivity {
         else if((contactDetailDialog != null) && !lunchWithEmptyList){
             resetContactDetailDialog();
         }
-        else if((createCar != null) && !lunchWithEmptyList){
-            Tools.resetUpButtonActionBar(this);
-            getSupportFragmentManager().beginTransaction().remove(createCar).commit();
-            createCar = null;
+        else if((carFragment != null) && !lunchWithEmptyList){
+            setTabMap();
         }
         else if((ghostMode != null) && !lunchWithEmptyList){
             resetGhostmode();
@@ -567,6 +560,18 @@ public class MainActivity extends ActionBarActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.container, tabFragment).commit();
     }
 
+    public void setTabCar(){
+        if(tabFragment != null){
+            tabFragment.selectCarFragment();
+        }
+    }
+
+    public void setTabMap(){
+        if(tabFragment != null){
+            tabFragment.selectMapFragment();
+        }
+    }
+
     private void resetTabFragment(){
         if(tabFragment != null) {
             tabFragment.removeTab();
@@ -599,6 +604,9 @@ public class MainActivity extends ActionBarActivity {
         resetCarDetail();
 
         createCar = new EditCar();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("car",null);
+        createCar.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
     }
 
@@ -627,6 +635,9 @@ public class MainActivity extends ActionBarActivity {
 
     public void setModifyCar(Car car){
         EditCar fragment = new EditCar();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("car",car);
+        fragment.setArguments(bundle);
 
         modifyCar = fragment;
         getSupportFragmentManager().beginTransaction().add(R.id.container, modifyCar).commit();
@@ -666,6 +677,8 @@ public class MainActivity extends ActionBarActivity {
 
             getSupportFragmentManager().beginTransaction().remove(carFragment).commit();
             carFragment = null;
+
+            setTabMap();
         }
     }
 

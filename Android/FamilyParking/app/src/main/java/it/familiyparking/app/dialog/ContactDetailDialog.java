@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.serverClass.User;
@@ -20,6 +21,7 @@ import it.familiyparking.app.utility.Tools;
  */
 public class ContactDetailDialog extends Fragment{
 
+    MainActivity activity;
     private User contact;
     private User user;
 
@@ -29,8 +31,11 @@ public class ContactDetailDialog extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.contact_detail_dialog, container, false);
 
-        Tools.resetUpButtonActionBar((ActionBarActivity) getActivity());
-        ((MainActivity) getActivity()).resetMenu();
+        this.activity = (MainActivity) getActivity();
+        this.user = ((FPApplication) activity.getApplication()).getUser();
+
+        Tools.resetUpButtonActionBar(activity);
+        activity.resetMenu();
 
         if(contact.getEmail().equals(contact.getName())){
             (rootView.findViewById(R.id.contact_email_tv_detail)).setVisibility(View.GONE);
@@ -44,7 +49,7 @@ public class ContactDetailDialog extends Fragment{
         ImageView photo = (ImageView) rootView.findViewById(R.id.contact_image_iv_detail);
         TextView textView = (TextView) rootView.findViewById(R.id.contact_image_tv_detail);
 
-        Tools.addThumbnail(getActivity(), photo, textView, contact);
+        Tools.addThumbnail(activity, photo, textView, contact);
 
         if(contact.equals(user)) {
             rootView.findViewById(R.id.button_rl_detail_all).setVisibility(View.GONE);
@@ -82,12 +87,10 @@ public class ContactDetailDialog extends Fragment{
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        this.user = args.getParcelable("user");
         this.contact = args.getParcelable("contact");
     }
 
     public void closeDialog(){
-        final MainActivity activity = (MainActivity) getActivity();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -97,7 +100,6 @@ public class ContactDetailDialog extends Fragment{
     }
 
     public void deleteContact(){
-        final MainActivity activity = (MainActivity) getActivity();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

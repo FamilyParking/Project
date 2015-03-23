@@ -118,25 +118,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sample_info">
 
-        <Button
-            android:id="@+id/toGhostmode"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="2dp"
+        <View
+            android:id="@+id/separation_button"
+            android:layout_width="0.1px"
+            android:layout_height="0.1px"
             android:layout_centerInParent="true"
-            android:text="GHOSTMODE"
-            android:textColor="@color/white"
-            android:clickable="true"
-            android:background="@drawable/rectangle_blue_no_corner"/>
+            android:background="@color/transparent"/>
 
         <Button
             android:id="@+id/toDiscard"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
             android:layout_marginBottom="2dp"
-            android:layout_toLeftOf="@id/toGhostmode"
+            android:layout_toLeftOf="@id/separation_button"
             android:text="DISCARD"
             android:textColor="@color/white"
             android:clickable="true"
@@ -144,10 +139,11 @@
 
         <Button
             android:id="@+id/toAccept"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
             android:layout_marginBottom="2dp"
-            android:layout_toRightOf="@id/toGhostmode"
+            android:layout_toRightOf="@id/separation_button"
             android:text="ACCEPT"
             android:textColor="@color/white"
             android:clickable="true"

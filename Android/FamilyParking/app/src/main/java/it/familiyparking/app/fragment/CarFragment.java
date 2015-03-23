@@ -60,7 +60,7 @@ public class CarFragment extends Fragment{
 
         if(activity.getLunchWithEmptyList()){
             activity.setCreateCar();
-            Tools.createToast(activity,"You need to create a car to use the application", Toast.LENGTH_LONG);
+            Tools.createToast(activity,activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
         }
 
         listView = (ListView) rootView.findViewById(R.id.car_lv);

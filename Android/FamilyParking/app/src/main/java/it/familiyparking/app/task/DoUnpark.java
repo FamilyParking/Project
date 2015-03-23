@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.widget.Toast;
 
+import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
@@ -39,6 +40,7 @@ public class DoUnpark implements Runnable {
                 SQLiteDatabase db = Tools.getDB_Writable(activity);
                 car.setParked(false);
                 CarTable.updateCar(db,car);
+                ((FPApplication) activity.getApplication()).setCars(CarTable.getAllCar(db));
                 db.close();
 
                 activity.runOnUiThread(new Runnable() {

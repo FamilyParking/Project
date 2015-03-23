@@ -54,6 +54,7 @@
     <string name="signin">"Sign in"</string>
     <string name="confirmation">"Confirmation"</string>
     <string name="fixposition">"Fix position"</string>
+    <string name="empty_car">"You need to create a car to use the application"</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

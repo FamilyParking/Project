@@ -3,6 +3,7 @@ package it.familiyparking.app;
 import android.app.Application;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,9 @@ public class FPApplication extends Application {
 
     private User user;
     private ArrayList<Car> cars = new ArrayList<>();
+
+    private boolean firstLunch = true;
+
     private boolean getAllCar_Running = false;
     private GoogleApiClient googleApiClient;
 
@@ -62,5 +66,13 @@ public class FPApplication extends Application {
         }
 
         return true;
+    }
+
+    public boolean isFirstLunch() {
+        return firstLunch;
+    }
+
+    public void updateFirstLunch() {
+        this.firstLunch = false;
     }
 }

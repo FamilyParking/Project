@@ -38,13 +38,19 @@ import it.familiyparking.app.utility.Tools;
 public class Map extends Fragment{
 
     private MainActivity activity;
+    private FPApplication application;
+
     private GoogleMap googleMap;
+
     private Button toPark;
     private RelativeLayout ghostmodeLable;
-    private boolean setGraphic;
-    private AlertDialog dialogSettings;
+
     private boolean moveToMyLocation;
     private ProgressBar progressBar;
+
+    private AlertDialog dialogSettings;
+
+    private boolean setGraphic;
 
     public Map() {}
 
@@ -54,6 +60,7 @@ public class Map extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         this.activity = (MainActivity) getActivity();
+        this.application = (FPApplication) activity.getApplication();
 
         Tools.resetUpButtonActionBar(activity);
 
@@ -103,6 +110,11 @@ public class Map extends Fragment{
     public void onResume() {
         super.onResume();
         activity.showMyPosition();
+
+        if(!application.isFirstLunch())
+            parkCar();
+        else
+            application.updateFirstLunch();
     }
 
     private void setUpMap(){
@@ -165,6 +177,15 @@ public class Map extends Fragment{
         }
     }
 
+    private void parkCar(){
+        googleMap.clear();
+
+        ArrayList<Car> cars = application.getCars();
+        for(Car car : cars)
+            if(car.isParked())
+                googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()))).title(car.getName()));
+    }
+
     public void parkCar(ArrayList<Car> cars, String car_id){
         googleMap.clear();
 
@@ -195,7 +216,7 @@ public class Map extends Fragment{
     }
 
     public void updateGhostmodeLable(){
-        User user = ((FPApplication) activity.getApplication()).getUser();
+        User user = application.getUser();
         if((user == null) || (!user.isGhostmode()))
             ghostmodeLable.setVisibility(View.GONE);
         else

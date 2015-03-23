@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
@@ -48,6 +49,8 @@ public class DoRemoveCar implements Runnable {
                 GroupTable.deleteGroup(db, car.getId());
 
                 final ArrayList<Car> cars = CarTable.getAllCar(db);
+
+                ((FPApplication) activity.getApplication()).setCars(cars);
 
                 db.close();
 
