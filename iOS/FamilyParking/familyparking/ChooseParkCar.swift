@@ -65,7 +65,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
         }
         func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
             
-            ParkCar(indexPath)
+            ParkCar(indexPath,car: self.people[indexPath.item])
             
         }
     
@@ -99,9 +99,12 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             }
         }
         
-        func ParkCar(index: NSIndexPath) {
-            
-            var carN = self.people[index.item]
+    func ParkCar(index: NSIndexPath, car: NSManagedObject) {
+        
+       //     var carN = self.people[index.item]
+       
+        
+            var carN = car
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let code = prefs.objectForKey("PIN") as String
             let mail = prefs.objectForKey("EMAIL") as String
@@ -109,7 +112,8 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             let lon = prefs.objectForKey("LON") as String
             let username = prefs.objectForKey("USERNAME") as String
             
-            let idCar : String = carN.valueForKey("id")!.description
+            let idCarOpt : String? = carN.valueForKey("id")?.description?
+        if var idCar:String = idCarOpt{
             let nameCar : String = carN.valueForKey("name")!.description
             
             var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "updatePosition")!)
@@ -181,7 +185,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                             if((json!["Flag"] as Bool) == true){
                                  dispatch_async(dispatch_get_main_queue(),{() -> Void in
                                    println("")
-                                    self.navigationController?.popViewControllerAnimated(true)
+                                //    self.navigationController?.popViewControllerAnimated(true)
                                 })
                             }
                             else {
@@ -195,6 +199,11 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                     })
                     
                     task.resume()
+        }else{
+            println("Car not existing")
+        }
+                    self.navigationController?.popViewControllerAnimated(true)
+            
                    // self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 

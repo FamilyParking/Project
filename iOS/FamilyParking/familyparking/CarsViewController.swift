@@ -246,6 +246,16 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 //self.removeName(toRem)
                 //self.tableView.reloadData()
         }
+        let associateBeaconAction = UIAlertAction(title: "Associate iBeacon",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                
+                //let toRem = self.people.removeAtIndex(index.item)
+                let toRem = self.people[index.item].valueForKey("id")?.description
+                self.associateIBeacon(toRem!)
+                //self.removeName(toRem)
+                //self.tableView.reloadData()
+        }
+
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
@@ -257,6 +267,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         alert.addAction(findAction)
         alert.addAction(editAction)
+        alert.addAction(associateBeaconAction)
         alert.addAction(deleteAction)
         alert.addAction(cancelAction)
 
@@ -272,6 +283,77 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             }
         }
     }
+    
+    func associateIBeacon(id:String){
+        
+        var alert = UIAlertController(title: "iBeacon Association",
+            message: "Please put only your car iBeacon near your phone",
+            preferredStyle: .Alert)
+        
+        
+        let findIBeaconAction = UIAlertAction(title: "Associate",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                self.completeIBeaconAssociation(id)
+               
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+        }
+        
+        
+        alert.addAction(findIBeaconAction)
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert,
+            animated: true,
+            completion: nil)
+    }
+    
+    func completeIBeaconAssociation(id:String){
+        
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let NumIBeacon = prefs.integerForKey("NUMBEACON")
+        
+        if(NumIBeacon==0){
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "No iBeacon found"
+            alertView.message = "Please check on our site if your iBeacon is compatible"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+        else if(NumIBeacon>1){
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "Too many iBeacon"
+            alertView.message = "Please find a zone with only your iBeacon"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+        else{
+           
+            
+            
+            var UUID = prefs.objectForKey("BUUID") as String
+            var Maj =  prefs.objectForKey("BMAJ") as String
+            var Min = prefs.objectForKey("BMIN") as String
+            
+            
+            CarUpdate().updateCarIBeacon(id, UUID: prefs.objectForKey("BUUID") as String, Maj: prefs.objectForKey("BMAJ") as String, Min: prefs.objectForKey("BMIN") as String)
+           
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "Association Complete!"
+            alertView.message = "Just leave your car and the app will park!"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+       
+
+    }
+
+    
     
     func find(car:NSManagedObject){
         var lat = car.valueForKey("lat")?.description

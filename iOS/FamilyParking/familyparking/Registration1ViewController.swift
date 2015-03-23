@@ -15,6 +15,15 @@ class Registration1ViewController: UIViewController {
     @IBOutlet weak var Email: UITextField!
     @IBOutlet weak var NextButton: UIButton!
     
+    func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
+    {
+        textField.resignFirstResponder()
+        return true;
+    }
+    
+   
+
+    
     
     @IBAction func Next() {
         if(isValidEmail(Email.text)){

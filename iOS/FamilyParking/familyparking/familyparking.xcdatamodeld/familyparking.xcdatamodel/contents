@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Car" syncable="YES">
+        <attribute name="bmaj" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bmin" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brand" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buuid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isParked" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastPark" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,7 +23,7 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Car" positionX="-63" positionY="-18" width="128" height="165"/>
+        <element name="Car" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="Group" positionX="135" positionY="-18" width="128" height="73"/>
         <element name="Users" positionX="36" positionY="36" width="128" height="88"/>
     </elements>
