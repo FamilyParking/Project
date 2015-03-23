@@ -2,7 +2,6 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.adapter.CustomAdapterUser;
+import it.familiyparking.app.adapter.CustomAdapterContact;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.AsyncTaskLocationMap;
@@ -142,7 +141,11 @@ public class CarDetailFragment extends Fragment{
         TextView nameDriver = (TextView) rootView.findViewById(R.id.last_driver_name_tv);
 
         if(car.isParked()){
-            nameDriver.setText(car.getLastDriverUser(activity).getName());
+            User lastDriver = car.getLastDriverUser(activity);
+            if(lastDriver.equals(user))
+                nameDriver.setText("You");
+            else
+                nameDriver.setText(car.getLastDriverUser(activity).getName());
 
             ((TextView)rootView.findViewById(R.id.last_driver_time_tv)).setText(Tools.getFormatedData(car.getTimestamp()));
             ((TextView)rootView.findViewById(R.id.last_driver_interval_tv)).setText(Tools.getIntervalDataServer(car.getTimestamp()));
@@ -160,7 +163,7 @@ public class CarDetailFragment extends Fragment{
     private void setConatcts(View rootView){
         ListView listContacts = ((ListView) rootView.findViewById(R.id.contact_list));
 
-        listContacts.setAdapter(new CustomAdapterUser(getActivity(), car.getUsers()));
+        listContacts.setAdapter(new CustomAdapterContact(getActivity(), car.getUsers()));
 
         listContacts.setOnTouchListener(new View.OnTouchListener() {
             @Override

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.analytics.Tracker;
 
@@ -31,7 +32,7 @@ public class WidgetActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_widget);
 
         activity = this;
 
@@ -62,6 +63,12 @@ public class WidgetActivity extends FragmentActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         alertDialog.setCancelable(true);
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+            @Override
+            public void onCancel(DialogInterface dialog){
+                activity.finish();
+            }
+        });
 
         if(action.equals(Code.TYPE_PARK))
             alertDialog.setTitle("Park the car");

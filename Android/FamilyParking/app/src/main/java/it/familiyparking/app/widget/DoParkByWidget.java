@@ -37,6 +37,7 @@ public class DoParkByWidget implements Runnable {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    activity.closeDialog();
                     activity.setProgressDialogCircular(activity.getResources().getString(R.string.unpark_car));
                 }
             });
@@ -90,7 +91,6 @@ public class DoParkByWidget implements Runnable {
             @Override
             public void run() {
                 Tools.createToast(activity, message, Toast.LENGTH_SHORT);
-                activity.closeDialog();
                 activity.resetProgressDialogCircular();
                 activity.finish();
             }

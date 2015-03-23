@@ -162,6 +162,18 @@ public class MainActivity extends ActionBarActivity {
         lunchWithEmptyList = false;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        removeParkingNotification();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        startGoogleApi();
+    }
+
     /***************************************** MENU MANAGMENT *****************************************/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

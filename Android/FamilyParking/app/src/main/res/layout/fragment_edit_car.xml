@@ -236,7 +236,7 @@
                 android:layout_centerVertical="true"
                 android:ellipsize="start"
                 android:gravity="left|center_vertical"
-                android:inputType="textAutoComplete|textCapWords"
+                android:inputType="textAutoComplete"
                 android:singleLine="true"
                 android:background="@color/transparent"
                 android:hint="@string/car_finder_rules"

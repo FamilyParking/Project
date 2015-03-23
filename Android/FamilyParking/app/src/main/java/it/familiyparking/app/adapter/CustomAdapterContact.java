@@ -18,11 +18,11 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 02/01/15.
  */
-public class CustomAdapterUser extends ArrayAdapter<User> {
+public class CustomAdapterContact extends ArrayAdapter<User> {
 
     private MainActivity activity;
 
-    public CustomAdapterUser(Activity activity, ArrayList<User> list) {
+    public CustomAdapterContact(Activity activity, ArrayList<User> list) {
         super(activity.getApplicationContext(), 0, list);
         this.activity = (MainActivity) activity;
     }

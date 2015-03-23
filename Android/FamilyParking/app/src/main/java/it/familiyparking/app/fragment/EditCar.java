@@ -142,7 +142,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         setFinder();
         setBluetooth();
 
-
         return rootView;
     }
 
@@ -152,6 +151,20 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         car = args.getParcelable("car");
 
         isCreation = (car == null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(relativeResultFinder.isShown()) {
+            relativeResultFinder.setVisibility(View.GONE);
+        }
+
+        if(findBluetooth && Tools.isBluetoothEnable()){
+            findBluetooth = false;
+            searchBluetoothDevice();
+        }
     }
 
     @Override
@@ -174,20 +187,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        if(relativeResultFinder.isShown()) {
-            relativeResultFinder.setVisibility(View.GONE);
-        }
-
-        if(findBluetooth && Tools.isBluetoothEnable()){
-            findBluetooth = false;
-            searchBluetoothDevice();
-        }
-    }
-
-    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(addButton){
             MatrixCursor extras = new MatrixCursor(PROJECTION);
@@ -206,8 +205,10 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
                 relativeResultFinder.requestFocus();
             } else if (Tools.isCursorEmpty(data) && !addButton) {
                 relativeResultFinder.setVisibility(View.GONE);
+                editTextFinder.requestFocus();
             }
         }
+
 
     }
 
@@ -231,13 +232,13 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void afterTextChanged(Editable s) {
         searchString = editTextFinder.getText().toString();
 
-        while((searchString.length() > 0) && (searchString.charAt(searchString.length()-1) == ' '))
-            searchString = searchString.substring(0,searchString.length()-1);
+        while ((searchString.length() > 0) && (searchString.charAt(searchString.length() - 1) == ' '))
+            searchString = searchString.substring(0, searchString.length() - 1);
 
-        if(searchString.isEmpty()) {
+        if (searchString.isEmpty()) {
+            lastSearchString = searchString;
             relativeResultFinder.setVisibility(View.GONE);
-        }
-        else if(!lastSearchString.equals(searchString)){
+        } else if (!lastSearchString.equals(searchString)) {
             lastSearchString = searchString;
 
             loaderManager.restartLoader(0, null, this);
@@ -247,6 +248,8 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             else
                 addButton = false;
         }
+
+        bluetooth_button.requestFocus();
     }
 
     @Override
@@ -257,6 +260,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             int photo_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID));
             String email = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
+            email = email.toLowerCase();
             String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
             boolean photo_flag = false;
 
@@ -266,7 +270,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             customHorizontalAdapter.add(new User(name, email, photo_flag, Integer.toString(photo_id)), true);
             customHorizontalAdapter.notifyDataSetChanged();
 
-            relativeResultFinder.setVisibility(View.GONE);
+            resetFinder();
         }
     }
 
@@ -324,11 +328,21 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         });
     }
 
+    private void resetFinder(){
+        relativeResultFinder.setVisibility(View.GONE);
+        editTextFinder.setText("");
+        lastSearchString = "";
+        Tools.closeKeyboard(editTextFinder,activity);
+    }
+
     private void addNewContact() {
         String email = editTextFinder.getText().toString();
 
         customHorizontalAdapter.add(new User(email, email, false, null), true);
         customHorizontalAdapter.notifyDataSetChanged();
+
+        relativeResultFinder.setVisibility(View.GONE);
+        resetFinder();
     }
 
     public void removeContact(User contact){

@@ -23,7 +23,8 @@ public class Sampler extends IntentService {
 
     private static int counter = 0;
     private static int currentState = DetectedActivity.STILL;
-    private static BitSet bitSet = new BitSet(60);
+    private static int interval = 120;
+    private static BitSet bitSet = new BitSet(interval);
     private static boolean firstCar = true;
     private static boolean firstFoot = true;
 
@@ -82,8 +83,8 @@ public class Sampler extends IntentService {
                 }
             }
 
-            if (counter == 59)
-                bitSet = bitSet.get(1, 60);
+            if (counter == (interval - 1))
+                bitSet = bitSet.get(1, interval);
             else
                 counter++;
 
