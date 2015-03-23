@@ -56,7 +56,7 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> implements View
         if(position == 0){
             fragment.setMarker(new LatLng(Double.parseDouble(notified.getLatitude()), Double.parseDouble(notified.getLongitude())));
             RelativeLayout relativeLayout = ((RelativeLayout) convertView.findViewById(R.id.sample_root));
-            relativeLayout.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout));
+            relativeLayout.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout_light));
             lastSelected = relativeLayout;
         }
 
@@ -107,7 +107,7 @@ public class CustomAdapterSamples extends ArrayAdapter<Notified> implements View
                 if(!lastSelected.getContentDescription().toString().equals(n.getId())) {
                     fragment.setMarker(new LatLng(Double.parseDouble(n.getLatitude()), Double.parseDouble(n.getLongitude())));
 
-                    v.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout));
+                    v.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout_light));
                     lastSelected.setBackgroundDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.card_layout_dark));
                     setLastSelected(v);
                 }

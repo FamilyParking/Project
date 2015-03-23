@@ -682,6 +682,8 @@ public class Tools {
         acceptIntent.putExtra("notification_ID",notification_ID);
         PendingIntent savePending = PendingIntent.getService(context, 0, acceptIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
+        notificationBuilder.setContentIntent(savePending);
+
         notificationBuilder.setStyle(new NotificationCompat.BigTextStyle()
                 .bigText(message))
                 .addAction (R.drawable.ic_cancel, "Discard", discardPending)

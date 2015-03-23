@@ -265,7 +265,7 @@
             <ListView
                 android:id="@+id/car_finder_lv"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="180dp"
                 android:divider="@null"/>
 
         </RelativeLayout>

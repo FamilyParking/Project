@@ -590,13 +590,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setMap(){
-        Bundle bundle = new Bundle();
-        bundle.putString("car_id",car_id);
+        if(map == null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("car_id", car_id);
 
-        map = new Map();
-        map.setArguments(bundle);
-
-        getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
+            map = new Map();
+            map.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
+        }
     }
 
     public void setCreateCar(){
@@ -764,6 +765,10 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
             ghostMode = null;
         }
+    }
+
+    public boolean setTitleNameCar(){
+        return !((fixPosition != null) || (modifyCar != null) || (createCar != null));
     }
 
     /***************************************** MANAGE END CALL ***************************************/

@@ -2,6 +2,7 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,6 +63,16 @@ public class CarDetailFragment extends Fragment{
     public void setArguments(Bundle args) {
         super.setArguments(args);
         this.car = args.getParcelable("car");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        activity.hideMyPosition();
+
+        if(activity.setTitleNameCar())
+            Tools.setTitleActionBar(activity,car.getName());
     }
 
     public void updateCarPosition() {
@@ -209,12 +220,5 @@ public class CarDetailFragment extends Fragment{
     public void updateCar(Car car){
         this.car = car;
         setData();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Tools.setTitleActionBar(activity,car.getName());
     }
 }

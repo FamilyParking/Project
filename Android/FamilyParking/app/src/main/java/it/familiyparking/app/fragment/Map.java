@@ -177,7 +177,7 @@ public class Map extends Fragment{
         }
     }
 
-    private void parkCar(){
+    public void parkCar(){
         googleMap.clear();
 
         ArrayList<Car> cars = application.getCars();

@@ -2,6 +2,7 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.ArrayList;
 

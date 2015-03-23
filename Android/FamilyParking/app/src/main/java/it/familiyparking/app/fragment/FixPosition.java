@@ -2,6 +2,7 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,11 @@ public class FixPosition extends Fragment implements GoogleMap.OnMarkerDragListe
         this.car = args.getParcelable("car");
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Tools.setTitleActionBar(activity,car.getName());
+    }
 
     private void setUpMap(){
         if (googleMap == null) {

@@ -17,6 +17,7 @@ import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ProgressDialogCircular;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -25,11 +26,14 @@ public class WidgetActivity extends FragmentActivity {
     private Tracker tracker;
     private AlertDialog dialog;
     private ProgressDialogCircular progressDialogCircular;
+    private WidgetActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        activity = this;
 
         tracker = Tools.activeAnalytic(this);
 
@@ -59,7 +63,10 @@ public class WidgetActivity extends FragmentActivity {
 
         alertDialog.setCancelable(true);
 
-        alertDialog.setTitle("Pick the car");
+        if(action.equals(Code.TYPE_PARK))
+            alertDialog.setTitle("Park the car");
+        else if(action.equals(Code.TYPE_UNPARK))
+            alertDialog.setTitle("Unpark the car");
 
         alertDialog.setAdapter(new CustomAdapterCarDialogWidget(this,cars,user,action),null);
 
@@ -67,6 +74,7 @@ public class WidgetActivity extends FragmentActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        activity.finish();
                     }
                 });
 

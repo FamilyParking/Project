@@ -320,4 +320,13 @@ public class Car implements Parcelable {
 
         return true;
     }
+
+    public void merge(Car car){
+        this.name = car.getName();
+        this.brand = car.getBrand();
+        this.register = car.getRegister();
+        this.bluetoothName = car.getBluetoothName();
+        this.bluetoothMac = car.getBluetoothMac();
+        this.users = car.getUsers();
+    }
 }
