@@ -41,9 +41,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     UserTable.GCM_ID+" TEXT, "+
                     UserTable.HAS_PHOTO+" TEXT, "+
                     UserTable.PHOTO_ID+" TEXT, "+
-                    UserTable.GHOST_MODE+" TEXT, "+
-                    UserTable.PARKY+" TEXT, "+
-                    UserTable.NOTIFICATION+" TEXT, "+
+                    UserTable.GHOST_MODE+" INTEGER DEFAULT 0, "+
+                    UserTable.PARKY+" INTEGER DEFAULT 1, "+
+                    UserTable.NOTIFICATION+" INTEGER DEFAULT 1, "+
                     "PRIMARY KEY ( "+UserTable.EMAIL+" )"+" ) ; ";
 
     public static final String CREATE_TABLE_NOTIFIED =

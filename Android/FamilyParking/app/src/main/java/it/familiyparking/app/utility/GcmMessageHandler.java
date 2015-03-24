@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -47,8 +48,10 @@ public class GcmMessageHandler extends IntentService {
             message = user + " parked the " + car;
 
         SQLiteDatabase db = Tools.getDB_Readable(this);
-        if(UserTable.getNotification(db))
-            Tools.sendNotification(this,message,car_id);
+        if(UserTable.getNotification(db)) {
+            Tools.sendNotification(this, message, car_id);
+        }
+
         db.close();
 
         GcmBroadcastReceiver.completeWakefulIntent(intent);

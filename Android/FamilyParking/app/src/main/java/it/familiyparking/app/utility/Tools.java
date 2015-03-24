@@ -686,8 +686,8 @@ public class Tools {
 
         notificationBuilder.setStyle(new NotificationCompat.BigTextStyle()
                 .bigText(message))
-                .addAction (R.drawable.ic_cancel, "Discard", discardPending)
-                .addAction (R.drawable.ic_check, "Accept", savePending);
+                .addAction (R.drawable.ic_cancel, "No", discardPending)
+                .addAction (R.drawable.ic_check, "Yes", savePending);
 
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 

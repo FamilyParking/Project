@@ -42,7 +42,7 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
         if(intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equalsIgnoreCase(Code.CUSTOM_INTENT)){
             globalContext = context;
 
-            FPApplication application = ((FPApplication)context.getApplicationContext());
+            FPApplication application= ((FPApplication)context.getApplicationContext());
             googleApiClient = application.getGoogleApiClient();
 
             if((googleApiClient == null) || (!googleApiClient.isConnected() && !googleApiClient.isConnecting())) {
@@ -54,7 +54,7 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
         else if(intent.getAction().equalsIgnoreCase(BluetoothDevice.ACTION_ACL_CONNECTED)){
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            Log.e("ParkyBroadcastReceiver","Connected");
+            //Log.e("ParkyBroadcastReceiver","Connected");
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor edit = preferences.edit();
@@ -62,7 +62,9 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
             edit.putString("address", device.getAddress());
             edit.commit();
 
-            Log.e("ParkyBroadcastReceiver", preferences.getAll().toString());
+            //Log.e("ParkyBroadcastReceiver", preferences.getAll().toString());
+
+            unpark(context, device);
         }
         else if(intent.getAction().equalsIgnoreCase(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -72,57 +74,9 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
             edit.clear();
             edit.commit();
 
-            Log.e("ParkyBroadcastReceiver", "Disconnected");
+            //Log.e("ParkyBroadcastReceiver", "Disconnected");
 
-            SQLiteDatabase db = Tools.getDB_Readable(context);
-            final User user = UserTable.getUser(db);
-
-            if (user != null) {
-                ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
-                db.close();
-
-                if (!user.isGhostmode()) {
-
-                    double[] position = Tools.getPosition(context);
-
-                    for (final Car car : carID) {
-
-                        car.setPosition(position);
-                        car.setTimestamp(Tools.getTimestamp());
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Result result = ServerCall.parkCar(user, car);
-
-                                if (result.isFlag()) {
-                                    SQLiteDatabase db = Tools.getDB_Writable(context);
-                                    car.setParked(true);
-                                    car.setLast_driver(user.getEmail());
-                                    CarTable.updateCar(db, car);
-                                    ;
-                                    db.close();
-
-                                    if (Tools.isAppRunning(context)) {
-                                        Intent intent = new Intent(context, MainActivity.class);
-                                        intent.putExtra("parked",car.getId());
-                                        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                                        try {
-                                            contentIntent.send();
-                                        } catch (PendingIntent.CanceledException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-
-                            }
-                        }).start();
-
-                    }
-                }
-
-            }
+            park(context,device);
         }
     }
 
@@ -153,5 +107,109 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
                 .build();
 
         googleApiClient.connect();
+    }
+
+    private void park(final Context context, BluetoothDevice device){
+        SQLiteDatabase db = Tools.getDB_Readable(context);
+        final User user = UserTable.getUser(db);
+
+        if (user != null) {
+            ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
+            db.close();
+
+            if (!user.isGhostmode()) {
+
+                double[] position = Tools.getPosition(context);
+
+                for (final Car car : carID) {
+
+                    car.setPosition(position);
+                    car.setTimestamp(Tools.getTimestamp());
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Result result = ServerCall.parkCar(user, car);
+
+                            if (result.isFlag()) {
+                                SQLiteDatabase db = Tools.getDB_Writable(context);
+                                car.setParked(true);
+                                car.setLast_driver(user.getEmail());
+                                CarTable.updateCar(db, car);
+
+                                FPApplication application= ((FPApplication)context.getApplicationContext());
+                                application.setCars(CarTable.getAllCar(db));
+
+                                db.close();
+
+                                if (Tools.isAppRunning(context)) {
+                                    Intent intent = new Intent(context, MainActivity.class);
+                                    intent.putExtra("parked",car.getId());
+                                    PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                    try {
+                                        contentIntent.send();
+                                    } catch (PendingIntent.CanceledException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                        }
+                    }).start();
+
+                }
+            }
+
+        }
+    }
+
+    private void unpark(final Context context, BluetoothDevice device){
+        SQLiteDatabase db = Tools.getDB_Readable(context);
+        final User user = UserTable.getUser(db);
+
+        if (user != null) {
+            ArrayList<Car> carID = CarTable.getAllCarForBluetoothMAC(db, device.getAddress());
+            db.close();
+
+            if (!user.isGhostmode()) {
+
+                for (final Car car : carID) {
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Result result = ServerCall.occupyCar(user, car);
+
+                            if (result.isFlag()) {
+                                SQLiteDatabase db = Tools.getDB_Writable(context);
+                                car.setParked(false);
+                                CarTable.updateCar(db, car);
+
+                                FPApplication application = ((FPApplication) context.getApplicationContext());
+                                application.setCars(CarTable.getAllCar(db));
+
+                                db.close();
+
+                                if (Tools.isAppRunning(context)) {
+                                    Intent intent = new Intent(context, MainActivity.class);
+                                    intent.putExtra("unparked", car.getId());
+                                    PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                    try {
+                                        contentIntent.send();
+                                    } catch (PendingIntent.CanceledException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                        }
+                    }).start();
+
+                }
+            }
+
+        }
     }
 }

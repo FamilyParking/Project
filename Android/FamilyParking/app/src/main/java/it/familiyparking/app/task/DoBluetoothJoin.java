@@ -41,15 +41,15 @@ public class DoBluetoothJoin implements Runnable {
             while (PreferenceManager.getDefaultSharedPreferences(activity).getAll().isEmpty()) {
                 try {
                     Thread.sleep(100);
-                    Log.e("Preferences", "Sleep");
-                    Log.e("Preferences", "Preferences" + PreferenceManager.getDefaultSharedPreferences(activity).getAll().toString());
+                    //Log.e("Preferences", "Sleep");
+                    //Log.e("Preferences", "Preferences" + PreferenceManager.getDefaultSharedPreferences(activity).getAll().toString());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-            Log.e("DoBluetoothJoin", "Preference :" + preferences.getAll().toString());
+            //Log.e("DoBluetoothJoin", "Preference :" + preferences.getAll().toString());
 
             activity.runOnUiThread(new Runnable() {
                 @Override

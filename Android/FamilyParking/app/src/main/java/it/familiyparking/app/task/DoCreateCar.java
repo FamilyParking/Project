@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.dao.CarTable;
@@ -19,13 +21,13 @@ import it.familiyparking.app.utility.Tools;
 /**
  * Created by francesco on 02/01/15.
  */
-public class DoSaveCar implements Runnable {
+public class DoCreateCar implements Runnable {
 
     private MainActivity activity;
     private Car car;
     private User user;
 
-    public DoSaveCar(FragmentActivity activity, Car car, User user) {
+    public DoCreateCar(FragmentActivity activity, Car car, User user) {
         this.activity = (MainActivity)activity;
         this.car = car;
         this.user = user;
@@ -51,16 +53,20 @@ public class DoSaveCar implements Runnable {
                 for (User contact : car.getUsers())
                     GroupTable.insertContact(db, car.getId(), contact);
 
-                ((FPApplication) activity.getApplication()).setCars(CarTable.getAllCar(db));
+                final ArrayList<Car> carArrayList = CarTable.getAllCar(db);
+                ((FPApplication) activity.getApplication()).setCars(carArrayList);
 
                 db.close();
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        activity.resetProgressDialogCircular(false);
-                        activity.resetCreateCar();
                         activity.resetLunchWithEmptyList();
+                        activity.resetCreateCar();
+                        activity.resetProgressDialogCircular(false);
+                        activity.setCar();
+                        activity.setTabCar();
+                        activity.updateCarAdapter(carArrayList);
                         Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
                     }
                 });

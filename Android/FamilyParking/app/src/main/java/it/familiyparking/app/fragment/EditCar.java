@@ -2,7 +2,6 @@ package it.familiyparking.app.fragment;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,7 +13,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,7 +40,7 @@ import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.DoBluetoothJoin;
 import it.familiyparking.app.task.DoRemoveCar;
-import it.familiyparking.app.task.DoSaveCar;
+import it.familiyparking.app.task.DoCreateCar;
 import it.familiyparking.app.task.DoUpdateCar;
 import it.familiyparking.app.utility.Tools;
 
@@ -438,7 +436,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
 
                     Runnable runnable;
                     if(isCreation)
-                        runnable = new DoSaveCar(activity,tempCar,user);
+                        runnable = new DoCreateCar(activity,tempCar,user);
                     else
                         runnable = new DoUpdateCar(activity,tempCar,oldCar,user);
 
@@ -479,7 +477,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         else
             Tools.setTitleActionBar(activity, car.getName());
 
-        if(pushedSave){
+        if(pushedSave && !isCreation){
             car.merge(tempCar);
         }
     }

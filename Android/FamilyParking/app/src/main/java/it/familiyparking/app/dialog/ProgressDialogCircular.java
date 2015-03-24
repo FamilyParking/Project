@@ -22,7 +22,7 @@ public class ProgressDialogCircular extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.progress_circle_dialog, container, false);
+        View rootView = inflater.inflate(R.layout.progress_circle_dialog_transparent, container, false);
 
         textView = (TextView) rootView.findViewById(R.id.message_dialog);
         textView.setText(text);

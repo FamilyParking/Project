@@ -28,6 +28,7 @@ public class OldTabListener implements ActionBar.TabListener {
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         if(activity.getLunchWithEmptyList()) {
+            activity.setCreateCar();
             Tools.createToast(activity, activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
         }
         else {

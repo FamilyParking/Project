@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 import it.familiyparking.app.dao.CarTable;
+import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircularMain;
@@ -36,6 +37,8 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
+import it.familiyparking.app.parky.DoParky;
+import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
@@ -71,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
     private boolean doubleBackToExitPressedOnce;
     private boolean visibleActionPosition;
     private boolean lunchWithEmptyList;
+    private boolean comeFromRemoveAllCar;
 
     private String car_id;
 
@@ -78,6 +82,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new DoParky(this)).start();
 
         application = (FPApplication)getApplication();
 
@@ -122,13 +128,21 @@ public class MainActivity extends ActionBarActivity {
             getAllCar(false,carID_notification);
         }
 
-        String carID_bluetooth = intent.getStringExtra("parked");
+        String carID_bluetooth;
+
+        carID_bluetooth = intent.getStringExtra("parked");
         if(carID_bluetooth != null){
             if(map != null){
                 SQLiteDatabase db = Tools.getDB_Readable(this);
                 map.parkCar(CarTable.getAllCar(db),carID_bluetooth);
                 db.close();
             }
+        }
+
+        carID_bluetooth = intent.getStringExtra("unparked");
+        if(carID_bluetooth != null){
+            if(map != null)
+                map.parkCar();
         }
     }
 
@@ -160,6 +174,7 @@ public class MainActivity extends ActionBarActivity {
         doubleBackToExitPressedOnce = false;
         visibleActionPosition = false;
         lunchWithEmptyList = false;
+        comeFromRemoveAllCar = false;
     }
 
     @Override
@@ -238,18 +253,18 @@ public class MainActivity extends ActionBarActivity {
 
             case R.id.action_ghostmode:
                 item.setChecked(!flag);
-                UserTable.updateGhostmode(db,!flag);
+                UserTable.updateGhostmode(db,item.isChecked());
                 db.close();
-                application.getUser().setGhostmode(!flag);
+                application.getUser().setGhostmode(item.isChecked());
                 setGhostmodeLable();
                 return true;
 
             case R.id.action_parky:
                 item.setChecked(!flag);
-                UserTable.updateParky(db,!flag);
+                UserTable.updateParky(db,item.isChecked());
                 db.close();
 
-                if(!flag){
+                if(item.isChecked()){
                     GoogleApiClient googleApiClient = ((FPApplication)getApplication()).getGoogleApiClient();
                     if(googleApiClient != null)
                         googleApiClient.disconnect();
@@ -259,7 +274,7 @@ public class MainActivity extends ActionBarActivity {
 
             case R.id.action_notification:
                 item.setChecked(!flag);
-                UserTable.updateNotification(db,!flag);
+                UserTable.updateNotification(db,item.isChecked());
                 db.close();
                 return true;
 
@@ -337,15 +352,18 @@ public class MainActivity extends ActionBarActivity {
 
     public void updateCarAdapter(ArrayList<Car> cars){
         if(cars.isEmpty()) {
+            resetMap();
             setLunchWithEmptyList();
+            //setCar();
             setTabCar();
             setCreateCar();
         }
         else {
             resetLunchWithEmptyList();
 
-            if(carFragment != null)
+            if(carFragment != null) {
                 carFragment.updateAdapter(cars);
+            }
         }
     }
 
@@ -375,6 +393,18 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetLunchWithEmptyList(){
         this.lunchWithEmptyList = false;
+    }
+
+    public boolean isComeFromRemoveAllCar(){
+        return comeFromRemoveAllCar;
+    }
+
+    public void setComeFromRemoveAllCar(){
+        comeFromRemoveAllCar = true;
+    }
+
+    public void resetComeFromRemoveAllCar(){
+        comeFromRemoveAllCar = false;
     }
 
     public void setLunchWithEmptyList(){
@@ -568,8 +598,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setTabFragment(){
-        tabFragment = new TabFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, tabFragment).commit();
+        if(tabFragment == null) {
+            tabFragment = new TabFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, tabFragment).commit();
+        }
     }
 
     public void setTabCar(){
@@ -612,15 +644,24 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void setCreateCar(){
-        resetModifyCar(false);
-        resetCarDetail();
+    public void resetMap(){
+        if(map != null) {
+            getSupportFragmentManager().beginTransaction().remove(map).commit();
+            map = null;
+        }
+    }
 
-        createCar = new EditCar();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("car",null);
-        createCar.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
+    public void setCreateCar(){
+        if(createCar == null) {
+            resetModifyCar(false);
+            resetCarDetail();
+
+            createCar = new EditCar();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("car", null);
+            createCar.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, createCar).commit();
+        }
     }
 
     public void setCar(){

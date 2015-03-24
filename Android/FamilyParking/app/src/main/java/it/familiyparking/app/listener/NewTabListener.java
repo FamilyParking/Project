@@ -1,5 +1,6 @@
 package it.familiyparking.app.listener;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
@@ -26,6 +27,7 @@ public class NewTabListener implements android.support.v7.app.ActionBar.TabListe
     @Override
     public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
         if(activity.getLunchWithEmptyList()) {
+            activity.setCreateCar();
             Tools.createToast(activity, activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
         }
         else{

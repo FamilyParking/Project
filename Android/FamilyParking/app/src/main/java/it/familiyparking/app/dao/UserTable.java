@@ -53,7 +53,7 @@ public class UserTable {
 
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
-                return Boolean.parseBoolean(c.getString(0));
+                return c.getInt(0) == 1;
         }
 
         c.close();
@@ -66,7 +66,7 @@ public class UserTable {
 
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
-                return Boolean.parseBoolean(c.getString(0));
+                return c.getInt(0) == 1;
         }
 
         c.close();
@@ -79,7 +79,7 @@ public class UserTable {
 
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
-                return Boolean.parseBoolean(c.getString(0));
+                return c.getInt(0) == 1;
         }
 
         c.close();
@@ -108,21 +108,30 @@ public class UserTable {
 
     public static int updateGhostmode(SQLiteDatabase db, boolean ghostmode){
         ContentValues values = new ContentValues();
-        values.put(GHOST_MODE, Boolean.toString(ghostmode));
+        if(ghostmode)
+            values.put(GHOST_MODE, 1);
+        else
+            values.put(GHOST_MODE, 0);
 
         return db.update(TABLE, values, null, null);
     }
 
     public static int updateParky(SQLiteDatabase db, boolean parky){
         ContentValues values = new ContentValues();
-        values.put(PARKY, Boolean.toString(parky));
+        if(parky)
+            values.put(PARKY, 1);
+        else
+            values.put(PARKY, 0);
 
         return db.update(TABLE, values, null, null);
     }
 
     public static int updateNotification(SQLiteDatabase db, boolean notification){
         ContentValues values = new ContentValues();
-        values.put(NOTIFICATION, Boolean.toString(notification));
+        if(notification)
+            values.put(NOTIFICATION, 1);
+        else
+            values.put(NOTIFICATION, 0);
 
         return db.update(TABLE, values, null, null);
     }

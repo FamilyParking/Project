@@ -58,7 +58,7 @@ public class CarFragment extends Fragment{
 
         activity.hideMyPosition();
 
-        if(activity.getLunchWithEmptyList()){
+        if(activity.getLunchWithEmptyList() && !application.isGetAllCar_Running()){
             activity.setCreateCar();
             Tools.createToast(activity,activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
         }
@@ -108,11 +108,15 @@ public class CarFragment extends Fragment{
     }
 
     public void updateAdapter(ArrayList<Car> newCarList){
-        carArrayList = newCarList;
-        customAdapterCar = new CustomAdapterCar(getActivity(),carArrayList);
-        listView.setAdapter(customAdapterCar);
-        customAdapterCar.notifyDataSetChanged();
+        Log.e("CarFragment","updateAdapter");
 
-        setData();
+        if(activity != null) {
+            carArrayList = newCarList;
+            customAdapterCar = new CustomAdapterCar(activity, carArrayList);
+            listView.setAdapter(customAdapterCar);
+            customAdapterCar.notifyDataSetChanged();
+
+            setData();
+        }
     }
 }
