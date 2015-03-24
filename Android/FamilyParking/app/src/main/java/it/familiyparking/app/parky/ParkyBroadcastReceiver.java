@@ -42,12 +42,14 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
         if(intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equalsIgnoreCase(Code.CUSTOM_INTENT)){
             globalContext = context;
 
-            FPApplication application= ((FPApplication)context.getApplicationContext());
-            googleApiClient = application.getGoogleApiClient();
+            if(!disableAPI(context)) {
+                FPApplication application = ((FPApplication) context.getApplicationContext());
+                googleApiClient = application.getGoogleApiClient();
 
-            if((googleApiClient == null) || (!googleApiClient.isConnected() && !googleApiClient.isConnecting())) {
-                setGoogleApiClient();
-                application.setGoogleApiClient(googleApiClient);
+                if ((googleApiClient == null) || (!googleApiClient.isConnected() && !googleApiClient.isConnecting())) {
+                    setGoogleApiClient();
+                    application.setGoogleApiClient(googleApiClient);
+                }
             }
 
         }
@@ -86,8 +88,7 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
 
         PendingIntent pendingIntent = PendingIntent.getService(globalContext, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        //ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL_SAVE, pendingIntent);
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL_ACCURATE, pendingIntent);
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL_SAVE, pendingIntent);
     }
 
     @Override
@@ -108,6 +109,24 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
                 .build();
 
         googleApiClient.connect();
+    }
+
+    private boolean disableAPI(Context context){
+        FPApplication application = ((FPApplication)context.getApplicationContext());
+
+        if((!Tools.isPositionHardwareEnable(context)) || application.allHaveBluetooth() || !application.getUser().isParky()){
+
+            GoogleApiClient googleApiClient = application.getGoogleApiClient();
+            if(googleApiClient != null){
+                Intent intent = new Intent(context, Sampler.class);
+                PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                ActivityRecognition.ActivityRecognitionApi.removeActivityUpdates(googleApiClient,pendingIntent);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     private void park(final Context context, BluetoothDevice device){
