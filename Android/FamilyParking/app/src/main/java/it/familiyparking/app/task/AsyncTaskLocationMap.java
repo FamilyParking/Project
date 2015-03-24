@@ -81,10 +81,10 @@ public class AsyncTaskLocationMap extends AsyncTask<Object,Void,Void> {
                 if(moveToMyLocation)
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude()),18.0f));
 
-                activity.setPbutton();
-
-                if(progressBar != null)
+                if(progressBar != null) {
+                    activity.setPbutton();
                     progressBar.setVisibility(View.GONE);
+                }
             }
             catch (Exception e){}
 

@@ -1,14 +1,17 @@
 package it.familiyparking.app;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 
+import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
+import it.familiyparking.app.utility.Tools;
 
 public class FPApplication extends Application {
 

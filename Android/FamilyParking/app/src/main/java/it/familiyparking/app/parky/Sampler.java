@@ -3,7 +3,9 @@ package it.familiyparking.app.parky;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
@@ -13,6 +15,8 @@ import com.google.android.gms.location.DetectedActivity;
 import java.util.BitSet;
 
 import it.familiyparking.app.FPApplication;
+import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
 
@@ -46,7 +50,7 @@ public class Sampler extends IntentService {
 
             DetectedActivity detectedActivity = activityRecognitionResult.getMostProbableActivity();
 
-            //Log.e("Sampler",detectedActivity.toString());
+            Log.e("Sampler",detectedActivity.toString());
 
             if ((detectedActivity.getType() == DetectedActivity.ON_FOOT) || (detectedActivity.getType() == DetectedActivity.RUNNING) || (detectedActivity.getType() == DetectedActivity.WALKING) || (detectedActivity.getType() == DetectedActivity.STILL)) {
 
@@ -105,13 +109,24 @@ public class Sampler extends IntentService {
     private void disableAPI(){
         FPApplication application = ((FPApplication)this.getApplicationContext());
 
-        if((!Tools.isPositionHardwareEnable(this)) || application.allHaveBluetooth()){
+        Log.e("Hardware",Boolean.toString(!Tools.isPositionHardwareEnable(this)));
+        Log.e("Bluetooth",Boolean.toString(application.allHaveBluetooth()));
+        Log.e("Parky",Boolean.toString(!application.getUser().isParky()));
+        Log.e("Condiction",Boolean.toString(((!Tools.isPositionHardwareEnable(this)) || application.allHaveBluetooth() || !application.getUser().isParky())));
+
+        if((!Tools.isPositionHardwareEnable(this)) || application.allHaveBluetooth() || !application.getUser().isParky()){
+
+            Log.e("disableAPI","Disable");
+
             GoogleApiClient googleApiClient = application.getGoogleApiClient();
             if(googleApiClient != null){
                 Intent intent = new Intent(this, Sampler.class);
                 PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
                 ActivityRecognition.ActivityRecognitionApi.removeActivityUpdates(googleApiClient,pendingIntent);
             }
+        }
+        else{
+            Log.e("disableAPI","Come on");
         }
     }
 

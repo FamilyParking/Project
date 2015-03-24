@@ -86,7 +86,8 @@ public class ParkyBroadcastReceiver extends BroadcastReceiver implements GoogleA
 
         PendingIntent pendingIntent = PendingIntent.getService(globalContext, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL_SAVE, pendingIntent);
+        //ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL_SAVE, pendingIntent);
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Code.API_INTERVAL_ACCURATE, pendingIntent);
     }
 
     @Override

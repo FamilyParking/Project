@@ -2,8 +2,10 @@ package it.familiyparking.app.listener;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.Toast;
 
+import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.utility.Tools;
@@ -27,7 +29,7 @@ public class OldTabListener implements ActionBar.TabListener {
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        if(activity.getLunchWithEmptyList()) {
+        if(activity.getLunchWithEmptyList() && !(((FPApplication) activity.getApplication()).isGetAllCar_Running())){
             activity.setCreateCar();
             Tools.createToast(activity, activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
         }

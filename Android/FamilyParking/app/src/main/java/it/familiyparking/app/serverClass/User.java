@@ -33,12 +33,18 @@ public class User  implements Parcelable {
 
     private boolean ghostmode;
 
+    private boolean parky;
+
+    private boolean notification;
+
     public User(){}
 
     public User(String name, String email) {
         this.name = name;
         this.email = email;
         this.ghostmode = false;
+        this.parky = true;
+        this.notification = true;
     }
 
     public User(String name, String email, boolean has_photo, String photo_id) {
@@ -53,9 +59,11 @@ public class User  implements Parcelable {
         this.email = email;
         this.google_cloud_messaging = gcm;
         this.ghostmode = false;
+        this.parky = true;
+        this.notification = true;
     }
 
-    public User(String code, String name, String email, String gcm, boolean has_photo, String photo_id, boolean ghostmode) {
+    public User(String code, String name, String email, String gcm, boolean has_photo, String photo_id, boolean ghostmode, boolean parky, boolean notification) {
         this.code = code;
         this.name = name;
         this.email = email;
@@ -63,10 +71,12 @@ public class User  implements Parcelable {
         this.has_photo = has_photo;
         this.photo_id = photo_id;
         this.ghostmode = ghostmode;
+        this.parky = parky;
+        this.notification = notification;
     }
 
     public User(Parcel in){
-        String[] data = new String[7];
+        String[] data = new String[9];
         in.readStringArray(data);
 
         this.code = data[0];
@@ -76,6 +86,8 @@ public class User  implements Parcelable {
         this.has_photo = Boolean.parseBoolean(data[4]);
         this.photo_id = data[5];
         this.ghostmode = Boolean.parseBoolean(data[6]);
+        this.parky = Boolean.parseBoolean(data[7]);
+        this.notification = Boolean.parseBoolean(data[8]);
     }
 
     @Override
@@ -92,7 +104,9 @@ public class User  implements Parcelable {
                 this.google_cloud_messaging,
                 Boolean.toString(this.has_photo),
                 this.photo_id,
-                Boolean.toString(this.ghostmode)
+                Boolean.toString(this.ghostmode),
+                Boolean.toString(this.parky),
+                Boolean.toString(this.notification)
         });
     }
 
@@ -107,14 +121,29 @@ public class User  implements Parcelable {
     };
 
     public String[] getArray(){
-        String[] array = new String[7];
+        String[] array = new String[9];
         array[0] = this.code;
         array[1] = this.name;
         array[2] = this.email;
         array[3] = this.google_cloud_messaging;
         array[4] = Boolean.toString(this.has_photo);
         array[5] = this.photo_id;
-        array[6] = Boolean.toString(this.ghostmode);
+
+        if(this.ghostmode)
+            array[6] = Integer.toString(1);
+        else
+            array[6] = Integer.toString(0);
+
+        if(this.parky)
+            array[7] = Integer.toString(1);
+        else
+            array[7] = Integer.toString(0);
+
+        if(this.notification)
+            array[8] = Integer.toString(1);
+        else
+            array[8] = Integer.toString(0);
+
         return array;
     }
 
@@ -143,10 +172,18 @@ public class User  implements Parcelable {
                     ", has_photo=" + has_photo +
                     ", photo_id='" + photo_id + '\'' +
                     ", ghostmode=" + ghostmode +
+                    ", parky=" + parky +
+                    ", notification=" + notification +
                     '}';
         }
         else{
-            return "User{name='" + name + '\'' + ", email='" + email + '}';
+            return "User{" +
+                    "name='" + name + '\'' +
+                    ", email='" + email + '\'' +
+                    ", ghostmode=" + ghostmode +
+                    ", parky=" + parky +
+                    ", notification=" + notification +
+                    '}';
         }
     }
 
@@ -206,5 +243,19 @@ public class User  implements Parcelable {
         this.ghostmode = ghostmode;
     }
 
+    public boolean isParky() {
+        return parky;
+    }
 
+    public void setParky(boolean parky) {
+        this.parky = parky;
+    }
+
+    public boolean isNotification() {
+        return notification;
+    }
+
+    public void setNotification(boolean notification) {
+        this.notification = notification;
+    }
 }

@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.Arrays;
 
 import it.familiyparking.app.serverClass.User;
 
@@ -39,8 +42,13 @@ public class UserTable {
         Cursor c = db.query(true, TABLE, COLUMNS, null, null, null, null, null, null);
 
         if((c != null) && (c.getCount() > 0)){
-            if(c.moveToNext())
-                return new User(c.getString(0),c.getString(1),c.getString(2),c.getString(3),Boolean.parseBoolean(c.getString(4)),c.getString(5),Boolean.parseBoolean(c.getString(6)));
+            if(c.moveToNext()) {
+                boolean ghostmode = (c.getInt(6) == 1);
+                boolean parky = (c.getInt(7) == 1);
+                boolean notification = (c.getInt(8) == 1);
+
+                return new User(c.getString(0),c.getString(1),c.getString(2), c.getString(3), Boolean.parseBoolean(c.getString(4)), c.getString(5), ghostmode, parky, notification);
+            }
         }
 
         c.close();

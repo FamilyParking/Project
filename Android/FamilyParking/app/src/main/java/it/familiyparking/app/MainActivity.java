@@ -83,8 +83,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Thread(new DoParky(this)).start();
-
         application = (FPApplication)getApplication();
 
         car_id = getIntent().getStringExtra("car_id");
@@ -184,8 +182,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         startGoogleApi();
     }
 
@@ -263,6 +261,7 @@ public class MainActivity extends ActionBarActivity {
                 item.setChecked(!flag);
                 UserTable.updateParky(db,item.isChecked());
                 db.close();
+                application.getUser().setParky(item.isChecked());
 
                 if(item.isChecked()){
                     GoogleApiClient googleApiClient = ((FPApplication)getApplication()).getGoogleApiClient();
@@ -276,6 +275,7 @@ public class MainActivity extends ActionBarActivity {
                 item.setChecked(!flag);
                 UserTable.updateNotification(db,item.isChecked());
                 db.close();
+                application.getUser().setNotification(item.isChecked());
                 return true;
 
             case R.id.action_statistics:
