@@ -22,5 +22,5 @@ http://prezi.com/qqxl_1rcjuf4/?utm_campaign=share&utm_medium=copy&rc=ex0share
 You can check  our progress report for the second  milestone here:
 https://drive.google.com/file/d/0By5w9KNZ7z_DTTJjNzlWeEZVR00/view?usp=sharing
 
-You can find the presentation of Milestone 3 in the following URL : 
+You can find the presentation of Milestone 3 in the following URL :
 http://prezi.com/h8ownrwz6qvc/?utm_campaign=share&utm_medium=copy
