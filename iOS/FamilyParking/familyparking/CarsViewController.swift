@@ -41,6 +41,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.view.addSubview(self.tableView)
+       // println(self.tableView.rowHeight.distanceTo(0))
+        
     }
     
     
@@ -67,9 +69,69 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
             return cell
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+      //  println("TABEL"+self.tableView.rowHeight.description)
+        var mail = self.people[indexPath.item].valueForKey("name")?.description
         
-        RemoveConfirmation(indexPath)
+        let deleteClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("Delete closure called")
+            let toRem = self.people[indexPath.item]
+            self.removeCarFromServer(toRem,index: indexPath.item)
+        }
+        
+        let moreClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("More closure called")
+            self.selectedCar = self.people[indexPath.row]
+            self.performSegueWithIdentifier("user_group", sender: self)
+        }
+        let addIBeaconClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("More ibeacon called")
+            let toRem = self.people[indexPath.item].valueForKey("id")?.description
+            self.associateIBeacon(toRem!)
+        }
+        let deleteAction = UITableViewRowAction(style: .Default, title: "   ", handler: deleteClosure)
+        let moreAction = UITableViewRowAction(style: .Normal, title: "More", handler: moreClosure)
+        let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "   ", handler: addIBeaconClosure)
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "iBeaconIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
+        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        addIBeaconAction.backgroundColor = UIColor(patternImage: image)
+        
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "trashIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
+        image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        deleteAction.backgroundColor = UIColor(patternImage: image)
+        return [deleteAction,addIBeaconAction, moreAction]
+        
+    }
+        /*
+
+    
+                let associateBeaconAction = UIAlertAction(title: "Associate iBeacon",
+        style: .Default) { (action: UIAlertAction!) -> Void in
+        
+    
+        let toRem = self.people[index.item].valueForKey("id")?.description
+        self.associateIBeacon(toRem!)
+        /
+        }
+       
+    }
+    */
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // Intentionally blank. Required to use UITableViewRowActions
+    }
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        self.find(self.people[indexPath.item])
+
+      //  RemoveConfirmation(indexPath)
         
     }
     
@@ -246,6 +308,16 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 //self.removeName(toRem)
                 //self.tableView.reloadData()
         }
+        let associateBeaconAction = UIAlertAction(title: "Associate iBeacon",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                
+                //let toRem = self.people.removeAtIndex(index.item)
+                let toRem = self.people[index.item].valueForKey("id")?.description
+                self.associateIBeacon(toRem!)
+                //self.removeName(toRem)
+                //self.tableView.reloadData()
+        }
+
         let cancelAction = UIAlertAction(title: "Cancel",
             style: .Default) { (action: UIAlertAction!) -> Void in
         }
@@ -257,6 +329,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         alert.addAction(findAction)
         alert.addAction(editAction)
+        alert.addAction(associateBeaconAction)
         alert.addAction(deleteAction)
         alert.addAction(cancelAction)
 
@@ -272,6 +345,77 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             }
         }
     }
+    
+    func associateIBeacon(id:String){
+        
+        var alert = UIAlertController(title: "iBeacon Association",
+            message: "Please put only your car iBeacon near your phone",
+            preferredStyle: .Alert)
+        
+        
+        let findIBeaconAction = UIAlertAction(title: "Associate",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                self.completeIBeaconAssociation(id)
+               
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+        }
+        
+        
+        alert.addAction(findIBeaconAction)
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert,
+            animated: true,
+            completion: nil)
+    }
+    
+    func completeIBeaconAssociation(id:String){
+        
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let NumIBeacon = prefs.integerForKey("NUMBEACON")
+        
+        if(NumIBeacon==0){
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "No iBeacon found"
+            alertView.message = "Please check on our site if your iBeacon is compatible"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+        else if(NumIBeacon>1){
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "Too many iBeacon"
+            alertView.message = "Please find a zone with only your iBeacon"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+        else{
+           
+            
+            
+            var UUID = prefs.objectForKey("BUUID") as String
+            var Maj =  prefs.objectForKey("BMAJ") as String
+            var Min = prefs.objectForKey("BMIN") as String
+            
+            
+            CarUpdate().updateCarIBeacon(id, UUID: prefs.objectForKey("BUUID") as String, Maj: prefs.objectForKey("BMAJ") as String, Min: prefs.objectForKey("BMIN") as String)
+           
+            var alertView:UIAlertView = UIAlertView()
+            alertView.title = "Association Complete!"
+            alertView.message = "Just leave your car and the app will park!"
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+       
+
+    }
+
+    
     
     func find(car:NSManagedObject){
         var lat = car.valueForKey("lat")?.description

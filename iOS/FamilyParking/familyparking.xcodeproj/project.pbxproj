@@ -335,6 +335,11 @@
 					80626AD11A95E97800D7AAA5 = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = 4UVHD887LG;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					80626AE91A95E97800D7AAA5 = {
 						CreatedOnToolsVersion = 6.1;

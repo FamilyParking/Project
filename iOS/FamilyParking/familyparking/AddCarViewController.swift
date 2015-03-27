@@ -42,6 +42,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func addACar() {
         
+        CarName.enabled = false
         var model = self.CarName.text
         if(!model.isEmpty){
             //BackButt.enabled = false
@@ -103,6 +104,9 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             
             
             if(response == nil){
+                self.CarName.enabled = true
+                self.ConfButt.enabled = true
+                
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     var alertView:UIAlertView = UIAlertView()
                     alertView.title = "No internet connection"
@@ -122,7 +126,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
                 if((json!["Flag"] as Bool) == true){
                             //self.BackButt.enabled = true
                             self.ConfButt.enabled = true
-                    CarUpdate().addACarToLocalDatabase((json!["Object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false)
+                    CarUpdate().addACarToLocalDatabase((json!["Object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false,UUID:"",Bmin:"",Bmaj:"")
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             //self.dismissViewControllerAnimated(true, completion: nil)
                             println("")

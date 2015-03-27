@@ -15,6 +15,17 @@ class Registration2ViewController: UIViewController {
     @IBOutlet weak var BackButton: UIButton!
     @IBOutlet weak var ConfirmButton: UIButton!
     
+    func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
+    {
+        textField.resignFirstResponder()
+        return true;
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        PinBox.resignFirstResponder()
+    }
+
+    
     @IBAction func Confirm(sender: AnyObject) {
         self.BackButton.enabled = false
         self.ConfirmButton.enabled = false

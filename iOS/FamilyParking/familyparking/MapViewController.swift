@@ -10,11 +10,14 @@ import Foundation
 import UIKit
 import CoreData
 
-class MapViewController: UIViewController, GMSMapViewDelegate {
+class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate {
     
     var gmaps: GMSMapView!
     let locationManager=CLLocationManager()
     var mapLoaded:Bool = false
+    var lastProximity: CLProximity?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,19 +25,15 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         GAI.sharedInstance().trackerWithTrackingId("UA-58079755-1")
         GAI.sharedInstance().trackUncaughtExceptions = true
         GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "app_launched",label:"launch",value:nil).build())
-        
-        // check registration
             checkRegistration()
-//        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
-//        println(isLoggedIn)
-//        if (isLoggedIn != 1) {
-//            println("Apro la scheda registrazione")
-//            self.performSegueWithIdentifier("registration_1", sender: self)
-//        } else {
-//            CarUpdate().downloadCar(self)
-//        }
-        self.locationManager.requestWhenInUseAuthorization()
+
+        
+      //  self.locationManager.requestWhenInUseAuthorization()
+     
+        self.locationManager.requestAlwaysAuthorization()
+        
+        
+        
         var target: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 2.6, longitude: 13.2)
         var camera: GMSCameraPosition = GMSCameraPosition(target: target, zoom: 6, bearing: 0, viewingAngle: 0)
         var barHeight:CGFloat = tabBarController!.tabBar.frame.height
@@ -65,11 +64,32 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
             // TODO MAP NOT LOADED
         }
         // Do any additional setup after loading the view, typically from a nib.
+        
+        //Start ibeacon service
+        
+        let uuidString = "B9407F30-F5F8-466E-AFF9-25556B57FE6D"
+        //let uuidString = "B9507F30-F5F8-466E-AFF9-25556B57FE6D"
+        
+        let beaconIdentifier = "iBeaconModules.us"
+        let beaconUUID:NSUUID = NSUUID(UUIDString: uuidString)!
+        let beaconRegion:CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconUUID,
+            identifier: beaconIdentifier)
+        beaconRegion.notifyEntryStateOnDisplay = true
+        beaconRegion.notifyOnEntry = true
+        beaconRegion.notifyOnExit = true
+        locationManager.delegate = self
+        locationManager.pausesLocationUpdatesAutomatically = false
+        
+        locationManager.startMonitoringForRegion(beaconRegion)
+        locationManager.startRangingBeaconsInRegion(beaconRegion)
+        locationManager.startUpdatingLocation()
     }
     
     func checkRegistration(){
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
+        prefs.setInteger(0, forKey: "NUMBEACON")
+        prefs.synchronize()
         println(isLoggedIn)
         if (isLoggedIn != 1) {
             println("Apro la scheda registrazione")
@@ -136,7 +156,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
                             //  london.icon = UIImage(named: "audi")
                             london.map = self.gmaps
                             var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
-                             self.gmaps.camera = camera
+                          //   self.gmaps.camera = camera
                         }
                     }
                 }
@@ -313,6 +333,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         // self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    
+    
+    
     func noInternetPopUp(){
         var alertView:UIAlertView = UIAlertView()
         alertView.title = "No internet"
@@ -321,5 +344,85 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         alertView.addButtonWithTitle("OK")
         alertView.show()
     }
+    
+    func locationManager(manager:CLLocationManager,  didStartMonitoringForRegion region:CLRegion )
+    {
+    println(locationManager.requestStateForRegion(region))
+      //  println("REGION")
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didRangeBeacons beacons: [AnyObject]!,
+        inRegion region: CLBeaconRegion!) {
+            
+           NSLog("didRangeBeacons");
+            var message:String = ""
+            
+            
+            var playSound = false
+            let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            if(beacons.count > 0) {
+                println((beacons[0] as CLBeacon).proximityUUID)
+                let nearestBeacon:CLBeacon = beacons[0] as CLBeacon
+                if(nearestBeacon.proximity == lastProximity ||
+                   nearestBeacon.proximity == CLProximity.Unknown) {
+                    prefs.setInteger(1, forKey: "NUMBEACON")
+                    prefs.setObject(region.proximityUUID.UUIDString, forKey: "BUUID")
+                    prefs.setObject(nearestBeacon.major.description, forKey: "BMAJ")
+                    prefs.setObject(nearestBeacon.minor.description, forKey: "BMIN")
+                    prefs.synchronize()
+                }else{
+                    prefs.setInteger(1, forKey: "NUMBEACON")
+                    prefs.setObject(region.proximityUUID.UUIDString, forKey: "BUUID")
+                    prefs.setObject(nearestBeacon.major.description, forKey: "BMAJ")
+                    prefs.setObject(nearestBeacon.minor.description, forKey: "BMIN")
+                    prefs.synchronize()
+                    
+                }
+            }
+            prefs.synchronize()
+            
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didEnterRegion region: CLRegion!) {
+            manager.startRangingBeaconsInRegion(region as CLBeaconRegion)
+            manager.startUpdatingLocation()
+                        NSLog("You entered the region")
+            
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didExitRegion region: CLRegion!) {
+            manager.stopRangingBeaconsInRegion(region as CLBeaconRegion)
+            manager.stopUpdatingLocation()
+            let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            prefs.setInteger(0, forKey: "NUMBEACON")
+            prefs.synchronize()
+            println("You exited the region")
+            var car:[String] = CarUpdate().getCarByIBeacon()
+            if !(car[0]=="NONE"){
+            self.staticParkCar(car[1], nameCar: car[0], lat: self.gmaps.myLocation.coordinate.latitude.description, lon: self.gmaps.myLocation.coordinate.longitude.description)
+            }
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        monitoringDidFailForRegion region: CLRegion!,
+        withError error: NSError!) {
+            NSLog("monitoringDidFailForRegion - error: %@", [error.localizedDescription]);
+    }    
+
+    
+    func locationManager(manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion inRegion: CLRegion!) {
+        if (state == .Inside) {
+            //領域内にはいったときに距離測定を開始
+           // manager.startRangingBeaconsInRegion(state)
+            println("REGION")
+        }
+    }
+
+    
+
 
 }
+
