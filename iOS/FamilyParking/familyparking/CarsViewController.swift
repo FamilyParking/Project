@@ -41,6 +41,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.view.addSubview(self.tableView)
+       // println(self.tableView.rowHeight.distanceTo(0))
+        
     }
     
     
@@ -67,9 +69,69 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
             return cell
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+      //  println("TABEL"+self.tableView.rowHeight.description)
+        var mail = self.people[indexPath.item].valueForKey("name")?.description
         
-        RemoveConfirmation(indexPath)
+        let deleteClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("Delete closure called")
+            let toRem = self.people[indexPath.item]
+            self.removeCarFromServer(toRem,index: indexPath.item)
+        }
+        
+        let moreClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("More closure called")
+            self.selectedCar = self.people[indexPath.row]
+            self.performSegueWithIdentifier("user_group", sender: self)
+        }
+        let addIBeaconClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("More ibeacon called")
+            let toRem = self.people[indexPath.item].valueForKey("id")?.description
+            self.associateIBeacon(toRem!)
+        }
+        let deleteAction = UITableViewRowAction(style: .Default, title: "   ", handler: deleteClosure)
+        let moreAction = UITableViewRowAction(style: .Normal, title: "More", handler: moreClosure)
+        let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "   ", handler: addIBeaconClosure)
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "iBeaconIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
+        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        addIBeaconAction.backgroundColor = UIColor(patternImage: image)
+        
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "trashIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
+        image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        deleteAction.backgroundColor = UIColor(patternImage: image)
+        return [deleteAction,addIBeaconAction, moreAction]
+        
+    }
+        /*
+
+    
+                let associateBeaconAction = UIAlertAction(title: "Associate iBeacon",
+        style: .Default) { (action: UIAlertAction!) -> Void in
+        
+    
+        let toRem = self.people[index.item].valueForKey("id")?.description
+        self.associateIBeacon(toRem!)
+        /
+        }
+       
+    }
+    */
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // Intentionally blank. Required to use UITableViewRowActions
+    }
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        self.find(self.people[indexPath.item])
+
+      //  RemoveConfirmation(indexPath)
         
     }
     

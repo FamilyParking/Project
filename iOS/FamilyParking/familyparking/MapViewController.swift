@@ -156,7 +156,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                             //  london.icon = UIImage(named: "audi")
                             london.map = self.gmaps
                             var camera = GMSCameraPosition.cameraWithLatitude(latDouble, longitude: longDouble, zoom: 16)
-                             self.gmaps.camera = camera
+                          //   self.gmaps.camera = camera
                         }
                     }
                 }
@@ -402,7 +402,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             println("You exited the region")
             var car:[String] = CarUpdate().getCarByIBeacon()
             if !(car[0]=="NONE"){
-            self.staticParkCar(car[0], nameCar: car[1], lat: self.gmaps.myLocation.coordinate.latitude.description, lon: self.gmaps.myLocation.coordinate.longitude.description)
+            self.staticParkCar(car[1], nameCar: car[0], lat: self.gmaps.myLocation.coordinate.latitude.description, lon: self.gmaps.myLocation.coordinate.longitude.description)
             }
     }
     

@@ -322,7 +322,7 @@ class CarUpdate: UIViewController{
             if((man.valueForKey("buuid")?.description==UUID)&&(man.valueForKey("bmin")?.description==Min)&&(man.valueForKey("bmaj")?.description==Maj)){
                 var name : String = man.valueForKey("name")! as String
                 var id : String = man.valueForKey("id")! as String
-                return ["ciao","ciao"]
+                return [name,id]
             }
             
         }
