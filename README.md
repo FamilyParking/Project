@@ -1,8 +1,10 @@
 Family Parking
 
-Family Parking is an Android application that will allow you to share your last parking information with your family members.
-How many times it happend in your life that you've wasted too much time just trying to discover the position where your sister parked your car last time? 
-From now on, all you need is just to open our app on your smartphone and you will immediately be updated with the last postion of the family car! Amazing!
+FamilyParking is an application dedicated for the family for  broadcasting  the parking information of the shared cars between the members of the family. in other words, it keeps track of the last position where the car is parked and helps the family to find it easily and quickly.  
+All you need to do when you park the car is to push the parking button, and this position will be flaged so all the other members can reach the car position when needed. you need to push the button also when you move the car so the family will know that the car is not available now. 
+if your car has an embedded Bluetooth, you don't need to push any button when you park the car or remove it in order to broadcast this information to the family, else the auto parking detection property of FamilyParking will understand automatically when you park the car or remove it and the rest of the process will be managed automatically. 
+If you don't have the Bluetooth embedded in your car and you usually forget to broadcast the parking position among the family members manually,the clever Parky property of FamilyParking will remind you by sending a notification to you whenever it understands that you parked the car or moved it asking  for your confirmation. The notification system is clever enough not to bother you with a lot of notifications that are useless. 
+
 
 Visit us at:
 www.FamilyParking.it
