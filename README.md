@@ -1,6 +1,6 @@
 Family Parking
 
-FamilyParking is an application dedicated for the family for  broadcasting  the parking information of the shared cars between the members of the family. in other words, it keeps track of the last position where the car is parked and helps the family to find it easily and quickly.  
+FamilyParking is an application dedicated for the family for  broadcasting  the parking information of the shared cars among the members of the family. in other words, it keeps track of the last position where the car is parked and helps the family to find it easily and quickly.  
 
 All you need to do when you park the car is to push the parking button, and this position will be flaged so all the other members can reach the car position when needed. You need to push the button also when you move the car so the family will know that the car is not available now. 
 
