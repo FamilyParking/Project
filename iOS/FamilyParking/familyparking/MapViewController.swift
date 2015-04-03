@@ -29,8 +29,13 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
 
         
       //  self.locationManager.requestWhenInUseAuthorization()
-     
+        var systemVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
+        
+        if systemVersion >= 8 {
         self.locationManager.requestAlwaysAuthorization()
+        }
+        
+     //   self.locationManager.requestAlwaysAuthorization()
         
         
         
@@ -43,6 +48,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             map.myLocationEnabled = true
             map.camera = camera
             map.delegate = self
+            map.mapType = kGMSTypeHybrid
             gmaps.settings.myLocationButton = true
             
             gmaps.addObserver(self, forKeyPath: "myLocation", options: .New , context: nil)

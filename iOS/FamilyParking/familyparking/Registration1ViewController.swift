@@ -74,9 +74,10 @@ class Registration1ViewController: UIViewController {
                 }
                 
                 
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding)
                 println("Body: \(strData!)")
-                if(strData!.containsString("Code sent")){
+                if((strData!.rangeOfString("Code sent")?.isEmpty==false)){
+                // if(strData!.containsString("Code sent")){
                     println("Code Sent")
                     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                     prefs.setObject(self.Name.text, forKey: "USERNAME")

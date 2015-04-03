@@ -63,9 +63,10 @@ class Registration2ViewController: UIViewController {
                 })
             }
             
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+            var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding)
             println("Body: \(strData!)")
-            if(strData!.containsString("Code right")){
+            if((strData!.rangeOfString("Code right")?.isEmpty==false)){
+//            if(strData!.containsString("Code right")){
                 println("Code Sent")
                 let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 prefs.setObject(self.PinBox.text, forKey: "PIN")
@@ -75,7 +76,8 @@ class Registration2ViewController: UIViewController {
                     self.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
                 })
             }
-            else if(strData!.containsString("false")){
+            if((strData!.rangeOfString("false")?.isEmpty==false)){
+            //else if(strData!.containsString("false")){
                 println("Wrong Code")
                 println(mail)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in

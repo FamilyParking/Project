@@ -36,7 +36,16 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
+    //  self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
+        var systemVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
+
+        if systemVersion >= 8 {
+        
+        self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Grouped)
+        }
+        else{
+         self.tableView = UITableView(frame: CGRectMake(0,44, self.view.bounds.size.width, self.view.bounds.size.height-44), style: UITableViewStyle.Grouped)
+        }
         self.tableView.registerClass(MyTableViewCell.self, forCellReuseIdentifier: "myCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -66,7 +75,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
-
+            println(person.valueForKey("brand") as String)
+            cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as String))
             return cell
     }
     
@@ -90,22 +100,22 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let toRem = self.people[indexPath.item].valueForKey("id")?.description
             self.associateIBeacon(toRem!)
         }
-        let deleteAction = UITableViewRowAction(style: .Default, title: "   ", handler: deleteClosure)
-        let moreAction = UITableViewRowAction(style: .Normal, title: "More", handler: moreClosure)
-        let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "   ", handler: addIBeaconClosure)
+        let deleteAction = UITableViewRowAction(style: .Default, title: "X", handler: deleteClosure)
+        let moreAction = UITableViewRowAction(style: .Normal, title: "Friends", handler: moreClosure)
+        let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "iBeacon", handler: addIBeaconClosure)
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "iBeaconIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
-        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        addIBeaconAction.backgroundColor = UIColor(patternImage: image)
+     //   UIGraphicsBeginImageContext(self.view.frame.size)
+     //   UIImage(named: "iBeaconIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
+     //   var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+     //   UIGraphicsEndImageContext()
+     //   addIBeaconAction.backgroundColor = UIColor(patternImage: image)
         
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "trashIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
-        image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        deleteAction.backgroundColor = UIColor(patternImage: image)
+      //  UIGraphicsBeginImageContext(self.view.frame.size)
+      //  UIImage(named: "trashIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
+      //  image = UIGraphicsGetImageFromCurrentImageContext()
+      //  UIGraphicsEndImageContext()
+     //   deleteAction.backgroundColor = UIColor(patternImage: image)
         return [deleteAction,addIBeaconAction, moreAction]
         
     }
@@ -129,10 +139,18 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        self.find(self.people[indexPath.item])
+       
+        var systemVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
+        println(systemVersion)
+        if systemVersion >= 8 {
+            self.find(self.people[indexPath.item])
+        }
+        else{
 
-      //  RemoveConfirmation(indexPath)
-        
+    //    self.find(self.people[indexPath.item])
+
+        RemoveConfirmation(indexPath)
+        }
     }
     
     
