@@ -156,7 +156,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                             var london = GMSMarker(position: position)
                             london.draggable = true
                             london.title = man.valueForKey("name")?.description
-                            london.snippet = man.valueForKey("brand")?.description
+                          //  london.snippet = man.valueForKey("brand")?.description
                             london.infoWindowAnchor = CGPointMake(0.5, 0.5)
                             london.userData = man.valueForKey("id")?.description
                             //  london.icon = UIImage(named: "audi")
