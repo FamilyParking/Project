@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q4D-Jx-ms8">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -74,8 +73,19 @@
                                     <action selector="Next" destination="sqW-gV-Gf2" eventType="touchUpInside" id="GyX-6y-fak"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="car" translatesAutoresizingMaskIntoConstraints="NO" id="pAg-uX-g6A">
+                                <rect key="frame" x="40" y="351" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="37x-Qm-L05"/>
+                                    <constraint firstAttribute="height" constant="128" id="FTy-MO-AMP"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="YxN-BJ-zKI" firstAttribute="top" secondItem="pAg-uX-g6A" secondAttribute="bottom" constant="89" id="Xgv-9c-nfn"/>
+                            <constraint firstAttribute="centerX" secondItem="pAg-uX-g6A" secondAttribute="centerX" id="rps-xw-GPV"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="BackButton" destination="UCr-iK-uC5" id="lxV-7w-Sm8"/>
@@ -198,8 +208,27 @@
                                     <action selector="Next" destination="sqW-gV-Gf2" eventType="touchUpInside" id="YTg-mL-Cwg"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="car" translatesAutoresizingMaskIntoConstraints="NO" id="UY9-ac-9iI">
+                                <rect key="frame" x="40" y="347" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="Zli-7C-bh1"/>
+                                    <constraint firstAttribute="height" constant="128" id="nUQ-kG-Hhz"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We take care about yor datas, so we need to validate your identity" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDZ-yI-SOM">
+                                <rect key="frame" x="37" y="238" width="248" height="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="UY9-ac-9iI" secondAttribute="centerY" constant="-127" id="7Z0-Ii-y45"/>
+                            <constraint firstAttribute="centerX" secondItem="UY9-ac-9iI" secondAttribute="centerX" id="EHp-0b-YYg"/>
+                            <constraint firstItem="JDZ-yI-SOM" firstAttribute="top" secondItem="ooF-CL-s8G" secondAttribute="bottom" constant="218" id="ZgM-tA-mjq"/>
+                            <constraint firstAttribute="centerX" secondItem="JDZ-yI-SOM" secondAttribute="centerX" constant="-0.5" id="yZ7-jw-8bN"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Email" destination="i3j-xG-eCa" id="xU7-ww-cih"/>

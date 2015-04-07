@@ -42,6 +42,7 @@
 		80626B381A96426800D7AAA5 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B371A96426800D7AAA5 /* GroupsViewController.swift */; };
 		80626B3A1A9647DC00D7AAA5 /* GroupUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */; };
 		80626B3C1A964C5000D7AAA5 /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */; };
+		807FE8CE1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 807FE8CC1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld */; };
 		809C44D41A9B895B00C9B297 /* SingleCarUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */; };
 		809DF0001AAE004400FDB509 /* AppInfosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */; };
 		80B0E5941A9A63990032EC8B /* ChooseParkCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */; };
@@ -109,6 +110,7 @@
 		80626B371A96426800D7AAA5 /* GroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		80626B391A9647DC00D7AAA5 /* GroupUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupUpdate.swift; sourceTree = "<group>"; };
 		80626B3B1A964C5000D7AAA5 /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
+		807FE8CD1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = appDBx0y0z1.xcdatamodel; sourceTree = "<group>"; };
 		809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleCarUsersViewController.swift; sourceTree = "<group>"; };
 		809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfosViewController.swift; sourceTree = "<group>"; };
 		80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseParkCar.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				80626B2D1A96000000D7AAA5 /* Registration2ViewController.swift */,
 				80626AE11A95E97800D7AAA5 /* Images.xcassets */,
 				80626AE31A95E97800D7AAA5 /* LaunchScreen.xib */,
+				807FE8CC1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld */,
 				80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */,
 				80626AD51A95E97800D7AAA5 /* Supporting Files */,
 			);
@@ -400,6 +403,7 @@
 				80626ADB1A95E97800D7AAA5 /* familyparking.xcdatamodeld in Sources */,
 				800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */,
 				80626B301A961E8B00D7AAA5 /* CarsViewController.swift in Sources */,
+				807FE8CE1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld in Sources */,
 				80626B2E1A96000000D7AAA5 /* Registration2ViewController.swift in Sources */,
 				80626B321A961ED600D7AAA5 /* MyTableViewCell.swift in Sources */,
 				80626B2C1A95FD3C00D7AAA5 /* Registration1ViewController.swift in Sources */,
@@ -660,6 +664,15 @@
 			);
 			currentVersion = 80626ADA1A95E97800D7AAA5 /* familyparking.xcdatamodel */;
 			path = familyparking.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		807FE8CC1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				807FE8CD1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodel */,
+			);
+			path = appDBx0y0z1.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

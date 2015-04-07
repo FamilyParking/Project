@@ -5,7 +5,6 @@
         <attribute name="bmin" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="brand" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="buuid" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="cosaInutile" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isParked" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastPark" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,7 +23,7 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Car" positionX="-63" positionY="-18" width="128" height="30"/>
+        <element name="Car" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="Group" positionX="135" positionY="-18" width="128" height="73"/>
         <element name="Users" positionX="36" positionY="36" width="128" height="88"/>
     </elements>
