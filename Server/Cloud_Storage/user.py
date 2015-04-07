@@ -102,6 +102,7 @@ class User(ndb.Model):
     def update_contact(self, code,name):
         self.temp_code = code
         self.nickname = name
+        self.is_user=0
         try:
             self.put()
             return True

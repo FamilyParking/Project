@@ -216,8 +216,9 @@ class updatePosition(webapp2.RequestHandler):
                 # If the user is not registered inside the application send him an email
                 if User.is_registered_check(user.id_user) == 0:
                     if User.get_email_user(user.id_user) != user_data["Email"]:
-                        Send_email.send_position(User.get_email_user(user.id_user), car_data["Latitude"],
-                                             car_data["Longitude"], user_data["Name"],car_data["Name"])
+                       # Send_email.send_position(User.get_email_user(user.id_user), car_data["Latitude"],
+                       #                      car_data["Longitude"], user_data["Name"],car_data["Name"])
+                        logging.debug("Update position")
                 else:
                     if User.get_email_user(user.id_user) != user_data["Email"]:
                         Push_notification.send_push_park(User.get_id_android(user.id_user), car_data["Name"], user_data["Name"], car_data["ID_car"])
@@ -318,7 +319,11 @@ class removeContactCar(webapp2.RequestHandler):
             car_data = dati["Car"]
             for userClass in car_data["Users"]:
                 user = userClass["Email"]
+                if static_variable.DEBUG:
+                    logging.debug("Email: "+str(user))
+
                 tempUser = User.static_querySearch_email(user)
+
                 for id_user in tempUser:
                     user_key = id_user.key.id()
 
