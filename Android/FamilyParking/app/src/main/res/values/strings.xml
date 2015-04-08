@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FamilyParking</string>
+    <string name="app_name">Family Parking</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_group">Group</string>
     <string name="parking">P</string>
@@ -55,6 +55,8 @@
     <string name="confirmation">"Confirmation"</string>
     <string name="fixposition">"Fix position"</string>
     <string name="empty_car">"You need to create a car to use the application"</string>
+    <string name="exception_confirmation">"Service not available. Family Parking will be closed!"</string>
+    <string name="not_valid_email">"This is not a valid email"</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

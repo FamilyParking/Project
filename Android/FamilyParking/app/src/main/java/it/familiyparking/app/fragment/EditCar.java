@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.lucasr.twowayview.TwoWayView;
 
@@ -259,14 +260,20 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             int photo_id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_ID));
             String email = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
             email = email.toLowerCase();
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
-            boolean photo_flag = false;
 
-            if (photo_id != 0)
-                photo_flag = true;
+            if(Tools.isEmailValid(email)) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
+                boolean photo_flag = false;
 
-            customHorizontalAdapter.add(new User(name, email, photo_flag, Integer.toString(photo_id)), true);
-            customHorizontalAdapter.notifyDataSetChanged();
+                if (photo_id != 0)
+                    photo_flag = true;
+
+                customHorizontalAdapter.add(new User(name, email, photo_flag, Integer.toString(photo_id)), true);
+                customHorizontalAdapter.notifyDataSetChanged();
+            }
+            else{
+                Tools.createToast(activity, activity.getResources().getString(R.string.not_valid_email), Toast.LENGTH_SHORT);
+            }
 
             resetFinder();
         }

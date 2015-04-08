@@ -79,4 +79,12 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
+    public void invalidateDB(SQLiteDatabase db){
+        db.execSQL(DROP_TABLE_GROUP);
+        db.execSQL(DROP_TABLE_CAR);
+        db.execSQL(DROP_TABLE_USER);
+        db.execSQL(DROP_TABLE_NOTIFIED);
+        onCreate(db);
+    }
+
 }

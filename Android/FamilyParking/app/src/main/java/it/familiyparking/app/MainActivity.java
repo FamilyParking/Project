@@ -367,10 +367,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void resetAppDB(){
-        Tools.invalidDB(this);
-    }
-
     public String getLatitude(){
         return map.getLatitude();
     }

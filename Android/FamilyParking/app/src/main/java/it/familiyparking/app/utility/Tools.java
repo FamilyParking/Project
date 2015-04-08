@@ -63,6 +63,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -223,7 +225,7 @@ public class Tools {
 
     private static Bitmap fetchThumbnail(Context context,Integer photo_id) {
 
-        if(photo_id == -1)
+        if(photo_id.intValue() < 0)
             return null;
 
         Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
@@ -518,14 +520,10 @@ public class Tools {
         alertDialog.show();
     }
 
-    public static void invalidDB(MainActivity activity){
-        DataBaseHelper databaseHelper = new DataBaseHelper(activity);
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        UserTable.deleteUser(db);
-        GroupTable.deleteGroupTable(db);
-        CarTable.deleteCarTable(db);
-
+    public static void invalidDB(Context context){
+        DataBaseHelper databaseHelper = new DataBaseHelper(context);
+        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        databaseHelper.invalidateDB(db);
         db.close();
     }
 
@@ -537,9 +535,9 @@ public class Tools {
         alertDialog.setTitle("Join bluetooth device");
 
         if(car.getName() == null)
-            alertDialog.setMessage("Do you want link \n"+bluetooth_name+" ("+bluetooth_mac+") ?");
+            alertDialog.setMessage("Do you want to link \n"+bluetooth_name+" ("+bluetooth_mac+") ?");
         else
-            alertDialog.setMessage("Do you want link \n"+bluetooth_name+" ("+bluetooth_mac+") \n to "+car.getName()+" ?");
+            alertDialog.setMessage("Do you want to link \n"+bluetooth_name+" ("+bluetooth_mac+") \n to "+car.getName()+" ?");
 
         alertDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
@@ -567,9 +565,9 @@ public class Tools {
         alertDialog.setTitle("Disconnect bluetooth device");
 
         if(car.getName() != null)
-            alertDialog.setMessage("Do you want unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")\n"+"from "+car.getName()+"?");
+            alertDialog.setMessage("Do you want to unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")\n"+"from "+car.getName()+"?");
         else
-            alertDialog.setMessage("Do you want unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")?");
+            alertDialog.setMessage("Do you want to unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")?");
 
         alertDialog.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
@@ -745,7 +743,7 @@ public class Tools {
 
         if((temp.doubleValue() == 3) || (temp.doubleValue() == 2)){
 
-            activity.resetAppDB();
+            invalidDB(activity);
 
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -893,6 +891,24 @@ public class Tools {
                 }
             }
         }).start();
+    }
+
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    public static void isNumber(String string) throws NumberFormatException{
+        Integer.parseInt(string);
     }
 
 }

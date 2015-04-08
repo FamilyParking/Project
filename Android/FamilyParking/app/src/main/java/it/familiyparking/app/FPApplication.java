@@ -24,6 +24,13 @@ public class FPApplication extends Application {
     private GoogleApiClient googleApiClient;
 
     public User getUser() {
+        if(user != null)
+            return user;
+
+        SQLiteDatabase db = Tools.getDB_Readable(this);
+        user = UserTable.getUser(db);
+        db.close();
+
         return user;
     }
 

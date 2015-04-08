@@ -34,43 +34,69 @@ public class DoConfirmation implements Runnable {
 
         final MainActivity activity = (MainActivity) fragment.getActivity();
 
-        if(Tools.isOnline(activity)) {
-            user.setCode(code);
+        try {
+            if (Tools.isOnline(activity)) {
 
-            final Result result = ServerCall.confirmation(user);
+                Tools.isNumber(code);
 
-            if(result.isFlag()) {
+                user.setCode(code);
 
-                SQLiteDatabase db = Tools.getDB_Writable(activity);
+                final Result result = ServerCall.confirmation(user);
 
-                UserTable.updateUser(db,user);
+                if (result.isFlag()) {
 
-                db.close();
+                    SQLiteDatabase db = Tools.getDB_Writable(activity);
 
+                    UserTable.updateUser(db, user);
+
+                    db.close();
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Tools.createToast(activity, "Account confirmed!", Toast.LENGTH_SHORT);
+                            fragment.endConfirmation(false);
+                        }
+                    });
+                } else {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Tools.createToast(activity, "Wrong code. Try again.", Toast.LENGTH_SHORT);
+                            fragment.endConfirmation(true);
+                        }
+                    });
+                }
+            } else {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Tools.createToast(activity,"Account confirmed!", Toast.LENGTH_SHORT);
-                        fragment.endConfirmation(false);
-                    }
-                });
-            }
-            else{
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Tools.createToast(activity,"Wrong code. Try again.", Toast.LENGTH_LONG);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.no_connection), Toast.LENGTH_SHORT);
                         fragment.endConfirmation(true);
                     }
                 });
             }
+
         }
-        else{
+        catch (NumberFormatException e){
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Tools.createToast(activity,activity.getResources().getString(R.string.no_connection), Toast.LENGTH_LONG);
+                    Tools.createToast(activity, "Wrong code. Try again.", Toast.LENGTH_SHORT);
                     fragment.endConfirmation(true);
+                }
+            });
+        }
+        catch (Exception e){
+            SQLiteDatabase db = Tools.getDB_Writable(activity);
+            UserTable.deleteUser(db);
+            db.close();
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Tools.createToast(activity, activity.getResources().getString(R.string.exception_confirmation), Toast.LENGTH_SHORT);
+                    Tools.closeApp(activity);
                 }
             });
         }
