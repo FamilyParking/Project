@@ -41,6 +41,11 @@ class registrationForm(webapp2.RequestHandler):
     def post(self):
         try:
             data = json.loads(self.request.body)
+            if Send_email.check_mail(data["Email"]):
+                if static_variable.DEBUG:
+                    logging.debug("Valid email")
+                else:
+                    logging.debug("Email not valid")
 
             try:
                 code = random.randint(100000, 999999)

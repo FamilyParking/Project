@@ -6,6 +6,15 @@ from setting import static_variable
 
 
 class Send_email():
+
+    @staticmethod
+    def check_mail(email):
+        if mail.is_email_valid(email):
+            return True
+        else:
+            return False
+
+
     @staticmethod
     def send_code(code, email):
         message = mail.EmailMessage(sender=static_variable.sender,
