@@ -8,8 +8,9 @@
     <string name="add">+</string>
     <string name="find_contact">Write name or email</string>
     <string name="add_contact">Add contact to group</string>
-    <string name="add_bluetooth">Add bluetooth device</string>
-    <string name="remove_bluetooth">Remove bluetooth device</string>
+    <string name="add_bluetooth">ADD BLUETOOTH DEVICE</string>
+    <string name="add_color">Pick color</string>
+    <string name="remove_bluetooth">REMOVE BLUETOOTH DEVICE</string>
     <string name="add_car">Create new car ...</string>
     <string name="park_car">Parking car ...</string>
     <string name="unpark_car">Occupying car ...</string>
@@ -24,7 +25,7 @@
     <string name="action_cars">Cars</string>
     <string name="action_ghostmode">Ghostmode</string>
     <string name="action_parky">Auto parking</string>
-    <string name="action_statistics">Statistics</string>
+    <string name="action_parky_data">Parky</string>
     <string name="action_notification">Notification</string>
     <string name="new_group">New Group</string>
     <string name="new_car">New Car</string>
@@ -57,6 +58,7 @@
     <string name="empty_car">"You need to create a car to use the application"</string>
     <string name="exception_confirmation">"Service not available. Family Parking will be closed!"</string>
     <string name="not_valid_email">"This is not a valid email"</string>
+    <string name="reset_email">"RESET EMAIL"</string>
 
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>

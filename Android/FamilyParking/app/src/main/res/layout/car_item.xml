@@ -2,157 +2,174 @@
     android:id="@+id/car_item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_layout"
-    android:clickable="true"
-    android:padding="5dp">
-
-    <Button
-        android:id="@+id/car_arrow_iv"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/arrow"
-        android:backgroundTint="@color/blue"/>
+    android:background="@drawable/card_layout_notopcorner"
+    android:clickable="true">
 
     <RelativeLayout
-        android:id="@+id/car_item_rl"
-        android:layout_width="wrap_content"
+        android:id="@+id/marker_color_rl"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:visibility="gone">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="35dp"
-        android:layout_alignParentLeft="true"
-        android:layout_toRightOf="@id/car_arrow_iv">
+        android:layout_below="@id/marker_color_rl"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/car_arrow_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/arrow"
+            android:backgroundTint="@color/blue"/>
 
         <RelativeLayout
-            android:id="@+id/car_info_rl"
+            android:id="@+id/car_item_rl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
-
-            <ImageView
-                android:id="@+id/car_brand_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="3dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/add_car"/>
+            android:layout_marginRight="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toRightOf="@id/car_arrow_iv">
 
             <RelativeLayout
-                android:id="@+id/bluetooth_circle_ok"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/circle_blue">
-                <ImageView
-                    android:id="@+id/bluetooth_iv_ok"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerInParent="true"
-                    android:background="@android:drawable/stat_sys_data_bluetooth"
-                    android:backgroundTint="@color/white"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/bluetooth_circle_ko"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:visibility="gone"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/circle_grey">
-
-                <ImageView
-                    android:id="@+id/bluetooth_iv_ko"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerInParent="true"
-                    android:background="@android:drawable/stat_sys_data_bluetooth"
-                    android:backgroundTint="@color/light_gray"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/park_circle_ok"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="40dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/circle_blue">
-                <ImageView
-                    android:id="@+id/park_iv_ok"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/parking"
-                    android:backgroundTint="@color/white"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/park_circle_ko"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:visibility="gone"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="40dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/circle_grey">
-
-                <ImageView
-                    android:id="@+id/park_iv_ko"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/parking"
-                    android:backgroundTint="@color/light_gray"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/car_string_rl"
+                android:id="@+id/car_info_rl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/car_brand_iv"
-                android:layout_toLeftOf="@id/bluetooth_circle_ko">
+                android:layout_alignParentTop="true">
 
-                <TextView
-                    android:id="@+id/car_name_tv"
+                <ImageView
+                    android:id="@+id/car_brand_iv"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/add_car"/>
+
+                <RelativeLayout
+                    android:id="@+id/bluetooth_circle_ok"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/circle_blue">
+                    <ImageView
+                        android:id="@+id/bluetooth_iv_ok"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:background="@android:drawable/stat_sys_data_bluetooth"
+                        android:backgroundTint="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bluetooth_circle_ko"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/circle_grey">
+
+                    <ImageView
+                        android:id="@+id/bluetooth_iv_ko"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:background="@android:drawable/stat_sys_data_bluetooth"
+                        android:backgroundTint="@color/light_gray"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/park_circle_ok"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/circle_blue">
+                    <ImageView
+                        android:id="@+id/park_iv_ok"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/parking"
+                        android:backgroundTint="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/park_circle_ko"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/circle_grey">
+
+                    <ImageView
+                        android:id="@+id/park_iv_ko"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/parking"
+                        android:backgroundTint="@color/light_gray"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/car_string_rl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="Giulietta"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/car_brand_iv"
+                    android:layout_toLeftOf="@id/bluetooth_circle_ko">
 
-                <TextView
-                    android:id="@+id/car_register_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/car_name_tv"
-                    android:text="AB123CD"
-                    android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/car_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="Giulietta"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/car_register_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/car_name_tv"
+                        android:text="AB123CD"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
-        </RelativeLayout>
+            <org.lucasr.twowayview.TwoWayView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/group_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/car_info_rl"
+                android:layout_alignParentLeft="true"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                style="@style/TwoWayView"
+                android:drawSelectorOnTop="false"
+                tools:context=".Car"/>
 
-        <org.lucasr.twowayview.TwoWayView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/group_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/car_info_rl"
-            android:layout_alignParentLeft="true"
-            android:listSelector="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            style="@style/TwoWayView"
-            android:drawSelectorOnTop="false"
-            tools:context=".Car"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 

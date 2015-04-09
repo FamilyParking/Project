@@ -2,7 +2,6 @@ package it.familiyparking.app.listener;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.util.Log;
 import android.widget.Toast;
 
 import it.familiyparking.app.FPApplication;

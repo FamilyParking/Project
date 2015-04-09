@@ -61,6 +61,28 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/reset_email_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/reset_email_b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_email"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:background="@drawable/rectangle_red"/>
+
+    </RelativeLayout>
+
 </RelativeLayout>
 
 

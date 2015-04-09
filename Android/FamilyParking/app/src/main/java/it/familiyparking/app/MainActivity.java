@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +21,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.dao.NotifiedTable;
 import it.familiyparking.app.dao.UserTable;
+import it.familiyparking.app.dialog.ColorPickerDialog;
 import it.familiyparking.app.dialog.ContactDetailDialog;
 import it.familiyparking.app.dialog.ProgressDialogCircularMain;
 import it.familiyparking.app.fragment.BackgroundMap;
@@ -37,8 +35,6 @@ import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
-import it.familiyparking.app.parky.DoParky;
-import it.familiyparking.app.parky.Notified;
 import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
@@ -67,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
     private ProgressDialogCircularMain progressDialogCircular;
     private ContactDetailDialog contactDetailDialog;
     private AlertDialog dialogParking;
+    private ColorPickerDialog colorPickerDialog;
 
     private Tracker tracker;
 
@@ -418,6 +415,13 @@ public class MainActivity extends ActionBarActivity {
             carDetail.updateCarPosition();
     }
 
+    public void setBackgroundColorMarker(int colorMarker){
+        if(createCar != null)
+            createCar.setMarkerColor(colorMarker);
+        else if(modifyCar != null)
+            modifyCar.setMarkerColor(colorMarker);
+    }
+
     /***************************************** FRAGMENT MANAGER ***************************************/
     private void replaceFragment(){
         if(modifyCar != null){
@@ -504,6 +508,9 @@ public class MainActivity extends ActionBarActivity {
         if((progressDialogCircular != null) && !lunchWithEmptyList){
             //Do nop
         }
+        else if((colorPickerDialog != null) && !lunchWithEmptyList){
+            resetColorPicker();
+        }
         else if((modifyCar != null) && !lunchWithEmptyList){
             resetModifyCar(false);
         }
@@ -565,9 +572,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /********************************************* FRAGMENT *******************************************/
-    private void setSignIn(){
-        signIn = new SignIn();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
+    public void setSignIn(){
+        if(signIn == null) {
+            signIn = new SignIn();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, signIn).commit();
+        }
     }
 
     public boolean signInIsShown(){
@@ -706,12 +715,13 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void resetConfirmation(){
+    public void resetConfirmation(boolean doGCM){
         if(confirmation != null) {
             getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
             confirmation = null;
 
-            new AsyncTaskGCM().execute(application.getUser(), this);
+            if(doGCM)
+                new AsyncTaskGCM().execute(application.getUser(), this);
         }
     }
 
@@ -830,7 +840,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void endConfirmation(){
         init();
-        resetConfirmation();
+        resetConfirmation(true);
     }
 
     public void endUpdateCar(Car car){
@@ -902,6 +912,27 @@ public class MainActivity extends ActionBarActivity {
         if(dialogParking != null){
             dialogParking.dismiss();
             dialogParking = null;
+        }
+    }
+
+    public void setColorPicker(Car car){
+        if(colorPickerDialog == null){
+            colorPickerDialog = new ColorPickerDialog();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("car", car);
+
+            colorPickerDialog.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, colorPickerDialog).commit();
+        }
+    }
+
+    public void resetColorPicker(){
+        if(colorPickerDialog != null){
+            getSupportFragmentManager().beginTransaction().remove(colorPickerDialog).commit();
+            colorPickerDialog = null;
+
+            Tools.setUpButtonActionBar(this);
+            setMenu();
         }
     }
 }

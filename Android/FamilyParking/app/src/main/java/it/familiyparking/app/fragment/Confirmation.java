@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
@@ -29,6 +30,7 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
     MainActivity activity;
     private EditText code;
     private Button confirmation;
+    private RelativeLayout resetEmail;
     private View progressCircle;
     private boolean correctInput;
     private boolean isRotated;
@@ -53,6 +55,23 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
 
         confirmation = (Button)rootView.findViewById(R.id.confirmation_b);
         confirmation.setOnClickListener(this);
+
+        resetEmail = (RelativeLayout)rootView.findViewById(R.id.reset_email_relative);
+        resetEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tools.invalidDB(activity);
+
+                        activity.resetConfirmation(false);
+                        activity.setSignIn();
+                        Tools.setTitleActionBar(activity,R.string.signin);
+                    }
+                });
+            }
+        });
 
         progressCircle = rootView.findViewById(R.id.progress_confirmation);
 
@@ -98,6 +117,7 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
         Tools.closeKeyboard(v,activity);
 
         confirmation.setVisibility(View.GONE);
+        resetEmail.setVisibility(View.GONE);
         progressCircle.setVisibility(View.VISIBLE);
 
         code.clearFocus();
@@ -115,6 +135,7 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
                     code.setClickable(true);
 
                     confirmation.setVisibility(View.VISIBLE);
+                    resetEmail.setVisibility(View.VISIBLE);
                     progressCircle.setVisibility(View.GONE);
 
                     resetEditText();

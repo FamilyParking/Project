@@ -2,7 +2,6 @@ package it.familiyparking.app.task;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 import it.familiyparking.app.FPApplication;

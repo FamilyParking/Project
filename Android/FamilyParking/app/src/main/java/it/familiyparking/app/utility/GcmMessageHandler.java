@@ -9,12 +9,10 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import it.familiyparking.app.dao.UserTable;
-import it.familiyparking.app.serverClass.User;
 
 public class GcmMessageHandler extends IntentService {
 

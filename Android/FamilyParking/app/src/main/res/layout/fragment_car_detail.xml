@@ -31,6 +31,7 @@
                     android:layout_alignParentTop="true"/>
 
                 <RelativeLayout
+                    android:id="@+id/name_relative"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_alignParentBottom="true"
@@ -76,6 +77,13 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/marker_color_detail_rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:visibility="gone"
+                    android:layout_above="@id/name_relative"/>
 
                 <RelativeLayout
                     android:id="@+id/edit_rl"

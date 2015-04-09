@@ -6,7 +6,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -168,7 +168,7 @@ public class Map extends Fragment{
             if(car.isParked()) {
                 LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()));
 
-                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()).icon(BitmapDescriptorFactory.defaultMarker(car.getMarkerColor())));
 
                 if ((moveCamera) && (toPark.equals(car))) {
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(carPosition));
@@ -182,8 +182,10 @@ public class Map extends Fragment{
 
         ArrayList<Car> cars = application.getCars();
         for(Car car : cars)
-            if(car.isParked())
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()))).title(car.getName()));
+            if(car.isParked()) {
+                LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()));
+                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()).icon(BitmapDescriptorFactory.defaultMarker(car.getMarkerColor())));
+            }
     }
 
     public void parkCar(ArrayList<Car> cars, String car_id){
@@ -192,7 +194,8 @@ public class Map extends Fragment{
         for(Car car : cars){
             if(car.isParked()) {
                 LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude()));
-                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+
+                googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()).icon(BitmapDescriptorFactory.defaultMarker(car.getMarkerColor())));
 
                 if((car_id != null) && (car.getId().equals(car_id)))
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(car.getLatitude()), Double.parseDouble(car.getLongitude())),18.0f));

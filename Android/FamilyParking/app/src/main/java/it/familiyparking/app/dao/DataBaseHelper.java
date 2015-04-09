@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper extends SQLiteOpenHelper{
 
     public static final String NAME_DB = "familyparking_db";
-    public static final int VERSION_DB = 1;
+    public static final int VERSION_DB = 2;
 
     public static final String CREATE_TABLE_GROUP =
             "CREATE TABLE IF NOT EXISTS "+ GroupTable.TABLE+" ( " +
@@ -31,6 +31,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     CarTable.LAST_DRIVER+" TEXT, "+
                     CarTable.BLUETOOTH_NAME+" TEXT, "+
                     CarTable.BLUETOOTH_MAC+" TEXT, "+
+                    CarTable.MARKER_COLOR+" TEXT, "+
                     "PRIMARY KEY ( "+CarTable.CAR_ID+" )"+" ) ; ";
 
     public static final String CREATE_TABLE_USER =

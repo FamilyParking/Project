@@ -22,7 +22,8 @@ public class CarTable {
     public static final String LAST_DRIVER = "LAST_DRIVER";
     public static final String BLUETOOTH_NAME = "BLUETOOTH_NAME";
     public static final String BLUETOOTH_MAC = "BLUETOOTH_MAC";
-	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,REGISTER,LATITUDE,LONGITUDE,IS_PARKED,TIMESTAMP,LAST_DRIVER,BLUETOOTH_NAME,BLUETOOTH_MAC};
+    public static final String MARKER_COLOR = "MARKER_COLOR";
+	public static final String[] COLUMNS = new String[]{CAR_ID,NAME,BRAND,REGISTER,LATITUDE,LONGITUDE,IS_PARKED,TIMESTAMP,LAST_DRIVER,BLUETOOTH_NAME,BLUETOOTH_MAC,MARKER_COLOR};
 
     public static final String TABLE = "car_table";
 
@@ -38,13 +39,11 @@ public class CarTable {
     }
 
     public static Car getCar_byID(SQLiteDatabase db,String carID) throws SQLException{
-        ArrayList<Car> car = new ArrayList<>();
-
-        Cursor c = db.query(true, TABLE, COLUMNS, CAR_ID+" = ? ", new String[]{carID}, null, null, null, null);
+        Cursor c = db.query(true, TABLE, COLUMNS, CAR_ID + " = ? ", new String[]{carID}, null, null, null, null);
 
         if((c != null) && (c.getCount() > 0)){
             if(c.moveToNext())
-                return new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10));
+                return new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10), c.getString(11));
         }
 
         c.close();
@@ -59,7 +58,8 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext()) {
-                Car car = new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10));
+
+                Car car = new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10), c.getString(11));
 
                 String last_driver = c.getString(8);
                 if(last_driver != null)
@@ -83,7 +83,7 @@ public class CarTable {
 
         if((c != null) && (c.getCount() > 0)){
             while(c.moveToNext())
-                car.add(new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10)));
+                car.add(new Car(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), Boolean.parseBoolean(c.getString(6)), c.getString(7), c.getString(9), c.getString(10), c.getString(11)));
         }
 
         c.close();
@@ -118,4 +118,10 @@ public class CarTable {
         return db.update(TABLE, values, CAR_ID + " = ?", new String[] { car.getId() });
     }
 
+    public static int updateMarkerColor(SQLiteDatabase db, Car car) {
+        ContentValues values = new ContentValues();
+        values.put(MARKER_COLOR, car.getMarkerColor().toString());
+
+        return db.update(TABLE, values, CAR_ID + " = ?", new String[]{car.getId()});
+    }
 }

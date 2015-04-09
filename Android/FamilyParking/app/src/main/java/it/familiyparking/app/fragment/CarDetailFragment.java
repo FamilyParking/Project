@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -111,7 +113,9 @@ public class CarDetailFragment extends Fragment{
 
         if(car.isParked()){
             LatLng carPosition = new LatLng(Double.parseDouble(car.getLatitude()),Double.parseDouble(car.getLongitude()));
-            googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()));
+
+            googleMap.addMarker(new MarkerOptions().position(carPosition).title(car.getName()).icon(BitmapDescriptorFactory.defaultMarker(car.getMarkerColor())));
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(carPosition.latitude,carPosition.longitude), 18.0f));
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
@@ -135,6 +139,11 @@ public class CarDetailFragment extends Fragment{
 
         ((TextView) rootView.findViewById(R.id.car_name_tv)).setText(car.getName());
         ((TextView) rootView.findViewById(R.id.car_register_tv)).setText(car.getRegister());
+
+
+        RelativeLayout marker_color = (RelativeLayout) rootView.findViewById(R.id.marker_color_detail_rl);
+        marker_color.setVisibility(View.VISIBLE);
+        marker_color.setBackgroundColor(Tools.convertMarkerColor(car.getMarkerColor().floatValue()));
     }
 
     private void setParking(View rootView){

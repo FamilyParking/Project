@@ -42,10 +42,12 @@ public class DoUpdateCar implements Runnable {
 
             SQLiteDatabase db = Tools.getDB_Writable(activity);
 
-            if (updateCar(db))
-                if (addUsers(db))
-                    if (removeUsers(db))
-                        success();
+            boolean updateCar = updateCar(db);
+            boolean addUser = addUsers(db);
+            boolean removeUser = removeUsers(db);
+
+            if(updateCar || addUser || removeUser)
+                success();
 
             db.close();
         }
@@ -97,7 +99,7 @@ public class DoUpdateCar implements Runnable {
 
         if(result.isFlag()) {
             for(User contact : toAdd)
-                GroupTable.insertContact(db,oldCar.getId(),contact);
+                GroupTable.insertContact(db, oldCar.getId(), contact);
         }
         else{
             Tools.manageServerError(result,activity);
@@ -131,7 +133,7 @@ public class DoUpdateCar implements Runnable {
 
         if(result.isFlag()) {
             for(User contact : toRemove)
-                GroupTable.deleteContact(db,contact.getEmail(),oldCar.getId());
+                GroupTable.deleteContact(db, contact.getEmail(), oldCar.getId());
         }
         else{
             Tools.manageServerError(result,activity);

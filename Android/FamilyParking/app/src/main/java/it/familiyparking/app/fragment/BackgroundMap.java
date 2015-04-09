@@ -1,33 +1,16 @@
 package it.familiyparking.app.fragment;
 
-import android.app.AlertDialog;
-import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
-import it.familiyparking.app.dao.CarTable;
-import it.familiyparking.app.serverClass.Car;
-import it.familiyparking.app.serverClass.User;
-import it.familiyparking.app.task.AsyncTaskLocationMap;
-import it.familiyparking.app.utility.Tools;
 
 
 /**

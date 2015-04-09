@@ -49,6 +49,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -69,10 +70,7 @@ import java.util.regex.Pattern;
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomAdapterCarDialog;
-import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.DataBaseHelper;
-import it.familiyparking.app.dao.GroupTable;
-import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.parky.ServiceStatistic;
 import it.familiyparking.app.serverClass.Car;
@@ -400,7 +398,12 @@ public class Tools {
 
     public static void closeKeyboard(View v, Activity activity){
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    public static void closeKeyboard(Activity activity){
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public static int getColor(Context context, String name){
@@ -672,12 +675,12 @@ public class Tools {
 
         Intent dismissIntent = new Intent(context, ServiceStatistic.class);
         dismissIntent.setAction(Code.ACTION_DISCARD);
-        dismissIntent.putExtra("notification_ID",notification_ID);
+        dismissIntent.putExtra("notification_ID", notification_ID);
         PendingIntent discardPending = PendingIntent.getService(context, 0, dismissIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Intent acceptIntent = new Intent(context, ServiceStatistic.class);
         acceptIntent.setAction(Code.ACTION_SAVE);
-        acceptIntent.putExtra("notification_ID",notification_ID);
+        acceptIntent.putExtra("notification_ID", notification_ID);
         PendingIntent savePending = PendingIntent.getService(context, 0, acceptIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         notificationBuilder.setContentIntent(savePending);
@@ -685,7 +688,7 @@ public class Tools {
         notificationBuilder.setStyle(new NotificationCompat.BigTextStyle()
                 .bigText(message))
                 .addAction (R.drawable.ic_cancel, "No", discardPending)
-                .addAction (R.drawable.ic_check, "Yes", savePending);
+                .addAction(R.drawable.ic_check, "Yes", savePending);
 
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
@@ -909,6 +912,36 @@ public class Tools {
 
     public static void isNumber(String string) throws NumberFormatException{
         Integer.parseInt(string);
+    }
+
+    public static int convertMarkerColor(float color){
+        if(color == BitmapDescriptorFactory.HUE_BLUE)
+            return Color.BLUE;
+        else if(color == BitmapDescriptorFactory.HUE_CYAN)
+            return Color.CYAN;
+        else if(color == BitmapDescriptorFactory.HUE_GREEN)
+            return Color.GREEN;
+        else if(color == BitmapDescriptorFactory.HUE_MAGENTA)
+            return Color.MAGENTA;
+        else if(color == BitmapDescriptorFactory.HUE_RED)
+            return Color.RED;
+        else if(color == BitmapDescriptorFactory.HUE_YELLOW)
+            return Color.YELLOW;
+
+        return -1;
+    }
+
+    public static ArrayList<Float> getMarkerColor(){
+        ArrayList<Float> colors = new ArrayList<>();
+
+        colors.add(BitmapDescriptorFactory.HUE_BLUE);
+        colors.add(BitmapDescriptorFactory.HUE_CYAN);
+        colors.add(BitmapDescriptorFactory.HUE_GREEN);
+        colors.add(BitmapDescriptorFactory.HUE_MAGENTA);
+        colors.add(BitmapDescriptorFactory.HUE_RED);
+        colors.add(BitmapDescriptorFactory.HUE_YELLOW);
+
+        return colors;
     }
 
 }

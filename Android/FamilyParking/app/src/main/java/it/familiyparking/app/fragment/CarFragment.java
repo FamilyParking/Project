@@ -2,7 +2,6 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,8 +107,6 @@ public class CarFragment extends Fragment{
     }
 
     public void updateAdapter(ArrayList<Car> newCarList){
-        Log.e("CarFragment","updateAdapter");
-
         if(activity != null) {
             carArrayList = newCarList;
             customAdapterCar = new CustomAdapterCar(activity, carArrayList);

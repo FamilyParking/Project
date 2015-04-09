@@ -40,9 +40,10 @@ import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.task.DoBluetoothJoin;
-import it.familiyparking.app.task.DoRemoveCar;
 import it.familiyparking.app.task.DoCreateCar;
+import it.familiyparking.app.task.DoRemoveCar;
 import it.familiyparking.app.task.DoUpdateCar;
+import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -81,6 +82,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     private EditText editTextFinder;
     private boolean addButton;
 
+    private Button pick_color;
     private Button bluetooth_button;
     private Button remove_button;
     private Button save_button;
@@ -140,6 +142,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         setLoader();
         setFinder();
         setBluetooth();
+        setPickColor();
 
         return rootView;
     }
@@ -337,7 +340,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         relativeResultFinder.setVisibility(View.GONE);
         editTextFinder.setText("");
         lastSearchString = "";
-        Tools.closeKeyboard(editTextFinder,activity);
+        Tools.closeKeyboard(editTextFinder, activity);
     }
 
     private void addNewContact() {
@@ -368,14 +371,12 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         bluetooth_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bluetooth_button.getText().toString().equals(removeString)){
-                    Tools.showAlertBluetoothRemove(activity,fragment,tempCar);
-                }
-                else{
+                if (bluetooth_button.getText().toString().equals(removeString)) {
+                    Tools.showAlertBluetoothRemove(activity, fragment, tempCar);
+                } else {
                     if (Tools.isBluetoothEnable()) {
                         searchBluetoothDevice();
-                    }
-                    else {
+                    } else {
                         Tools.showAlertBluetooth(activity);
                         findBluetooth = true;
                     }
@@ -420,32 +421,31 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             public void onClick(View v) {
                 pushedSave = true;
 
-                if((car_name.getText().toString() == null)||(car_name.getText().toString().equals(""))){
+                if ((car_name.getText().toString() == null) || (car_name.getText().toString().equals(""))) {
                     car_name.requestFocus();
                     car_name.setHint("Name is mandatory");
                     car_name.setHintTextColor(activity.getResources().getColor(R.color.red));
                     InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(car_name, InputMethodManager.SHOW_IMPLICIT);
-                }
-                else{
-                    if(isCreation)
+                } else {
+                    if (isCreation)
                         activity.setProgressDialogCircular("Creating car ...");
                     else
                         activity.setProgressDialogCircular("Updating  car ...");
 
-                    if(tempCar == null)
+                    if (tempCar == null)
                         tempCar = new Car();
 
                     tempCar.setName(car_name.getText().toString());
                     tempCar.setRegister(car_register.getText().toString());
-                    tempCar.setBrand(Tools.getBrand(brand_spinner,activity));
+                    tempCar.setBrand(Tools.getBrand(brand_spinner, activity));
                     tempCar.setUsers(contactListAdapter);
 
                     Runnable runnable;
-                    if(isCreation)
-                        runnable = new DoCreateCar(activity,tempCar,user);
+                    if (isCreation)
+                        runnable = new DoCreateCar(activity, tempCar, user);
                     else
-                        runnable = new DoUpdateCar(activity,tempCar,oldCar,user);
+                        runnable = new DoUpdateCar(activity, tempCar, oldCar, user);
 
                     new Thread(runnable).start();
                 }
@@ -468,6 +468,31 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
                 new Thread(new DoRemoveCar(activity,tempCar,user)).start();
             }
         });
+    }
+
+    private void setPickColor(){
+        pick_color = (Button) rootView.findViewById(R.id.car_color_b);
+        pick_color.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tempCar == null)
+                    tempCar = new Car();
+
+                activity.setColorPicker(tempCar);
+            }
+        });
+
+        if(car != null)
+            setMarkerColor(Tools.convertMarkerColor(car.getMarkerColor().floatValue()));
+    }
+
+    public void setMarkerColor(int color){
+        pick_color.setBackgroundColor(color);
+
+        if(color < Code.DARKEST_COLOR)
+            pick_color.setTextColor(activity.getResources().getColor(R.color.white));
+        else
+            pick_color.setTextColor(activity.getResources().getColor(R.color.black));
     }
 
     private void setEditText(){

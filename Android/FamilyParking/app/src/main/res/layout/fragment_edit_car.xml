@@ -147,11 +147,31 @@
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/car_color_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/car_register_relative">
+
+            <Button
+                android:id="@+id/car_color_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/add_color"
+                android:textColor="@color/black"
+                android:background="@drawable/rectangle_gray"/>
+
+        </RelativeLayout>
+
         <View
             android:id="@+id/car_users_v"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_below="@id/car_register_relative"
+            android:layout_below="@id/car_color_relative"
             android:background="@color/soft_gray_transparent"/>
 
         <RelativeLayout
@@ -314,7 +334,7 @@
             <Button
                 android:id="@+id/car_bluetooth_b"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
@@ -340,7 +360,7 @@
             <Button
                 android:id="@+id/car_save_b"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
@@ -361,7 +381,7 @@
             <Button
                 android:id="@+id/car_delete_b"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"

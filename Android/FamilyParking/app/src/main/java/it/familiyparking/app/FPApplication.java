@@ -4,7 +4,6 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 

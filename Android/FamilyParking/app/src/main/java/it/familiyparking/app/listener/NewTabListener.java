@@ -1,6 +1,5 @@
 package it.familiyparking.app.listener;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import it.familiyparking.app.FPApplication;

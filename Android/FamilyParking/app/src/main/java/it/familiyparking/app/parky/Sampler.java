@@ -3,9 +3,7 @@ package it.familiyparking.app.parky;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
@@ -15,10 +13,7 @@ import com.google.android.gms.location.DetectedActivity;
 import java.util.BitSet;
 
 import it.familiyparking.app.FPApplication;
-import it.familiyparking.app.dao.UserTable;
-import it.familiyparking.app.serverClass.User;
 import it.familiyparking.app.utility.Code;
-import it.familiyparking.app.utility.Tools;
 
 /**
  * Created by francesco on 14/03/15.

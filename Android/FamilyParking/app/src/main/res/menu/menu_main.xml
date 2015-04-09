@@ -33,7 +33,7 @@
 
     <item
         android:id="@+id/action_statistics"
-        android:title="@string/action_statistics"
+        android:title="@string/action_parky_data"
         android:orderInCategory="500"
         app:showAsAction="never" />
 

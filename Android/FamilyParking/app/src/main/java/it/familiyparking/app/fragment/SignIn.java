@@ -72,7 +72,7 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
 
     @Override
     public void afterTextChanged(Editable s){
-        if(email.getText().toString().contains("@") && (Tools.removeSpace(name_surname.getText().toString()).length() > 0)) {
+        if(Tools.isEmailValid(email.getText().toString()) && (Tools.removeSpace(name_surname.getText().toString()).length() > 0)) {
             correctInput = true;
 
             if(!isRotated) {

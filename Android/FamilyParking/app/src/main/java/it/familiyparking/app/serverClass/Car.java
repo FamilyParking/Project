@@ -7,7 +7,9 @@ package it.familiyparking.app.serverClass;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -56,9 +58,12 @@ public class Car implements Parcelable {
     @SerializedName("Users")
     private ArrayList<User> users;
 
+    @SerializedName("Marker_Color")
+    private Float markerColor;
+
     public Car(){}
 
-    public Car(String id, String name, String brand, String register, String latitude, String longitude, boolean isParked, String timestamp, String bluetoothName, String bluetoothMac){
+    public Car(String id, String name, String brand, String register, String latitude, String longitude, boolean isParked, String timestamp, String bluetoothName, String bluetoothMac, String markerColor){
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -69,6 +74,11 @@ public class Car implements Parcelable {
         this.timestamp = timestamp;
         this.bluetoothName = bluetoothName;
         this.bluetoothMac = bluetoothMac;
+
+        if(markerColor == null)
+            this.markerColor = new Float(BitmapDescriptorFactory.HUE_RED);
+        else
+            this.markerColor = Float.parseFloat(markerColor);
     }
 
     private Car(Parcel in) {
@@ -83,14 +93,15 @@ public class Car implements Parcelable {
         this.last_driver_email = in.readString();
         this.bluetoothName = in.readString();
         this.bluetoothMac = in.readString();
+        this.markerColor = Float.parseFloat(in.readString());
         in.readTypedList(this.users, User.CREATOR);
     }
 
     public String[] getArray(){
         if((last_driver_email == null) || last_driver_email.equals("none"))
-            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,null,bluetoothName,bluetoothMac};
+            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,null,bluetoothName,bluetoothMac,this.getMarkerColor().toString()};
         else
-            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,last_driver_email,bluetoothName,bluetoothMac};
+            return new String[]{id,name,brand,register,latitude,longitude,Boolean.toString(isParked),timestamp,last_driver_email,bluetoothName,bluetoothMac,this.getMarkerColor().toString()};
     }
 
     @Override
@@ -110,6 +121,11 @@ public class Car implements Parcelable {
         out.writeString(this.last_driver_email);
         out.writeString(this.bluetoothName);
         out.writeString(this.bluetoothMac);
+
+        if(this.markerColor == null)
+            this.markerColor = new Float(BitmapDescriptorFactory.HUE_RED);
+        out.writeString(this.markerColor.toString());
+
         out.writeTypedList(this.users);
     }
 
@@ -126,18 +142,19 @@ public class Car implements Parcelable {
     @Override
     public String toString() {
         return "Car{" +
-                "users=" + users +
-                ", bluetoothMac='" + bluetoothMac + '\'' +
-                ", bluetoothName='" + bluetoothName + '\'' +
-                ", last_driver_email=" + last_driver_email +
-                ", timestamp='" + timestamp + '\'' +
-                ", isParked=" + isParked +
-                ", longitude='" + longitude + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", register='" + register + '\'' +
-                ", brand='" + brand + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", id='" + id + '\'' +
+                ", brand='" + brand + '\'' +
+                ", register='" + register + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", isParked=" + isParked +
+                ", timestamp='" + timestamp + '\'' +
+                ", last_driver_email='" + last_driver_email + '\'' +
+                ", bluetoothName='" + bluetoothName + '\'' +
+                ", bluetoothMac='" + bluetoothMac + '\'' +
+                ", users=" + users +
+                ", markerColor=" + markerColor +
                 '}';
     }
 
@@ -249,6 +266,17 @@ public class Car implements Parcelable {
         this.last_driver_email = last_driver_email;
     }
 
+    public Float getMarkerColor() {
+        if(markerColor == null)
+            this.markerColor = new Float(BitmapDescriptorFactory.HUE_RED);
+
+        return markerColor;
+    }
+
+    public void setMarkerColor(Float markerColor) {
+        this.markerColor = markerColor;
+    }
+
     public Car clone(){
         Car newCar = new Car();
 
@@ -263,6 +291,7 @@ public class Car implements Parcelable {
         newCar.setLast_driver(this.getLast_driver());
         newCar.setBluetoothName(this.getBluetoothName());
         newCar.setBluetoothMac(this.getBluetoothMac());
+        newCar.setMarkerColor(this.getMarkerColor());
 
         ArrayList<User> list = new ArrayList<>();
         for(User contact : users)
@@ -318,6 +347,8 @@ public class Car implements Parcelable {
         if ((register != null) && (car.register == null)) return false;
         if ((register != null) && (car.register != null) && (!register.equals(car.register))) return false;
 
+        if (!this.getMarkerColor().equals(car.getMarkerColor())) return false;
+
         return true;
     }
 
@@ -327,6 +358,7 @@ public class Car implements Parcelable {
         this.register = car.getRegister();
         this.bluetoothName = car.getBluetoothName();
         this.bluetoothMac = car.getBluetoothMac();
+        this.markerColor = car.getMarkerColor();
         this.users = car.getUsers();
     }
 }
