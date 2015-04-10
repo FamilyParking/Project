@@ -260,6 +260,11 @@ class StatusReturn:
             error_data["Flag"] = False
             error_data["Description"] = "Can't search inside DB"
             error_data["Object"] = None
+        elif self.number == 5:
+            logging.debug("Error registration: 5")
+            error_data["Flag"] = False
+            error_data["Description"] = "Email not valid"
+            error_data["Object"] = None
 
         else:
             logging.debug("No error: OK")

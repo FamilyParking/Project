@@ -44,38 +44,44 @@ class registrationForm(webapp2.RequestHandler):
             if Send_email.check_mail(data["Email"]):
                 if static_variable.DEBUG:
                     logging.debug("Valid email")
-                else:
-                    logging.debug("Email not valid")
-
-            try:
-                code = random.randint(100000, 999999)
-                new_user = User(code=code, temp_code=code, email=data["Email"],
-                                nickname=data["Name"], is_user=0)
 
                 try:
-                    contact_key = new_user.querySearch_email()
-                    if contact_key.count() == 0:
-                        new_user.put()
-                    else:
-                        temp_user = contact_key.get()
-                        temp_user.update_contact(code, data["Name"])
+                    code = random.randint(100000, 999999)
+                    new_user = User(code=code, temp_code=code, email=data["Email"],
+                                    nickname=data["Name"], is_user=0)
+
                     try:
-                        Send_email.send_code(code, data["Email"])
+                        contact_key = new_user.querySearch_email()
+                        if contact_key.count() == 0:
+                            new_user.put()
+                        else:
+                            temp_user = contact_key.get()
+                            temp_user.update_contact(code, data["Name"])
+                        try:
+                            Send_email.send_code(code, data["Email"])
 
-                        right = StatusReturn(0, 0)
-                        self.response.write(right.error_registration())
+                            right = StatusReturn(0, 0)
+                            self.response.write(right.error_registration())
 
+                        except:
+                            self.error(200)
+                            error = StatusReturn(3, 0)
+                            self.response.write(error.error_registration())
                     except:
                         self.error(200)
-                        error = StatusReturn(3, 0)
+                        error = StatusReturn(4, 0)
                         self.response.write(error.error_registration())
                 except:
                     self.error(200)
-                    error = StatusReturn(4, 0)
+                    error = StatusReturn(2, 0)
                     self.response.write(error.error_registration())
-            except:
+
+            else:
+                if static_variable.DEBUG:
+                    logging.debug("Email not valid")
+
                 self.error(200)
-                error = StatusReturn(2, 0)
+                error = StatusReturn(5, 0)
                 self.response.write(error.error_registration())
 
         except:
@@ -103,15 +109,22 @@ class createCar(webapp2.RequestHandler):
             uuid = ""
             bmaj = ""
             bmin = ""
+            marker_color = None
+
             if "Bluetooth_MAC" in car_data:
                 bluetooth_MAC = car_data["Bluetooth_MAC"]
             if "Bluetooth_Name" in car_data:
                 bluetooth_name = car_data["Bluetooth_Name"]
             if "Register" in car_data:
                 register = car_data["Register"]
+            if "Marker_Color" in car_data:
+                marker_color = car_data["Marker_Color"]
+
             new_car = Car(name=car_data["Name"], latitude="0", longitude="0", timestamp=str(datetime.datetime.now()),
                           email=user_data["Email"], bluetooth_MAC=bluetooth_MAC, bluetooth_name=bluetooth_name,
-                          brand=car_data["Brand"], register=register, isParked=False, lastdriver=user_data["Email"], uuid=uuid)
+                          brand=car_data["Brand"], register=register, isParked=False, lastdriver=user_data["Email"],
+                          uuid=uuid, marker_color=marker_color)
+
             new_car = new_car.put()
             list_user = car_data["Users"]
             searchuser = User.static_querySearch_email(user_data["Email"])
@@ -281,16 +294,18 @@ class editCar(webapp2.RequestHandler):
             bluetooth_MAC = ""
             bluetooth_name = ""
             register = ""
-
+            maker_color = None
             if "Bluetooth_MAC" in car_data:
                 bluetooth_MAC = car_data["Bluetooth_MAC"]
             if "Bluetooth_Name" in car_data:
                 bluetooth_name = car_data["Bluetooth_Name"]
             if "Register" in car_data:
                 register = car_data["Register"]
+            if "Marker_Color" in car_data:
+                maker_color = car_data["Marker_Color"]
 
             Car.update_car(car_data["ID_car"], bluetooth_MAC, bluetooth_name, car_data["Brand"], car_data["Name"],
-                           register)
+                           register, maker_color)
 
             right = StatusReturn(19, "editCar")
             self.response.write(right.print_result())
@@ -316,6 +331,7 @@ class updateUUID(webapp2.RequestHandler):
             if Car.updateUUID(id=car_data["ID_car"], uuid=car_data["UUID"], bmaj=car_data["Bmaj"], bmin=car_data["Bmin"]) == 0:
                 right = StatusReturn(15, "updateUUID")
                 self.response.write(right.print_result())
+
 class removeContactCar(webapp2.RequestHandler):
     def post(self):
         if User_tool.check_before_start("removeContactCar", self) >= 0:

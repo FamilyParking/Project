@@ -30,6 +30,8 @@ class Car(ndb.Model):
     uuid = ndb.StringProperty()
     bmaj = ndb.StringProperty()
     bmin = ndb.StringProperty()
+    marker_color = ndb.FloatProperty()
+
     def getPositionFromID(self):
         result = Position(self.latitude, self.longitude)
         return result
@@ -57,12 +59,16 @@ class Car(ndb.Model):
         for id_user in id_users:
             user = User.get_user_by_id(id_user.id_user)
             car_users.append(user.toString_JSON())
-        return {"ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name),
+        return {
+                "ID_car": str(self.key.id()), "Brand": str(self.brand), "Name": str(self.name),
                 "Latitude": str(self.latitude),
                 "Longitude": str(self.longitude), "Users": car_users, "Timestamp": str(self.timestamp),
                 "Register": str(self.register), "Last_driver": str(self.lastdriver), "isParked": self.isParked,
-                "Bluetooth_MAC": str(self.bluetooth_MAC), "Bluetooth_Name": str(self.bluetooth_name), "UUID": str(self.uuid), "Bmin":str(self.bmin), "Bmaj":str(self.bmaj)
+                "Bluetooth_MAC": str(self.bluetooth_MAC), "Bluetooth_Name": str(self.bluetooth_name),
+                "UUID": str(self.uuid), "Bmin": str(self.bmin), "Bmaj": str(self.bmaj),
+                "Marker_Color": self.marker_color
                 }
+
     @staticmethod
     def updateUUID(id,uuid, bmaj, bmin):
         temp_car = Car.getCarbyID(id)
@@ -73,7 +79,7 @@ class Car(ndb.Model):
         return 0
 
 
-    def update(self, bluetooth_MAC, bluetooth_name, brand, email, latitude, longitude, name):
+    def update(self, bluetooth_MAC, bluetooth_name, brand, email, latitude, longitude, name, maker_color):
         self.latitude = latitude
         self.longitude = longitude
         self.bluetooth_MAC = bluetooth_MAC
@@ -81,6 +87,7 @@ class Car(ndb.Model):
         self.brand = brand
         self.email = email
         self.name = name
+        self.marker_color = maker_color
         self.put()
         return 0
 
@@ -109,13 +116,14 @@ class Car(ndb.Model):
         return temp_car.updateParked()
 
     @staticmethod
-    def update_car(id, bluetooth_MAC, bluetooth_name, brand, name, register):
+    def update_car(id, bluetooth_MAC, bluetooth_name, brand, name, register, marker_color):
         temp_car = Car.getCarbyID(id)
         temp_car.bluetooth_MAC = bluetooth_MAC
         temp_car.bluetooth_name = bluetooth_name
         temp_car.brand = brand
         temp_car.name = name
         temp_car.register = register
+        temp_car.marker_color = marker_color
         temp_car.put()
 
     @staticmethod
