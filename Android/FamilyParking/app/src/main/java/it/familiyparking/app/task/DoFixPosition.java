@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
@@ -35,7 +36,7 @@ public class DoFixPosition implements Runnable {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                activity.setProgressDialogCircular("Updating position ...");
+                activity.setProgressDialogCircular(activity.getResources().getString(R.string.update_car));
             }
         });
 
@@ -55,7 +56,7 @@ public class DoFixPosition implements Runnable {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Tools.createToast(activity, "Car updated!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.updated_car), Toast.LENGTH_SHORT);
                         activity.park(car, true);
                         activity.updateCarDetailPosition();
                         activity.resetProgressDialogCircular(true);

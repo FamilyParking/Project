@@ -2,64 +2,150 @@
 <resources>
 
     <string name="app_name">Family Parking</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_group">Group</string>
     <string name="parking">P</string>
     <string name="add">+</string>
-    <string name="find_contact">Write name or email</string>
-    <string name="add_contact">Add contact to group</string>
-    <string name="add_bluetooth">ADD BLUETOOTH DEVICE</string>
-    <string name="add_color">Pick color</string>
-    <string name="remove_bluetooth">REMOVE BLUETOOTH DEVICE</string>
-    <string name="add_car">Create new car ...</string>
-    <string name="park_car">Parking car ...</string>
-    <string name="unpark_car">Occupying car ...</string>
-    <string name="no_connection">No connection available!</string>
-    <string name="back">BACK</string>
-    <string name="code">Insert the code received by email</string>
-    <string name="delete">DELETE</string>
-    <string name="modify">MODIFY</string>
-    <string name="ok">OK</string>
-    <string name="infoBeforeClose">Family Parking can not access your location. The application will be closed!</string>
-    <string name="action_groups">Groups</string>
-    <string name="action_cars">Cars</string>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - Fragments' name - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="signin">Sign in</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="create_car">Create car</string>
+    <string name="list_car">Cars</string>
+    <string name="edit_car">Edit car</string>
+    <string name="fixposition">Fix position</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - Menu - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <string name="action_ghostmode">Ghostmode</string>
     <string name="action_parky">Auto parking</string>
     <string name="action_parky_data">Parky</string>
     <string name="action_notification">Notification</string>
-    <string name="new_group">New Group</string>
-    <string name="new_car">New Car</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - Labels sign in & confirmation - - - - - - - - - - - - - - - - - - - - - -->
     <string name="name_surname">Name and Surname</string>
     <string name="email">Email</string>
-    <string name="name_group">Insert group\'s name</string>
-    <string name="group_empty">No group is available!</string>
-    <string name="car_empty">No car is available!</string>
-    <string name="save">SAVE</string>
-    <string name="discard">DISCARD</string>
-    <string name="info_ghostmode">If you enable ghostmode the automatic behaviour of the app will be disable</string>
-    <string name="create_car">Create car</string>
-    <string name="list_car">Cars</string>
-    <string name="edit_car">Edit car</string>
-    <string name="car_name">Insert name</string>
-    <string name="car_plate">Insert license plate</string>
+    <string name="code">Insert the code received by email</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - Labels edit car - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <string name="car_details">DETAILS</string>
     <string name="car_contacts">CONTACTS</string>
+    <string name="bluetooth">BLUETOOTH</string>
+    <string name="car_name">Insert name</string>
+    <string name="car_plate">Insert license plate</string>
     <string name="car_finder">Add: </string>
     <string name="car_finder_rules">Using name or email</string>
-    <string name="bluetooth">BLUETOOTH</string>
+    <string name="car_name_mandatory">Name is mandatory</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - Labels car details - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="car_not_parked">The car is not parked!</string>
+    <string name="you">You</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - Notification - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="notification_adding"> added you to </string>
+    <string name="notification_parking"> parked the </string>
+    <string name="notification_parky">Did you park the car?</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - Dialog - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="location_disable">Location services disabled</string>
+    <string name="location_motivation"> needs access to your location. Please turn on location access, otherwise the app will be closed.</string>
+    <string name="close_motivation"> can not access to your location. The application will be closed!</string>
+    <string name="bluetooth_disable">Bluetooth disabled</string>
+    <string name="bluetooth_motivation">" needs bluetooth to join the car's device. Please turn it on.</string>
+    <string name="bluetooth_join">Join bluetooth device</string>
+    <string name="want_link">Do you want to link </string>
+    <string name="want_unlink">Do you want to unlink </string>
+    <string name="to">to </string>
+    <string name="from">from </string>
+    <string name="bluetooth_disconnect">Disconnect bluetooth device</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - Tools - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="pick_car">Pick the car</string>
+    <string name="years">years</string>
+    <string name="months">months</string>
+    <string name="weeks">weeks</string>
+    <string name="days">days</string>
+    <string name="hours">hours</string>
+    <string name="min">min</string>
+    <string name="sec">sec</string>
+    <string name="now">Now</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - Widget - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="register_account">Please register your account</string>
+    <string name="widget_error">Widget error!</string>
+    <string name="title_park">Park the car</string>
+    <string name="title_unpark">Unpark the car</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - Button - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="reset_email">RESET EMAIL</string>
     <string name="tab_car">CARS</string>
     <string name="tab_map">MAP</string>
-    <string name="no_car">Your car list is empty"</string>
-    <string name="update_car_list">Downloading cars information ..."</string>
-    <string name="unpark">"UNPARK THE CAR"</string>
-    <string name="signin">"Sign in"</string>
-    <string name="confirmation">"Confirmation"</string>
-    <string name="fixposition">"Fix position"</string>
-    <string name="empty_car">"You need to create a car to use the application"</string>
-    <string name="exception_confirmation">"Service not available. Family Parking will be closed!"</string>
-    <string name="not_valid_email">"This is not a valid email"</string>
-    <string name="reset_email">"RESET EMAIL"</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="discard">DISCARD</string>
+    <string name="delete">DELETE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="modify">MODIFY</string>
+    <string name="ok">OK</string>
+    <string name="back">BACK</string>
+    <string name="unpark">UNPARK THE CAR</string>
+    <string name="add_bluetooth">ADD BLUETOOTH DEVICE</string>
+    <string name="remove_bluetooth">REMOVE BLUETOOTH DEVICE</string>
+    <string name="add_color">PICK COLOR</string>
+    <string name="add_contact">ADD CONTACT</string>
+    <string name="settings">SETTINGS</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - Messages - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <string name="add_car">Creating car ...</string>
+    <string name="park_car">Parking car ...</string>
+    <string name="unpark_car">Occupying car ...</string>
+    <string name="update_car">Updating car ...</string>
+    <string name="remove_car">Removing car ...</string>
+    <string name="parked_car">Car parked!</string>
+    <string name="created_car">Car created!</string>
+    <string name="updated_car">Car updated!</string>
+    <string name="deleted_car">Car deleted!</string>
+    <string name="occupied_car">Car occupied!</string>
+    <string name="no_connection">No connection available!</string>
+    <string name="no_server">Server not available!</string>
+    <string name="info_before_close">Family Parking can not access your location. The application will be closed!</string>
+    <string name="car_empty">No car is available!</string>
+    <string name="info_ghostmode">If you enable ghostmode the automatic behaviour of the app will be disable</string>
+    <string name="no_car">Your car list is empty</string>
+    <string name="update_car_list">Downloading cars information ...</string>
+    <string name="empty_car">You need to create a car to use the application</string>
+    <string name="exception_confirmation">Service not available. Family Parking will be closed!</string>
+    <string name="not_valid_email">This is not a valid email</string>
+    <string name="contact_add">Contact added to group!</string>
+    <string name="contact_already_in">Contact already in the group!</string>
+    <string name="select_brand">Select a brand</string>
+    <string name="searching_bluetooth">Looking for bluetooth device ...</string>
+    <string name="failure_detectioned">Device not detected! Try again!</string>
+    <string name="back_to_exit">Please click BACK again to exit</string>
+    <string name="thanks">Thanks for your help!</string>
+    <string name="wrong_code">Wrong code. Try again!</string>
+    <string name="account_confirmed">Account confirmed!</string>
+    <string name="code_sent">Confirmation code sent to your email!</string>
+    <string name="account_invalid">Your account is invalid, please signIn!</string>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - Cars' brand - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <string-array name="car_brands">
         <item><string name="no_brand">add_car</string></item>
         <item><string name="alfa_romeo">alfa_romeo</string></item>
@@ -97,5 +183,6 @@
         <item><string name="volkswagen">volkswagen</string></item>
         <item><string name="volvo">volvo</string></item>
     </string-array>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 </resources>

@@ -2,6 +2,7 @@ package it.familiyparking.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +54,6 @@ public class CarFragment extends Fragment{
         user = application.getUser();
         carArrayList = application.getCars();
 
-        Tools.setTitleActionBar((MainActivity) getActivity(), R.string.list_car);
-
-        activity.hideMyPosition();
-
         if(activity.getLunchWithEmptyList() && !application.isGetAllCar_Running()){
             activity.setCreateCar();
             Tools.createToast(activity,activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
@@ -79,6 +76,13 @@ public class CarFragment extends Fragment{
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        activity.hideMyPosition();
+        Tools.setTitleActionBar(activity,R.string.list_car);
     }
 
     private void setData(){

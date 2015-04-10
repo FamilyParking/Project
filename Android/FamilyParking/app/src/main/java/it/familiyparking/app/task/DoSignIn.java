@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.UserTable;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.serverClass.Result;
@@ -57,7 +58,7 @@ public class DoSignIn implements Runnable {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Tools.createToast(activity, "Confirmation code sent to your email!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.code_sent), Toast.LENGTH_SHORT);
                         fragment.endSignIn(false);
                     }
                 });

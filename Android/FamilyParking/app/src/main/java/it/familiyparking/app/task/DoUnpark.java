@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.Result;
@@ -46,7 +47,7 @@ public class DoUnpark implements Runnable {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Tools.createToast(activity, "Car occupied!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.occupied_car), Toast.LENGTH_SHORT);
                         activity.unPark();
                         activity.resetCarDetail();
                         activity.resetCar();

@@ -71,7 +71,7 @@ public class Widget extends AppWidgetProvider {
 
             if (user != null) {
                 if (cars.isEmpty()) {
-                    callMainActivity(context, "No car available");
+                    callMainActivity(context,context.getResources().getString(R.string.empty_car));
                 }
                 else {
                     if(cars.size() == 1) {
@@ -89,7 +89,7 @@ public class Widget extends AppWidgetProvider {
                     }
                 }
             } else {
-                callMainActivity(context, "Please register your account");
+                callMainActivity(context, context.getResources().getString(R.string.register_account));
             }
 
         }
@@ -198,12 +198,12 @@ public class Widget extends AppWidgetProvider {
 
     private void handlerCode(Context context){
         switch (result_code){
-            case 1: Tools.createToast(context,"Car parked",Toast.LENGTH_LONG); break;
-            case 2: Tools.createToast(context, "Server not available!", Toast.LENGTH_SHORT); break;
-            case 3: Tools.createToast(context, "No connection available!", Toast.LENGTH_SHORT); break;
-            case 4: Tools.createToast(context,"Car occupied",Toast.LENGTH_LONG); break;
+            case 1: Tools.createToast(context,context.getResources().getString(R.string.parked_car),Toast.LENGTH_LONG); break;
+            case 2: Tools.createToast(context,context.getResources().getString(R.string.no_server), Toast.LENGTH_SHORT); break;
+            case 3: Tools.createToast(context,context.getResources().getString(R.string.no_connection), Toast.LENGTH_SHORT); break;
+            case 4: Tools.createToast(context,context.getResources().getString(R.string.occupied_car),Toast.LENGTH_LONG); break;
 
-            default: Tools.createToast(context,"Widget error!",Toast.LENGTH_LONG);
+            default: Tools.createToast(context,context.getResources().getString(R.string.widget_error),Toast.LENGTH_LONG);
         }
     }
 

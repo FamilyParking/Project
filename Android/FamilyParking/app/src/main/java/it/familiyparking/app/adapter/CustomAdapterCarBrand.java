@@ -50,7 +50,7 @@ public class CustomAdapterCarBrand extends ArrayAdapter<String> {
         TextView textView = (TextView) convertView.findViewById(R.id.car_logo_item_tv);
         if (position == 0) {
             textView.setTextColor(activity.getResources().getColor(R.color.light_gray));
-            textView.setText("Select a brand");
+            textView.setText(activity.getResources().getString(R.string.select_brand));
         } else {
             char[] array = brand.toCharArray();
             array[0] = Character.toUpperCase(array[0]);

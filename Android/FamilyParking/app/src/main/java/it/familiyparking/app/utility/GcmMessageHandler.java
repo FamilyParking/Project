@@ -12,6 +12,7 @@ import android.os.Handler;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.UserTable;
 
 public class GcmMessageHandler extends IntentService {
@@ -41,9 +42,9 @@ public class GcmMessageHandler extends IntentService {
 
         String message = "";
         if(type.equals(Code.TYPE_GROUP))
-            message = user + " added you to " + car;
+            message = user + getResources().getString(R.string.notification_adding) + car;
         else if(type.equals(Code.TYPE_PARK))
-            message = user + " parked the " + car;
+            message = user + getResources().getString(R.string.notification_parking) + car;
 
         SQLiteDatabase db = Tools.getDB_Readable(this);
         if(UserTable.getNotification(db)) {

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.UserTable;
@@ -31,7 +33,6 @@ import it.familiyparking.app.fragment.CarFragment;
 import it.familiyparking.app.fragment.Confirmation;
 import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.fragment.FixPosition;
-import it.familiyparking.app.fragment.GhostMode;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.TabFragment;
@@ -53,7 +54,6 @@ public class MainActivity extends ActionBarActivity {
     private TabFragment tabFragment;
     private Map map;
     private CarFragment carFragment;
-    private GhostMode ghostMode;
     private SignIn signIn;
     private Confirmation confirmation;
     private EditCar createCar;
@@ -321,7 +321,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void park(ArrayList<Car> cars, String car_id){
         if(map != null) {
-            map.parkCar(cars,car_id);
+            map.parkCar(cars, car_id);
         }
     }
 
@@ -331,13 +331,13 @@ public class MainActivity extends ActionBarActivity {
         db.close();
 
         if(map != null){
-            map.parkCar(cars,null);
+            map.parkCar(cars, null);
         }
     }
 
     public void park(Car car, boolean moveCamera){
         if(map != null) {
-            map.parkCar(car,moveCamera);
+            map.parkCar(car, moveCamera);
         }
     }
 
@@ -351,7 +351,6 @@ public class MainActivity extends ActionBarActivity {
         if(cars.isEmpty()) {
             resetMap();
             setLunchWithEmptyList();
-            //setCar();
             setTabCar();
             setCreateCar();
         }
@@ -436,9 +435,6 @@ public class MainActivity extends ActionBarActivity {
         else if(carDetail != null){
             resetCarDetail();
         }
-        else if(ghostMode != null){
-            resetGhostmode();
-        }
     }
 
     public void resetAppGraphic(){
@@ -468,10 +464,6 @@ public class MainActivity extends ActionBarActivity {
         if(modifyCar != null){
             getSupportFragmentManager().beginTransaction().remove(modifyCar).commit();
             modifyCar = null;
-        }
-        if(ghostMode != null){
-            getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
-            ghostMode = null;
         }
         if(confirmation != null){
             getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
@@ -529,15 +521,12 @@ public class MainActivity extends ActionBarActivity {
         else if((carFragment != null) && !lunchWithEmptyList){
             setTabMap();
         }
-        else if((ghostMode != null) && !lunchWithEmptyList){
-            resetGhostmode();
-        }
         else {
             if (doubleBackToExitPressedOnce)
                 Tools.closeApp(this);
 
             doubleBackToExitPressedOnce = true;
-            Tools.createToast(this, "Please click BACK again to exit", Toast.LENGTH_SHORT);
+            Tools.createToast(this, getResources().getString(R.string.back_to_exit), Toast.LENGTH_SHORT);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -556,7 +545,7 @@ public class MainActivity extends ActionBarActivity {
         db.close();
 
         if(cars.isEmpty()){
-            Tools.createToast(this,"No car is available",Toast.LENGTH_LONG);
+            Tools.createToast(this,getResources().getString(R.string.car_empty),Toast.LENGTH_LONG);
         }
         else if(cars.size() > 1){
             dialogParking = Tools.showAlertParking(this,cars,application.getUser(),false,null);
@@ -647,6 +636,13 @@ public class MainActivity extends ActionBarActivity {
             map.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, map).commit();
         }
+
+        resetCreateCar();
+        resetFixPosition();
+        resetModifyCar(false);
+        resetCarDetail();
+
+        Tools.setTitleActionBar(this,R.string.app_name);
     }
 
     public void resetMap(){
@@ -671,14 +667,9 @@ public class MainActivity extends ActionBarActivity {
 
     public void setCar(){
         if(carFragment == null) {
-            carFragment = new CarFragment();
-
             hideMyPosition();
 
-            SQLiteDatabase db = Tools.getDB_Readable(this);
-            ArrayList<Car> cars = CarTable.getAllCar(db);
-            db.close();
-
+            carFragment = new CarFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.container, carFragment).commit();
         }
     }
@@ -686,7 +677,7 @@ public class MainActivity extends ActionBarActivity {
     public void setCarDetail(Car car){
         carDetail = new CarDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("car",car);
+        bundle.putParcelable("car", car);
         carDetail.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction().add(R.id.container, carDetail).commit();
@@ -702,19 +693,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.container, modifyCar).commit();
     }
 
-    private void setGhostMode(){
-        if(ghostMode == null) {
-            ghostMode = new GhostMode();
-            resetCreateCar();
-            resetModifyCar(false);
-            resetFixPosition();
-            resetCarDetail();
-            resetCar();
-
-            getSupportFragmentManager().beginTransaction().add(R.id.container, ghostMode).commit();
-        }
-    }
-
     public void resetConfirmation(boolean doGCM){
         if(confirmation != null) {
             getSupportFragmentManager().beginTransaction().remove(confirmation).commit();
@@ -727,9 +705,6 @@ public class MainActivity extends ActionBarActivity {
 
     public void resetCar(){
         if(carFragment != null) {
-
-            Tools.setTitleActionBar(this,getResources().getString(R.string.app_name));
-
             showMyPosition();
 
             resetCarDetail();
@@ -761,7 +736,6 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction().remove(carDetail).commit();
             carDetail = null;
 
-            Tools.setTitleActionBar(this, R.string.list_car);
             Tools.resetUpButtonActionBar(this);
         }
     }
@@ -812,18 +786,6 @@ public class MainActivity extends ActionBarActivity {
             modifyCar.removeContact(contact);
         else if(createCar != null)
             createCar.removeContact(contact);
-    }
-
-    public void resetGhostmode(){
-        if(ghostMode != null) {
-            setMenu();
-            Tools.setTitleActionBar(this,getResources().getString(R.string.app_name));
-
-            setGhostmodeLable();
-
-            getSupportFragmentManager().beginTransaction().remove(ghostMode).commit();
-            ghostMode = null;
-        }
     }
 
     public boolean setTitleNameCar(){
@@ -935,4 +897,5 @@ public class MainActivity extends ActionBarActivity {
             setMenu();
         }
     }
+
 }

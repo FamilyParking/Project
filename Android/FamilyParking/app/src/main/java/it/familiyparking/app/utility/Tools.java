@@ -94,11 +94,11 @@ public class Tools {
 
         alertDialog.setCancelable(false);
 
-        alertDialog.setTitle("Location services disabled");
+        alertDialog.setTitle(context.getResources().getString(R.string.location_disable));
 
-        alertDialog.setMessage(getAppName(context)+" needs access to your location. Please turn on location access, otherwise the app will be closed.");
+        alertDialog.setMessage(getAppName(context)+context.getResources().getString(R.string.location_motivation));
 
-        alertDialog.setPositiveButton("Settings",
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.settings),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -106,7 +106,7 @@ public class Tools {
                     }
                 });
 
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -133,11 +133,11 @@ public class Tools {
 
         alertDialog.setCancelable(false);
 
-        alertDialog.setTitle("Location services disabled");
+        alertDialog.setTitle(context.getResources().getString(R.string.location_disable));
 
-        alertDialog.setMessage(getAppName(context)+" can not access to your location. The application will be closed!");
+        alertDialog.setMessage(getAppName(context)+context.getResources().getString(R.string.close_motivation));
 
-        alertDialog.setNegativeButton("Ok",
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -501,11 +501,11 @@ public class Tools {
 
         alertDialog.setCancelable(false);
 
-        alertDialog.setTitle("Bluetooth disabled");
+        alertDialog.setTitle(context.getResources().getString(R.string.bluetooth_disable));
 
-        alertDialog.setMessage(getAppName(context)+" needs bluetooth to join the car's device. Please turn it on.");
+        alertDialog.setMessage(getAppName(context)+context.getResources().getString(R.string.bluetooth_motivation));
 
-        alertDialog.setPositiveButton("Settings",
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.settings),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
@@ -513,7 +513,7 @@ public class Tools {
                     }
                 });
 
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -535,14 +535,14 @@ public class Tools {
 
         alertDialog.setCancelable(false);
 
-        alertDialog.setTitle("Join bluetooth device");
+        alertDialog.setTitle(context.getResources().getString(R.string.bluetooth_join));
 
         if(car.getName() == null)
-            alertDialog.setMessage("Do you want to link \n"+bluetooth_name+" ("+bluetooth_mac+") ?");
+            alertDialog.setMessage(context.getResources().getString(R.string.want_link)+"\n"+bluetooth_name+" ("+bluetooth_mac+") ?");
         else
-            alertDialog.setMessage("Do you want to link \n"+bluetooth_name+" ("+bluetooth_mac+") \n to "+car.getName()+" ?");
+            alertDialog.setMessage(context.getResources().getString(R.string.want_link)+"\n"+bluetooth_name+" ("+bluetooth_mac+") \n"+context.getResources().getString(R.string.to)+car.getName()+" ?");
 
-        alertDialog.setPositiveButton("Yes",
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         fragment.linkBluetoothDevice(bluetooth_name, bluetooth_mac);
@@ -550,7 +550,7 @@ public class Tools {
                     }
                 });
 
-        alertDialog.setNegativeButton("No",
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -565,14 +565,14 @@ public class Tools {
 
         alertDialog.setCancelable(false);
 
-        alertDialog.setTitle("Disconnect bluetooth device");
+        alertDialog.setTitle(context.getResources().getString(R.string.bluetooth_disconnect));
 
         if(car.getName() != null)
-            alertDialog.setMessage("Do you want to unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")\n"+"from "+car.getName()+"?");
+            alertDialog.setMessage(context.getResources().getString(R.string.want_unlink)+"\n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")\n"+context.getResources().getString(R.string.from)+car.getName()+"?");
         else
-            alertDialog.setMessage("Do you want to unlink \n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")?");
+            alertDialog.setMessage(context.getResources().getString(R.string.want_unlink)+"\n"+car.getBluetoothName()+" ("+car.getBluetoothMac()+")?");
 
-        alertDialog.setPositiveButton("Yes",
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         fragment.unlinkBluetoothDevice();
@@ -580,7 +580,7 @@ public class Tools {
                     }
                 });
 
-        alertDialog.setNegativeButton("No",
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -661,7 +661,7 @@ public class Tools {
     }
 
     public static void sendNotificationForStatics(Context context, int notification_ID){
-        String message = "Did you park the car?";
+        String message = context.getResources().getString(R.string.notification_parky);
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
@@ -687,8 +687,8 @@ public class Tools {
 
         notificationBuilder.setStyle(new NotificationCompat.BigTextStyle()
                 .bigText(message))
-                .addAction (R.drawable.ic_cancel, "No", discardPending)
-                .addAction(R.drawable.ic_check, "Yes", savePending);
+                .addAction (R.drawable.ic_cancel, context.getResources().getString(R.string.no), discardPending)
+                .addAction(R.drawable.ic_check, context.getResources().getString(R.string.yes), savePending);
 
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
 
@@ -752,7 +752,7 @@ public class Tools {
                 @Override
                 public void run() {
                     activity.resetProgressDialogCircular(false);
-                    Tools.createToast(activity, "Your account is invalid, please signIn!", Toast.LENGTH_SHORT);
+                    Tools.createToast(activity, activity.getResources().getString(R.string.account_invalid), Toast.LENGTH_SHORT);
                     activity.resetAppGraphic();
                 }
             });
@@ -768,7 +768,7 @@ public class Tools {
         }
     }
 
-    public static String getIntervalDataServer(String data){
+    public static String getIntervalDataServer(Context context, String data){
 
         String[] mex = data.split(" ");
         String[] first = mex[0].split("-");
@@ -779,28 +779,28 @@ public class Tools {
         DateTime now = new DateTime();
         Period period = new Period(myBirthDate, now);
 
-        PeriodFormatter formatter = new PeriodFormatterBuilder().appendYears().appendSuffix("years").printZeroNever().toFormatter();
+        PeriodFormatter formatter = new PeriodFormatterBuilder().appendYears().appendSuffix(context.getResources().getString(R.string.years)).printZeroNever().toFormatter();
         String temp = formatter.print(period);
         if(temp==""){
-            formatter = new PeriodFormatterBuilder().appendMonths().appendSuffix("months").printZeroNever().toFormatter();
-            temp = formatter.print(period);
-            if(temp==""){
-                formatter = new PeriodFormatterBuilder().appendWeeks().appendSuffix("weeks").printZeroNever().toFormatter();
-                temp = formatter.print(period);
-                if(temp==""){
-                    formatter = new PeriodFormatterBuilder().appendDays().appendSuffix("days").printZeroNever().toFormatter();
+            formatter = new PeriodFormatterBuilder().appendMonths().appendSuffix(context.getResources().getString(R.string.months)).printZeroNever().toFormatter();
                     temp = formatter.print(period);
-                    if(temp==""){
-                        formatter = new PeriodFormatterBuilder().appendHours().appendSuffix("hours").printZeroNever().toFormatter();
+            if(temp==""){
+                formatter = new PeriodFormatterBuilder().appendWeeks().appendSuffix(context.getResources().getString(R.string.weeks)).printZeroNever().toFormatter();
                         temp = formatter.print(period);
-                        if(temp==""){
-                            formatter = new PeriodFormatterBuilder().appendMinutes().appendSuffix("min").printZeroNever().toFormatter();
+                if(temp==""){
+                    formatter = new PeriodFormatterBuilder().appendDays().appendSuffix(context.getResources().getString(R.string.days)).printZeroNever().toFormatter();
                             temp = formatter.print(period);
-                            if(temp==""){
-                                formatter = new PeriodFormatterBuilder().appendSeconds().appendSuffix("sec").printZeroNever().toFormatter();
+                    if(temp==""){
+                        formatter = new PeriodFormatterBuilder().appendHours().appendSuffix(context.getResources().getString(R.string.hours)).printZeroNever().toFormatter();
                                 temp = formatter.print(period);
+                        if(temp==""){
+                            formatter = new PeriodFormatterBuilder().appendMinutes().appendSuffix(context.getResources().getString(R.string.min)).printZeroNever().toFormatter();
+                                    temp = formatter.print(period);
+                            if(temp==""){
+                                formatter = new PeriodFormatterBuilder().appendSeconds().appendSuffix(context.getResources().getString(R.string.sec)).printZeroNever().toFormatter();
+                                        temp = formatter.print(period);
                                 if(temp==""){
-                                    temp = "Now";
+                                    temp = context.getResources().getString(R.string.now);
                                 }
                             }
                         }
@@ -817,11 +817,11 @@ public class Tools {
 
         alertDialog.setCancelable(true);
 
-        alertDialog.setTitle("Pick the car");
+        alertDialog.setTitle(activity.getResources().getString(R.string.pick_car));
 
         alertDialog.setAdapter(new CustomAdapterCarDialog(activity,cars,user,destroy,notificationID),null);
 
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton(activity.getResources().getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

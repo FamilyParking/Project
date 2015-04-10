@@ -78,7 +78,7 @@ public class DoParkByStatisticActivity implements Runnable {
                                 public void run() {
                                     activity.updateStatistic();
                                     activity.resetProgressDialogCircular();
-                                    Tools.createToast(activity, "Car parked!", Toast.LENGTH_SHORT);
+                                    Tools.createToast(activity, activity.getResources().getString(R.string.parked_car), Toast.LENGTH_SHORT);
                                 }
                             });
                         }
@@ -94,7 +94,7 @@ public class DoParkByStatisticActivity implements Runnable {
                                 @Override
                                 public void run() {
                                     activity.resetProgressDialogCircular();
-                                    Tools.createToast(activity, "Server not available!", Toast.LENGTH_SHORT);
+                                    Tools.createToast(activity, activity.getResources().getString(R.string.no_server), Toast.LENGTH_SHORT);
                                 }
                             });
                         }
@@ -115,7 +115,7 @@ public class DoParkByStatisticActivity implements Runnable {
                         @Override
                         public void run() {
                             activity.resetProgressDialogCircular();
-                            Tools.createToast(activity, "No connection available!", Toast.LENGTH_SHORT);
+                            Tools.createToast(activity, activity.getResources().getString(R.string.no_connection), Toast.LENGTH_SHORT);
                         }
                     });
                 }

@@ -115,7 +115,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         setSaveButton();
 
         if(isCreation){
-            Tools.setTitleActionBar(activity,R.string.create_car);
             contactListAdapter.add(user);
 
             if(activity.getLunchWithEmptyList()){
@@ -124,7 +123,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
             }
         }
         else{
-            Tools.setTitleActionBar(activity,R.string.edit_car);
             setRemoveButton();
             oldCar = car.clone();
             tempCar = car.clone();
@@ -158,6 +156,11 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onResume() {
         super.onResume();
+
+        if(isCreation)
+            Tools.setTitleActionBar(activity,R.string.create_car);
+        else
+            Tools.setTitleActionBar(activity,car.getName());
 
         if(relativeResultFinder.isShown()) {
             relativeResultFinder.setVisibility(View.GONE);
@@ -403,7 +406,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     private void searchBluetoothDevice(){
-        activity.setProgressDialogCircular("Looking for bluetooth device ...");
+        activity.setProgressDialogCircular(activity.getResources().getString(R.string.searching_bluetooth));
 
         if(isCreation)
             tempCar = new Car();
@@ -423,15 +426,15 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
 
                 if ((car_name.getText().toString() == null) || (car_name.getText().toString().equals(""))) {
                     car_name.requestFocus();
-                    car_name.setHint("Name is mandatory");
+                    car_name.setHint(activity.getResources().getString(R.string.car_name_mandatory));
                     car_name.setHintTextColor(activity.getResources().getColor(R.color.red));
                     InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(car_name, InputMethodManager.SHOW_IMPLICIT);
                 } else {
                     if (isCreation)
-                        activity.setProgressDialogCircular("Creating car ...");
+                        activity.setProgressDialogCircular(activity.getResources().getString(R.string.add_car));
                     else
-                        activity.setProgressDialogCircular("Updating  car ...");
+                        activity.setProgressDialogCircular(activity.getResources().getString(R.string.update_car));
 
                     if (tempCar == null)
                         tempCar = new Car();
@@ -463,7 +466,7 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         remove_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.setProgressDialogCircular("Remove car ...");
+                activity.setProgressDialogCircular(activity.getResources().getString(R.string.remove_car));
 
                 new Thread(new DoRemoveCar(activity,tempCar,user)).start();
             }
@@ -503,11 +506,6 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        if(isCreation)
-            Tools.setTitleActionBar(activity, R.string.list_car);
-        else
-            Tools.setTitleActionBar(activity, car.getName());
 
         if(pushedSave && !isCreation){
             car.merge(tempCar);

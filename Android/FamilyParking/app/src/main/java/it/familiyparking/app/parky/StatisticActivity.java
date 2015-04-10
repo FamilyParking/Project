@@ -42,7 +42,7 @@ public class StatisticActivity extends FragmentActivity {
                 Tools.closeApp(this);
 
             doubleBackToExitPressedOnce = true;
-            Tools.createToast(this, "Please click BACK again to exit", Toast.LENGTH_SHORT);
+            Tools.createToast(this, getResources().getString(R.string.back_to_exit), Toast.LENGTH_SHORT);
 
             new Handler().postDelayed(new Runnable() {
                 @Override

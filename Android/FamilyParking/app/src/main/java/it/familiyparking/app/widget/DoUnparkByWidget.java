@@ -58,12 +58,12 @@ public class DoUnparkByWidget implements Runnable {
 
                         done = true;
 
-                        sendMessage("Car occupied!");
+                        sendMessage(activity.getResources().getString(R.string.occupied_car));
 
                         break;
                     } else {
                         done = true;
-                        sendMessage("Server not available!");
+                        sendMessage(activity.getResources().getString(R.string.no_server));
                         break;
                     }
 
@@ -75,7 +75,7 @@ public class DoUnparkByWidget implements Runnable {
             }
 
             if(!done)
-                sendMessage("No connection available!");
+                sendMessage(activity.getResources().getString(R.string.no_connection));
         }
         catch(Exception e){
 

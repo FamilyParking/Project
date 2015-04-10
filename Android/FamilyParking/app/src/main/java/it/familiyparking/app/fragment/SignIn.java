@@ -44,8 +44,6 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
 
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        Tools.setTitleActionBar(activity,R.string.signin);
-
         name_surname = (EditText)rootView.findViewById(R.id.name_surname_et);
         name_surname.addTextChangedListener(this);
 
@@ -62,6 +60,12 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
         progressCircle = rootView.findViewById(R.id.progress_signIn);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Tools.setTitleActionBar(activity,R.string.signin);
     }
 
     @Override

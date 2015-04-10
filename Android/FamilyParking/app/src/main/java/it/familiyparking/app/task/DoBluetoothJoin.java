@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.utility.Tools;
@@ -66,7 +67,7 @@ public class DoBluetoothJoin implements Runnable {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Tools.createToast(activity,"Device not detected! Try again!", Toast.LENGTH_LONG);
+                    Tools.createToast(activity,activity.getResources().getString(R.string.failure_detectioned), Toast.LENGTH_LONG);
                     activity.resetProgressDialogCircular(false);
                 }
             });

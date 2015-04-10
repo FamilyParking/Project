@@ -9,7 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -19,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 
@@ -51,6 +55,8 @@ public class Map extends Fragment{
     private AlertDialog dialogSettings;
 
     private boolean setGraphic;
+
+    private ImageView progressLogo;
 
     public Map() {}
 
@@ -110,6 +116,8 @@ public class Map extends Fragment{
     public void onResume() {
         super.onResume();
         activity.showMyPosition();
+
+        Tools.setTitleActionBar(activity, R.string.app_name);
 
         if(!application.isFirstLunch())
             parkCar();

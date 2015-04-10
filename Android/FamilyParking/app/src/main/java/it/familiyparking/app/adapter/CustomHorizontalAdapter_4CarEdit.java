@@ -71,11 +71,11 @@ public class CustomHorizontalAdapter_4CarEdit extends ArrayAdapter<User> {
             super.add(contact);
 
             if(flag_toast)
-                Tools.createToast(getContext(),"Contact added to group!", Toast.LENGTH_SHORT);
+                Tools.createToast(getContext(),activity.getResources().getString(R.string.contact_add), Toast.LENGTH_SHORT);
         }
         else{
             if(flag_toast)
-                Tools.createToast(getContext(),"Contact already in the group!", Toast.LENGTH_LONG);
+                Tools.createToast(getContext(),activity.getResources().getString(R.string.contact_already_in), Toast.LENGTH_LONG);
         }
     }
 

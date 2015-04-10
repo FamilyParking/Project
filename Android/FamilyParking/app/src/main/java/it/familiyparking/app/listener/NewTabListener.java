@@ -41,10 +41,8 @@ public class NewTabListener implements android.support.v7.app.ActionBar.TabListe
 
     @Override
     public void onTabUnselected(android.support.v7.app.ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
-        if(type.equals(tab_car)){
+        if(type.equals(tab_car))
             activity.resetCar();
-        }
-        //else if(type.equals(tab_map)){activity.resetMap();}
     }
 
     @Override

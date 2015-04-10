@@ -71,7 +71,7 @@ public class DoPark implements Runnable {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Tools.createToast(activity, "Car parked!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.parked_car), Toast.LENGTH_SHORT);
                         activity.park(car, true);
                         activity.resetProgressDialogCircular(true);
                         activity.resetCarDetail();

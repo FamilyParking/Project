@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
@@ -155,7 +156,7 @@ public class DoUpdateCar implements Runnable {
                 activity.resetProgressDialogCircular(false);
                 activity.endUpdateCar(newCar);
                 activity.resetModifyCar(false);
-                Tools.createToast(activity, "Car updated!", Toast.LENGTH_SHORT);
+                Tools.createToast(activity, activity.getResources().getString(R.string.updated_car), Toast.LENGTH_SHORT);
             }
         });
     }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
@@ -60,7 +61,7 @@ public class DoRemoveCar implements Runnable {
                         activity.resetProgressDialogCircular(false);
                         activity.resetModifyCar(true);
                         activity.updateCarAdapter(cars);
-                        Tools.createToast(activity, "Car deleted!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.deleted_car), Toast.LENGTH_SHORT);
                     }
                 });
             } else {

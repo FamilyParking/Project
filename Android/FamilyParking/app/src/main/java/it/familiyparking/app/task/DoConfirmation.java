@@ -54,7 +54,7 @@ public class DoConfirmation implements Runnable {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Tools.createToast(activity, "Account confirmed!", Toast.LENGTH_SHORT);
+                            Tools.createToast(activity, activity.getResources().getString(R.string.account_confirmed), Toast.LENGTH_SHORT);
                             fragment.endConfirmation(false);
                         }
                     });
@@ -62,7 +62,7 @@ public class DoConfirmation implements Runnable {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Tools.createToast(activity, "Wrong code. Try again.", Toast.LENGTH_SHORT);
+                            Tools.createToast(activity, activity.getResources().getString(R.string.wrong_code), Toast.LENGTH_SHORT);
                             fragment.endConfirmation(true);
                         }
                     });
@@ -82,7 +82,7 @@ public class DoConfirmation implements Runnable {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Tools.createToast(activity, "Wrong code. Try again.", Toast.LENGTH_SHORT);
+                    Tools.createToast(activity, activity.getResources().getString(R.string.wrong_code), Toast.LENGTH_SHORT);
                     fragment.endConfirmation(true);
                 }
             });

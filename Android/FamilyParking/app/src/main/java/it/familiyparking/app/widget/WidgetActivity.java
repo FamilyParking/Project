@@ -62,21 +62,21 @@ public class WidgetActivity extends FragmentActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         alertDialog.setCancelable(true);
-        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onCancel(DialogInterface dialog){
+            public void onCancel(DialogInterface dialog) {
                 activity.finish();
             }
         });
 
         if(action.equals(Code.TYPE_PARK))
-            alertDialog.setTitle("Park the car");
+            alertDialog.setTitle(activity.getResources().getString(R.string.title_park));
         else if(action.equals(Code.TYPE_UNPARK))
-            alertDialog.setTitle("Unpark the car");
+            alertDialog.setTitle(activity.getResources().getString(R.string.title_unpark));
 
-        alertDialog.setAdapter(new CustomAdapterCarDialogWidget(this,cars,user,action),null);
+        alertDialog.setAdapter(new CustomAdapterCarDialogWidget(this, cars, user, action), null);
 
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton(activity.getResources().getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

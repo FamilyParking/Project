@@ -43,8 +43,6 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
 
         this.activity = (MainActivity) getActivity();
 
-        Tools.setTitleActionBar(activity,R.string.confirmation);
-
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         code = (EditText)rootView.findViewById(R.id.confirmation_et);
@@ -67,7 +65,6 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
 
                         activity.resetConfirmation(false);
                         activity.setSignIn();
-                        Tools.setTitleActionBar(activity,R.string.signin);
                     }
                 });
             }
@@ -76,6 +73,12 @@ public class Confirmation extends Fragment implements TextWatcher,View.OnClickLi
         progressCircle = rootView.findViewById(R.id.progress_confirmation);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Tools.setTitleActionBar(activity,R.string.confirmation);
     }
 
     @Override

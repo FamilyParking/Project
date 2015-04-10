@@ -63,13 +63,13 @@ public class DoParkByWidget implements Runnable {
 
                         done = true;
 
-                        sendMessage("Car parked!");
+                        sendMessage(activity.getResources().getString(R.string.parked_car));
 
                         break;
 
                     } else {
                         done = true;
-                        sendMessage("Server not available!");
+                        sendMessage(activity.getResources().getString(R.string.no_server));
                         break;
                     }
                 }
@@ -79,7 +79,7 @@ public class DoParkByWidget implements Runnable {
             }
 
             if(!done)
-                sendMessage("No connection available!");
+                sendMessage(activity.getResources().getString(R.string.no_connection));
 
         } catch (Exception e) {
 

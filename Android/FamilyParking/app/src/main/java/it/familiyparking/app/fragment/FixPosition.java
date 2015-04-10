@@ -45,7 +45,6 @@ public class FixPosition extends Fragment implements GoogleMap.OnMarkerDragListe
         View rootView = inflater.inflate(R.layout.fragment_fixposition, container, false);
 
         this.activity = (MainActivity) getActivity();
-        Tools.setTitleActionBar(activity,R.string.fixposition);
 
         user = ((FPApplication) activity.getApplication()).getUser();
 
@@ -70,6 +69,12 @@ public class FixPosition extends Fragment implements GoogleMap.OnMarkerDragListe
         toBack.setClickable(true);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Tools.setTitleActionBar(activity, R.string.fixposition);
     }
 
     @Override

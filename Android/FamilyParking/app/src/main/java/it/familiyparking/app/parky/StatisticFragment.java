@@ -101,7 +101,7 @@ public class StatisticFragment extends Fragment{
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Tools.createToast(activity, "Thanks for your help!", Toast.LENGTH_SHORT);
+                            Tools.createToast(activity, activity.getResources().getString(R.string.thanks), Toast.LENGTH_SHORT);
                             activity.finish();
                         }
                     });

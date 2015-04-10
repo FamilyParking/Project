@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import it.familiyparking.app.FPApplication;
 import it.familiyparking.app.MainActivity;
+import it.familiyparking.app.R;
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.GroupTable;
 import it.familiyparking.app.serverClass.Car;
@@ -66,7 +67,7 @@ public class DoCreateCar implements Runnable {
                         activity.setCar();
                         activity.setTabCar();
                         activity.updateCarAdapter(carArrayList);
-                        Tools.createToast(activity, "Car created!", Toast.LENGTH_SHORT);
+                        Tools.createToast(activity, activity.getResources().getString(R.string.created_car), Toast.LENGTH_SHORT);
                     }
                 });
             } else {
