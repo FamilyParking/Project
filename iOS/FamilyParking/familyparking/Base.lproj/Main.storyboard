@@ -48,7 +48,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rnS-K6-YxA">
-                                <rect key="frame" x="198" y="204" width="61" height="30"/>
+                                <rect key="frame" x="171" y="204" width="88" height="30"/>
                                 <state key="normal" title="Confirm">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -95,7 +95,73 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vav-Pb-gU4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1024" y="-1469"/>
+            <point key="canvasLocation" x="1404" y="-1451"/>
+        </scene>
+        <!--Landing View Controller-->
+        <scene sceneID="Prh-om-YX8">
+            <objects>
+                <viewController id="msS-6V-4bX" customClass="LandingViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wKj-CX-6rZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="LjN-3x-CFf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Bab-wi-1at">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GCj-Pl-fiK" customClass="FBSDKLoginButton">
+                                <rect key="frame" x="60" y="401" width="200" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="LZe-EL-06n"/>
+                                    <constraint firstAttribute="height" constant="35" id="d56-JE-U0X"/>
+                                </constraints>
+                            </view>
+                            <button clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KHM-Ln-QAy">
+                                <rect key="frame" x="60" y="456" width="200" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="ZVg-OO-PAS"/>
+                                    <constraint firstAttribute="height" constant="35" id="mt2-kZ-bhX"/>
+                                </constraints>
+                                <state key="normal" title="Login with mail"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="sqW-gV-Gf2" kind="modal" id="dbx-ub-afs"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRK-gn-V7u" customClass="iCarousel">
+                                <rect key="frame" x="35" y="60" width="250" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="AVh-eG-Q9K"/>
+                                    <constraint firstAttribute="height" constant="250" id="rRP-ma-uye"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="msS-6V-4bX" id="Jow-4F-T0E"/>
+                                    <outlet property="delegate" destination="msS-6V-4bX" id="yP7-Gi-ulu"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.37493699596774194" green="0.7568628191947937" blue="0.70230594758064513" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="qRK-gn-V7u" secondAttribute="centerX" id="4te-ho-lGj"/>
+                            <constraint firstItem="qRK-gn-V7u" firstAttribute="top" secondItem="wKj-CX-6rZ" secondAttribute="bottom" constant="40" id="SBb-EX-bCN"/>
+                            <constraint firstItem="KHM-Ln-QAy" firstAttribute="top" secondItem="wKj-CX-6rZ" secondAttribute="bottom" constant="436" id="iRb-mt-htZ"/>
+                            <constraint firstItem="GCj-Pl-fiK" firstAttribute="top" secondItem="qRK-gn-V7u" secondAttribute="bottom" constant="91" id="jwi-7b-df0"/>
+                            <constraint firstAttribute="centerX" secondItem="KHM-Ln-QAy" secondAttribute="centerX" constant="-0.5" id="pKM-z3-f6a"/>
+                            <constraint firstAttribute="centerX" secondItem="GCj-Pl-fiK" secondAttribute="centerX" id="yin-jZ-mT5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="carousel" destination="qRK-gn-V7u" id="OOZ-Y2-oIV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zqR-C8-i46" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="582" y="-1435"/>
         </scene>
         <!--Informations-->
         <scene sceneID="ESa-Rt-EPH">
@@ -199,15 +265,6 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nto-n4-F6X">
-                                <rect key="frame" x="227" y="207" width="32" height="30"/>
-                                <state key="normal" title="Next">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="Next" destination="sqW-gV-Gf2" eventType="touchUpInside" id="YTg-mL-Cwg"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="car" translatesAutoresizingMaskIntoConstraints="NO" id="UY9-ac-9iI">
                                 <rect key="frame" x="40" y="347" width="240" height="128"/>
                                 <constraints>
@@ -216,17 +273,26 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We take care about yor datas, so we need to validate your identity" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDZ-yI-SOM">
-                                <rect key="frame" x="37" y="238" width="248" height="10"/>
+                                <rect key="frame" x="36" y="72" width="248" height="10"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nto-n4-F6X">
+                                <rect key="frame" x="215" y="207" width="44" height="30"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="Next" destination="sqW-gV-Gf2" eventType="touchUpInside" id="YTg-mL-Cwg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="UY9-ac-9iI" secondAttribute="centerY" constant="-127" id="7Z0-Ii-y45"/>
                             <constraint firstAttribute="centerX" secondItem="UY9-ac-9iI" secondAttribute="centerX" id="EHp-0b-YYg"/>
-                            <constraint firstItem="JDZ-yI-SOM" firstAttribute="top" secondItem="ooF-CL-s8G" secondAttribute="bottom" constant="218" id="ZgM-tA-mjq"/>
+                            <constraint firstItem="JDZ-yI-SOM" firstAttribute="top" secondItem="ooF-CL-s8G" secondAttribute="bottom" constant="52" id="ZgM-tA-mjq"/>
                             <constraint firstAttribute="centerX" secondItem="JDZ-yI-SOM" secondAttribute="centerX" constant="-0.5" id="yZ7-jw-8bN"/>
                         </constraints>
                     </view>
@@ -239,7 +305,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dpr-8E-i4Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644" y="-1469"/>
+            <point key="canvasLocation" x="1024" y="-1451"/>
         </scene>
         <!--Map-->
         <scene sceneID="HCI-ux-6DI">
@@ -304,11 +370,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="Family Parking" id="B3U-yF-ONi">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="LSd-Qz-DdL">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DsI-sz-8PK">
-                                <rect key="frame" x="-23" y="-15" width="71" height="30"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" id="DsI-sz-8PK">
+                                <rect key="frame" x="233" y="7" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="i">
+                                <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -318,9 +383,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="sqW-gV-Gf2" kind="modal" identifier="registration_1" id="VLS-Wf-g8Y"/>
                         <segue destination="ta2-7k-jNf" kind="push" identifier="park_action" id="Pqy-fX-8L8"/>
                         <segue destination="UMO-cu-gwX" kind="push" identifier="create_car" id="os5-nP-kpf"/>
+                        <segue destination="msS-6V-4bX" kind="modal" identifier="registration_1" id="Yz2-HQ-mHF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zG7-LF-fxp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -486,11 +551,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Cars" id="W1x-Ra-8oY">
                         <barButtonItem key="rightBarButtonItem" id="B4J-Pg-Efd">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6vd-AH-hUt">
-                                <rect key="frame" x="-23" y="-15" width="71" height="30"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="6vd-AH-hUt">
+                                <rect key="frame" x="233" y="7" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
-                                <state key="normal" title="+"/>
                                 <connections>
                                     <segue destination="UMO-cu-gwX" kind="push" id="TFs-jk-wHQ"/>
                                 </connections>
@@ -520,10 +583,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="bqK-OV-3oR">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="4E1-kN-LDn">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Bin-07-YFe">
-                                <rect key="frame" x="-23" y="-15" width="71" height="30"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="Bin-07-YFe">
+                                <rect key="frame" x="233" y="7" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add">
+                                <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -610,6 +673,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="TFs-jk-wHQ"/>
+        <segue reference="os5-nP-kpf"/>
     </inferredMetricsTieBreakers>
 </document>

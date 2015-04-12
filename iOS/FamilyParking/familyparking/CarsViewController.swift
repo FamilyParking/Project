@@ -70,7 +70,26 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let person = people[indexPath.row]
             cell.textLabel?.text = person.valueForKey("name") as String?
             if((person.valueForKey("isParked") as String) == "true"){
-                cell.detailTextLabel?.text = person.valueForKey("lastPark") as String?
+                var parkTime:String = person.valueForKey("lastPark") as String!
+                
+                
+                var dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSS" //format style. Browse online to get a format that fits your needs.
+                var date = dateFormatter.dateFromString(parkTime)
+                var calendar: NSCalendar = NSCalendar.currentCalendar()
+
+                var flags = NSCalendarUnit.DayCalendarUnit
+                var days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).day
+                
+                if(!(days==0)){
+                    cell.detailTextLabel?.text = "Parked "+days.description + " days ago"
+                }
+                else{
+                    flags = NSCalendarUnit.HourCalendarUnit
+                    days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).hour
+                    cell.detailTextLabel?.text = "Parked "+days.description + " hours ago"
+
+                }
             }else{
                 
             }
