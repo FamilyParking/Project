@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>en-US</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,10 +22,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Family Parking need GPS to run</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Activate it for using iBeacon</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Family Parking need GPS to run</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

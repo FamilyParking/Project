@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  familyparking
+
+  Created by mauro piva on 10/04/15.
+  Copyright (c) 2015 familyParking. All rights reserved.
+*/
+
+GOOD_MORNING = "Guten Morgen";
+
+No_internet_connection="No internet connection";
+
+Please_check_your_internet_connection="Please, check your internet connection.";

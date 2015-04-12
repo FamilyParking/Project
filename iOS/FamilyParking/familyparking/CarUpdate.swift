@@ -43,8 +43,8 @@ class CarUpdate: UIViewController{
                 if(response == nil){
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         var alertView:UIAlertView = UIAlertView()
-                        alertView.title = "No internet connection"
-                        alertView.message = "Please, check your internet connection."
+                        alertView.title = NSLocalizedString("No_internet_connection",comment:"No internet connection")
+                        alertView.message = NSLocalizedString("Please_check_your_internet_connection",comment:"Please, check your internet connection.")
                         alertView.delegate = self
                         alertView.addButtonWithTitle("OK")
                         alertView.show()

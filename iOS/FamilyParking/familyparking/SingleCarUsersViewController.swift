@@ -40,7 +40,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             super.viewDidLoad()
             self.title = car?.valueForKey("name")?.description
             
-            self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
+            self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Grouped)
             self.tableView.registerClass(MyTableViewCell.self, forCellReuseIdentifier: "myCell")
             self.tableView.delegate = self
             self.tableView.dataSource = self
@@ -66,11 +66,13 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 let person = people[indexPath.row]
                 var mail = person.valueForKey("email") as String?
                 var showingName = person.valueForKey("username") as String?
+                showingName!.replaceRange(showingName!.startIndex...showingName!.startIndex, with: String(showingName![showingName!.startIndex]).capitalizedString)
                 if( mail == localMail){
                     cell.textLabel?.text = showingName! + " (You)"
                 }
                 else{
-                    cell.textLabel?.text = person.valueForKey("username") as String?
+                    //cell.textLabel?.text = person.valueForKey("username") as String?
+                    cell.textLabel?.text = showingName
                 }
                 cell.detailTextLabel?.text = person.valueForKey("email") as String?
                 return cell
@@ -220,7 +222,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 completion: nil)
         }
     
-    func wrongMailPopUp(){
+    func wrongMailPopUpOld(nameX:String){
         var alertView:UIAlertView = UIAlertView()
         alertView.title = "Wrong Mail"
         alertView.message = "Please check your Email"
@@ -228,6 +230,29 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         alertView.addButtonWithTitle("OK")
         alertView.show()
     }
+    
+   func wrongMailPopUp(nameX:String){
+        var alert = UIAlertController(title: "Wrong Mail",
+            message: "Please check the Email",
+            preferredStyle: .Alert)
+    
+    
+    let saveAction = UIAlertAction(title: "Done",
+        style: .Default) { (action: UIAlertAction!) -> Void in
+            
+            println()
+            self.OldAddUser("", name: nameX)
+                }
+
+    
+  
+        alert.addAction(saveAction)
+    
+        presentViewController(alert,
+            animated: true,
+            completion: nil)
+    }
+
     
     func savingErrorPopUp(){
         var alertView:UIAlertView = UIAlertView()
@@ -253,24 +278,24 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
     
     @IBAction func AddUser(sender: AnyObject) {
         
-        OldAddUser(sender)
+        OldAddUser(sender,name: "")
         
           //  showPeoplePickerController()
              }
 
-        func OldAddUser(sender: AnyObject) {
+    func OldAddUser(sender: AnyObject,name:String) {
             var alert = UIAlertController(title: "New Car Mate",
                     message: "Insert the email of your carmate",
                     preferredStyle: .Alert)
                 
-                let saveAction = UIAlertAction(title: "Save",
+                let saveAction = UIAlertAction(title: "Done",
                     style: .Default) { (action: UIAlertAction!) -> Void in
                         
                         let textFieldEx = alert.textFields![0] as UITextField
                         if(self.isValidEmail(textFieldEx.text)){
                             self.addUserToServer(textFieldEx.text)
                         }else{
-                            self.wrongMailPopUp()
+                            self.wrongMailPopUp(name)
                         }
                 }
                 
@@ -286,9 +311,10 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             
                 alert.addTextFieldWithConfigurationHandler {
                     (textField: UITextField!) -> Void in
+                    textField.text = name
                 }
             
-            
+        
                 alert.addAction(saveAction)
                 alert.addAction(rubricAction)
                 alert.addAction(cancelAction)
@@ -510,6 +536,30 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             var email:String = ABMultiValueCopyValueAtIndex(mails, inx!).takeRetainedValue().description
             self.addUserToServer(email)
             
+    }
+    
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        //  println("TABEL"+self.tableView.rowHeight.description)
+        var mail = self.people[indexPath.item].valueForKey("name")?.description
+        
+        let deleteClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            println("Delete closure called")
+           
+            let email = self.people[indexPath.item].valueForKey("username")?.description
+            self.removeUserFromServer(email!,posx: indexPath.item)
+        }
+        
+        
+        let deleteAction = UITableViewRowAction(style: .Default, title: "X", handler: deleteClosure)
+        
+        return [deleteAction]
+        
+    }
+
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // Intentionally blank. Required to use UITableViewRowActions
     }
 
     

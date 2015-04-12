@@ -156,7 +156,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                             var london = GMSMarker(position: position)
                             london.draggable = true
                             london.title = man.valueForKey("name")?.description
-                          //  london.snippet = man.valueForKey("brand")?.description
+                            london.snippet = "Drag to update position"
                             london.infoWindowAnchor = CGPointMake(0.5, 0.5)
                             london.userData = man.valueForKey("id")?.description
                             //  london.icon = UIImage(named: "audi")
@@ -204,7 +204,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         if (finding){
             var lat:String = prefs.valueForKey("goLat") as String
             var long:String = prefs.valueForKey("goLong") as String
-            var camera = GMSCameraPosition.cameraWithLatitude((lat as NSString).doubleValue, longitude: (long as NSString).doubleValue, zoom: 16)
+            var camera = GMSCameraPosition.cameraWithLatitude((lat as NSString).doubleValue, longitude: (long as NSString).doubleValue, zoom: 18)
             self.gmaps.camera = camera
             
         }else{

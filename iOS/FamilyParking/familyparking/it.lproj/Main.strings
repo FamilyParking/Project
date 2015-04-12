@@ -1,0 +1,90 @@
+
+/* Class = "UINavigationItem"; title = "Which Car?"; ObjectID = "0Nz-bw-qqI"; */
+"0Nz-bw-qqI.title" = "Che auto?";
+
+/* Class = "UILabel"; text = "Insert your Name and Email"; ObjectID = "0il-dg-mHj"; */
+"0il-dg-mHj.text" = "Inserisci nome ed email";
+
+/* Class = "UINavigationItem"; title = "Informations"; ObjectID = "30b-wz-jms"; */
+"30b-wz-jms.title" = "Informazioni";
+
+/* Class = "UINavigationItem"; title = "Insert your Car Name"; ObjectID = "4gT-RE-QL5"; */
+"4gT-RE-QL5.title" = "Nome dell'auto";
+
+/* Class = "UILabel"; text = "Pin"; ObjectID = "5iY-fm-w74"; */
+"5iY-fm-w74.text" = "Pin";
+
+/* Class = "UIButton"; normalTitle = "+"; ObjectID = "6vd-AH-hUt"; */
+"6vd-AH-hUt.normalTitle" = "+";
+
+/* Class = "UIButton"; normalTitle = "www.FamilyParking.it"; ObjectID = "8WO-uy-NNp"; */
+"8WO-uy-NNp.normalTitle" = "www.FamilyParking.it";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "AeZ-6l-zN2"; */
+"AeZ-6l-zN2.normalTitle" = "Indietro";
+
+/* Class = "UINavigationItem"; title = "Family Parking"; ObjectID = "B3U-yF-ONi"; */
+"B3U-yF-ONi.title" = "Family Parking";
+
+/* Class = "UIButton"; normalTitle = "Add"; ObjectID = "Bin-07-YFe"; */
+"Bin-07-YFe.normalTitle" = "Aggiungi";
+
+/* Class = "UIButton"; normalTitle = "i"; ObjectID = "DsI-sz-8PK"; */
+"DsI-sz-8PK.normalTitle" = "i";
+
+/* Class = "UITabBarItem"; title = "Map"; ObjectID = "G1E-ay-4uP"; */
+"G1E-ay-4uP.title" = "Mappa";
+
+/* Class = "UILabel"; text = "We take care about yor datas, so we need to validate your identity"; ObjectID = "JDZ-yI-SOM"; */
+"JDZ-yI-SOM.text" = "Ci preoccupiamo per te, perciò abbiamo bisogno di riconoscerti";
+
+/* Class = "UITabBarItem"; title = "Groups"; ObjectID = "L6M-FN-SuG"; */
+"L6M-FN-SuG.title" = "Groups";
+
+/* Class = "UILabel"; text = "Insert Group Name"; ObjectID = "REV-1i-fkl"; */
+"REV-1i-fkl.text" = "Insert Group Name";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "UCr-iK-uC5"; */
+"UCr-iK-uC5.normalTitle" = "Back";
+
+/* Class = "UINavigationItem"; title = "Cars"; ObjectID = "W1x-Ra-8oY"; */
+"W1x-Ra-8oY.title" = "Auto";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "XZz-5h-AuL"; */
+"XZz-5h-AuL.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "Yu1-ft-Fpq"; */
+"Yu1-ft-Fpq.normalTitle" = "Conferma";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "cNp-pl-sb3"; */
+"cNp-pl-sb3.text" = "Email";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "cnj-fC-9Rl"; */
+"cnj-fC-9Rl.text" = "Nome";
+
+/* Class = "UITabBarItem"; title = "Cars"; ObjectID = "eFq-yq-3w7"; */
+"eFq-yq-3w7.title" = "Auto";
+
+/* Class = "UINavigationItem"; title = "Groups"; ObjectID = "fI2-UZ-Lqx"; */
+"fI2-UZ-Lqx.title" = "Groups";
+
+/* Class = "UILabel"; text = "Family Parking is an amazing project created for the Google Workshop for Web Tecnologies, Rome 2015. You can find our contacts on our website."; ObjectID = "fwW-Yz-V12"; */
+"fwW-Yz-V12.text" = "Family Parking è un progetto creato per il Google Workshop for Web Tecnologies, Rome 2015. Puoi trovare altre informazioni sul nostro sito.";
+
+/* Class = "UIButton"; normalTitle = "Add"; ObjectID = "i90-1s-8fN"; */
+"i90-1s-8fN.normalTitle" = "Aggiungi";
+
+/* Class = "UILabel"; text = "Your car name"; ObjectID = "lVf-fq-qkr"; */
+"lVf-fq-qkr.text" = "Nome dell'auto";
+
+/* Class = "UILabel"; text = "Check your mail for the pin"; ObjectID = "moh-6Y-pFe"; */
+"moh-6Y-pFe.text" = "Controlla la mail per il pin";
+
+/* Class = "UIButton"; normalTitle = "Next"; ObjectID = "nto-n4-F6X"; */
+"nto-n4-F6X.normalTitle" = "Avanti";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "p4F-GF-3XC"; */
+"p4F-GF-3XC.normalTitle" = "Conferma";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "rnS-K6-YxA"; */
+"rnS-K6-YxA.normalTitle" = "Conferma";

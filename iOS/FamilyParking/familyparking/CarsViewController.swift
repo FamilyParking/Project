@@ -101,7 +101,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.associateIBeacon(toRem!)
         }
         let deleteAction = UITableViewRowAction(style: .Default, title: "X", handler: deleteClosure)
-        let moreAction = UITableViewRowAction(style: .Normal, title: "Friends", handler: moreClosure)
+        let moreAction = UITableViewRowAction(style: .Normal, title: "Sharers", handler: moreClosure)
         let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "iBeacon", handler: addIBeaconClosure)
         
      //   UIGraphicsBeginImageContext(self.view.frame.size)
