@@ -87,7 +87,9 @@
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="twitter4j-core-4.0.1" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
+    <orderEntry type="library" exported="" name="library-0.3.7" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.7" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
@@ -95,5 +97,6 @@
     <orderEntry type="library" exported="" name="twowayview-0.1.4" level="project" />
     <orderEntry type="library" exported="" name="materialish-progress-1.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
+    <orderEntry type="library" exported="" name="facebook-3.14.2" level="project" />
   </component>
 </module>

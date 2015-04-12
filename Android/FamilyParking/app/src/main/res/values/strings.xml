@@ -100,6 +100,7 @@
     <string name="delete">DELETE</string>
     <string name="cancel">CANCEL</string>
     <string name="modify">MODIFY</string>
+    <string name="save">SAVE</string>
     <string name="ok">OK</string>
     <string name="back">BACK</string>
     <string name="unpark">UNPARK THE CAR</string>

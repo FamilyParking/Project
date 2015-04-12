@@ -491,6 +491,7 @@ public class MainActivity extends ActionBarActivity {
 
         resetMenu();
         initBool();
+        setBackgroundMap();
         setSignIn();
     }
 

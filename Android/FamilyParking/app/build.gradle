@@ -33,4 +33,7 @@ dependencies {
     compile 'com.pnikosis:materialish-progress:1.4'
     compile 'commons-io:commons-io:2.4'
     compile 'joda-time:joda-time:2.7'
+    compile('com.github.androidsocialnetworks:library:0.3.7@aar') {
+        transitive = true
+    }
 }
