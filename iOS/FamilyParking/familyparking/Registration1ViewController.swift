@@ -154,7 +154,7 @@ class Registration1ViewController: UIViewController,FBSDKLoginButtonDelegate {
             // should check if specific permissions missing
             if result.grantedPermissions.containsObject("email")
             {
-                // Do work
+                
             }
         }
     }

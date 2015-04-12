@@ -16,17 +16,18 @@
 
 import UIKit
 
-class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDelegate {
+class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDelegate, FBSDKLoginButtonDelegate {
     
     
     var items: [Int] = []
     
+    @IBOutlet weak var fbLoginView: FBSDKLoginButton!
     
     @IBOutlet weak var carousel: iCarousel!
     override func awakeFromNib()
     {
         super.awakeFromNib()
-        for i in 0...4
+        for i in 0...3
         {
             items.append(i)
         }
@@ -35,7 +36,9 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        carousel.type = .Rotary
+        carousel.type = .Linear
+        self.fbLoginView.delegate = self
+        self.fbLoginView.readPermissions = ["public_profile", "email", "user_friends"]
     }
     
     func numberOfItemsInCarousel(carousel: iCarousel!) -> Int
@@ -54,7 +57,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
             //this `if (view == nil) {...}` statement because the view will be
             //recycled and used with other index values later
             view = UIImageView(frame:CGRectMake(0, 0, 200, 200))
-            (view as UIImageView!).image = UIImage(named: "logo")
+            (view as UIImageView!).image = UIImage(named: "img\(items[index])")
             view.contentMode = .Center
             
             label = UILabel(frame:view.bounds)
@@ -89,8 +92,50 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         return value
     }
     
-
-   
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        println("User Logged In")
+        
+        if ((error) != nil)
+        {
+            // Process error
+        }
+        else if result.isCancelled {
+            // Handle cancellations
+        }
+        else {
+            // If you ask for multiple permissions at once, you
+            // should check if specific permissions missing
+            if result.grantedPermissions.containsObject("email")
+            {
+                returnUserData()
+            }
+        }
+    }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        println("User Logged Out")
+    }
+    
+    func returnUserData()
+    {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil)
+            {
+                // Process error
+                println("Error: \(error)")
+            }
+            else
+            {
+                println("fetched user: \(result)")
+                let userName : NSString = result.valueForKey("name") as NSString
+                println("User Name is: \(userName)")
+                let userEmail : NSString = result.valueForKey("email") as NSString
+                println("User Email is: \(userEmail)")
+            }
+        })
+    }
     
 }
 
