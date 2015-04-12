@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +21,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 import it.familiyparking.app.dao.CarTable;
 import it.familiyparking.app.dao.UserTable;
@@ -35,6 +35,7 @@ import it.familiyparking.app.fragment.EditCar;
 import it.familiyparking.app.fragment.FixPosition;
 import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
+import it.familiyparking.app.fragment.SignInSocialNetwork;
 import it.familiyparking.app.fragment.TabFragment;
 import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
@@ -46,7 +47,7 @@ import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     private FPApplication application;
 
@@ -55,6 +56,7 @@ public class MainActivity extends ActionBarActivity {
     private Map map;
     private CarFragment carFragment;
     private SignIn signIn;
+    private SignInSocialNetwork signInSocial;
     private Confirmation confirmation;
     private EditCar createCar;
     private EditCar modifyCar;
@@ -161,7 +163,7 @@ public class MainActivity extends ActionBarActivity {
 
         resetBackgroundMap();
 
-        new AsyncTaskGCM().execute(application.getUser(),this);
+        new AsyncTaskGCM().execute(application.getUser(), this);
     }
 
     private void initBool(){
@@ -182,6 +184,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         startGoogleApi();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Code.SOCIAL);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     /***************************************** MENU MANAGMENT *****************************************/
@@ -428,11 +440,9 @@ public class MainActivity extends ActionBarActivity {
         }
         else if(fixPosition != null){
             resetFixPosition();
-        }
-        else if(createCar != null){
+        } else if(createCar != null){
             resetCreateCar();
-        }
-        else if(carDetail != null){
+        } else if(carDetail != null){
             resetCarDetail();
         }
     }
@@ -500,6 +510,9 @@ public class MainActivity extends ActionBarActivity {
     public void onBackPressed() {
         if((progressDialogCircular != null) && !lunchWithEmptyList){
             //Do nop
+        }
+        else if(signInSocial != null){
+            resetLoginSocial();
         }
         else if((colorPickerDialog != null) && !lunchWithEmptyList){
             resetColorPicker();
@@ -896,6 +909,21 @@ public class MainActivity extends ActionBarActivity {
 
             Tools.setUpButtonActionBar(this);
             setMenu();
+        }
+    }
+
+    /***************************************** SOCIAL NETWORK *****************************************/
+    public void setLoginSocial(){
+        if(signInSocial == null){
+            signInSocial = new SignInSocialNetwork();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, signInSocial).commit();
+        }
+    }
+
+    public void resetLoginSocial(){
+        if(signInSocial != null){
+            getSupportFragmentManager().beginTransaction().remove(signInSocial).commit();
+            signInSocial = null;
         }
     }
 

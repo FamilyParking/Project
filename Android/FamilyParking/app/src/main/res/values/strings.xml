@@ -27,6 +27,9 @@
     <string name="name_surname">Name and Surname</string>
     <string name="email">Email</string>
     <string name="code">Insert the code received by email</string>
+    <string name="facebook">Login with Facebook</string>
+    <string name="google_plus">Login with Google Plus</string>
+    <string name="social">Sign in by Social</string>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 

@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
@@ -30,7 +31,11 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
     private EditText name_surname;
     private EditText email;
     private Button signIn;
+
     private View progressCircle;
+
+    private RelativeLayout social;
+
     private boolean correctInput;
     private boolean isRotated;
 
@@ -58,6 +63,14 @@ public class SignIn extends Fragment implements TextWatcher,View.OnClickListener
         signIn.setClickable(false);
 
         progressCircle = rootView.findViewById(R.id.progress_signIn);
+
+        social = (RelativeLayout)rootView.findViewById(R.id.social_relative);
+        social.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setLoginSocial();
+            }
+        });
 
         return rootView;
     }

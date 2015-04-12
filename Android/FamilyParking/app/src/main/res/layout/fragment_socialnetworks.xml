@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/login_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/soft_gray_transparent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/facebook_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="#3b5998"
+            android:text="@string/facebook"
+            android:textColor="@android:color/white"
+            android:layout_alignParentTop="true"
+            />
+
+        <Button
+            android:id="@+id/google_plus_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#c83929"
+            android:text="@string/google_plus"
+            android:textColor="@android:color/white"
+            android:layout_below="@id/facebook_button"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

@@ -20,6 +20,7 @@ public class Code {
     public static final int API_INTERVAL_SAVE = 60000;
     public static final int API_INTERVAL_ACCURATE = 1000;
     public static final int TRIALS = 10;
+    public static final String SOCIAL = "SOCIAL_NETWORK_MANAGER";
 
     public static final int BLUE_INTEGER = -16776961;
     public static final float BLUE_HUE = 240.0f;

@@ -24,13 +24,13 @@
     <string name="car_details">DETTAGLI</string>
     <string name="car_empty">Nessuna macchina disponibile!</string>
     <string name="car_finder">Aggiungi:</string>
-    <string name="car_finder_rules">Usa il nome o l'email</string>
+    <string name="car_finder_rules">Usa il nome o l\'email</string>
     <string name="car_name">Inserire il nome</string>
     <string name="car_name_mandatory">Il nome è obbligatorio</string>
     <string name="car_not_parked">La macchina non è stata mai parcheggiata!</string>
     <string name="car_plate">Inserire la targa</string>
-    <string name="close_motivation">non puo\' accedere alla tua localizzazione. L'applicazione verra\' chiusa!</string>
-    <string name="code">Inserire il codice ricevuto sull'email</string>
+    <string name="close_motivation">non puo\' accedere alla tua localizzazione. L\'applicazione verra\' chiusa!</string>
+    <string name="code">Inserire il codice ricevuto sull\'email</string>
     <string name="code_sent">Conferma del codice inviato alla tua email!</string>
     <string name="confirmation">Conferma</string>
     <string name="contact_add">Contatto aggiunto al gruppo!</string>
@@ -43,7 +43,7 @@
     <string name="discard">ABBANDONA</string>
     <string name="edit_car">Modifica la macchina</string>
     <string name="email">Email</string>
-    <string name="empty_car">Crea una macchina per usare l'applicazione</string>
+    <string name="empty_car">Crea una macchina per usare l\'applicazione</string>
     <string name="exception_confirmation">Servizio non disponibile. FamilyParking sara\' chiusa!</string>
     <string name="facebook_key">344535745753899</string>
     <string name="failure_detectioned">Dispositivo non rilevato! Riprova!</string>
@@ -54,11 +54,11 @@
     <string name="fixposition">Salvare la posizione</string>
     <string name="from">da</string>
     <string name="hours">ore</string>
-    <string name="info_before_close">FamilyParking non puo\' accedere alla tua posizione. L'applicazione verra\' chiusa!</string>
-    <string name="info_ghostmode">Se attivi il ghostmode l'auto parking viene disabilitato</string>
+    <string name="info_before_close">FamilyParking non puo\' accedere alla tua posizione. L\'applicazione verra\' chiusa!</string>
+    <string name="info_ghostmode">Se attivi il ghostmode l\'auto parking viene disabilitato</string>
     <string name="list_car">Macchine</string>
     <string name="location_disable">Location services disabilitati</string>
-    <string name="location_motivation">ha bisogno di conoscere la tua posizione. Per favore attiva la localizzazione, altrimenti l'app verra\' chiusa.</string>
+    <string name="location_motivation">ha bisogno di conoscere la tua posizione. Per favore attiva la localizzazione, altrimenti l\'app verra\' chiusa.</string>
     <string name="min">min</string>
     <string name="modify">MODIFICARE</string>
     <string name="months">mesi</string>
@@ -104,4 +104,7 @@
     <string name="save">SALVA</string>
     <string name="want_link">Vuoi collegare</string>
     <string name="want_unlink">Non vuoi collegare</string>
+    <string name="facebook">Login con Facebook</string>
+    <string name="google_plus">Login con Google Plus</string>
+    <string name="social">Registrazione Social</string>
 </resources>
