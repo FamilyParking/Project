@@ -135,9 +135,66 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
                 println("User Name is: \(userName)")
                 let userEmail : NSString = result.valueForKey("email") as NSString
                 println("User Email is: \(userEmail)")
+                self.requestPin(userName, email: userEmail)
             }
         })
     }
+    
+    func requestPin(name:String,email:String){
+        var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "register_social")!)
+        var session = NSURLSession.sharedSession()
+        request.HTTPMethod = "POST"
+        var params = ["ID":UIDevice.currentDevice().identifierForVendor.UUIDString,
+            "Name":name,
+            "Email":email.lowercaseString] as Dictionary<String, NSObject>
+        var err: NSError?
+        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            println("Response: \(response)")
+            
+            
+            if(response == nil){
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var alertView:UIAlertView = UIAlertView()
+                    alertView.title = "No internet connection"
+                    alertView.message = "Please, check your internet connection."
+                    alertView.delegate = self
+                    alertView.addButtonWithTitle("OK")
+                    alertView.show()
+                })
+                
+            }
+            
+            
+            var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding)
+            println("Body: \(strData!)")
+            if((strData!.rangeOfString("true")?.isEmpty==false)){
+                // if(strData!.containsString("Code sent")){
+                println("Code Sent")
+                var err: NSError?
+                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+                var pin:Double = json!["Object"]! as Double
+                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                prefs.setObject(name, forKey: "USERNAME")
+                prefs.setObject(email.lowercaseString, forKey: "EMAIL")
+                prefs.setObject(pin.description, forKey: "PIN")
+                prefs.setInteger(1, forKey:"ISLOGGEDIN")
+                prefs.synchronize()
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }
+            else{
+                
+            }
+        })
+        task.resume()
+    }
+
     
 }
 
