@@ -9,11 +9,17 @@
 import Foundation
 import UIKit
 
-class Registration1ViewController: UIViewController {
+class Registration1ViewController: UIViewController,FBSDKLoginButtonDelegate {
     
     @IBOutlet weak var Name: UITextField!
     @IBOutlet weak var Email: UITextField!
     @IBOutlet weak var NextButton: UIButton!
+    @IBAction func Back(sender: AnyObject) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        
+    }
     
     func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
@@ -37,6 +43,22 @@ class Registration1ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        if (FBSDKAccessToken.currentAccessToken() != nil)
+        {
+            // User is already logged in, do work such as go to next view controller.
+        }
+        else
+        {
+         //   let loginView : FBSDKLoginButton = FBSDKLoginButton()
+         //   self.view.addSubview(loginView)
+         //   loginView.
+         //   loginView.center = self.view.center
+         //   loginView.readPermissions = ["public_profile", "email", "user_friends"]
+         //   loginView.delegate = self
+        }
+
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -122,5 +144,30 @@ class Registration1ViewController: UIViewController {
         let result = emailTest!.evaluateWithObject(testStr)
         return result
     }
+    
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        println("User Logged In")
+        
+        if ((error) != nil)
+        {
+            // Process error
+        }
+        else if result.isCancelled {
+            // Handle cancellations
+        }
+        else {
+            // If you ask for multiple permissions at once, you
+            // should check if specific permissions missing
+            if result.grantedPermissions.containsObject("email")
+            {
+                
+            }
+        }
+    }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        println("User Logged Out")
+    }
+
     
 }

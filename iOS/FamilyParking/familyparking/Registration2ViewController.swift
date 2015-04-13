@@ -73,7 +73,7 @@ class Registration2ViewController: UIViewController {
                 prefs.setInteger(1, forKey:"ISLOGGEDIN")
                 prefs.synchronize()
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+                    self.presentingViewController!.presentingViewController!.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
                 })
             }
             if((strData!.rangeOfString("false")?.isEmpty==false)){

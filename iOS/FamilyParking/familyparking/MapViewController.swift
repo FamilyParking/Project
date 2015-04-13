@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate {
+class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, FBSDKLoginButtonDelegate {
     
     var gmaps: GMSMapView!
     let locationManager=CLLocationManager()
@@ -26,7 +26,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         GAI.sharedInstance().trackUncaughtExceptions = true
         GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "app_launched",label:"launch",value:nil).build())
             checkRegistration()
-
+        
         
       //  self.locationManager.requestWhenInUseAuthorization()
         var systemVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
@@ -34,6 +34,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         if systemVersion >= 8 {
         self.locationManager.requestAlwaysAuthorization()
         }
+        
         
      //   self.locationManager.requestAlwaysAuthorization()
         
@@ -89,6 +90,30 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         locationManager.startMonitoringForRegion(beaconRegion)
         locationManager.startRangingBeaconsInRegion(beaconRegion)
         locationManager.startUpdatingLocation()
+    }
+    
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        println("User Logged In")
+        
+        if ((error) != nil)
+        {
+            // Process error
+        }
+        else if result.isCancelled {
+            // Handle cancellations
+        }
+        else {
+            // If you ask for multiple permissions at once, you
+            // should check if specific permissions missing
+            if result.grantedPermissions.containsObject("email")
+            {
+                // Do work
+            }
+        }
+    }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        println("User Logged Out")
     }
     
     func checkRegistration(){

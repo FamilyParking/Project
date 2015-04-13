@@ -37,7 +37,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
         override func viewDidLoad() {
             super.viewDidLoad()
             
-            self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
+            self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Grouped)
             self.tableView.registerClass(MyTableViewCell.self, forCellReuseIdentifier: "myCell")
             self.tableView.delegate = self
             self.tableView.dataSource = self
@@ -60,6 +60,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
 
                 let person = people[indexPath.row]
                 cell.textLabel?.text = person.valueForKey("name") as String?
+                  cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as String))
                // cell.detailTextLabel?.text = "hi"
                 return cell
         }
