@@ -12,6 +12,9 @@ If you don't have the Bluetooth embedded in your car and you usually forget to b
 Visit us at:
 www.FamilyParking.it
 
+Check our wiki at:
+https://github.com/FamilyParking/Project/wiki
+
 You can dowload the apk from:
 www.FamilyParking.it/app/familyParking.apk
 
