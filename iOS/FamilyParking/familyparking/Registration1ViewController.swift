@@ -14,6 +14,12 @@ class Registration1ViewController: UIViewController,FBSDKLoginButtonDelegate {
     @IBOutlet weak var Name: UITextField!
     @IBOutlet weak var Email: UITextField!
     @IBOutlet weak var NextButton: UIButton!
+    @IBAction func Back(sender: AnyObject) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        
+    }
     
     func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
