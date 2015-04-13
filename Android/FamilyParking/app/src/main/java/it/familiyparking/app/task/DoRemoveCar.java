@@ -61,6 +61,7 @@ public class DoRemoveCar implements Runnable {
                         activity.resetProgressDialogCircular(false);
                         activity.resetModifyCar(true);
                         activity.updateCarAdapter(cars);
+                        Tools.setTitleActionBar(activity, R.string.list_car);
                         Tools.createToast(activity, activity.getResources().getString(R.string.deleted_car), Toast.LENGTH_SHORT);
                     }
                 });
