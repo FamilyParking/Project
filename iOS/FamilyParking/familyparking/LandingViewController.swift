@@ -27,7 +27,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
     override func awakeFromNib()
     {
         super.awakeFromNib()
-        for i in 0...3
+        for i in 0...4
         {
             items.append(i)
         }
@@ -69,8 +69,10 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         }
         else
         {
+            (view as UIImageView!).image = UIImage(named: "img\(items[index])")
             //get a reference to the label in the recycled view
             label = view.viewWithTag(1) as UILabel!
+            println("PROBLEMA")
         }
         
         //set item label
@@ -78,7 +80,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         //views outside of the `if (view == nil) {...}` check otherwise
         //you'll get weird issues with carousel item content appearing
         //in the wrong place in the carousel
-      //  label.text = "\(items[index])"
+       // label.text = "\(items[index])"
         
         return view
     }
@@ -87,7 +89,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
     {
         if (option == .Spacing)
         {
-            return value * 1.1
+            return value * 1.3
         }
         return value
     }

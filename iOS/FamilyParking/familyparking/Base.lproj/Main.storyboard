@@ -128,7 +128,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRK-gn-V7u" customClass="iCarousel">
-                                <rect key="frame" x="35" y="60" width="250" height="250"/>
+                                <rect key="frame" x="35" y="90" width="250" height="250"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="AVh-eG-Q9K"/>
                                     <constraint firstAttribute="height" constant="250" id="rRP-ma-uye"/>
@@ -142,9 +142,9 @@
                         <color key="backgroundColor" red="0.37493699596774194" green="0.7568628191947937" blue="0.70230594758064513" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="qRK-gn-V7u" secondAttribute="centerX" id="4te-ho-lGj"/>
-                            <constraint firstItem="qRK-gn-V7u" firstAttribute="top" secondItem="wKj-CX-6rZ" secondAttribute="bottom" constant="40" id="SBb-EX-bCN"/>
+                            <constraint firstItem="qRK-gn-V7u" firstAttribute="top" secondItem="wKj-CX-6rZ" secondAttribute="bottom" constant="70" id="SBb-EX-bCN"/>
                             <constraint firstItem="KHM-Ln-QAy" firstAttribute="top" secondItem="wKj-CX-6rZ" secondAttribute="bottom" constant="436" id="iRb-mt-htZ"/>
-                            <constraint firstItem="GCj-Pl-fiK" firstAttribute="top" secondItem="qRK-gn-V7u" secondAttribute="bottom" constant="91" id="jwi-7b-df0"/>
+                            <constraint firstItem="GCj-Pl-fiK" firstAttribute="top" secondItem="qRK-gn-V7u" secondAttribute="bottom" constant="61" id="jwi-7b-df0"/>
                             <constraint firstAttribute="centerX" secondItem="KHM-Ln-QAy" secondAttribute="centerX" constant="-0.5" id="pKM-z3-f6a"/>
                             <constraint firstAttribute="centerX" secondItem="GCj-Pl-fiK" secondAttribute="centerX" id="yin-jZ-mT5"/>
                         </constraints>
