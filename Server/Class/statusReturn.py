@@ -241,12 +241,12 @@ class StatusReturn:
     def error_registration(self):
         error_data = {}
         if self.number == 1:
-            logging.debug("Error registration: 1 --> "+ str(sys.exc_info()))
+            logging.debug("Error registration: 1 --> " + str(sys.exc_info()))
             error_data["Flag"] = False
             error_data["Description"] = "Can't load json"
             error_data["Object"] = None
         elif self.number == 2:
-            logging.debug("Error registration: 2 --> "+ str(sys.exc_info()))
+            logging.debug("Error registration: 2 --> " + str(sys.exc_info()))
             error_data["Flag"] = False
             error_data["Description"] = "Enable to create User"
             error_data["Object"] = None
@@ -265,7 +265,11 @@ class StatusReturn:
             error_data["Flag"] = False
             error_data["Description"] = "Email not valid"
             error_data["Object"] = None
-
+        elif self.number == 6:
+            logging.debug("No error: OK")
+            error_data["Flag"] = True
+            error_data["Description"] = "Social OK"
+            error_data["Object"] = self.Object_result
         else:
             logging.debug("No error: OK")
             error_data["Flag"] = True

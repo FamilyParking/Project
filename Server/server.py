@@ -89,6 +89,56 @@ class registrationForm(webapp2.RequestHandler):
             error = StatusReturn(1, 0)
             self.response.write(error.error_registration())
 
+class registration_social(webapp2.RequestHandler):
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+            if Send_email.check_mail(data["Email"]):
+                if static_variable.DEBUG:
+                    logging.debug("Valid email")
+
+                try:
+                    code = random.randint(100000, 999999)
+                    new_user = User(code=code, temp_code=code, email=data["Email"],
+                                    nickname=data["Name"], is_user=0)
+
+                    try:
+                        contact_key = new_user.querySearch_email()
+                        if contact_key.count() == 0:
+                            new_user.put()
+                        else:
+                            temp_user = contact_key.get()
+                            temp_user.update_contact(code, data["Name"])
+                        try:
+                            right = StatusReturn(6, "registration_social", code)
+                            self.response.write(right.error_registration())
+
+                        except:
+                            self.error(200)
+                            error = StatusReturn(3, 0)
+                            self.response.write(error.error_registration())
+                    except:
+                        self.error(200)
+                        error = StatusReturn(4, 0)
+                        self.response.write(error.error_registration())
+                except:
+                    self.error(200)
+                    error = StatusReturn(2, 0)
+                    self.response.write(error.error_registration())
+
+            else:
+                if static_variable.DEBUG:
+                    logging.debug("Email not valid")
+
+                self.error(200)
+                error = StatusReturn(5, 0)
+                self.response.write(error.error_registration())
+
+        except:
+            self.error(200)
+            error = StatusReturn(1, 0)
+            self.response.write(error.error_registration())
+
 
 class confirmCode(webapp2.RequestHandler):
     def post(self):
@@ -418,6 +468,7 @@ application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/howtouse', HowToUsePage),
     ('/registration', registrationForm),
+    ('/register_social', registration_social),
     ('/createCar', createCar),
     ('/confirmCode', confirmCode),
     ('/editCar', editCar),
