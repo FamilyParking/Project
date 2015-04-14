@@ -35,13 +35,13 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+       //self.automaticallyAdjustsScrollViewInsets = false;
     //  self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Plain)
         var systemVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
 
         if systemVersion >= 8 {
         
-        self.tableView = UITableView(frame: CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Grouped)
+        self.tableView = UITableView(frame: CGRectMake(0,-35, self.view.bounds.size.width, self.view.bounds.size.height-0), style: UITableViewStyle.Grouped)
         }
         else{
          self.tableView = UITableView(frame: CGRectMake(0,44, self.view.bounds.size.width, self.view.bounds.size.height-44), style: UITableViewStyle.Grouped)
@@ -68,7 +68,9 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 as UITableViewCell
             
             let person = people[indexPath.row]
-            cell.textLabel?.text = person.valueForKey("name") as String?
+            var showingName:String  = (person.valueForKey("name") as String?)!
+            showingName.replaceRange(showingName.startIndex...showingName.startIndex, with: String(showingName[showingName.startIndex]).capitalizedString)
+            cell.textLabel?.text = showingName
             if((person.valueForKey("isParked") as String) == "true"){
                 var parkTime:String = person.valueForKey("lastPark") as String!
                 

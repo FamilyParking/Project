@@ -20,7 +20,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
     
     
     var items: [Int] = []
-    
+    var imtapp:Int = 0;
     @IBOutlet weak var fbLoginView: FBSDKLoginButton!
     
     @IBOutlet weak var carousel: iCarousel!
@@ -39,6 +39,22 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         carousel.type = .Linear
         self.fbLoginView.delegate = self
         self.fbLoginView.readPermissions = ["public_profile", "email", "user_friends"]
+        
+            }
+    
+    func imageTapped(img: AnyObject)
+    {
+        if (imtapp==4){
+            openUrl("http://www.familyparking.it")}
+    }
+    
+    func openUrl(url:String!) {
+        
+        let targetURL=NSURL(string: url)
+        
+        let application=UIApplication.sharedApplication()
+        
+        application.openURL(targetURL!);
     }
     
     func numberOfItemsInCarousel(carousel: iCarousel!) -> Int
@@ -66,6 +82,11 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
             label.font = label.font.fontWithSize(50)
             label.tag = 1
             view.addSubview(label)
+            
+            var tgr = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+            
+            view.addGestureRecognizer(tgr)
+            view.userInteractionEnabled = true
         }
         else
         {
@@ -81,7 +102,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         //you'll get weird issues with carousel item content appearing
         //in the wrong place in the carousel
        // label.text = "\(items[index])"
-        
+        imtapp=index
         return view
     }
     
@@ -89,7 +110,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
     {
         if (option == .Spacing)
         {
-            return value * 1.3
+            return value * 1.5
         }
         return value
     }
@@ -133,9 +154,10 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
                 println("fetched user: \(result)")
                 let userName : NSString = result.valueForKey("name") as NSString
                 println("User Name is: \(userName)")
-                let userEmail : NSString = result.valueForKey("email") as NSString
+                let userEmail : NSString? = result.valueForKey("email") as NSString?
+                if userEmail == nil {return}
                 println("User Email is: \(userEmail)")
-                self.requestPin(userName, email: userEmail)
+                self.requestPin(userName, email: userEmail!)
             }
         })
     }
@@ -176,11 +198,11 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
                 println("Code Sent")
                 var err: NSError?
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-                var pin:Double = json!["Object"]! as Double
+                var pin:Int = json!["Object"]! as Int
                 let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 prefs.setObject(name, forKey: "USERNAME")
                 prefs.setObject(email.lowercaseString, forKey: "EMAIL")
-                prefs.setObject(pin.description, forKey: "PIN")
+                prefs.setObject((pin.description as String), forKey: "PIN")
                 prefs.setInteger(1, forKey:"ISLOGGEDIN")
                 prefs.synchronize()
                 
