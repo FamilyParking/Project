@@ -62,37 +62,37 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         return items.count
     }
     
-    func carousel(carousel: iCarousel!, viewForItemAtIndex index: Int, var reusingView view: UIView!) -> UIView!
+   func carousel(carousel: iCarousel!, viewForItemAtIndex index: NSInteger, reusingView view: UIView!) -> UIView!
     {
         var label: UILabel! = nil
-        
+        var newView = view
         //create new view if no view is available for recycling
         if (view == nil)
         {
             //don't do anything specific to the index within
             //this `if (view == nil) {...}` statement because the view will be
             //recycled and used with other index values later
-            view = UIImageView(frame:CGRectMake(0, 0, 200, 200))
-            (view as UIImageView!).image = UIImage(named: "img\(items[index])")
-            view.contentMode = .Center
+            newView = UIImageView(frame:CGRectMake(0, 0, 200, 200))
+           (newView as! UIImageView!).image = UIImage(named: "img\(items[index])")
+            newView.contentMode = .Center
             
-            label = UILabel(frame:view.bounds)
+            label = UILabel(frame:newView.bounds)
             label.backgroundColor = UIColor.clearColor()
             label.textAlignment = .Center
             label.font = label.font.fontWithSize(50)
             label.tag = 1
-            view.addSubview(label)
+            newView.addSubview(label)
             
             var tgr = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
             
-            view.addGestureRecognizer(tgr)
-            view.userInteractionEnabled = true
+            newView.addGestureRecognizer(tgr)
+            newView.userInteractionEnabled = true
         }
         else
         {
-            (view as UIImageView!).image = UIImage(named: "img\(items[index])")
+            (newView as! UIImageView!).image = UIImage(named: "img\(items[index])")
             //get a reference to the label in the recycled view
-            label = view.viewWithTag(1) as UILabel!
+            label = newView.viewWithTag(1)as! UILabel!
             println("PROBLEMA")
         }
         
@@ -103,7 +103,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         //in the wrong place in the carousel
        // label.text = "\(items[index])"
         imtapp=index
-        return view
+        return newView
     }
     
     func carousel(carousel: iCarousel!, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat
@@ -128,7 +128,7 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         else {
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
-            if result.grantedPermissions.containsObject("email")
+            if result.grantedPermissions.contains("email")
             {
                 returnUserData()
             }
@@ -152,12 +152,12 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
             else
             {
                 println("fetched user: \(result)")
-                let userName : NSString = result.valueForKey("name") as NSString
+                let userName : NSString = result.valueForKey("name") as! NSString
                 println("User Name is: \(userName)")
-                let userEmail : NSString? = result.valueForKey("email") as NSString?
+                let userEmail : NSString? = result.valueForKey("email") as! NSString?
                 if userEmail == nil {return}
                 println("User Email is: \(userEmail)")
-                self.requestPin(userName, email: userEmail!)
+                self.requestPin(userName as String, email: userEmail! as String)
             }
         })
     }
@@ -191,14 +191,14 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
             }
             
             
-            var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding)
+            var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding) as? String
             println("Body: \(strData!)")
             if((strData!.rangeOfString("true")?.isEmpty==false)){
                 // if(strData!.containsString("Code sent")){
                 println("Code Sent")
                 var err: NSError?
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-                var pin:Int = json!["Object"]! as Int
+                var pin:Int = json!["Object"]! as! Int
                 let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 prefs.setObject(name, forKey: "USERNAME")
                 prefs.setObject(email.lowercaseString, forKey: "EMAIL")
@@ -216,7 +216,9 @@ class LandingViewController: UIViewController, iCarouselDataSource, iCarouselDel
         })
         task.resume()
     }
-
     
+    
+    
+   
 }
 

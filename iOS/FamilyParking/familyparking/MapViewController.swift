@@ -24,7 +24,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         // start Google Analitycs
         GAI.sharedInstance().trackerWithTrackingId("UA-58079755-1")
         GAI.sharedInstance().trackUncaughtExceptions = true
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "app_launched",label:"launch",value:nil).build())
+       // GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "app_launched",label:"launch",value:nil).build())
+        
+        var build = GAIDictionaryBuilder.createAppView().build() as [NSObject : AnyObject]
+        GAI.sharedInstance().defaultTracker.send(build)
             checkRegistration()
         
         
@@ -105,7 +108,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         else {
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
-            if result.grantedPermissions.containsObject("email")
+            if result.grantedPermissions.contains("email")
             {
                 // Do work
             }
@@ -140,7 +143,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         // println("mia posizione",self.gmaps.myLocation)
         if(didFirstLocationUpdate==true){
             didFirstLocationUpdate = false
-            let location = change[NSKeyValueChangeNewKey] as CLLocation
+            let location = change[NSKeyValueChangeNewKey] as! CLLocation
             gmaps!.camera = GMSCameraPosition.cameraWithTarget(location.coordinate, zoom: 14)
         }
     }
@@ -148,7 +151,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     func updateCars(){
         if (mapLoaded||true){
         var people = [NSManagedObject]()
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         //2
@@ -159,7 +162,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -227,8 +230,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var finding:Bool = prefs.boolForKey("findingCar")
         if (finding){
-            var lat:String = prefs.valueForKey("goLat") as String
-            var long:String = prefs.valueForKey("goLong") as String
+            var lat:String = prefs.valueForKey("goLat")as! String
+            var long:String = prefs.valueForKey("goLong") as! String
             var camera = GMSCameraPosition.cameraWithLatitude((lat as NSString).doubleValue, longitude: (long as NSString).doubleValue, zoom: 18)
             self.gmaps.camera = camera
             
@@ -269,11 +272,11 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         
         //     var carN = self.people[index.item]
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let code = prefs.objectForKey("PIN") as String
-        let mail = prefs.objectForKey("EMAIL") as String
+        let code = prefs.objectForKey("PIN")as! String
+        let mail = prefs.objectForKey("EMAIL") as! String
         //    let lat = prefs.objectForKey("LAT") as String
         //   let lon = prefs.objectForKey("LON") as String
-        let username = prefs.objectForKey("USERNAME") as String
+        let username = prefs.objectForKey("USERNAME") as! String
         
         //  let idCar : String = carN.valueForKey("id")!.description
         //   let nameCar : String = carN.valueForKey("name")!.description
@@ -320,7 +323,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                 return
             }
             
-            var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+            var castato:NSHTTPURLResponse = response as! NSHTTPURLResponse
             println(castato.statusCode)
             if(castato.statusCode==500){
                 
@@ -344,7 +347,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             
             if(err == nil&&(!(response==nil))){
                 
-                if((json!["Flag"] as Bool) == true){
+                if((json!["Flag"]as! Bool) == true){
                     dispatch_async(dispatch_get_main_queue(),{() -> Void in
                         println("")
                         self.navigationController?.popViewControllerAnimated(true)
@@ -393,8 +396,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             var playSound = false
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             if(beacons.count > 0) {
-                println((beacons[0] as CLBeacon).proximityUUID)
-                let nearestBeacon:CLBeacon = beacons[0] as CLBeacon
+                println((beacons[0] as! CLBeacon).proximityUUID)
+                let nearestBeacon:CLBeacon = beacons[0]as! CLBeacon
                 if(nearestBeacon.proximity == lastProximity ||
                    nearestBeacon.proximity == CLProximity.Unknown) {
                     prefs.setInteger(1, forKey: "NUMBEACON")
@@ -417,7 +420,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     
     func locationManager(manager: CLLocationManager!,
         didEnterRegion region: CLRegion!) {
-            manager.startRangingBeaconsInRegion(region as CLBeaconRegion)
+            manager.startRangingBeaconsInRegion(region as!CLBeaconRegion)
             manager.startUpdatingLocation()
                         NSLog("You entered the region")
             
@@ -425,7 +428,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     
     func locationManager(manager: CLLocationManager!,
         didExitRegion region: CLRegion!) {
-            manager.stopRangingBeaconsInRegion(region as CLBeaconRegion)
+            manager.stopRangingBeaconsInRegion(region as! CLBeaconRegion)
             manager.stopUpdatingLocation()
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             prefs.setInteger(0, forKey: "NUMBEACON")

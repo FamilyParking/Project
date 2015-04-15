@@ -29,7 +29,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             super.init(coder: aDecoder)
         }
         
-        func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+        func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
             return true
         }
         
@@ -55,12 +55,12 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                 
                 let cell =
                 tableView.dequeueReusableCellWithIdentifier("myCell")
-                    as UITableViewCell
+                    as! UITableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
 
                 let person = people[indexPath.row]
-                cell.textLabel?.text = person.valueForKey("name") as String?
-                  cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as String))
+                cell.textLabel?.text = person.valueForKey("name") as! String?
+                  cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as! String))
                // cell.detailTextLabel?.text = "hi"
                 return cell
         }
@@ -74,7 +74,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
         override func viewWillAppear(animated: Bool) {
             super.viewWillAppear(animated)
             //1
-            let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
             
             //2
@@ -85,7 +85,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
             
             let fetchedResults =
             managedContext.executeFetchRequest(fetchRequest,
-                error: &error) as [NSManagedObject]?
+                error: &error) as! [NSManagedObject]?
             
             if let results = fetchedResults {
                 people = results
@@ -107,13 +107,13 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
         
             var carN = car
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let code = prefs.objectForKey("PIN") as String
-            let mail = prefs.objectForKey("EMAIL") as String
-            let lat = prefs.objectForKey("LAT") as String
-            let lon = prefs.objectForKey("LON") as String
-            let username = prefs.objectForKey("USERNAME") as String
+            let code = prefs.objectForKey("PIN") as! String
+            let mail = prefs.objectForKey("EMAIL") as! String
+            let lat = prefs.objectForKey("LAT") as! String
+            let lon = prefs.objectForKey("LON") as! String
+            let username = prefs.objectForKey("USERNAME") as! String
             
-            let idCarOpt : String? = carN.valueForKey("id")?.description?
+            let idCarOpt : String? = carN.valueForKey("id")?.description
         if var idCar:String = idCarOpt{
             let nameCar : String = carN.valueForKey("name")!.description
             
@@ -159,7 +159,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                             return
                         }
                         
-                        var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+                        var castato:NSHTTPURLResponse = response as! NSHTTPURLResponse
                         println(castato.statusCode)
                         if(castato.statusCode==500){
                             
@@ -183,7 +183,7 @@ class ChooseParkCar: UIViewController, UITextFieldDelegate, UITableViewDelegate,
                         
                         if(err == nil&&(!(response==nil))){
                         
-                            if((json!["Flag"] as Bool) == true){
+                            if((json!["Flag"] as! Bool) == true){
                                  dispatch_async(dispatch_get_main_queue(),{() -> Void in
                                    println("")
                                 //    self.navigationController?.popViewControllerAnimated(true)

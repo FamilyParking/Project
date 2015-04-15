@@ -24,7 +24,7 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         super.init(coder: aDecoder)
     }
     
-    func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
@@ -50,10 +50,10 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
             
             let cell =
             tableView.dequeueReusableCellWithIdentifier("myCell")
-                as UITableViewCell
+                as! UITableViewCell
             
             let person = people[indexPath.row]
-            cell.textLabel?.text = person.valueForKey("name") as String?
+            cell.textLabel?.text = person.valueForKey("name") as! String?
             
             return cell
     }
@@ -76,7 +76,7 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     func saveName(name: String) {
         //1
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -107,7 +107,7 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     func removeName(name: NSManagedObject) {
         //1
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -127,7 +127,7 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         super.viewWillAppear(animated)
         
         //1
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         //2
@@ -138,7 +138,7 @@ class GroupsViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results

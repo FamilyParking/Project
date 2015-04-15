@@ -54,13 +54,13 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
+    func textFieldShouldReturn(textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
         textField.resignFirstResponder()
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         CarName.resignFirstResponder()
     }
     
@@ -69,8 +69,8 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let pin:String = prefs.objectForKey("PIN") as String
-        let mail:String = prefs.objectForKey("EMAIL") as String
+        let pin:String = prefs.objectForKey("PIN") as! String
+        let mail:String = prefs.objectForKey("EMAIL") as! String
        
         var otherUsers = ["Code":pin,
             "Email":mail] as Dictionary<String, NSObject>
@@ -123,10 +123,10 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
             var err: NSError?
             var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
             if(err==nil){
-                if((json!["Flag"] as Bool) == true){
+                if((json!["Flag"] as! Bool) == true){
                             //self.BackButt.enabled = true
                             self.ConfButt.enabled = true
-                    CarUpdate().addACarToLocalDatabase((json!["Object"] as NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false,UUID:"",Bmin:"",Bmaj:"")
+                    CarUpdate().addACarToLocalDatabase((json!["Object"] as! NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false,UUID:"",Bmin:"",Bmaj:"")
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             //self.dismissViewControllerAnimated(true, completion: nil)
                             println("")

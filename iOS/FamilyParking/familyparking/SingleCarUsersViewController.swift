@@ -31,7 +31,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             super.init(coder: aDecoder)
         }
         
-        func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+        func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
             return true
         }
         
@@ -58,14 +58,14 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 
                 let cell =
                 tableView.dequeueReusableCellWithIdentifier("myCell")
-                    as UITableViewCell
+                    as! UITableViewCell
                 var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                let pin:String = prefs.objectForKey("PIN") as String
-                let localMail:String = prefs.objectForKey("EMAIL") as String
+                let pin:String = prefs.objectForKey("PIN")as! String
+                let localMail:String = prefs.objectForKey("EMAIL") as! String
                 
                 let person = people[indexPath.row]
-                var mail = person.valueForKey("email") as String?
-                var showingName = person.valueForKey("username") as String?
+                var mail = person.valueForKey("email") as! String?
+                var showingName = person.valueForKey("username") as! String?
                 showingName!.replaceRange(showingName!.startIndex...showingName!.startIndex, with: String(showingName![showingName!.startIndex]).capitalizedString)
                 if( mail == localMail){
                     cell.textLabel?.text = showingName! + " (You)"
@@ -74,7 +74,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                     //cell.textLabel?.text = person.valueForKey("username") as String?
                     cell.textLabel?.text = showingName
                 }
-                cell.detailTextLabel?.text = person.valueForKey("email") as String?
+                cell.detailTextLabel?.text = person.valueForKey("email") as! String?
                 return cell
         }
         func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
@@ -96,7 +96,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         func saveName(email: String) {
             //1
             let appDelegate =
-            UIApplication.sharedApplication().delegate as AppDelegate
+            UIApplication.sharedApplication().delegate as! AppDelegate
             
             let managedContext = appDelegate.managedObjectContext!
             
@@ -130,7 +130,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         func removeName(name: NSManagedObject) {
             //1
             let appDelegate =
-            UIApplication.sharedApplication().delegate as AppDelegate
+            UIApplication.sharedApplication().delegate as! AppDelegate
             
             let managedContext = appDelegate.managedObjectContext!
             
@@ -155,7 +155,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
     
     
     func updateClassUsersList(){
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         //2
@@ -166,7 +166,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -270,7 +270,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         
         var emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        let result = emailTest!.evaluateWithObject(testStr)
+        let result = emailTest.evaluateWithObject(testStr)
         return result
     }
     
@@ -291,7 +291,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 let saveAction = UIAlertAction(title: "Done",
                     style: .Default) { (action: UIAlertAction!) -> Void in
                         
-                        let textFieldEx = alert.textFields![0] as UITextField
+                        let textFieldEx = alert.textFields![0] as! UITextField
                         if(self.isValidEmail(textFieldEx.text)){
                             self.addUserToServer(textFieldEx.text)
                         }else{
@@ -349,9 +349,9 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let pin:String = prefs.objectForKey("PIN") as String
-            let mail:String = prefs.objectForKey("EMAIL") as String
-            let userName:String = prefs.objectForKey("USERNAME") as String
+            let pin:String = prefs.objectForKey("PIN") as! String
+            let mail:String = prefs.objectForKey("EMAIL")as! String
+            let userName:String = prefs.objectForKey("USERNAME") as!String
             
             var otherUsers = ["Code":pin,
                 "Email":mail] as Dictionary<String, NSObject>
@@ -364,8 +364,8 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             
             
            // [text]
-            var idcar:String = car?.valueForKey("id") as String
-            var carName:String = car?.valueForKey("name") as String
+            var idcar:String = car?.valueForKey("id") as! String
+            var carName:String = car?.valueForKey("name") as! String
             
             var carToServer = [
                 "Users":[usersMail],
@@ -400,7 +400,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
                 if(err==nil){
                     println(json);
-                    if((json!["Flag"]as Bool)==true){
+                    if((json!["Flag"] as! Bool)==true){
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         println("")
                         self.saveName(text)
@@ -448,8 +448,8 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let pin:String = prefs.objectForKey("PIN") as String
-            let mail:String = prefs.objectForKey("EMAIL") as String
+            let pin:String = prefs.objectForKey("PIN") as!String
+            let mail:String = prefs.objectForKey("EMAIL") as! String
             
             var otherUsers = ["Code":pin,
                 "Email":mail] as Dictionary<String, NSObject>
@@ -460,7 +460,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 "Email":text
                 ] as Dictionary<String, NSObject>
             // [text]
-            var idcar:String = car?.valueForKey("id") as String
+            var idcar:String = car?.valueForKey("id") as! String
             
             var carToServer = [
                 "Users":[usersMail],
@@ -492,7 +492,7 @@ class SingleCarUsersViewController: UIViewController, UITextFieldDelegate, UITab
                 var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &err) as? NSDictionary
                 
                 println(json);
-                if((json!["Flag"]as Bool)==true){
+                if((json!["Flag"]as! Bool)==true){
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         println("")
                         self.people.removeAtIndex(posx)

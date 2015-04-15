@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34E253931ADEF2FD00B3D354 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E253921ADEF2FD00B3D354 /* FBSDKCoreKit.framework */; };
+		34E253951ADEF30F00B3D354 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E253941ADEF30F00B3D354 /* FBSDKLoginKit.framework */; };
+		34E253971ADEF31600B3D354 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E253961ADEF31600B3D354 /* FBSDKShareKit.framework */; };
 		800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800998C51AB3194800DBB666 /* contactTwoViewControler.swift */; };
 		801811F21AD8306E003BCA0D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 801811F41AD8306E003BCA0D /* Localizable.strings */; };
 		80626AD81A95E97800D7AAA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626AD71A95E97800D7AAA5 /* AppDelegate.swift */; };
@@ -47,9 +50,6 @@
 		809C44D41A9B895B00C9B297 /* SingleCarUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */; };
 		809DF0001AAE004400FDB509 /* AppInfosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */; };
 		80B0E5941A9A63990032EC8B /* ChooseParkCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */; };
-		80CF43A81ADA9A5400D81B3D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80CF43A71ADA9A5400D81B3D /* FBSDKCoreKit.framework */; };
-		80CF43AA1ADA9A5E00D81B3D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80CF43A91ADA9A5E00D81B3D /* FBSDKLoginKit.framework */; };
-		80CF43AC1ADA9A6700D81B3D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80CF43AB1ADA9A6700D81B3D /* FBSDKShareKit.framework */; };
 		80CF43AE1ADAABC400D81B3D /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CF43AD1ADAABC300D81B3D /* LandingViewController.swift */; };
 		80CF43B21ADABDC000D81B3D /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CF43B11ADABDC000D81B3D /* iCarousel.m */; };
 		80F9B0F81ACD5B340061F6E7 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80F9B0F71ACD5B330061F6E7 /* Entitlements.plist */; };
@@ -66,6 +66,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		34E253921ADEF2FD00B3D354 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		34E253941ADEF30F00B3D354 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		34E253961ADEF31600B3D354 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		800998C51AB3194800DBB666 /* contactTwoViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTwoViewControler.swift; sourceTree = "<group>"; };
 		801811F51AD830A3003BCA0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		801811F61AD832F1003BCA0D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -124,9 +127,6 @@
 		809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleCarUsersViewController.swift; sourceTree = "<group>"; };
 		809DEFFF1AAE004400FDB509 /* AppInfosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfosViewController.swift; sourceTree = "<group>"; };
 		80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseParkCar.swift; sourceTree = "<group>"; };
-		80CF43A71ADA9A5400D81B3D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		80CF43A91ADA9A5E00D81B3D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		80CF43AB1ADA9A6700D81B3D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		80CF43AD1ADAABC300D81B3D /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		80CF43B01ADABDC000D81B3D /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		80CF43B11ADABDC000D81B3D /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80CF43AA1ADA9A5E00D81B3D /* FBSDKLoginKit.framework in Frameworks */,
+				34E253951ADEF30F00B3D354 /* FBSDKLoginKit.framework in Frameworks */,
 				80626B191A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a in Frameworks */,
 				80626B171A95ED6300D7AAA5 /* libsqlite3.dylib in Frameworks */,
 				80626B151A95ED3600D7AAA5 /* SystemConfiguration.framework in Frameworks */,
@@ -146,14 +146,14 @@
 				80626B111A95ED2900D7AAA5 /* OpenGLES.framework in Frameworks */,
 				80626B0F1A95ED2300D7AAA5 /* libz.dylib in Frameworks */,
 				80626B0D1A95ED1C00D7AAA5 /* libicucore.dylib in Frameworks */,
+				34E253931ADEF2FD00B3D354 /* FBSDKCoreKit.framework in Frameworks */,
 				80626B0B1A95ED1000D7AAA5 /* libc++.dylib in Frameworks */,
 				80626B091A95ED0600D7AAA5 /* ImageIO.framework in Frameworks */,
 				80626B071A95ECFC00D7AAA5 /* GLKit.framework in Frameworks */,
 				80626B051A95ECF400D7AAA5 /* CoreText.framework in Frameworks */,
 				80626B031A95ECED00D7AAA5 /* CoreLocation.framework in Frameworks */,
+				34E253971ADEF31600B3D354 /* FBSDKShareKit.framework in Frameworks */,
 				80626B011A95ECE800D7AAA5 /* CoreData.framework in Frameworks */,
-				80CF43AC1ADA9A6700D81B3D /* FBSDKShareKit.framework in Frameworks */,
-				80CF43A81ADA9A5400D81B3D /* FBSDKCoreKit.framework in Frameworks */,
 				80626AFF1A95ECE000D7AAA5 /* AVFoundation.framework in Frameworks */,
 				80626AFB1A95EC2300D7AAA5 /* GoogleMaps.framework in Frameworks */,
 			);
@@ -242,11 +242,11 @@
 		80BD23EE1A9BAE9C004C4CB1 /* ExtLib */ = {
 			isa = PBXGroup;
 			children = (
-				80CF43AB1ADA9A6700D81B3D /* FBSDKShareKit.framework */,
-				80CF43A91ADA9A5E00D81B3D /* FBSDKLoginKit.framework */,
-				80CF43A71ADA9A5400D81B3D /* FBSDKCoreKit.framework */,
+				34E253921ADEF2FD00B3D354 /* FBSDKCoreKit.framework */,
 				80626B181A95ED7900D7AAA5 /* libGoogleAnalyticsServices.a */,
+				34E253961ADEF31600B3D354 /* FBSDKShareKit.framework */,
 				80626B161A95ED6300D7AAA5 /* libsqlite3.dylib */,
+				34E253941ADEF30F00B3D354 /* FBSDKLoginKit.framework */,
 				80626B141A95ED3500D7AAA5 /* SystemConfiguration.framework */,
 				80626B121A95ED2D00D7AAA5 /* QuartzCore.framework */,
 				80626B101A95ED2900D7AAA5 /* OpenGLES.framework */,
@@ -595,7 +595,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					/Users/mauropiva/Documents/FacebookSDK,
+					/Users/mauro/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = familyparking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -623,7 +623,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					/Users/mauropiva/Documents/FacebookSDK,
+					/Users/mauro/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = familyparking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

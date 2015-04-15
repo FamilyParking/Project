@@ -20,8 +20,8 @@ class GroupUpdate{
         
         
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let code = prefs.objectForKey("PIN") as String
-        let mail = prefs.objectForKey("EMAIL") as String
+        let code = prefs.objectForKey("PIN") as! String
+        let mail = prefs.objectForKey("EMAIL")as! String
         var user = ["Code":code,
             "Email":mail] as Dictionary<String, NSObject>
         var params = ["User":user,
@@ -49,7 +49,7 @@ class GroupUpdate{
         var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
         println("Ora aggiungo il gruppo \(code)")
         var id = code.stringByReplacingOccurrencesOfString("\"",withString: "")
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let entity =  NSEntityDescription.entityForName("Group",
             inManagedObjectContext:
@@ -71,7 +71,7 @@ class GroupUpdate{
     func removeCarByNSObj(name: NSManagedObject) {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         managedContext.deleteObject(name)
@@ -85,7 +85,7 @@ class GroupUpdate{
     func removeAllCar() {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest(entityName:"Group")
@@ -94,7 +94,7 @@ class GroupUpdate{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -111,7 +111,7 @@ class GroupUpdate{
         
         //1
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -123,7 +123,7 @@ class GroupUpdate{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results

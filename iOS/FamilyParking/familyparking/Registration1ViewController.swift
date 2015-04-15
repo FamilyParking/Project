@@ -96,7 +96,7 @@ class Registration1ViewController: UIViewController,FBSDKLoginButtonDelegate {
                 }
                 
                 
-                var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding)
+                var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding) as? String
                 println("Body: \(strData!)")
                 if((strData!.rangeOfString("Code sent")?.isEmpty==false)){
                 // if(strData!.containsString("Code sent")){
@@ -141,7 +141,7 @@ class Registration1ViewController: UIViewController,FBSDKLoginButtonDelegate {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         
         var emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        let result = emailTest!.evaluateWithObject(testStr)
+        let result = emailTest.evaluateWithObject(testStr)
         return result
     }
     
@@ -158,7 +158,7 @@ class Registration1ViewController: UIViewController,FBSDKLoginButtonDelegate {
         else {
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
-            if result.grantedPermissions.containsObject("email")
+            if result.grantedPermissions.contains("email")
             {
                 
             }

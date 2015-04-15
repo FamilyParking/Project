@@ -21,7 +21,7 @@ class Registration2ViewController: UIViewController {
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         PinBox.resignFirstResponder()
     }
 
@@ -30,7 +30,7 @@ class Registration2ViewController: UIViewController {
         self.BackButton.enabled = false
         self.ConfirmButton.enabled = false
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let mail:String = prefs.objectForKey("EMAIL") as String
+        let mail:String = prefs.objectForKey("EMAIL") as! String
         
         var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "confirmCode")!)
         var session = NSURLSession.sharedSession()
@@ -63,7 +63,7 @@ class Registration2ViewController: UIViewController {
                 })
             }
             
-            var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding)
+            var strData:String? = NSString(data: data, encoding: NSUTF8StringEncoding) as? String
             println("Body: \(strData!)")
             if((strData!.rangeOfString("Code right")?.isEmpty==false)){
 //            if(strData!.containsString("Code right")){

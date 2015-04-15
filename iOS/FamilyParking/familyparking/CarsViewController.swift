@@ -28,7 +28,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.init(coder: aDecoder)
     }
     
-    func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
@@ -65,14 +65,14 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             let cell =
             tableView.dequeueReusableCellWithIdentifier("myCell")
-                as UITableViewCell
+                as! UITableViewCell
             
             let person = people[indexPath.row]
-            var showingName:String  = (person.valueForKey("name") as String?)!
+            var showingName:String  = (person.valueForKey("name") as! String?)!
             showingName.replaceRange(showingName.startIndex...showingName.startIndex, with: String(showingName[showingName.startIndex]).capitalizedString)
             cell.textLabel?.text = showingName
-            if((person.valueForKey("isParked") as String) == "true"){
-                var parkTime:String = person.valueForKey("lastPark") as String!
+            if((person.valueForKey("isParked") as! String) == "true"){
+                var parkTime:String = person.valueForKey("lastPark") as! String!
                 
                 
                 var dateFormatter = NSDateFormatter()
@@ -96,8 +96,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
-            println(person.valueForKey("brand") as String)
-            cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as String))
+            println(person.valueForKey("brand") as! String)
+            cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as! String))
             return cell
     }
     
@@ -187,7 +187,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func saveName(name: String) {
         //1
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -218,7 +218,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func removeName(name: NSManagedObject) {
         //1
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -240,8 +240,8 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let code = prefs.objectForKey("PIN") as String
-        let mail = prefs.objectForKey("EMAIL") as String
+        let code = prefs.objectForKey("PIN") as! String
+        let mail = prefs.objectForKey("EMAIL") as! String
         println(code)
         var user = ["Code":code,
             "Email":mail] as Dictionary<String, NSObject>
@@ -267,7 +267,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             if(response != nil){
                 var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
                     
-                    if((json!["Flag"] as Bool) == true){
+                    if((json!["Flag"] as! Bool) == true){
                         
                             self.people.removeAtIndex(index)
                             self.removeName(name)
@@ -303,13 +303,13 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         super.viewWillAppear(animated)
         println("Carico view auto")
         //1
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest(entityName:"Car")
         var error: NSError?
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -436,12 +436,12 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
            
             
             
-            var UUID = prefs.objectForKey("BUUID") as String
-            var Maj =  prefs.objectForKey("BMAJ") as String
-            var Min = prefs.objectForKey("BMIN") as String
+            var UUID = prefs.objectForKey("BUUID") as! String
+            var Maj =  prefs.objectForKey("BMAJ") as! String
+            var Min = prefs.objectForKey("BMIN")as!String
             
             
-            CarUpdate().updateCarIBeacon(id, UUID: prefs.objectForKey("BUUID") as String, Maj: prefs.objectForKey("BMAJ") as String, Min: prefs.objectForKey("BMIN") as String)
+            CarUpdate().updateCarIBeacon(id, UUID: prefs.objectForKey("BUUID") as! String, Maj: prefs.objectForKey("BMAJ") as! String, Min: prefs.objectForKey("BMIN")as! String)
            
             var alertView:UIAlertView = UIAlertView()
             alertView.title = "Association Complete!"

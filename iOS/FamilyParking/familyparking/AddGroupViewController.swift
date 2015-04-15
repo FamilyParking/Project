@@ -48,13 +48,13 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
+    func textFieldShouldReturn(textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
         textField.resignFirstResponder()
         return true;
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
        GroupName.resignFirstResponder()
     }
     
@@ -63,8 +63,8 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
         var session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let pin:String = prefs.objectForKey("PIN") as String
-        let mail:String = prefs.objectForKey("EMAIL") as String
+        let pin:String = prefs.objectForKey("PIN") as! String
+        let mail:String = prefs.objectForKey("EMAIL") as! String
         var params = ["Code":pin,
             "Name":GroupName.text,
             "Email":mail] as Dictionary<String, NSObject>
@@ -89,7 +89,7 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
                 println(err!.localizedDescription)
                 let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
                 println("Error could not parse JSON because there is an error: '\(jsonStr)'")
-                var stringa:NSString = "" + jsonStr!
+                var stringa:NSString = "" + (jsonStr! as String)
                 
                 if(stringa.length>3){
                     var array = stringa.componentsSeparatedByString(",")

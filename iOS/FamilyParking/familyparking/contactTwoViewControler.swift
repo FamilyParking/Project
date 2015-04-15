@@ -22,7 +22,7 @@ struct MyAddressBook {
         var cfError: Unmanaged<CFError>?
         let addressBook: ABAddressBook? = ABAddressBookCreateWithOptions(options, &cfError)?.takeRetainedValue()
         if cfError != nil && error != nil {
-            error.memory = (cfError!.takeUnretainedValue() as AnyObject as NSError)
+            error.memory = (cfError!.takeUnretainedValue() as AnyObject as! NSError)
         }
         return addressBook != nil ? MyAddressBook(abAddressBook: addressBook!) : nil
     }

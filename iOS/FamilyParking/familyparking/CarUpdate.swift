@@ -20,11 +20,11 @@ class CarUpdate: UIViewController{
             
             
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let code = prefs.objectForKey("PIN") as String?
-        if (code? == nil){
+            let code = prefs.objectForKey("PIN") as! String?
+        if (code == nil){
             return
         }
-            let mail = prefs.objectForKey("EMAIL") as String
+            let mail = prefs.objectForKey("EMAIL") as! String
             let logged = prefs.integerForKey("ISLOGGEDIN")
             println(code)
             var user = ["Code":code!,
@@ -55,7 +55,7 @@ class CarUpdate: UIViewController{
                 
                 var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
                 println("Body: \(strData)")
-                var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+                var castato:NSHTTPURLResponse = response as! NSHTTPURLResponse
                 println(castato.statusCode)
                 if(!(castato.statusCode==200)){
                    
@@ -79,16 +79,16 @@ class CarUpdate: UIViewController{
                     var json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &err) as? NSDictionary
                     if var ex = err{
                             println("CANT PARSE")
-                    }else if(err==nil&&json?["Flag"] as Bool){
+                    }else if(err==nil&&json?["Flag"] as! Bool){
                         if var cars:NSArray = json?["Object"]! as? NSArray{
                             self.removeAllCar()
                             self.removeAllUsers()
                             for carz in cars{
-                                self.addACarToLocalDatabase(carz["ID_car"] as String, name: carz["Name"] as String, lat: carz["Latitude"] as String, long: carz["Longitude"] as String, brand: carz["Brand"] as String,lastPark:carz["Timestamp"] as String,isParked:carz["isParked"] as Bool,UUID:carz["UUID"] as String,Bmin:carz["Bmin"] as String,Bmaj:carz["Bmaj"] as String)
+                                self.addACarToLocalDatabase(carz["ID_car"] as! String, name: carz["Name"] as! String, lat: carz["Latitude"] as! String, long: carz["Longitude"] as! String, brand: carz["Brand"] as! String,lastPark:carz["Timestamp"] as! String,isParked:carz["isParked"] as! Bool,UUID:carz["UUID"] as! String,Bmin:carz["Bmin"] as! String,Bmaj:carz["Bmaj"] as! String)
                                 
-                                let users = carz["Users"] as NSArray
+                                let users = carz["Users"] as! NSArray
                                 for user in users{
-                                    self.addUserToLocalDatabase(user["Email"]as String, name: user["Name"] as String, car: carz["ID_car"] as String)
+                                    self.addUserToLocalDatabase(user["Email"] as! String, name: user["Name"] as! String, car: carz["ID_car"]as! String)
                                     println(user)
                                 }
                                 
@@ -96,8 +96,8 @@ class CarUpdate: UIViewController{
                         }
                         mvc.updateCars()
                     } else {
-                        if((json?["Object"] as NSInteger) == 3) {self.resetSystem();}
-                        if((json?["Object"] as NSInteger) == 2) {self.resetSystem();}
+                        if((json?["Object"] as! NSInteger) == 3) {self.resetSystem();}
+                        if((json?["Object"]as! NSInteger) == 2) {self.resetSystem();}
                        // if((json?["Object"] as NSInteger) == 4) {self.resetSystem();}
                         
                     }
@@ -118,7 +118,7 @@ class CarUpdate: UIViewController{
             var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
             println("Ora aggiungo l'auto \(code)")
             var id = code.stringByReplacingOccurrencesOfString("\"",withString: "")
-            let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
             let entity =  NSEntityDescription.entityForName("Car",
                 inManagedObjectContext:
@@ -145,7 +145,7 @@ class CarUpdate: UIViewController{
     
     func addUserToLocalDatabase(email:String,name:String,car:String){
         
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let entity =  NSEntityDescription.entityForName("Users",
             inManagedObjectContext:
@@ -167,7 +167,7 @@ class CarUpdate: UIViewController{
     func removeCarByNSObj(name: NSManagedObject) {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         managedContext.deleteObject(name)
@@ -181,7 +181,7 @@ class CarUpdate: UIViewController{
     func removeAllCar() {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest(entityName:"Car")
@@ -190,7 +190,7 @@ class CarUpdate: UIViewController{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -206,7 +206,7 @@ class CarUpdate: UIViewController{
     func countCar() ->Int {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest(entityName:"Car")
@@ -215,7 +215,7 @@ class CarUpdate: UIViewController{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -230,7 +230,7 @@ class CarUpdate: UIViewController{
     func removeAllUsers() {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest(entityName:"Users")
@@ -239,7 +239,7 @@ class CarUpdate: UIViewController{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -258,7 +258,7 @@ class CarUpdate: UIViewController{
         
         //1
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -270,7 +270,7 @@ class CarUpdate: UIViewController{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error)as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -291,7 +291,7 @@ class CarUpdate: UIViewController{
     func  getCarByIBeacon() -> [String]{
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -303,7 +303,7 @@ class CarUpdate: UIViewController{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -312,16 +312,16 @@ class CarUpdate: UIViewController{
         }
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
-        var UUID = prefs.objectForKey("BUUID") as String
-        var Maj =  prefs.objectForKey("BMAJ") as String
-        var Min = prefs.objectForKey("BMIN") as String
+        var UUID = prefs.objectForKey("BUUID") as! String
+        var Maj =  prefs.objectForKey("BMAJ")as! String
+        var Min = prefs.objectForKey("BMIN")as! String
         
         for man in people {
             println(man.valueForKey("id")?.description)
             
             if((man.valueForKey("buuid")?.description==UUID)&&(man.valueForKey("bmin")?.description==Min)&&(man.valueForKey("bmaj")?.description==Maj)){
-                var name : String = man.valueForKey("name")! as String
-                var id : String = man.valueForKey("id")! as String
+                var name : String = man.valueForKey("name")! as! String
+                var id : String = man.valueForKey("id")! as! String
                 return [name,id]
             }
             
@@ -335,7 +335,7 @@ class CarUpdate: UIViewController{
     func updateCarIBeacon(Id_car:String,UUID:String,Maj:String,Min:String){
         insertServerIBeacon(Id_car,UUID: UUID,Maj: Maj,Min: Min)
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -347,7 +347,7 @@ class CarUpdate: UIViewController{
         var people = [NSManagedObject]()
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             people = results
@@ -415,9 +415,9 @@ class CarUpdate: UIViewController{
     func insertServerIBeacon(Id_car:String,UUID:String,Maj:String,Min:String) {
         
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let code = prefs.objectForKey("PIN") as String
-        let mail = prefs.objectForKey("EMAIL") as String
-        let username = prefs.objectForKey("USERNAME") as String
+        let code = prefs.objectForKey("PIN") as! String
+        let mail = prefs.objectForKey("EMAIL")as! String
+        let username = prefs.objectForKey("USERNAME") as! String
         
         var request = NSMutableURLRequest(URL: NSURL(string: Comments().serverPath + "updateUUID")!)
         var session = NSURLSession.sharedSession()
@@ -457,7 +457,7 @@ class CarUpdate: UIViewController{
                 return
             }
             
-            var castato:NSHTTPURLResponse = response as NSHTTPURLResponse
+            var castato:NSHTTPURLResponse = response as! NSHTTPURLResponse
             println(castato.statusCode)
             if(castato.statusCode==500){
                 
@@ -481,7 +481,7 @@ class CarUpdate: UIViewController{
             
             if(err == nil&&(!(response==nil))){
                 
-                if((json!["Flag"] as Bool) == true){
+                if((json!["Flag"] as! Bool) == true){
                     dispatch_async(dispatch_get_main_queue(),{() -> Void in
                         println("")
                         self.navigationController?.popViewControllerAnimated(true)
