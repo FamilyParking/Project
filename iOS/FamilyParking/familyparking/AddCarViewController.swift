@@ -14,7 +14,8 @@ import UIKit
 import AddressBook
 import AddressBookUI
 
-class AddCarViewController: UIViewController, UITextFieldDelegate {
+class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate {
+ 
     
   
     
@@ -22,19 +23,40 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
  //   @IBOuRIFAREtlet weak var ConfirmButton: UIButton!
     @IBOutlet weak var CarName: UITextField!
     
+    @IBOutlet weak var BrandPicker: UIPickerView!
   //  @IBOutlet weak var BackButt: UIButton!
     @IBOutlet weak var ConfButt: UIButton!
+    var brand:String = "add_car"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        BrandPicker.delegate = self
+        BrandPicker.dataSource = self
+    }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return pickerData.count
+    }
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData[component].count
+    }
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        return pickerData[component][row]
+    }
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        updateLabel()
+    }
+    
+    func updateLabel(){
+        let size = pickerData[0][BrandPicker.selectedRowInComponent(0)]
+        brand = size
         
+        println(" + size + " + size)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+    let pickerData = [
+        ["alfaromeo","audi","bmw","chevrolet","citroen","dacia","ferrari","fiat","ford","honda","hunday","jaguar","jeep","kia","lancia","land_rover","Lexus","mazda","mercedes","mg","mini","mitsubishi","nissan","opel","peugeot","porsche","ranault","seat","skoda","smart","subaru","toyora","volkswagen","volvo"]
+    ]
     @IBAction func Back() {
          self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -57,7 +79,10 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
         textField.resignFirstResponder()
-        return true;
+        self.view.endEditing(true)
+         
+        return false;
+        
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -79,7 +104,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate {
         var car = [
         "Bluetooth_MAC":"",
         "Bluetooth_name":"",
-        "Brand":"add_car",
+        "Brand":brand,
         "Users":"",
         "Name":CarName.text,
         "Register":"",

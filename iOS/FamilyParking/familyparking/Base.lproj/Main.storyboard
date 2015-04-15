@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q4D-Jx-ms8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q4D-Jx-ms8">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -593,7 +593,7 @@
             </objects>
             <point key="canvasLocation" x="178" y="651"/>
         </scene>
-        <!--Insert your Car Name-->
+        <!--Creating Car-->
         <scene sceneID="IOr-9X-Xx9">
             <objects>
                 <viewController id="UMO-cu-gwX" customClass="AddCarViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
@@ -605,8 +605,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4F-GF-3XC">
-                                <rect key="frame" x="205" y="211" width="61" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4F-GF-3XC">
+                                <rect key="frame" x="227" y="315" width="61" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="61" id="yNV-oQ-qzi"/>
+                                </constraints>
                                 <state key="normal" title="Confirm">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -616,34 +619,37 @@
                                     <action selector="addACar" destination="UMO-cu-gwX" eventType="touchUpInside" id="9tl-l1-yF9"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QhA-0d-9rd">
-                                <rect key="frame" x="54" y="109" width="212" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Your car name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVf-fq-qkr">
-                                <rect key="frame" x="54" y="147" width="212" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="carGreen" translatesAutoresizingMaskIntoConstraints="NO" id="Wf0-xo-5qZ">
-                                <rect key="frame" x="54" y="361" width="240" height="128"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Car Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QhA-0d-9rd">
+                                <rect key="frame" x="54" y="117" width="212" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="0qM-Ok-fom"/>
-                                    <constraint firstAttribute="height" constant="128" id="rQ9-ZZ-FL0"/>
-                                    <constraint firstAttribute="width" constant="240" id="tyD-kH-7ys"/>
+                                    <constraint firstAttribute="width" constant="212" id="0rT-IV-CE3"/>
                                 </constraints>
-                            </imageView>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                            </textField>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GzF-6j-fhw">
+                                <rect key="frame" x="0.0" y="145" width="320" height="162"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="2Bs-u9-auN"/>
+                                    <constraint firstAttribute="height" constant="162" id="755-Dn-9DR"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="U9F-n4-yG4"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Wf0-xo-5qZ" firstAttribute="leading" secondItem="PN1-O6-g2i" secondAttribute="leadingMargin" constant="38" id="55q-VC-gdf"/>
-                            <constraint firstItem="HEI-Bf-wYL" firstAttribute="top" secondItem="Wf0-xo-5qZ" secondAttribute="bottom" constant="30" id="b9p-ag-U43"/>
+                            <constraint firstItem="QhA-0d-9rd" firstAttribute="top" secondItem="08c-ek-CMD" secondAttribute="bottom" constant="53" id="ACH-A8-X3x"/>
+                            <constraint firstItem="p4F-GF-3XC" firstAttribute="top" secondItem="GzF-6j-fhw" secondAttribute="bottom" constant="8" id="DdV-aG-eJt"/>
+                            <constraint firstItem="GzF-6j-fhw" firstAttribute="top" secondItem="QhA-0d-9rd" secondAttribute="bottom" constant="-2" id="Hn5-Zu-HKd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="p4F-GF-3XC" secondAttribute="trailing" constant="16" id="NbG-v1-TOx"/>
+                            <constraint firstAttribute="centerX" secondItem="GzF-6j-fhw" secondAttribute="centerX" id="iQ8-EV-qby"/>
+                            <constraint firstItem="GzF-6j-fhw" firstAttribute="top" secondItem="QhA-0d-9rd" secondAttribute="bottom" constant="-2" id="iqm-kp-cWa"/>
+                            <constraint firstAttribute="centerX" secondItem="QhA-0d-9rd" secondAttribute="centerX" id="w54-Fp-ZCN"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Insert your Car Name" id="4gT-RE-QL5"/>
+                    <navigationItem key="navigationItem" title="Creating Car" id="4gT-RE-QL5"/>
                     <connections>
+                        <outlet property="BrandPicker" destination="GzF-6j-fhw" id="WXR-9H-PSO"/>
                         <outlet property="CarName" destination="QhA-0d-9rd" id="5iI-oB-feM"/>
                         <outlet property="ConfButt" destination="p4F-GF-3XC" id="wGf-i8-yOe"/>
                     </connections>
@@ -656,7 +662,6 @@
     <resources>
         <image name="car" width="367" height="178"/>
         <image name="car1" width="60" height="60"/>
-        <image name="carGreen" width="367" height="178"/>
         <image name="house-7" width="30" height="30"/>
         <image name="park" width="234" height="234"/>
     </resources>
