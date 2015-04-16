@@ -60,6 +60,12 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             return people.count
     }
     
+   // tableView:accessoryButtonTappedForRowWithIndexPath:.
+    func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+        println (indexPath.description)
+        self.selectedCar = self.people[indexPath.row]
+        self.performSegueWithIdentifier("modify_car", sender: self)
+    }
     func tableView(tableView: UITableView,      cellForRowAtIndexPath
         indexPath: NSIndexPath) -> UITableViewCell {
             
@@ -93,9 +99,11 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
                 }
             }else{
-                
+                var targa:String = person.valueForKey("register") as! String!
+                cell.detailTextLabel?.text = "Never Parked " + targa
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.Gray;
+            cell.accessoryType = UITableViewCellAccessoryType.DetailButton
             println(person.valueForKey("brand") as! String)
             cell.imageView?.image=UIImage(named:(person.valueForKey("brand") as! String))
             return cell
@@ -121,9 +129,9 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             let toRem = self.people[indexPath.item].valueForKey("id")?.description
             self.associateIBeacon(toRem!)
         }
-        let deleteAction = UITableViewRowAction(style: .Default, title: "X", handler: deleteClosure)
-        let moreAction = UITableViewRowAction(style: .Normal, title: "Sharers", handler: moreClosure)
-        let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "iBeacon", handler: addIBeaconClosure)
+        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete", handler: deleteClosure)
+       // let moreAction = UITableViewRowAction(style: .Normal, title: "Sharers", handler: moreClosure)
+      //  let addIBeaconAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "iBeacon", handler: addIBeaconClosure)
         
      //   UIGraphicsBeginImageContext(self.view.frame.size)
      //   UIImage(named: "iBeaconIcon")?.drawInRect(CGRectMake(0, 0, 45, 45))
@@ -137,7 +145,7 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
       //  image = UIGraphicsGetImageFromCurrentImageContext()
       //  UIGraphicsEndImageContext()
      //   deleteAction.backgroundColor = UIColor(patternImage: image)
-        return [deleteAction,addIBeaconAction, moreAction]
+        return [deleteAction]
         
     }
         /*
@@ -383,6 +391,13 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 destinationVC.car = selectedCar
             }
         }
+        if segue.identifier == "modify_car"
+        {
+            if let destinationVC = segue.destinationViewController as? EditCarViewController{
+                destinationVC.car = selectedCar
+            }
+        }
+        
     }
     
     func associateIBeacon(id:String){

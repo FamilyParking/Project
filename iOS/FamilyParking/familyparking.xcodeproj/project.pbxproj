@@ -10,6 +10,9 @@
 		34E253931ADEF2FD00B3D354 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E253921ADEF2FD00B3D354 /* FBSDKCoreKit.framework */; };
 		34E253951ADEF30F00B3D354 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E253941ADEF30F00B3D354 /* FBSDKLoginKit.framework */; };
 		34E253971ADEF31600B3D354 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E253961ADEF31600B3D354 /* FBSDKShareKit.framework */; };
+		34ED5A191ADFFA0C00EF3DF7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED5A181ADFFA0C00EF3DF7 /* Utilities.swift */; };
+		34F59F781ADFCD7F004E6B7D /* appDBx0y1z0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34F59F761ADFCD7F004E6B7D /* appDBx0y1z0.xcdatamodeld */; };
+		34F59F7A1ADFD09B004E6B7D /* EditCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F59F791ADFD09B004E6B7D /* EditCarViewController.swift */; };
 		800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800998C51AB3194800DBB666 /* contactTwoViewControler.swift */; };
 		801811F21AD8306E003BCA0D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 801811F41AD8306E003BCA0D /* Localizable.strings */; };
 		80626AD81A95E97800D7AAA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80626AD71A95E97800D7AAA5 /* AppDelegate.swift */; };
@@ -69,6 +72,9 @@
 		34E253921ADEF2FD00B3D354 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		34E253941ADEF30F00B3D354 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		34E253961ADEF31600B3D354 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		34ED5A181ADFFA0C00EF3DF7 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		34F59F771ADFCD7F004E6B7D /* appDBx0y0z1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = appDBx0y0z1.xcdatamodel; sourceTree = "<group>"; };
+		34F59F791ADFD09B004E6B7D /* EditCarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCarViewController.swift; sourceTree = "<group>"; };
 		800998C51AB3194800DBB666 /* contactTwoViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTwoViewControler.swift; sourceTree = "<group>"; };
 		801811F51AD830A3003BCA0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		801811F61AD832F1003BCA0D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -207,6 +213,7 @@
 				80626B2D1A96000000D7AAA5 /* Registration2ViewController.swift */,
 				80626AE11A95E97800D7AAA5 /* Images.xcassets */,
 				80626AE31A95E97800D7AAA5 /* LaunchScreen.xib */,
+				34F59F761ADFCD7F004E6B7D /* appDBx0y1z0.xcdatamodeld */,
 				807FE8CC1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld */,
 				80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */,
 				80626AD51A95E97800D7AAA5 /* Supporting Files */,
@@ -288,7 +295,9 @@
 				80B0E5931A9A63990032EC8B /* ChooseParkCar.swift */,
 				80626B351A96289500D7AAA5 /* CarUpdate.swift */,
 				80626B2F1A961E8B00D7AAA5 /* CarsViewController.swift */,
+				34F59F791ADFD09B004E6B7D /* EditCarViewController.swift */,
 				80626B331A96207900D7AAA5 /* AddCarViewController.swift */,
+				34ED5A181ADFFA0C00EF3DF7 /* Utilities.swift */,
 				809C44D31A9B895B00C9B297 /* SingleCarUsersViewController.swift */,
 			);
 			name = car;
@@ -436,10 +445,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				80626ADD1A95E97800D7AAA5 /* ViewController.swift in Sources */,
+				34F59F781ADFCD7F004E6B7D /* appDBx0y1z0.xcdatamodeld in Sources */,
 				80626B2A1A95F89A00D7AAA5 /* Comments.swift in Sources */,
 				80626ADB1A95E97800D7AAA5 /* familyparking.xcdatamodeld in Sources */,
 				800998C61AB3194800DBB666 /* contactTwoViewControler.swift in Sources */,
 				80626B301A961E8B00D7AAA5 /* CarsViewController.swift in Sources */,
+				34ED5A191ADFFA0C00EF3DF7 /* Utilities.swift in Sources */,
+				34F59F7A1ADFD09B004E6B7D /* EditCarViewController.swift in Sources */,
 				807FE8CE1AD3F35D00C23B40 /* appDBx0y0z1.xcdatamodeld in Sources */,
 				80626B2E1A96000000D7AAA5 /* Registration2ViewController.swift in Sources */,
 				80626B321A961ED600D7AAA5 /* MyTableViewCell.swift in Sources */,
@@ -707,6 +719,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		34F59F761ADFCD7F004E6B7D /* appDBx0y1z0.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				34F59F771ADFCD7F004E6B7D /* appDBx0y0z1.xcdatamodel */,
+			);
+			currentVersion = 34F59F771ADFCD7F004E6B7D /* appDBx0y0z1.xcdatamodel */;
+			path = appDBx0y1z0.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		80626AD91A95E97800D7AAA5 /* familyparking.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

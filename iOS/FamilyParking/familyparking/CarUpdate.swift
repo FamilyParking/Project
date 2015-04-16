@@ -84,7 +84,7 @@ class CarUpdate: UIViewController{
                             self.removeAllCar()
                             self.removeAllUsers()
                             for carz in cars{
-                                self.addACarToLocalDatabase(carz["ID_car"] as! String, name: carz["Name"] as! String, lat: carz["Latitude"] as! String, long: carz["Longitude"] as! String, brand: carz["Brand"] as! String,lastPark:carz["Timestamp"] as! String,isParked:carz["isParked"] as! Bool,UUID:carz["UUID"] as! String,Bmin:carz["Bmin"] as! String,Bmaj:carz["Bmaj"] as! String)
+                                self.addACarToLocalDatabase(carz["ID_car"] as! String, name: carz["Name"] as! String, lat: carz["Latitude"] as! String, long: carz["Longitude"] as! String, brand: carz["Brand"] as! String,lastPark:carz["Timestamp"] as! String,isParked:carz["isParked"] as! Bool,UUID:carz["UUID"] as! String,Bmin:carz["Bmin"] as! String,Bmaj:carz["Bmaj"] as! String,register:carz["Register"] as! String)
                                 
                                 let users = carz["Users"] as! NSArray
                                 for user in users{
@@ -113,7 +113,7 @@ class CarUpdate: UIViewController{
             }
         }
     
-    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String,lastPark:String,isParked:Bool,UUID:String,Bmin:String,Bmaj:String){
+    func addACarToLocalDatabase(code:String,name:String,lat:String,long:String,brand:String,lastPark:String,isParked:Bool,UUID:String,Bmin:String,Bmaj:String,register:String){
         
             var car = code.stringByReplacingOccurrencesOfString("\"", withString: "")
             println("Ora aggiungo l'auto \(code)")
@@ -136,7 +136,7 @@ class CarUpdate: UIViewController{
             person.setValue(UUID,forKey:"buuid")
             person.setValue(Bmaj,forKey:"bmaj")
             person.setValue(Bmin,forKey:"bmin")
-        
+            person.setValue(register, forKey:"register")
             var error: NSError?
             if !managedContext.save(&error) {
                 println("Could not save \(error), \(error?.userInfo)")
@@ -378,6 +378,7 @@ class CarUpdate: UIViewController{
                 person.setValue(man.valueForKey("brand"), forKey:"brand")
                 person.setValue(man.valueForKey("lastPark"), forKey:"lastPark")
                 person.setValue(man.valueForKey("isParked"), forKey:"isParked")
+                 person.setValue(man.valueForKey("register"), forKey:"register")
                 person.setValue(UUID, forKey: "buuid")
                 person.setValue(Min, forKey: "bmin")
                 person.setValue(Maj, forKey: "bmaj")

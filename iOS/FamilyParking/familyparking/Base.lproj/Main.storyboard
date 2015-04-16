@@ -400,7 +400,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11J-Hw-der" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1666" y="-999"/>
+            <point key="canvasLocation" x="1898" y="-507"/>
         </scene>
         <!--Groups-->
         <scene sceneID="NTN-zW-xNF">
@@ -432,7 +432,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zL0-Dn-fDq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2100" y="-999"/>
+            <point key="canvasLocation" x="2332" y="-507"/>
         </scene>
         <!--Add Group View Controller-->
         <scene sceneID="suH-nf-WQZ">
@@ -491,7 +491,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SF3-CP-ACG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2518" y="-999"/>
+            <point key="canvasLocation" x="2750" y="-507"/>
         </scene>
         <!--Which Car?-->
         <scene sceneID="LKh-we-fgq">
@@ -555,11 +555,12 @@
                     </navigationItem>
                     <connections>
                         <segue destination="bdV-0m-D4B" kind="push" identifier="user_group" id="JZk-Xl-OXd"/>
+                        <segue destination="Kcj-yg-GoG" kind="push" identifier="modify_car" id="Cfq-ue-jal"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vpo-9j-J0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="608" y="-63"/>
+            <point key="canvasLocation" x="572" y="33"/>
         </scene>
         <!--Single Car Users View Controller-->
         <scene sceneID="73y-M8-k4x">
@@ -591,9 +592,114 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sYn-Pb-675" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="178" y="651"/>
+            <point key="canvasLocation" x="178" y="750"/>
         </scene>
-        <!--Creating Car-->
+        <!--Car Name-->
+        <scene sceneID="kBA-iB-3jU">
+            <objects>
+                <viewController id="Kcj-yg-GoG" customClass="EditCarViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0vX-ed-rzh"/>
+                        <viewControllerLayoutGuide type="bottom" id="kZk-gm-JzR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ig8-9Y-pE1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Car Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gww-NM-KYS">
+                                <rect key="frame" x="16" y="117" width="147" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Targa" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRf-Ig-ISF">
+                                <rect key="frame" x="16" y="137" width="133" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Brand" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hwj-eu-j6K">
+                                <rect key="frame" x="16" y="161" width="133" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="blq-zQ-6Al">
+                                <rect key="frame" x="0.0" y="233" width="304" height="151"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="user_cell" textLabel="jy9-S9-t0P" detailTextLabel="XqC-nS-CgK" style="IBUITableViewCellStyleSubtitle" id="mVU-BK-G0p" customClass="MyTableViewCell" customModule="familyparking" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mVU-BK-G0p" id="V9n-ge-j9B">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jy9-S9-t0P">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XqC-nS-CgK">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lCr-Jc-2DT">
+                                <rect key="frame" x="210" y="117" width="94" height="94"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Last Park" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdO-dx-x4F">
+                                <rect key="frame" x="16" y="190" width="186" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dad-Kr-XpR">
+                                <rect key="frame" x="16" y="386" width="115" height="30"/>
+                                <state key="normal" title="Ad a sharer">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="AddUserCarButton" destination="Kcj-yg-GoG" eventType="touchUpInside" id="8zH-SI-3ji"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="iBeacon Active" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pee-qe-Sc1">
+                                <rect key="frame" x="16" y="434" width="115" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ul0-Ii-jvU">
+                                <rect key="frame" x="244" y="424" width="51" height="31"/>
+                                <connections>
+                                    <action selector="iBeaconClick:" destination="Kcj-yg-GoG" eventType="valueChanged" id="Umd-UE-fSy"/>
+                                </connections>
+                            </switch>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Car Name" id="LNx-m0-B9V"/>
+                    <connections>
+                        <outlet property="CarBrand" destination="Hwj-eu-j6K" id="qmG-CY-mUj"/>
+                        <outlet property="CarBrandImage" destination="lCr-Jc-2DT" id="2VU-nn-hy2"/>
+                        <outlet property="CarIbeaconStatus" destination="ul0-Ii-jvU" id="EUo-dN-TQd"/>
+                        <outlet property="CarLastPark" destination="bdO-dx-x4F" id="9gL-1e-Z9f"/>
+                        <outlet property="CarName" destination="gww-NM-KYS" id="ydy-43-pLd"/>
+                        <outlet property="CarTarga" destination="fRf-Ig-ISF" id="IPi-aZ-aWG"/>
+                        <outlet property="SharerTableView" destination="blq-zQ-6Al" id="vOm-wO-rLF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zDR-tg-7Hh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="572" y="750"/>
+        </scene>
+        <!--Creating a new Car-->
         <scene sceneID="IOr-9X-Xx9">
             <objects>
                 <viewController id="UMO-cu-gwX" customClass="AddCarViewController" customModule="familyparking" customModuleProvider="target" sceneMemberID="viewController">
@@ -606,7 +712,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4F-GF-3XC">
-                                <rect key="frame" x="227" y="315" width="61" height="30"/>
+                                <rect key="frame" x="228" y="363" width="61" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="61" id="yNV-oQ-qzi"/>
                                 </constraints>
@@ -627,8 +733,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                             </textField>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GzF-6j-fhw">
-                                <rect key="frame" x="0.0" y="145" width="320" height="162"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Targa" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8CB-Ve-Nha">
+                                <rect key="frame" x="54" y="169" width="212" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="212" id="r7b-3E-Cmp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                            </textField>
+                            <pickerView contentMode="left" translatesAutoresizingMaskIntoConstraints="NO" id="GzF-6j-fhw">
+                                <rect key="frame" x="0.0" y="203" width="320" height="162"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="2Bs-u9-auN"/>
                                     <constraint firstAttribute="height" constant="162" id="755-Dn-9DR"/>
@@ -638,25 +752,27 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="GzF-6j-fhw" firstAttribute="top" secondItem="8CB-Ve-Nha" secondAttribute="bottom" constant="4" id="2xf-we-UoN"/>
                             <constraint firstItem="QhA-0d-9rd" firstAttribute="top" secondItem="08c-ek-CMD" secondAttribute="bottom" constant="53" id="ACH-A8-X3x"/>
-                            <constraint firstItem="p4F-GF-3XC" firstAttribute="top" secondItem="GzF-6j-fhw" secondAttribute="bottom" constant="8" id="DdV-aG-eJt"/>
-                            <constraint firstItem="GzF-6j-fhw" firstAttribute="top" secondItem="QhA-0d-9rd" secondAttribute="bottom" constant="-2" id="Hn5-Zu-HKd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="p4F-GF-3XC" secondAttribute="trailing" constant="16" id="NbG-v1-TOx"/>
+                            <constraint firstItem="p4F-GF-3XC" firstAttribute="top" secondItem="GzF-6j-fhw" secondAttribute="bottom" constant="-2" id="DdV-aG-eJt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="p4F-GF-3XC" secondAttribute="trailing" constant="15" id="NbG-v1-TOx"/>
+                            <constraint firstItem="8CB-Ve-Nha" firstAttribute="top" secondItem="QhA-0d-9rd" secondAttribute="bottom" constant="22" id="bfP-ld-6Qj"/>
                             <constraint firstAttribute="centerX" secondItem="GzF-6j-fhw" secondAttribute="centerX" id="iQ8-EV-qby"/>
-                            <constraint firstItem="GzF-6j-fhw" firstAttribute="top" secondItem="QhA-0d-9rd" secondAttribute="bottom" constant="-2" id="iqm-kp-cWa"/>
                             <constraint firstAttribute="centerX" secondItem="QhA-0d-9rd" secondAttribute="centerX" id="w54-Fp-ZCN"/>
+                            <constraint firstAttribute="centerX" secondItem="8CB-Ve-Nha" secondAttribute="centerX" id="was-zv-MNA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Creating Car" id="4gT-RE-QL5"/>
+                    <navigationItem key="navigationItem" title="Creating a new Car" id="4gT-RE-QL5"/>
                     <connections>
                         <outlet property="BrandPicker" destination="GzF-6j-fhw" id="WXR-9H-PSO"/>
                         <outlet property="CarName" destination="QhA-0d-9rd" id="5iI-oB-feM"/>
+                        <outlet property="CarTarga" destination="8CB-Ve-Nha" id="Sng-20-0zO"/>
                         <outlet property="ConfButt" destination="p4F-GF-3XC" id="wGf-i8-yOe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jks-Em-j2U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="-63"/>
+            <point key="canvasLocation" x="1024" y="-55"/>
         </scene>
     </scenes>
     <resources>
@@ -671,6 +787,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="os5-nP-kpf"/>
+        <segue reference="TFs-jk-wHQ"/>
     </inferredMetricsTieBreakers>
 </document>

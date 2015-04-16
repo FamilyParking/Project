@@ -22,6 +22,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
    // @IBOuRIFAREtlet weak var BackButton: UIButton!
  //   @IBOuRIFAREtlet weak var ConfirmButton: UIButton!
     @IBOutlet weak var CarName: UITextField!
+    @IBOutlet weak var CarTarga: UITextField!
     
     @IBOutlet weak var BrandPicker: UIPickerView!
   //  @IBOutlet weak var BackButt: UIButton!
@@ -73,6 +74,9 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
         }
         else{
             //TODO emtpy text
+            println(model)
+            CarName.enabled = true
+            noCarNameAlert()
         }
     }
     
@@ -107,7 +111,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
         "Brand":brand,
         "Users":"",
         "Name":CarName.text,
-        "Register":"",
+        "Register":CarTarga.text,
         "Latitude":"",
             "Name_car":CarName.text] as Dictionary<String, NSObject>
         
@@ -151,7 +155,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
                 if((json!["Flag"] as! Bool) == true){
                             //self.BackButt.enabled = true
                             self.ConfButt.enabled = true
-                    CarUpdate().addACarToLocalDatabase((json!["Object"] as! NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false,UUID:"",Bmin:"",Bmaj:"")
+                    CarUpdate().addACarToLocalDatabase((json!["Object"] as! NSNumber).description, name: self.CarName.text, lat: "0", long: "0",brand:"",lastPark:"never",isParked:false,UUID:"",Bmin:"",Bmaj:"",register:self.CarTarga.text)
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             //self.dismissViewControllerAnimated(true, completion: nil)
                             println("")
@@ -176,7 +180,14 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
         
     }
     
-
+    func noCarNameAlert(){
+        var alertView:UIAlertView = UIAlertView()
+        alertView.title = "Car Name is empty"
+        alertView.message = "Please, insert your car name."
+        alertView.delegate = self
+        alertView.addButtonWithTitle("OK")
+        alertView.show()
+    }
     
     
     
