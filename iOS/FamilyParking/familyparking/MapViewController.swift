@@ -92,7 +92,27 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         
         locationManager.startMonitoringForRegion(beaconRegion)
         locationManager.startRangingBeaconsInRegion(beaconRegion)
+     //   locationManager.startUpdatingLocation()
+        
+        
+        let uuidStringFilo = "00002a06-0000-1000-8000-00805f9b34fb"
+        //let uuidString = "B9507F30-F5F8-466E-AFF9-25556B57FE6D"
+        
+        let beaconIdentifierFilo = "iBeaconModulesFilo.us"
+        let beaconUUIDFilo:NSUUID = NSUUID(UUIDString: uuidStringFilo)!
+        let beaconRegionFilo:CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconUUIDFilo,
+            identifier: beaconIdentifierFilo)
+        beaconRegionFilo.notifyEntryStateOnDisplay = true
+        beaconRegionFilo.notifyOnEntry = true
+        beaconRegionFilo.notifyOnExit = true
+        locationManager.delegate = self
+        locationManager.pausesLocationUpdatesAutomatically = false
+        
+        locationManager.startMonitoringForRegion(beaconRegionFilo)
+        locationManager.startRangingBeaconsInRegion(beaconRegionFilo)
         locationManager.startUpdatingLocation()
+
+    
     }
     
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
