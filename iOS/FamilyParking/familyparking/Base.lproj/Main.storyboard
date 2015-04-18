@@ -662,7 +662,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dad-Kr-XpR">
                                 <rect key="frame" x="16" y="386" width="115" height="30"/>
-                                <state key="normal" title="Ad a sharer">
+                                <state key="normal" title="Add a sharer">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>

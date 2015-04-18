@@ -34,6 +34,7 @@ class EditCarViewController: UIViewController,UITableViewDelegate,UITableViewDat
         CarBrandImage.image=UIImage(named:(car?.valueForKey("brand") as! String))
         var parkTime:String = car?.valueForKey("lastPark") as! String!
         
+        if(!(parkTime=="never")){
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSS" //format style. Browse online to get a format that fits your needs.
@@ -51,6 +52,7 @@ class EditCarViewController: UIViewController,UITableViewDelegate,UITableViewDat
             days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).hour
             CarLastPark.text = "Parked "+days.description + " hours ago"
             
+        }
         }
          var iBeacon:String = car?.valueForKey("buuid") as! String!
         
@@ -195,6 +197,8 @@ class EditCarViewController: UIViewController,UITableViewDelegate,UITableViewDat
             style: .Default) { (action: UIAlertAction!) -> Void in
         
                 //REMOVE IBEACON
+                  CarUpdate().updateCarIBeacon(self.car?.valueForKey("id") as! String, UUID:"", Maj: "", Min: "")
+                self.CarIbeaconStatus.setOn(false, animated: true)
                 
         }
         let cancelAction = UIAlertAction(title: "No",
