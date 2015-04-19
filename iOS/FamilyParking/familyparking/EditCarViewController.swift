@@ -30,7 +30,12 @@ class EditCarViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.title = car?.valueForKey("name")?.description
         CarName.text = car?.valueForKey("name")?.description
         CarTarga.text = car?.valueForKey("register")?.description
-        CarBrand.text = car?.valueForKey("brand")?.description
+        var brand:String? = car?.valueForKey("brand")?.description
+        if(brand=="add_car"){
+        CarBrand.text = ""
+        }else{
+            CarBrand.text = brand
+        }
         CarBrandImage.image=UIImage(named:(car?.valueForKey("brand") as! String))
         var parkTime:String = car?.valueForKey("lastPark") as! String!
         

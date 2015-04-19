@@ -91,6 +91,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         CarName.resignFirstResponder()
+        CarTarga.resignFirstResponder()
     }
     
     func addCarToServer(){

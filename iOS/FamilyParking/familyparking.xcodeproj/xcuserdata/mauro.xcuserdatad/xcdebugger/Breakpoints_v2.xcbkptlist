@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "familyparking/EditCarViewController.swift"
-            timestampString = "450895245.685735"
+            timestampString = "451149293.39271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "607"
-            endingLineNumber = "607">
+            startingLineNumber = "612"
+            endingLineNumber = "612">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
