@@ -315,7 +315,7 @@ class EditCarViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 
                 let textFieldEx = alert.textFields![0] as! UITextField
                 if(Utilities().isValidEmail(textFieldEx.text)){
-            //        self.addUserToServer(textFieldEx.text)
+                   self.addUserToServer(textFieldEx.text)
                 }else{
                     self.wrongMailPopUp(name)
                 }

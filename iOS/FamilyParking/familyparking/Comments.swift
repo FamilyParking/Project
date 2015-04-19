@@ -36,7 +36,7 @@ class Comments {
     
     
        
-    let serverPath = "http://android03.first-vision-798.appspot.com/"
+    let serverPath = "http://ios03.first-vision-798.appspot.com/"
 
 }
 /*USEFUL CODE
