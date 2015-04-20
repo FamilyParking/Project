@@ -158,10 +158,18 @@ public class Map extends Fragment{
     }
 
     public String getLatitude(){
+        while (googleMap == null){
+            setUpMap();
+        }
+
         return Double.toString(googleMap.getMyLocation().getLatitude());
     }
 
     public String getLongitude(){
+        while (googleMap == null){
+            setUpMap();
+        }
+
         return Double.toString(googleMap.getMyLocation().getLongitude());
     }
 

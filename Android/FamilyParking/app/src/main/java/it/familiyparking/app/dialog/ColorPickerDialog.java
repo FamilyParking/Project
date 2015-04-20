@@ -13,6 +13,7 @@ import it.familiyparking.app.MainActivity;
 import it.familiyparking.app.R;
 import it.familiyparking.app.adapter.CustomAdapterColor;
 import it.familiyparking.app.serverClass.Car;
+import it.familiyparking.app.utility.Code;
 import it.familiyparking.app.utility.Tools;
 
 
@@ -78,6 +79,10 @@ public class ColorPickerDialog extends Fragment implements AdapterView.OnItemCli
     }
 
     public void saveColor(){
+        if(color == null){
+            color = Code.RED_HUE;
+        }
+
         car.setMarkerColor(color);
 
         activity.runOnUiThread(new Runnable() {
