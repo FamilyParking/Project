@@ -95,7 +95,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
      //   locationManager.startUpdatingLocation()
         
         
-        let uuidStringFilo = "00002a06-0000-1000-8000-00805f9b34fb"
+        let uuidStringFilo = "00002A06-0000-1000-8000-00805F9B34FB"
         //let uuidString = "B9507F30-F5F8-466E-AFF9-25556B57FE6D"
         
         let beaconIdentifierFilo = "iBeaconModulesFilo.us"
@@ -409,7 +409,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         didRangeBeacons beacons: [AnyObject]!,
         inRegion region: CLBeaconRegion!) {
             
-           NSLog("didRangeBeacons");
+           NSLog("didRangeBeacons"+beacons.count.description);
             var message:String = ""
             
             

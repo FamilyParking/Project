@@ -84,19 +84,22 @@ class CarsViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 var dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSS" //format style. Browse online to get a format that fits your needs.
                 var date = dateFormatter.dateFromString(parkTime)
-                var calendar: NSCalendar = NSCalendar.currentCalendar()
-
-                var flags = NSCalendarUnit.DayCalendarUnit
-                var days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).day
+                if(!(date==nil)){
                 
-                if(!(days==0)){
-                    cell.detailTextLabel?.text = "Parked "+days.description + " days ago"
-                }
-                else{
-                    flags = NSCalendarUnit.HourCalendarUnit
-                    days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).hour
-                    cell.detailTextLabel?.text = "Parked "+days.description + " hours ago"
+                    var calendar: NSCalendar = NSCalendar.currentCalendar()
 
+                    var flags = NSCalendarUnit.DayCalendarUnit
+                    var days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).day
+                    
+                    if(!(days==0)){
+                        cell.detailTextLabel?.text = "Parked "+days.description + " days ago"
+                    }
+                    else{
+                        flags = NSCalendarUnit.HourCalendarUnit
+                        days = calendar.components(flags, fromDate: date!, toDate: NSDate(), options: nil).hour
+                        cell.detailTextLabel?.text = "Parked "+days.description + " hours ago"
+
+                    }
                 }
             }else{
                 var targa:String = person.valueForKey("register") as! String!
