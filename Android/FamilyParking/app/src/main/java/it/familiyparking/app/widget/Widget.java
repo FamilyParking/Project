@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -76,6 +77,8 @@ public class Widget extends AppWidgetProvider {
                 else {
                     if(cars.size() == 1) {
 
+                        result_code = 0;
+
                         if (action.equals(Code.TYPE_PARK))
                             doPark(context, cars.get(0), user);
                         else if (action.equals(Code.TYPE_UNPARK))
@@ -119,7 +122,7 @@ public class Widget extends AppWidgetProvider {
 
     private void callWidgetActivity(Context context, String action){
         Intent intent = new Intent(context, WidgetActivity.class);
-        intent.putExtra("action",action);
+        intent.putExtra("action", action);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if(pendingIntent != null) {

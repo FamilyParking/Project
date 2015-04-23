@@ -38,7 +38,7 @@ public class DoParkByWidget implements Runnable {
                 @Override
                 public void run() {
                     activity.closeDialog();
-                    activity.setProgressDialogCircular(activity.getResources().getString(R.string.unpark_car));
+                    activity.setProgressDialogCircular(activity.getResources().getString(R.string.park_car));
                 }
             });
 

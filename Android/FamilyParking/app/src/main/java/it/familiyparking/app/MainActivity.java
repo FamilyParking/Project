@@ -37,6 +37,7 @@ import it.familiyparking.app.fragment.Map;
 import it.familiyparking.app.fragment.SignIn;
 import it.familiyparking.app.fragment.SignInSocialNetwork;
 import it.familiyparking.app.fragment.TabFragment;
+import it.familiyparking.app.parky.DoParky;
 import it.familiyparking.app.parky.StatisticActivity;
 import it.familiyparking.app.serverClass.Car;
 import it.familiyparking.app.serverClass.User;
