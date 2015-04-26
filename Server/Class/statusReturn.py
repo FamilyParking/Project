@@ -1,70 +1,74 @@
 import logging
 import sys
 import json
+from setting import static_variable
+
 
 
 class StatusReturn:
     number = ""
     index = ""
 
-    def __init__(self, numb, function, object_result=0, description=0):
+    def __init__(self, numb, function, object_result=0, description=0, data=None):
         self.number = numb
         self.function = function
         self.Object_result = object_result
         self.Description = description
+        self.data = data
 
     def print_general_error(self):
         error_data = {}
         if self.number == 1:
-            logging.debug("[" + str(self.function) + "] Error 1 --> Can't load json "+str(sys.exc_info()))
+            logging.error("[" + str(self.function) + "] Error 1 --> Can't load json "+str(sys.exc_info()))
+            logging.error(self.data)
             error_data["Flag"] = False
             error_data["Description"] = "Can't load json"
             error_data["Object"] = 1
 
         elif self.number == 2:
-            logging.debug("[" + str(self.function) + "] Error 2 --> User not found ")
+            logging.error("[" + str(self.function) + "] Error 2 --> User not found ")
             error_data["Flag"] = False
             error_data["Description"] = "User not found"
             error_data["Object"] = 2
 
         elif self.number == 3:
-            logging.debug("[" + str(self.function) + "] Error 3 --> Code not valid")
+            logging.error("[" + str(self.function) + "] Error 3 --> Code not valid")
             error_data["Flag"] = False
             error_data["Description"] = "Code not valid"
             error_data["Object"] = 3
 
         elif self.number == 4:
-            logging.debug("[" + str(self.function) + "] Error 4 --> Check code problem")
+            logging.error("[" + str(self.function) + "] Error 4 --> Check code problem")
             error_data["Flag"] = False
             error_data["Description"] = "Check code problem"
             error_data["Object"] = 4
 
         elif self.number == 5:
-            logging.debug("[" + str(self.function) + "] Error 5 --> Return value not match")
+            logging.error("[" + str(self.function) + "] Error 5 --> Return value not match")
             error_data["Flag"] = False
             error_data["Description"] = "Return value not match"
             error_data["Object"] = 5
 
         elif self.number == 6:
-            logging.debug("[" + str(self.function) + "] Error 6 --> Generic error "+str(sys.exc_info()))
+            logging.error("[" + str(self.function) + "] Error 6 --> Generic error "+str(sys.exc_info()))
             error_data["Flag"] = False
             error_data["Description"] = "Generic error"
             error_data["Object"] = 6
 
         elif self.number == 7:
-            logging.debug("[" + str(self.function) + "] Error 7 --> ERROR ID_group")
+            logging.error("[" + str(self.function) + "] Error 7 --> ERROR ID_group")
             error_data["Flag"] = False
             error_data["Description"] = "ERROR ID_group"
             error_data["Object"] = 7
 
         elif self.number == 8:
-            logging.debug("[" + str(self.function) + "] Error 8 --> SysError = " + self.Object_result)
+            logging.error("[" + str(self.function) + "] Error 8 --> SysError = " + self.Object_result)
             error_data["Flag"] = False
             error_data["Description"] = "Sys ERROR"
             error_data["Object"] = 8
 
         else:
-            logging.debug("[" + str(self.function) + "]: -----ERROR---- ")
+            logging.error("[" + str(self.function) + "]: -----ERROR---- "+str(sys.exc_info()))
             error_data["Flag"] = False
             error_data["Description"] = "ERROR"
             error_data["Object"] = None
@@ -205,7 +209,8 @@ class StatusReturn:
             result_data["Description"] = "Pick the car"
             result_data["Object"] = self.Object_result
 
-        logging.debug(result_data)
+        if static_variable.DEBUG_STATUS_RETURN:
+            logging.debug(result_data)
         return json.dumps(result_data)
 
     def toJSON(self):

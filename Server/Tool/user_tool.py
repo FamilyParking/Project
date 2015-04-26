@@ -43,6 +43,7 @@ class User_tool():
     def check_before_start(method_name, result):
         try:
             data = json.loads(result.request.body)
+
             data_user = data["User"]
             code = int(data_user["Code"])
 
@@ -73,5 +74,5 @@ class User_tool():
                 result.response.write(error.print_general_error())
         except:
             result.error(200)
-            error = StatusReturn(1, method_name)
+            error = StatusReturn(1, method_name, data=data)
             result.response.write(error.print_general_error())

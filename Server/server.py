@@ -204,19 +204,19 @@ class getCars(webapp2.RequestHandler):
 
             dati = json.loads(self.request.body)
 
-            if static_variable.DEBUG:
+            if static_variable.DEBUG and static_variable.DEBUG_ALL_CARS:
                 logging.debug(dati)
 
             user_data = dati["User"]
             lower_email = user_data["Email"].lower()
             temp_user = User.static_querySearch_email(lower_email)
 
-            if static_variable.DEBUG:
+            if static_variable.DEBUG and static_variable.DEBUG_ALL_CARS:
                 logging.debug(temp_user)
 
             id_user = temp_user.get()
 
-            if static_variable.DEBUG:
+            if static_variable.DEBUG and static_variable.DEBUG_ALL_CARS:
                 logging.debug(id_user.key.id())
 
             cars = User_car.getCarFromUser(id_user.key.id())
@@ -228,7 +228,7 @@ class getCars(webapp2.RequestHandler):
             else:
                 allcars = []
                 for id_carTemp in cars:
-                    if static_variable.DEBUG:
+                    if static_variable.DEBUG and static_variable.DEBUG_ALL_CARS:
                         logging.debug(id_carTemp)
                     allcars.append(Car.get_json(long(id_carTemp.id_car)))
 

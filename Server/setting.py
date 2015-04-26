@@ -5,6 +5,9 @@ class static_variable():
 
     # True = enable the print debug
     DEBUG = True
+    DEBUG_ALL_CARS = False
+    DEBUG_STATUS_RETURN = False
+    DEBUG_UPDATE_POSITION = True
 
     # Key to use the API of google
     google_api_key = "AIzaSyAN2KZpzIpWmPQidczGiyo3ZlV4j1ERe2U"

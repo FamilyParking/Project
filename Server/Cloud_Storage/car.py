@@ -94,7 +94,7 @@ class Car(ndb.Model):
     @staticmethod
     def getCarbyID(id):
 
-        if static_variable.DEBUG:
+        if static_variable.DEBUG and static_variable.DEBUG_ALL_CARS:
             logging.debug("Value ID: "+str(id)+" Cast a float: "+str("%.0f" % float(id)))
 
         app_key = Car.get_by_id(long("%.0f" % float(id)))     # This why sometime arrive id like '4.93745548034048E15'
@@ -107,8 +107,13 @@ class Car(ndb.Model):
 
     @staticmethod
     def update_position_ID(id, latitude, longitude, lastdriver):
+        if static_variable.DEBUG and static_variable.DEBUG_UPDATE_POSITION:
+            logging.debug("latitude: "+str(latitude)+" longitude: "+str(longitude))
+            logging.debug("%.7f" % float(latitude))
+        conv_latitude = "%.7f" % float(latitude) # This why sometime arrive id like '4.93745548034048E15'
+        conv_longitude = "%.7f" % float(longitude) # This why sometime arrive id like '4.93745548034048E15'
         temp_car = Car.getCarbyID(id)
-        return temp_car.updatePosition(latitude, longitude, lastdriver)
+        return temp_car.updatePosition(conv_latitude, conv_longitude, lastdriver)
 
     @staticmethod
     def pick_car(id):
