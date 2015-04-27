@@ -233,4 +233,10 @@ public class CarDetailFragment extends Fragment{
         this.car = car;
         setData();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Tools.setTitleActionBar(activity, R.string.list_car);
+    }
 }

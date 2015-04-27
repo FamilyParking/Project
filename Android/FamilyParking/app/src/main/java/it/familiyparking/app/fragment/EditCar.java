@@ -510,6 +510,8 @@ public class EditCar extends Fragment implements LoaderManager.LoaderCallbacks<C
         if(pushedSave && !isCreation){
             car.merge(tempCar);
         }
+
+        Tools.setTitleActionBar(activity, R.string.list_car);
     }
 
     public EditText getEditTextFinder(){

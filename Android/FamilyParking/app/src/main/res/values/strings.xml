@@ -62,7 +62,7 @@
     <string name="location_motivation">needs access to your location. Please turn on location access, otherwise the app will be closed.</string>
     <string name="close_motivation">can not access to your location. The application will be closed!</string>
     <string name="bluetooth_disable">Bluetooth disabled</string>
-    <string name="bluetooth_motivation">needs bluetooth to join the car's device. Please turn it on.</string>
+    <string name="bluetooth_motivation">needs bluetooth to join the car\'s device. Please turn it on.</string>
     <string name="bluetooth_join">Join bluetooth device</string>
     <string name="want_link">Do you want to link </string>
     <string name="want_unlink">Do you want to unlink </string>

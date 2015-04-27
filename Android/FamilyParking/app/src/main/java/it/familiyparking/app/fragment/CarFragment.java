@@ -32,6 +32,8 @@ public class CarFragment extends Fragment{
 
     MainActivity activity;
 
+    private View rootView;
+
     private User user;
     private ArrayList<Car> carArrayList;
     private CustomAdapterCar customAdapterCar;
@@ -46,9 +48,41 @@ public class CarFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_car, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car, container, false);
 
         activity = (MainActivity) getActivity();
+
+        /*FPApplication application = (FPApplication) activity.getApplication();
+        user = application.getUser();
+        carArrayList = application.getCars();
+
+        if(activity.getLunchWithEmptyList() && !application.isGetAllCar_Running()){
+            activity.setCreateCar();
+            Tools.createToast(activity,activity.getResources().getString(R.string.empty_car), Toast.LENGTH_LONG);
+        }
+
+        listView = (ListView) rootView.findViewById(R.id.car_lv);
+
+        relativeNoCar = (RelativeLayout) rootView.findViewById(R.id.car_rl);
+        logoIv = (ImageView) rootView.findViewById(R.id.logo_car_iv);
+        infoTv = (TextView) rootView.findViewById(R.id.info_car_tv);
+        progess = (ProgressWheel) rootView.findViewById(R.id.car_info_progress);
+
+        //setData();
+
+        rootView.findViewById(R.id.to_create_rl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setCreateCar();
+            }
+        });*/
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         FPApplication application = (FPApplication) activity.getApplication();
         user = application.getUser();
@@ -74,8 +108,6 @@ public class CarFragment extends Fragment{
                 activity.setCreateCar();
             }
         });
-
-        return rootView;
     }
 
     @Override
