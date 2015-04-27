@@ -96,7 +96,7 @@ public class Tools {
 
         alertDialog.setTitle(context.getResources().getString(R.string.location_disable));
 
-        alertDialog.setMessage(getAppName(context)+context.getResources().getString(R.string.location_motivation));
+        alertDialog.setMessage(getAppName(context)+ " " +context.getResources().getString(R.string.location_motivation));
 
         alertDialog.setPositiveButton(context.getResources().getString(R.string.settings),
                 new DialogInterface.OnClickListener() {
@@ -135,7 +135,7 @@ public class Tools {
 
         alertDialog.setTitle(context.getResources().getString(R.string.location_disable));
 
-        alertDialog.setMessage(getAppName(context)+context.getResources().getString(R.string.close_motivation));
+        alertDialog.setMessage(getAppName(context)+ " " +context.getResources().getString(R.string.close_motivation));
 
         alertDialog.setNegativeButton(context.getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
@@ -503,7 +503,7 @@ public class Tools {
 
         alertDialog.setTitle(context.getResources().getString(R.string.bluetooth_disable));
 
-        alertDialog.setMessage(getAppName(context)+context.getResources().getString(R.string.bluetooth_motivation));
+        alertDialog.setMessage(getAppName(context)+ " " +context.getResources().getString(R.string.bluetooth_motivation));
 
         alertDialog.setPositiveButton(context.getResources().getString(R.string.settings),
                 new DialogInterface.OnClickListener() {
