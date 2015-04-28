@@ -154,7 +154,7 @@ public class CarDetailFragment extends Fragment{
             if(lastDriver.equals(user))
                 nameDriver.setText(activity.getResources().getString(R.string.you));
             else
-                nameDriver.setText(car.getLastDriverUser(activity).getName());
+                nameDriver.setText(Tools.formatedName(car.getLastDriverUser(activity).getName()));
 
             ((TextView)rootView.findViewById(R.id.last_driver_time_tv)).setText(Tools.getFormatedData(car.getTimestamp()));
             ((TextView)rootView.findViewById(R.id.last_driver_interval_tv)).setText(Tools.getIntervalDataServer(activity,car.getTimestamp()));

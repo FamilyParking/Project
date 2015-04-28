@@ -840,7 +840,11 @@ public class Tools {
         String[] hour = starter[1].split(":");
         String[] day = starter[0].split("-");
 
-        return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
+        //return hour[0]+":"+hour[1]+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
+
+        String tempHourLegale = Integer.toString(Integer.parseInt(hour[1]) + 1);
+
+        return hour[0]+":"+tempHourLegale+"\t"+day[2]+" "+new DateFormatSymbols(Locale.ENGLISH).getMonths()[Integer.parseInt(day[1])-1]+" "+day[0];
     }
 
     public static String[] getDataTime(String data){
@@ -942,6 +946,22 @@ public class Tools {
         colors.add(BitmapDescriptorFactory.HUE_YELLOW);
 
         return colors;
+    }
+
+    public static String formatedName(String name){
+        String[] splited = name.split(" ");
+        String result = "";
+
+        for(int i=0; i<splited.length; i++){
+            String temp = splited[i];
+
+            if(i==0)
+                result = temp.substring(0, 1).toUpperCase() + temp.substring(1);
+            else
+                result = result + " " + temp.substring(0, 1).toUpperCase() + temp.substring(1);
+        }
+
+        return result;
     }
 
 }
