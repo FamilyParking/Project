@@ -42,9 +42,9 @@ public class GcmMessageHandler extends IntentService {
 
         String message = "";
         if(type.equals(Code.TYPE_GROUP))
-            message = user + " " + getResources().getString(R.string.notification_adding) + " " + car;
+            message = Tools.formatedName(user) + " " + getResources().getString(R.string.notification_adding) + " " + car;
         else if(type.equals(Code.TYPE_PARK))
-            message = user + " " + getResources().getString(R.string.notification_parking) + " " + car;
+            message = Tools.formatedName(user) + " " + getResources().getString(R.string.notification_parking) + " " + car;
 
         SQLiteDatabase db = Tools.getDB_Readable(this);
         if(UserTable.getNotification(db)) {
