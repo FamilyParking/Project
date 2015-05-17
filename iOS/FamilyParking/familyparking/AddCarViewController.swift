@@ -56,7 +56,7 @@ class AddCarViewController: UIViewController, UITextFieldDelegate,UIPickerViewDa
         println(" + size + " + size)
     }
     let pickerData = [
-        ["alfaromeo","audi","bmw","chevrolet","citroen","dacia","ferrari","fiat","ford","honda","hunday","jaguar","jeep","kia","lancia","land_rover","Lexus","mazda","mercedes","mg","mini","mitsubishi","nissan","opel","peugeot","porsche","ranault","seat","skoda","smart","subaru","toyora","volkswagen","volvo"]
+        ["alfaromeo","audi","bmw","chevrolet","citroen","dacia","ferrari","fiat","ford","honda","hunday","jaguar","jeep","kia","lancia","land_rover","Lexus","mazda","mercedes","mg","mini","mitsubishi","nissan","opel","peugeot","porsche","renault","seat","skoda","smart","subaru","toyora","volkswagen","volvo"]
     ]
     @IBAction func Back() {
          self.dismissViewControllerAnimated(true, completion: nil)
